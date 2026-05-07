@@ -14,7 +14,11 @@ import {
 } from "@/components/ui/popover";
 import { ROUTES } from "@/constants/routes";
 import { useFeedback } from "@/hooks/use-feedback";
-import { EXCLUDED_SECTIONS, isComponentsFolder } from "@/lib/docs";
+import {
+  EXCLUDED_SECTIONS,
+  isComponentsFolder,
+  isTemplatesFolder,
+} from "@/lib/docs";
 import {
   getCategoryFolders,
   getCurrentBase,
@@ -169,6 +173,17 @@ export const MobileNav = ({
                   setOpen={setOpen}
                 />
               ));
+            }
+
+            if (isTemplatesFolder(item)) {
+              return (
+                <MobileNavGroup
+                  key={item.$id}
+                  label={item.name}
+                  pages={getFolderPages(item, currentBase)}
+                  setOpen={setOpen}
+                />
+              );
             }
 
             return (

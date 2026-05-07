@@ -14,7 +14,11 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { ROUTES } from "@/constants/routes";
-import { EXCLUDED_SECTIONS, isComponentsFolder } from "@/lib/docs";
+import {
+  EXCLUDED_SECTIONS,
+  isComponentsFolder,
+  isTemplatesFolder,
+} from "@/lib/docs";
 import {
   getCategoryFolders,
   getCurrentBase,
@@ -140,6 +144,17 @@ export const DocsSidebar = ({
                 pathname={pathname}
               />
             ));
+          }
+
+          if (isTemplatesFolder(item)) {
+            return [
+              <SidebarPageGroup
+                key={item.$id}
+                label={item.name}
+                pages={getFolderPages(item, currentBase)}
+                pathname={pathname}
+              />,
+            ];
           }
 
           return (

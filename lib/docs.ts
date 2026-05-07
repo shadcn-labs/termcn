@@ -14,6 +14,9 @@ export const EXCLUDED_SECTIONS = new Set([
 export const isComponentsFolder = (folder: PageTreeFolder) =>
   folder.$id === "components" || folder.name === "Components";
 
+export const isTemplatesFolder = (folder: PageTreeFolder) =>
+  folder.$id === "templates" || folder.name === "Templates";
+
 const TITLE_OVERRIDES: Record<string, string> = {
   json: "JSON",
   "qr-code": "QR Code",
