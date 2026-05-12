@@ -1,4 +1,5 @@
 import { CodeCollapsibleWrapper } from "@/components/code-collapsible-wrapper";
+import { formatCode } from "@/lib/format-code";
 import { highlightCode } from "@/lib/highlight-code";
 import { readFileFromRoot } from "@/lib/read-file";
 import { getDemoSource, getRegistrySource } from "@/lib/registry";
@@ -68,6 +69,8 @@ export const ComponentSource = async ({
   if (!code) {
     return null;
   }
+
+  code = await formatCode(code);
 
   const lang = language ?? title?.split(".").pop() ?? "tsx";
   const highlightedCode = await highlightCode(code, lang);
