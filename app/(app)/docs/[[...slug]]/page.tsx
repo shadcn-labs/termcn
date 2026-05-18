@@ -11,6 +11,7 @@ import { DocsKeyboardShortcuts } from "@/components/docs-keyboard-shortcuts";
 import { DocsNavLink } from "@/components/docs-nav-link";
 import { DocsShareMenu } from "@/components/docs-share-menu";
 import { DocsTableOfContents } from "@/components/docs-toc";
+import { DocsTocFooter } from "@/components/docs-toc-footer";
 import { Badge } from "@/components/ui/badge";
 import { ROUTES } from "@/constants/routes";
 import { formatTitleFromSlug } from "@/lib/docs";
@@ -216,10 +217,11 @@ const Page = async (props: { params: Promise<{ slug?: string[] }> }) => {
           <div className="sticky top-[calc(var(--header-height)+1px)] z-30 ml-auto hidden h-[calc(100svh-var(--footer-height)+2rem)] w-72 flex-col gap-4 overflow-hidden overscroll-none pb-8 xl:flex">
             <div className="h-(--top-spacing) shrink-0" />
             {doc.toc?.length ? (
-              <div className="no-scrollbar overflow-y-auto px-8">
-                <DocsTableOfContents toc={doc.toc} docId={page.path} />
+              <div className="no-scrollbar overflow-y-auto mx-8 border-b">
+                <DocsTableOfContents toc={doc.toc} />
               </div>
             ) : null}
+            <DocsTocFooter docId={page.path} className="mx-8" />
             <DocsAdPlacement
               type="card"
               showOnDesktop

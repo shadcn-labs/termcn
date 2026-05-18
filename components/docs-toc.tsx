@@ -1,9 +1,8 @@
 "use client";
 
-import { MenuIcon, SquarePenIcon } from "lucide-react";
+import { MenuIcon } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { DiscordIcon, XIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -11,11 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Separator } from "@/components/ui/separator";
-import { GITHUB, LINK } from "@/constants/links";
 import { useFeedback } from "@/hooks/use-feedback";
-import { DOCS_DIR } from "@/lib/docs";
-import { trackEvent } from "@/lib/events";
 import { cn } from "@/lib/utils";
 
 const headingById = (id: string): Element | null =>
@@ -64,7 +59,6 @@ const useActiveItem = (itemIds: string[]) => {
 
 export const DocsTableOfContents = ({
   toc,
-  docId,
   variant = "list",
   className,
 }: {
@@ -73,7 +67,6 @@ export const DocsTableOfContents = ({
     url: string;
     depth: number;
   }[];
-  docId: string;
   variant?: "dropdown" | "list";
   className?: string;
 }) => {
@@ -140,44 +133,6 @@ export const DocsTableOfContents = ({
           {item.title}
         </a>
       ))}
-      <Separator orientation="horizontal" className="my-2" />
-      <div className="flex flex-col gap-2">
-        {docId && (
-          <a
-            href={`${LINK.GITHUB}/edit/${GITHUB.branch}/${DOCS_DIR}/${docId}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="transition-colors text-[0.8rem] hover:text-foreground text-muted-foreground [&_svg]:size-3 flex gap-1.5 items-center"
-            onClick={() =>
-              trackEvent({
-                name: "click_edit_page",
-                properties: { doc: docId },
-              })
-            }
-          >
-            <SquarePenIcon />
-            Edit this page
-          </a>
-        )}
-        <a
-          href={LINK.X_SHADCN_LABS}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="transition-colors text-[0.8rem] hover:text-foreground text-muted-foreground [&_svg]:size-3 flex gap-1.5 items-center"
-        >
-          <XIcon />
-          Follow @shadcnlabs
-        </a>
-        <a
-          href={LINK.DISCORD}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="transition-colors text-[0.8rem] hover:text-foreground text-muted-foreground [&_svg]:size-3 flex gap-1.5 items-center"
-        >
-          <DiscordIcon />
-          Join community
-        </a>
-      </div>
     </div>
   );
 };

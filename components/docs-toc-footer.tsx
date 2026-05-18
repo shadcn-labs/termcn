@@ -1,45 +1,55 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { LINK } from "@/constants/links";
-import { UTM_PARAMS } from "@/constants/site";
-import { useFeedback } from "@/hooks/use-feedback";
-import { addQueryParams } from "@/lib/url";
+import { SquarePenIcon } from "lucide-react";
+
+import { DiscordIcon, XIcon } from "@/components/icons";
+import { GITHUB, LINK } from "@/constants/links";
+import { DOCS_DIR } from "@/lib/docs";
+import { trackEvent } from "@/lib/events";
 import { cn } from "@/lib/utils";
 
-export const DocsTocFooter = ({ className }: React.ComponentProps<"div">) => {
-  const playClick = useFeedback({ haptic: false, sound: "click" });
-
-  return (
-    <div
-      className={cn(
-        "group relative flex flex-col gap-2 rounded-lg bg-surface p-6 text-sm text-surface-foreground",
-        className
-      )}
-    >
-      <div className="text-base leading-tight font-semibold text-balance group-hover:underline">
-        Beautiful emails, made simple
-      </div>
-      <p className="text-muted-foreground leading-snug">
-        Ready-to-use React components for the email, built on <u>React Email</u>
-        , distributed via shadcn.
-      </p>
-      <Button variant="outline" size="sm" className="mt-2">
-        Go to emailcn.dev
-      </Button>
+export const DocsTocFooter = ({
+  docId,
+  className,
+}: {
+  docId: string;
+  className?: string;
+}) => (
+  <div className={cn("flex flex-col gap-2", className)}>
+    {docId && (
       <a
-        href={addQueryParams(LINK.EMAILCN, UTM_PARAMS)}
+        href={`${LINK.GITHUB}/edit/${GITHUB.branch}/${DOCS_DIR}/${docId}`}
         target="_blank"
-        rel="noreferrer"
-        className="absolute inset-0 rounded-lg"
-        aria-hidden
-        tabIndex={-1}
-        onClick={playClick}
+        rel="noopener noreferrer"
+        className="transition-colors text-[0.8rem] hover:text-foreground text-muted-foreground [&_svg]:size-3 flex gap-1.5 items-center"
+        onClick={() =>
+          trackEvent({
+            name: "click_edit_page",
+            properties: { doc: docId },
+          })
+        }
       >
-        <span className="sr-only">
-          Open EmailCN components documentation (emailcn.dev)
-        </span>
+        <SquarePenIcon />
+        Edit this page
       </a>
-    </div>
-  );
-};
+    )}
+    <a
+      href={LINK.X_SHADCN_LABS}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="transition-colors text-[0.8rem] hover:text-foreground text-muted-foreground [&_svg]:size-3 flex gap-1.5 items-center"
+    >
+      <XIcon />
+      Follow @shadcnlabs
+    </a>
+    <a
+      href={LINK.DISCORD}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="transition-colors text-[0.8rem] hover:text-foreground text-muted-foreground [&_svg]:size-3 flex gap-1.5 items-center"
+    >
+      <DiscordIcon />
+      Join community
+    </a>
+  </div>
+);
