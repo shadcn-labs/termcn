@@ -5,7 +5,7 @@ import { Component as ReactComponent, Suspense } from "react";
 
 import { useTheme } from "@/components/ui/theme-provider";
 import { ExamplesIndex } from "@/examples/__index__";
-import { isPublicBaseName, PUBLIC_BASE_NAME } from "@/registry/bases";
+import { DEFAULT_BASE_NAME } from "@/registry/bases";
 import type { BaseName } from "@/registry/bases";
 
 const InkPreviewPlaceholder = ({
@@ -59,7 +59,7 @@ const PreviewPlaceholder = ({
   description: string;
   base: BaseName;
 }) =>
-  isPublicBaseName(base) ? (
+  base === DEFAULT_BASE_NAME ? (
     <InkPreviewPlaceholder
       componentName={componentName}
       description={description}
@@ -112,7 +112,7 @@ class PreviewErrorBoundary extends ReactComponent<
 }
 
 export const ExamplePreview = ({
-  base = PUBLIC_BASE_NAME,
+  base = DEFAULT_BASE_NAME,
   name,
 }: {
   base?: BaseName;

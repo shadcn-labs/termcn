@@ -5,7 +5,7 @@ import type { PageTreeFolder, PageTreePage } from "@/lib/page-tree";
 import { getCategoryFolders, getFolderPages } from "@/lib/page-tree";
 import { source } from "@/lib/source";
 import { cn } from "@/lib/utils";
-import { PUBLIC_BASE_NAME } from "@/registry/bases";
+import { DEFAULT_BASE_NAME } from "@/registry/bases";
 
 const getFolder = (name: string): PageTreeFolder | undefined => {
   for (const node of source.pageTree.children) {
@@ -70,7 +70,7 @@ const CategoryGrid = ({
 export const ComponentsList = ({
   folderName = "Components",
   category,
-  base = PUBLIC_BASE_NAME,
+  base = DEFAULT_BASE_NAME,
   className,
 }: {
   folderName?: string;

@@ -5,7 +5,7 @@ import { createDynamicTerminal } from "ink-web/next";
 import { ExamplePreview } from "@/components/example-preview";
 import type { InkPreviewProps } from "@/components/ink-preview";
 import type { terminalThemeMap } from "@/lib/terminal-themes";
-import { isPublicBaseName } from "@/registry/bases";
+import { DEFAULT_BASE_NAME } from "@/registry/bases";
 import type { BaseName } from "@/registry/bases";
 
 const InkPreview = createDynamicTerminal<InkPreviewProps>(
@@ -29,7 +29,7 @@ export const TerminalPreview = ({
   name,
   theme,
 }: TerminalPreviewProps) => {
-  if (!isPublicBaseName(base)) {
+  if (base !== DEFAULT_BASE_NAME) {
     return <ExamplePreview base={base} name={name} />;
   }
 

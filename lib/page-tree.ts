@@ -1,6 +1,6 @@
 import type { Node as PageTreeNode } from "fumadocs-core/page-tree";
 
-import { PUBLIC_BASE_NAME } from "@/registry/bases";
+import { DEFAULT_BASE_NAME } from "@/registry/bases";
 
 export type PageTreeFolder = Extract<PageTreeNode, { type: "folder" }>;
 export type PageTreePage = Extract<PageTreeNode, { type: "page" }>;
@@ -71,5 +71,5 @@ export const getFolderPages = (
 
 export const getCurrentBase = (pathname: string): string => {
   const match = pathname.match(/\/docs\/components\/([^/]+)\//);
-  return match ? match[1] : PUBLIC_BASE_NAME;
+  return match ? match[1] : DEFAULT_BASE_NAME;
 };

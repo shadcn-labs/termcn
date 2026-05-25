@@ -1,14 +1,13 @@
 import { ComponentSource } from "@/components/component-source";
+import { MacWindow } from "@/components/mac-window";
 import type { TerminalPreviewProps } from "@/components/terminal-preview";
 import { TerminalPreview } from "@/components/terminal-preview";
 import { TerminalTheme } from "@/components/terminal-theme";
 import { cn } from "@/lib/utils";
-import { PUBLIC_BASE_NAME } from "@/registry/bases";
-
-import { MacWindow } from "./mac-window";
+import { DEFAULT_BASE_NAME } from "@/registry/bases";
 
 export const ComponentPreview = ({
-  base = PUBLIC_BASE_NAME,
+  base = DEFAULT_BASE_NAME,
   name,
   title = "Terminal",
   className,

@@ -4,7 +4,6 @@ import { loader } from "fumadocs-core/source";
 import { docs } from "@/.source/server";
 import { ROUTES } from "@/constants/routes";
 import { docsContentRoute, docsImageRoute } from "@/lib/docs";
-import { processMdxForLLMs } from "@/lib/llm";
 
 export const source = loader({
   baseUrl: ROUTES.DOCS,
@@ -30,10 +29,8 @@ export const getPageMarkdownUrl = (page: InferPageType<typeof source>) => {
 };
 
 export const getLLMText = async (page: InferPageType<typeof source>) => {
-  const processed = await processMdxForLLMs(
-    await page.data.getText("raw"),
-    source.pageTree
-  );
+  const processed = await page.data.getText("processed");
+
   const sections = [page.data.description, processed].filter(Boolean);
 
   return `# ${page.data.title}

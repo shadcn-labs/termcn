@@ -1,3 +1,4 @@
+// oxlint-disable complexity
 import { findNeighbour } from "fumadocs-core/page-tree";
 import { ArrowLeftIcon, ArrowRightIcon, ArrowUpRightIcon } from "lucide-react";
 import Link from "next/link";
@@ -5,7 +6,7 @@ import { notFound } from "next/navigation";
 
 import { DirectionalTransition } from "@/components/directional-transition";
 import { DocsAdPlacement } from "@/components/docs-ad-placement";
-// import { DocsBaseSwitcher } from "@/components/docs-base-switcher";
+import { DocsBaseSwitcher } from "@/components/docs-base-switcher";
 import { DocsCopyPage } from "@/components/docs-copy-page";
 import { DocsKeyboardShortcuts } from "@/components/docs-keyboard-shortcuts";
 import { DocsNavLink } from "@/components/docs-nav-link";
@@ -179,16 +180,16 @@ const Page = async (props: { params: Promise<{ slug?: string[] }> }) => {
               </div>
               <DocsAdPlacement type="card" showOnMobile showOnDesktop={false} />
               <div className="w-full flex-1 *:data-[slot=alert]:first:mt-0">
-                {/* {params.slug &&
-                params.slug[0] === "components" &&
-                params.slug[1] &&
-                params.slug[2] && (
-                  <DocsBaseSwitcher
-                    base={params.slug[1]}
-                    component={params.slug.slice(2).join("/")}
-                    className="mb-4"
-                  />
-                )} */}
+                {params.slug &&
+                  params.slug[0] === "components" &&
+                  params.slug[1] &&
+                  params.slug[2] && (
+                    <DocsBaseSwitcher
+                      base={params.slug[1]}
+                      component={params.slug.slice(2).join("/")}
+                      className="mb-4"
+                    />
+                  )}
                 <MdxContent components={mdxComponents} />
               </div>
             </div>
