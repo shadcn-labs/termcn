@@ -309,7 +309,7 @@
   {
     "id": "TC012",
     "title": "Terminal theme selector updates the in-browser terminal renderer",
-    "description": "Verifies changing the terminal theme in the docs preview chrome updates the xterm/Ink preview (e.g. background/foreground tokens applied via terminalThemeKey), not only the select label.",
+    "description": "Verifies changing the terminal theme in the docs preview chrome updates the terminal preview (e.g. background/foreground tokens applied via terminalThemeKey), not only the select label.",
     "category": "Component previews",
     "steps": [
       {

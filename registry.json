@@ -3626,7 +3626,7 @@
     },
     {
       "categories": ["themes"],
-      "description": "A purple-heavy Dracula theme for Ink components.",
+      "description": "A purple-heavy Dracula theme for terminal UI components.",
       "files": [
         {
           "path": "registry/themes/dracula.ts",
@@ -4396,7 +4396,7 @@
     },
     {
       "categories": ["core"],
-      "description": "Frame-based animation helper for Ink components.",
+      "description": "Frame-based animation helper for terminal UI components.",
       "files": [
         {
           "path": "registry/hooks/use-animation.ts",

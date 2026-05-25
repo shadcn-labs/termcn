@@ -5,7 +5,7 @@ description: "Install terminal components, hooks, and themes from the registry."
 
 ## Prerequisites
 
-A project with [Ink](https://github.com/vadimdemedes/ink) set up.
+A project with [Ink](https://github.com/vadimdemedes/ink) or [OpenTUI](https://github.com/anomalyco/opentui) set up.
 
 ## Installation
 
@@ -13,6 +13,12 @@ Run the following command to add any component:
 
 ```bash
 npx shadcn@latest add @termcn/spinner
+```
+
+OpenTUI components use the `opentui-` prefix:
+
+```bash
+npx shadcn@latest add @termcn/opentui-spinner
 ```
 
 ## Usage
@@ -49,7 +55,9 @@ import { draculaTheme } from "@/lib/terminal-themes/dracula";
 
 export function App() {
   return (
-    <ThemeProvider theme={draculaTheme}>{/* your Ink tree */}</ThemeProvider>
+    <ThemeProvider theme={draculaTheme}>
+      {/* your Ink or OpenTUI tree */}
+    </ThemeProvider>
   );
 }
 ```

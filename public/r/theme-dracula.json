@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "theme-dracula",
   "title": "Dracula",
-  "description": "A purple-heavy Dracula theme for Ink components.",
+  "description": "A purple-heavy Dracula theme for terminal UI components.",
   "registryDependencies": [
     "https://termcn.dev/r/theme-provider.json"
   ],

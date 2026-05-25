@@ -3,7 +3,7 @@ title: Registry
 description: Learn how to use the termcn registry with the shadcn CLI.
 ---
 
-The **termcn** registry ships Ink-based terminal UI components and themes in the [shadcn registry format](https://ui.shadcn.com/docs/registry). Register the namespace once in `components.json`, then pull items by name with the CLI.
+The **termcn** registry ships Ink and OpenTUI terminal UI components and themes in the [shadcn registry format](https://ui.shadcn.com/docs/registry). Register the namespace once in `components.json`, then pull items by name with the CLI.
 
 ## Setup
 
@@ -29,6 +29,12 @@ npx dlx shadcn@latest add @termcn/spinner
 
 ```bash
 npx dlx shadcn@latest add @termcn/data-grid
+```
+
+OpenTUI components use the `opentui-` prefix:
+
+```bash
+npx dlx shadcn@latest add @termcn/opentui-spinner
 ```
 
 Install a theme (files are named `theme-<id>.json`):

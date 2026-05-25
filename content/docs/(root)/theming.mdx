@@ -1,9 +1,9 @@
 ---
 title: Theming
-description: Terminal themes, ThemeProvider, and custom palettes for Ink apps.
+description: Terminal themes, ThemeProvider, and custom palettes for Ink and OpenTUI apps.
 ---
 
-**Theming** in termcn means wrapping your Ink tree with **`ThemeProvider`** and choosing a **terminal theme** (tokens for colors, borders, and spacing). Theme packages install into `lib/terminal-themes/` and pull in the **`theme-provider`** registry item when needed.
+**Theming** in termcn means wrapping your Ink or OpenTUI tree with **`ThemeProvider`** and choosing a **terminal theme** (tokens for colors, borders, and spacing). Theme packages install into `lib/terminal-themes/` and pull in the matching provider registry item when needed.
 
 ## Preview
 
@@ -17,6 +17,12 @@ Install the provider (required for registry UI components that call `useTheme`):
 
 ```bash
 npx shadcn@latest add @termcn/theme-provider
+```
+
+For OpenTUI projects, install the OpenTUI provider:
+
+```bash
+npx shadcn@latest add @termcn/opentui-theme-provider
 ```
 
 ### Usage

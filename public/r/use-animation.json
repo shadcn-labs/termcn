@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "use-animation",
   "title": "Use Animation",
-  "description": "Frame-based animation helper for Ink components.",
+  "description": "Frame-based animation helper for terminal UI components.",
   "files": [
     {
       "path": "registry/hooks/use-animation.ts",
