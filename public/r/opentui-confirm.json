@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui-confirm",
+  "title": "Confirm",
+  "description": "Yes/No confirmation prompt",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui-theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/confirm.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useKeyboard } from \"@opentui/react\";\nimport { useState } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface ConfirmProps {\n  message: string;\n  onConfirm?: () => void;\n  onCancel?: () => void;\n  confirmLabel?: string;\n  cancelLabel?: string;\n  defaultValue?: boolean;\n  variant?: \"default\" | \"danger\";\n}\n\nexport const Confirm = ({\n  message,\n  onConfirm,\n  onCancel,\n  confirmLabel = \"Yes\",\n  cancelLabel = \"No\",\n  defaultValue = false,\n  variant = \"default\",\n}: ConfirmProps) => {\n  const theme = useTheme();\n  const [selected, setSelected] = useState<boolean>(defaultValue);\n\n  useKeyboard((key) => {\n    if (key.name === \"left\" || key.name === \"right\") {\n      setSelected((s) => !s);\n    } else if (key.name === \"return\") {\n      if (selected) {\n        onConfirm?.();\n      } else {\n        onCancel?.();\n      }\n    } else if (key.name === \"y\" || key.name === \"Y\") {\n      onConfirm?.();\n    } else if (key.name === \"n\" || key.name === \"N\") {\n      onCancel?.();\n    }\n  });\n\n  const yesColor =\n    variant === \"danger\" ? theme.colors.error : theme.colors.primary;\n\n  return (\n    <box flexDirection=\"column\" gap={0}>\n      <text>\n        <text fg={theme.colors.primary}>{\"? \"}</text>\n        {message}\n      </text>\n      <box gap={2} paddingLeft={2}>\n        <box gap={1}>\n          {selected ? (\n            <text fg={yesColor}>\n              <b>\n                {\"› \"}\n                {confirmLabel}\n              </b>\n            </text>\n          ) : (\n            <text fg={theme.colors.mutedForeground}>\n              {\"  \"}\n              {confirmLabel}\n            </text>\n          )}\n        </box>\n        <box gap={1}>\n          {selected ? (\n            <text fg={theme.colors.mutedForeground}>\n              {\"  \"}\n              {cancelLabel}\n            </text>\n          ) : (\n            <text>\n              <b>\n                {\"› \"}\n                {cancelLabel}\n              </b>\n            </text>\n          )}\n        </box>\n      </box>\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/confirm.tsx"
+    }
+  ],
+  "categories": [
+    "forms"
+  ],
+  "type": "registry:ui"
+}

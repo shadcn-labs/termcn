@@ -1081,6 +1081,2026 @@
       "type": "registry:ui"
     },
     {
+      "categories": ["feedback"],
+      "dependencies": ["@opentui/react"],
+      "description": "Alert box with success/error/warning/info variants",
+      "files": [
+        {
+          "path": "registry/opentui/ui/alert.tsx",
+          "target": "components/ui/alert.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-alert",
+      "title": "Alert",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["templates"],
+      "dependencies": ["@opentui/react"],
+      "description": "Full-screen TUI layout with header, tip bar, full-width input, scrollable content, and hints footer",
+      "files": [
+        {
+          "path": "registry/opentui/ui/app-shell.tsx",
+          "target": "components/ui/app-shell.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-app-shell",
+      "title": "App Shell",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["layout"],
+      "dependencies": ["@opentui/react"],
+      "description": "Constrains children to a given aspect ratio",
+      "files": [
+        {
+          "path": "registry/opentui/ui/aspect-ratio.tsx",
+          "target": "components/ui/aspect-ratio.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-aspect-ratio",
+      "title": "Aspect Ratio",
+      "type": "registry:ui"
+    },
+    {
+      "categories": ["typography"],
+      "dependencies": ["@opentui/react"],
+      "description": "Semantic status indicator badge (success/error/warning/info)",
+      "files": [
+        {
+          "path": "registry/opentui/ui/badge.tsx",
+          "target": "components/ui/badge.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-badge",
+      "title": "Badge",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["feedback"],
+      "dependencies": ["@opentui/react"],
+      "description": "Full-width announcement banner",
+      "files": [
+        {
+          "path": "registry/opentui/ui/banner.tsx",
+          "target": "components/ui/banner.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-banner",
+      "title": "Banner",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["charts"],
+      "dependencies": ["@opentui/react"],
+      "description": "Horizontal and vertical bar chart with labels",
+      "files": [
+        {
+          "path": "registry/opentui/ui/bar-chart.tsx",
+          "target": "components/ui/bar-chart.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-bar-chart",
+      "title": "Bar Chart",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["typography"],
+      "dependencies": ["@opentui/react"],
+      "description": "Figlet-style large ASCII art text",
+      "files": [
+        {
+          "path": "registry/opentui/ui/big-text.tsx",
+          "target": "components/ui/big-text.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-big-text",
+      "title": "Big Text",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["layout"],
+      "dependencies": ["@opentui/react"],
+      "description": "Enhanced flexbox container with theme-aware borders",
+      "files": [
+        {
+          "path": "registry/opentui/ui/box.tsx",
+          "target": "components/ui/box.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-box",
+      "title": "Box",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["navigation"],
+      "dependencies": ["@opentui/react"],
+      "description": "Breadcrumb navigation trail",
+      "files": [
+        {
+          "path": "registry/opentui/ui/breadcrumb.tsx",
+          "target": "components/ui/breadcrumb.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-breadcrumb",
+      "title": "Breadcrumb",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["templates"],
+      "dependencies": ["@opentui/react"],
+      "description": "Nested structured content with ●/└/□ bullet prefixes",
+      "files": [
+        {
+          "path": "registry/opentui/ui/bullet-list.tsx",
+          "target": "components/ui/bullet-list.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-bullet-list",
+      "title": "Bullet List",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["data"],
+      "dependencies": ["@opentui/react"],
+      "description": "Card with header, body, and footer slots",
+      "files": [
+        {
+          "path": "registry/opentui/ui/card.tsx",
+          "target": "components/ui/card.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-card",
+      "title": "Card",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["layout"],
+      "dependencies": ["@opentui/react"],
+      "description": "Centers children horizontally and vertically",
+      "files": [
+        {
+          "path": "registry/opentui/ui/center.tsx",
+          "target": "components/ui/center.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-center",
+      "title": "Center",
+      "type": "registry:ui"
+    },
+    {
+      "categories": ["ai"],
+      "dependencies": ["@opentui/react"],
+      "description": "Chat message bubble with role label, streaming indicator, and collapsible content",
+      "files": [
+        {
+          "path": "registry/opentui/ui/chat-message.tsx",
+          "target": "components/ui/chat-message.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-chat-message",
+      "title": "Chat Message",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["ai"],
+      "dependencies": ["@opentui/react"],
+      "description": "Scrollable container for stacking ChatMessage components in a conversation thread",
+      "files": [
+        {
+          "path": "registry/opentui/ui/chat-thread.tsx",
+          "target": "components/ui/chat-thread.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-chat-thread",
+      "title": "Chat Thread",
+      "type": "registry:ui"
+    },
+    {
+      "categories": ["selection"],
+      "dependencies": ["@opentui/react"],
+      "description": "Checkbox with indeterminate state",
+      "files": [
+        {
+          "path": "registry/opentui/ui/checkbox.tsx",
+          "target": "components/ui/checkbox.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-checkbox",
+      "title": "Checkbox",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["selection"],
+      "dependencies": ["@opentui/react"],
+      "description": "Checkbox group with min/max selection",
+      "files": [
+        {
+          "path": "registry/opentui/ui/checkbox-group.tsx",
+          "target": "components/ui/checkbox-group.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-checkbox-group",
+      "title": "Checkbox Group",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["utility"],
+      "dependencies": ["@opentui/react"],
+      "description": "Copy-to-clipboard button with success feedback",
+      "files": [
+        {
+          "path": "registry/opentui/ui/clipboard.tsx",
+          "target": "components/ui/clipboard.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-clipboard",
+      "title": "Clipboard",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json",
+        "https://termcn.dev/r/use-clipboard.json"
+      ]
+    },
+    {
+      "categories": ["utility"],
+      "dependencies": ["@opentui/react"],
+      "description": "Real-time clock display with 12h/24h and date",
+      "files": [
+        {
+          "path": "registry/opentui/ui/clock.tsx",
+          "target": "components/ui/clock.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-clock",
+      "title": "Clock",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["typography"],
+      "dependencies": ["@opentui/react"],
+      "description": "Syntax-highlighted code block (50+ languages)",
+      "files": [
+        {
+          "path": "registry/opentui/ui/code.tsx",
+          "target": "components/ui/code.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-code",
+      "title": "Code",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["selection"],
+      "dependencies": ["@opentui/react"],
+      "description": "Color picker with palette, hex, and RGB input",
+      "files": [
+        {
+          "path": "registry/opentui/ui/color-picker.tsx",
+          "target": "components/ui/color-picker.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-color-picker",
+      "title": "Color Picker",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["layout"],
+      "dependencies": ["@opentui/react"],
+      "description": "Multi-column layout with configurable widths",
+      "files": [
+        {
+          "path": "registry/opentui/ui/columns.tsx",
+          "target": "components/ui/columns.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-columns",
+      "title": "Columns",
+      "type": "registry:ui"
+    },
+    {
+      "categories": ["navigation"],
+      "dependencies": ["@opentui/react"],
+      "description": "VS Code–style command palette with fuzzy search",
+      "files": [
+        {
+          "path": "registry/opentui/ui/command-palette.tsx",
+          "target": "components/ui/command-palette.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-command-palette",
+      "title": "Command Palette",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["forms"],
+      "dependencies": ["@opentui/react"],
+      "description": "Yes/No confirmation prompt",
+      "files": [
+        {
+          "path": "registry/opentui/ui/confirm.tsx",
+          "target": "components/ui/confirm.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-confirm",
+      "title": "Confirm",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["data"],
+      "dependencies": ["@opentui/react"],
+      "description": "Advanced data grid with sorting, filtering, pagination, and cell editing",
+      "files": [
+        {
+          "path": "registry/opentui/ui/data-grid.tsx",
+          "target": "components/ui/data-grid.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-data-grid",
+      "title": "Data Grid",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["forms"],
+      "dependencies": ["@opentui/react"],
+      "description": "Calendar date picker with keyboard navigation",
+      "files": [
+        {
+          "path": "registry/opentui/ui/date-picker.tsx",
+          "target": "components/ui/date-picker.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-date-picker",
+      "title": "Date Picker",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["data"],
+      "dependencies": ["@opentui/react"],
+      "description": "Term–description definition list",
+      "files": [
+        {
+          "path": "registry/opentui/ui/definition.tsx",
+          "target": "components/ui/definition.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-definition",
+      "title": "Definition",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["overlays"],
+      "dependencies": ["@opentui/react"],
+      "description": "Confirmation dialog with OK/Cancel actions",
+      "files": [
+        {
+          "path": "registry/opentui/ui/dialog.tsx",
+          "target": "components/ui/dialog.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-dialog",
+      "title": "Dialog",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["data"],
+      "dependencies": ["@opentui/react"],
+      "description": "Unified, split, and inline diff viewer with LCS-based diff algorithm and line numbers",
+      "files": [
+        {
+          "path": "registry/opentui/ui/diff-view.tsx",
+          "target": "components/ui/diff-view.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-diff-view",
+      "title": "Diff View",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["typography"],
+      "dependencies": ["@opentui/react"],
+      "description": "Box-drawing character numerals",
+      "files": [
+        {
+          "path": "registry/opentui/ui/digits.tsx",
+          "target": "components/ui/digits.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-digits",
+      "title": "Digits",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["data"],
+      "dependencies": ["@opentui/react"],
+      "description": "Filesystem browser with expand/collapse",
+      "files": [
+        {
+          "path": "registry/opentui/ui/directory-tree.tsx",
+          "target": "components/ui/directory-tree.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-directory-tree",
+      "title": "Directory Tree",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["layout"],
+      "dependencies": ["@opentui/react"],
+      "description": "Horizontal or vertical divider / rule",
+      "files": [
+        {
+          "path": "registry/opentui/ui/divider.tsx",
+          "target": "components/ui/divider.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-divider",
+      "title": "Divider",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["overlays"],
+      "dependencies": ["@opentui/react"],
+      "description": "Slide-in panel from any edge",
+      "files": [
+        {
+          "path": "registry/opentui/ui/drawer.tsx",
+          "target": "components/ui/drawer.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-drawer",
+      "title": "Drawer",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["input"],
+      "dependencies": ["@opentui/react"],
+      "description": "Email input with validation and domain suggestions",
+      "files": [
+        {
+          "path": "registry/opentui/ui/email-input.tsx",
+          "target": "components/ui/email-input.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-email-input",
+      "title": "Email Input",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["utility"],
+      "dependencies": ["@opentui/react", "strip-ansi"],
+      "description": "Embedded PTY terminal panel (requires node-pty peer)",
+      "files": [
+        {
+          "path": "registry/opentui/ui/embedded-terminal.tsx",
+          "target": "components/ui/embedded-terminal.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-embedded-terminal",
+      "title": "Embedded Terminal",
+      "type": "registry:ui"
+    },
+    {
+      "categories": ["utility"],
+      "dependencies": ["@opentui/react"],
+      "description": "React error boundary with graceful terminal display",
+      "files": [
+        {
+          "path": "registry/opentui/ui/error-boundary.tsx",
+          "target": "components/ui/error-boundary.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-error-boundary",
+      "title": "Error Boundary",
+      "type": "registry:ui"
+    },
+    {
+      "categories": ["ai"],
+      "dependencies": ["@opentui/react"],
+      "description": "Interactive file-change review list with diff expansion, per-file accept/reject actions, and accept-all shortcut",
+      "files": [
+        {
+          "path": "registry/opentui/ui/file-change.tsx",
+          "target": "components/ui/file-change.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-file-change",
+      "title": "File Change",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["forms"],
+      "dependencies": ["@opentui/react"],
+      "description": "Interactive file browser and picker",
+      "files": [
+        {
+          "path": "registry/opentui/ui/file-picker.tsx",
+          "target": "components/ui/file-picker.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-file-picker",
+      "title": "File Picker",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["forms"],
+      "dependencies": ["@opentui/react"],
+      "description": "Form container with validation, Ctrl+S submit, and dirty tracking",
+      "files": [
+        {
+          "path": "registry/opentui/ui/form.tsx",
+          "target": "components/ui/form.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-form",
+      "title": "Form",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["forms"],
+      "dependencies": ["@opentui/react"],
+      "description": "Form field wrapper with label, hint, and error",
+      "files": [
+        {
+          "path": "registry/opentui/ui/form-field.tsx",
+          "target": "components/ui/form-field.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-form-field",
+      "title": "Form Field",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["charts"],
+      "dependencies": ["@opentui/react"],
+      "description": "Arc/speedometer gauge meter",
+      "files": [
+        {
+          "path": "registry/opentui/ui/gauge.tsx",
+          "target": "components/ui/gauge.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-gauge",
+      "title": "Gauge",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["data"],
+      "dependencies": ["@opentui/react"],
+      "description": "Git status display (branch, staged, modified, ahead/behind)",
+      "files": [
+        {
+          "path": "registry/opentui/ui/git-status.tsx",
+          "target": "components/ui/git-status.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-git-status",
+      "title": "Git Status",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["typography"],
+      "dependencies": ["@opentui/react"],
+      "description": "Color gradient text",
+      "files": [
+        {
+          "path": "registry/opentui/ui/gradient.tsx",
+          "target": "components/ui/gradient.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-gradient",
+      "title": "Gradient",
+      "type": "registry:ui"
+    },
+    {
+      "categories": ["layout"],
+      "dependencies": ["@opentui/react"],
+      "description": "Rows × columns grid layout",
+      "files": [
+        {
+          "path": "registry/opentui/ui/grid.tsx",
+          "target": "components/ui/grid.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-grid",
+      "title": "Grid",
+      "type": "registry:ui"
+    },
+    {
+      "categories": ["typography"],
+      "dependencies": ["@opentui/react"],
+      "description": "h1–h4 styled headings with optional figlet ASCII art",
+      "files": [
+        {
+          "path": "registry/opentui/ui/heading.tsx",
+          "target": "components/ui/heading.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-heading",
+      "title": "Heading",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["charts"],
+      "dependencies": ["@opentui/react"],
+      "description": "Grid heatmap with color intensity scale",
+      "files": [
+        {
+          "path": "registry/opentui/ui/heat-map.tsx",
+          "target": "components/ui/heat-map.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-heat-map",
+      "title": "Heat Map",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["utility"],
+      "dependencies": ["@opentui/react"],
+      "description": "Auto-generated help panel from a keymap",
+      "files": [
+        {
+          "path": "registry/opentui/ui/help.tsx",
+          "target": "components/ui/help.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-help",
+      "title": "Help",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["templates"],
+      "dependencies": ["@opentui/react"],
+      "description": "Figlet banner + tagline + aligned Options/Commands help sections",
+      "files": [
+        {
+          "path": "registry/opentui/ui/help-screen.tsx",
+          "target": "components/ui/help-screen.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-help-screen",
+      "title": "Help Screen",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["utility"],
+      "dependencies": ["@opentui/react"],
+      "description": "Image renderer with iTerm2/Kitty protocol and ASCII fallback",
+      "files": [
+        {
+          "path": "registry/opentui/ui/image.tsx",
+          "target": "components/ui/image.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-image",
+      "title": "Image",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["templates"],
+      "dependencies": ["@opentui/react"],
+      "description": "Bordered info panel with header, key-value rows, and tree-prefix rows",
+      "files": [
+        {
+          "path": "registry/opentui/ui/info-box.tsx",
+          "target": "components/ui/info-box.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-info-box",
+      "title": "Info Box",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["data"],
+      "dependencies": ["@opentui/react"],
+      "description": "Pretty-printed JSON with collapsible nodes",
+      "files": [
+        {
+          "path": "registry/opentui/ui/json.tsx",
+          "target": "components/ui/json.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-json",
+      "title": "JSON",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["data"],
+      "dependencies": ["@opentui/react"],
+      "description": "Aligned key–value pairs",
+      "files": [
+        {
+          "path": "registry/opentui/ui/key-value.tsx",
+          "target": "components/ui/key-value.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-key-value",
+      "title": "Key Value",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["utility"],
+      "dependencies": ["@opentui/react"],
+      "description": "Formatted keyboard shortcut reference table",
+      "files": [
+        {
+          "path": "registry/opentui/ui/keyboard-shortcuts.tsx",
+          "target": "components/ui/keyboard-shortcuts.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-keyboard-shortcuts",
+      "title": "Keyboard Shortcuts",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["charts"],
+      "dependencies": ["@opentui/react"],
+      "description": "ASCII line chart with axes and multi-series support",
+      "files": [
+        {
+          "path": "registry/opentui/ui/line-chart.tsx",
+          "target": "components/ui/line-chart.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-line-chart",
+      "title": "Line Chart",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["typography"],
+      "dependencies": ["@opentui/react"],
+      "description": "OSC 8 clickable hyperlink",
+      "files": [
+        {
+          "path": "registry/opentui/ui/link.tsx",
+          "target": "components/ui/link.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-link",
+      "title": "Link",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["data"],
+      "dependencies": ["@opentui/react"],
+      "description": "Navigable list with optional filtering",
+      "files": [
+        {
+          "path": "registry/opentui/ui/list.tsx",
+          "target": "components/ui/list.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-list",
+      "title": "List",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["utility"],
+      "dependencies": ["@opentui/react"],
+      "description": "Scrolling log viewer with severity levels and filtering",
+      "files": [
+        {
+          "path": "registry/opentui/ui/log.tsx",
+          "target": "components/ui/log.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-log",
+      "title": "Log",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["templates"],
+      "dependencies": ["@opentui/react"],
+      "description": "Full-page onboarding/login screen with announcement banner, big ASCII title, description, and numbered select",
+      "files": [
+        {
+          "path": "registry/opentui/ui/login-flow.tsx",
+          "target": "components/ui/login-flow.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-login-flow",
+      "title": "Login Flow",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["typography"],
+      "dependencies": ["@opentui/react"],
+      "description": "Full markdown renderer for terminal",
+      "files": [
+        {
+          "path": "registry/opentui/ui/markdown.tsx",
+          "target": "components/ui/markdown.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-markdown",
+      "title": "Markdown",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["input"],
+      "dependencies": ["@opentui/react"],
+      "description": "Masked input for phone, date, credit card formats",
+      "files": [
+        {
+          "path": "registry/opentui/ui/masked-input.tsx",
+          "target": "components/ui/masked-input.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-masked-input",
+      "title": "Masked Input",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["navigation"],
+      "dependencies": ["@opentui/react"],
+      "description": "Dropdown menu with nested submenus",
+      "files": [
+        {
+          "path": "registry/opentui/ui/menu.tsx",
+          "target": "components/ui/menu.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-menu",
+      "title": "Menu",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["overlays"],
+      "dependencies": ["@opentui/react"],
+      "description": "Focus-trapped overlay modal, close with Esc",
+      "files": [
+        {
+          "path": "registry/opentui/ui/modal.tsx",
+          "target": "components/ui/modal.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-modal",
+      "title": "Modal",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["ai"],
+      "dependencies": ["@opentui/react"],
+      "description": "Keyboard-navigable list for selecting an AI model, with optional provider grouping and context-window display",
+      "files": [
+        {
+          "path": "registry/opentui/ui/model-selector.tsx",
+          "target": "components/ui/model-selector.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-model-selector",
+      "title": "Model Selector",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["feedback"],
+      "dependencies": ["@opentui/react"],
+      "description": "Parallel progress display for package managers, build pipelines, and deploy tools",
+      "files": [
+        {
+          "path": "registry/opentui/ui/multi-progress.tsx",
+          "target": "components/ui/multi-progress.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-multi-progress",
+      "title": "Multi Progress",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["selection"],
+      "dependencies": ["@opentui/react"],
+      "description": "Multi-select list with checkboxes and select-all",
+      "files": [
+        {
+          "path": "registry/opentui/ui/multi-select.tsx",
+          "target": "components/ui/multi-select.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-multi-select",
+      "title": "Multi Select",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["feedback"],
+      "dependencies": ["@opentui/react"],
+      "description": "Notification Badge component for OpenTUI React.",
+      "files": [
+        {
+          "path": "registry/opentui/ui/notification-badge.tsx",
+          "target": "components/ui/notification-badge.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-notification-badge",
+      "title": "Notification Badge",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["overlays"],
+      "dependencies": ["@opentui/react"],
+      "description": "Persistent queue-based notification panel with useNotifications hook",
+      "files": [
+        {
+          "path": "registry/opentui/ui/notification-center.tsx",
+          "target": "components/ui/notification-center.tsx",
+          "type": "registry:block"
+        }
+      ],
+      "name": "opentui-notification-center",
+      "title": "Notification Center",
+      "type": "registry:block",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json",
+        "https://termcn.dev/r/use-notifications.json"
+      ]
+    },
+    {
+      "categories": ["input"],
+      "dependencies": ["@opentui/react"],
+      "description": "Numeric input with increment/decrement and bounds",
+      "files": [
+        {
+          "path": "registry/opentui/ui/number-input.tsx",
+          "target": "components/ui/number-input.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-number-input",
+      "title": "Number Input",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["navigation"],
+      "dependencies": ["@opentui/react"],
+      "description": "Page navigation with prev/next and jump",
+      "files": [
+        {
+          "path": "registry/opentui/ui/pagination.tsx",
+          "target": "components/ui/pagination.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-pagination",
+      "title": "Pagination",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["utility"],
+      "dependencies": ["@opentui/react"],
+      "description": "Titled bordered panel",
+      "files": [
+        {
+          "path": "registry/opentui/ui/panel.tsx",
+          "target": "components/ui/panel.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-panel",
+      "title": "Panel",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["input"],
+      "dependencies": ["@opentui/react"],
+      "description": "Password input with masked characters and reveal toggle",
+      "files": [
+        {
+          "path": "registry/opentui/ui/password-input.tsx",
+          "target": "components/ui/password-input.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-password-input",
+      "title": "Password Input",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["input"],
+      "dependencies": ["@opentui/react"],
+      "description": "Filesystem path input with tab autocomplete",
+      "files": [
+        {
+          "path": "registry/opentui/ui/path-input.tsx",
+          "target": "components/ui/path-input.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-path-input",
+      "title": "Path Input",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["charts"],
+      "dependencies": ["@opentui/react"],
+      "description": "Unicode block pie chart with legend",
+      "files": [
+        {
+          "path": "registry/opentui/ui/pie-chart.tsx",
+          "target": "components/ui/pie-chart.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-pie-chart",
+      "title": "Pie Chart",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["overlays"],
+      "dependencies": ["@opentui/react"],
+      "description": "Positioned popover with arbitrary content",
+      "files": [
+        {
+          "path": "registry/opentui/ui/popover.tsx",
+          "target": "components/ui/popover.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-popover",
+      "title": "Popover",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["feedback"],
+      "dependencies": ["@opentui/react"],
+      "description": "Determinate progress bar with percent and value/total display",
+      "files": [
+        {
+          "path": "registry/opentui/ui/progress-bar.tsx",
+          "target": "components/ui/progress-bar.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-progress-bar",
+      "title": "Progress Bar",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["feedback"],
+      "dependencies": ["@opentui/react"],
+      "description": "Circular progress indicator using Unicode braille",
+      "files": [
+        {
+          "path": "registry/opentui/ui/progress-circle.tsx",
+          "target": "components/ui/progress-circle.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-progress-circle",
+      "title": "Progress Circle",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["utility"],
+      "dependencies": ["@opentui/react"],
+      "description": "Unicode block QR code generator",
+      "files": [
+        {
+          "path": "registry/opentui/ui/qr-code.tsx",
+          "target": "components/ui/qr-code.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-qr-code",
+      "title": "QR Code",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["selection"],
+      "dependencies": ["@opentui/react"],
+      "description": "Mutually exclusive radio button group",
+      "files": [
+        {
+          "path": "registry/opentui/ui/radio-group.tsx",
+          "target": "components/ui/radio-group.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-radio-group",
+      "title": "Radio Group",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["layout"],
+      "dependencies": ["@opentui/react"],
+      "description": "Scrollable container with scrollbar",
+      "files": [
+        {
+          "path": "registry/opentui/ui/scroll-view.tsx",
+          "target": "components/ui/scroll-view.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-scroll-view",
+      "title": "Scroll View",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["input"],
+      "dependencies": ["@opentui/react"],
+      "description": "Fuzzy search input with autocomplete",
+      "files": [
+        {
+          "path": "registry/opentui/ui/search-input.tsx",
+          "target": "components/ui/search-input.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-search-input",
+      "title": "Search Input",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["selection"],
+      "dependencies": ["@opentui/react"],
+      "description": "Single-select dropdown with arrow-key navigation",
+      "files": [
+        {
+          "path": "registry/opentui/ui/select.tsx",
+          "target": "components/ui/select.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-select",
+      "title": "Select",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["templates"],
+      "dependencies": ["@opentui/react"],
+      "description": "@clack-style step flow with ◇/◆/│ visual language, badge, info steps, and multi-select",
+      "files": [
+        {
+          "path": "registry/opentui/ui/setup-flow.tsx",
+          "target": "components/ui/setup-flow.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-setup-flow",
+      "title": "Setup Flow",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["navigation"],
+      "dependencies": ["@opentui/react"],
+      "description": "Collapsible navigation sidebar panel",
+      "files": [
+        {
+          "path": "registry/opentui/ui/sidebar.tsx",
+          "target": "components/ui/sidebar.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-sidebar",
+      "title": "Sidebar",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["feedback"],
+      "dependencies": ["@opentui/react"],
+      "description": "Shimmer loading placeholder",
+      "files": [
+        {
+          "path": "registry/opentui/ui/skeleton.tsx",
+          "target": "components/ui/skeleton.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-skeleton",
+      "title": "Skeleton",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["layout"],
+      "dependencies": ["@opentui/react"],
+      "description": "Flexible space between flex children",
+      "files": [
+        {
+          "path": "registry/opentui/ui/spacer.tsx",
+          "target": "components/ui/spacer.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-spacer",
+      "title": "Spacer",
+      "type": "registry:ui"
+    },
+    {
+      "categories": ["charts"],
+      "dependencies": ["@opentui/react"],
+      "description": "Inline Unicode braille sparkline chart",
+      "files": [
+        {
+          "path": "registry/opentui/ui/sparkline.tsx",
+          "target": "components/ui/sparkline.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-sparkline",
+      "title": "Sparkline",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["feedback"],
+      "dependencies": ["@opentui/react", "cli-spinners"],
+      "description": "Animated spinner with 12+ styles",
+      "files": [
+        {
+          "path": "registry/opentui/ui/spinner.tsx",
+          "target": "components/ui/spinner.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-spinner",
+      "title": "Spinner",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json",
+        "https://termcn.dev/r/use-animation.json"
+      ]
+    },
+    {
+      "categories": ["templates"],
+      "dependencies": ["@opentui/react"],
+      "description": "Styled startup banner with big ASCII art title, subtitle, author credit, and status line",
+      "files": [
+        {
+          "path": "registry/opentui/ui/splash-screen.tsx",
+          "target": "components/ui/splash-screen.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-splash-screen",
+      "title": "Splash Screen",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["layout"],
+      "dependencies": ["@opentui/react"],
+      "description": "Vertical/horizontal stack with gap",
+      "files": [
+        {
+          "path": "registry/opentui/ui/stack.tsx",
+          "target": "components/ui/stack.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-stack",
+      "title": "Stack",
+      "type": "registry:ui"
+    },
+    {
+      "categories": ["feedback"],
+      "dependencies": ["@opentui/react"],
+      "description": "Inline status message with icon and color",
+      "files": [
+        {
+          "path": "registry/opentui/ui/status-message.tsx",
+          "target": "components/ui/status-message.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-status-message",
+      "title": "Status Message",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["utility"],
+      "dependencies": ["@opentui/react"],
+      "description": "Count-up stopwatch with laps and reset",
+      "files": [
+        {
+          "path": "registry/opentui/ui/stopwatch.tsx",
+          "target": "components/ui/stopwatch.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-stopwatch",
+      "title": "Stopwatch",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["ai"],
+      "dependencies": ["@opentui/react"],
+      "description": "Token-by-token streaming text with blinking cursor and optional typing animation",
+      "files": [
+        {
+          "path": "registry/opentui/ui/streaming-text.tsx",
+          "target": "components/ui/streaming-text.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-streaming-text",
+      "title": "Streaming Text",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["navigation"],
+      "dependencies": ["@opentui/react"],
+      "description": "Tab bar wired to content panels",
+      "files": [
+        {
+          "path": "registry/opentui/ui/tabbed-content.tsx",
+          "target": "components/ui/tabbed-content.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-tabbed-content",
+      "title": "Tabbed Content",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["data"],
+      "dependencies": ["@opentui/react"],
+      "description": "Sortable, selectable, paginated data table",
+      "files": [
+        {
+          "path": "registry/opentui/ui/table.tsx",
+          "target": "components/ui/table.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-table",
+      "title": "Table",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["navigation"],
+      "dependencies": ["@opentui/react"],
+      "description": "Tab bar with left/right arrow and tab-key navigation",
+      "files": [
+        {
+          "path": "registry/opentui/ui/tabs.tsx",
+          "target": "components/ui/tabs.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-tabs",
+      "title": "Tabs",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["typography"],
+      "dependencies": ["@opentui/react"],
+      "description": "Removable chip/tag",
+      "files": [
+        {
+          "path": "registry/opentui/ui/tag.tsx",
+          "target": "components/ui/tag.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-tag",
+      "title": "Tag",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["selection"],
+      "dependencies": ["@opentui/react"],
+      "description": "Add and remove tags inline",
+      "files": [
+        {
+          "path": "registry/opentui/ui/tag-input.tsx",
+          "target": "components/ui/tag-input.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-tag-input",
+      "title": "Tag Input",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["input"],
+      "dependencies": ["@opentui/react"],
+      "description": "Multi-line text editor with word wrap",
+      "files": [
+        {
+          "path": "registry/opentui/ui/text-area.tsx",
+          "target": "components/ui/text-area.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-text-area",
+      "title": "Text Area",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["input"],
+      "dependencies": ["@opentui/react"],
+      "description": "Single-line text input with placeholder, validation, mask",
+      "files": [
+        {
+          "path": "registry/opentui/ui/text-input.tsx",
+          "target": "components/ui/text-input.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-text-input",
+      "title": "Text Input",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["core"],
+      "dependencies": ["@opentui/react"],
+      "description": "Terminal theme provider, design tokens, and theme helpers.",
+      "files": [
+        {
+          "path": "registry/opentui/ui/theme-provider.tsx",
+          "target": "components/ui/theme-provider.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-theme-provider",
+      "title": "Theme Provider",
+      "type": "registry:ui",
+      "registryDependencies": ["https://termcn.dev/r/theme-default.json"]
+    },
+    {
+      "categories": ["ai"],
+      "dependencies": ["@opentui/react"],
+      "description": "Collapsible block for displaying extended thinking / reasoning content from an AI model",
+      "files": [
+        {
+          "path": "registry/opentui/ui/thinking-block.tsx",
+          "target": "components/ui/thinking-block.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-thinking-block",
+      "title": "Thinking Block",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["forms"],
+      "dependencies": ["@opentui/react"],
+      "description": "Time picker with hour/minute/second spinners",
+      "files": [
+        {
+          "path": "registry/opentui/ui/time-picker.tsx",
+          "target": "components/ui/time-picker.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-time-picker",
+      "title": "Time Picker",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["utility"],
+      "dependencies": ["@opentui/react"],
+      "description": "Countdown timer with pause/resume and auto-start",
+      "files": [
+        {
+          "path": "registry/opentui/ui/timer.tsx",
+          "target": "components/ui/timer.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-timer",
+      "title": "Timer",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["feedback"],
+      "dependencies": ["@opentui/react"],
+      "description": "Auto-dismissing toast notification",
+      "files": [
+        {
+          "path": "registry/opentui/ui/toast.tsx",
+          "target": "components/ui/toast.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-toast",
+      "title": "Toast",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["utility"],
+      "dependencies": ["@opentui/react"],
+      "description": "Toggle/switch component with on/off labels",
+      "files": [
+        {
+          "path": "registry/opentui/ui/toggle.tsx",
+          "target": "components/ui/toggle.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-toggle",
+      "title": "Toggle",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["ai"],
+      "dependencies": ["@opentui/react"],
+      "description": "Compact token counter showing prompt and completion usage with optional cost estimate; also exports ContextMeter for visualising context window fill",
+      "files": [
+        {
+          "path": "registry/opentui/ui/token-usage.tsx",
+          "target": "components/ui/token-usage.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-token-usage",
+      "title": "Token Usage",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["ai"],
+      "dependencies": ["@opentui/react"],
+      "description": "Interactive approval prompt for AI tool calls with risk-level badge, args display, and auto-deny timeout",
+      "files": [
+        {
+          "path": "registry/opentui/ui/tool-approval.tsx",
+          "target": "components/ui/tool-approval.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-tool-approval",
+      "title": "Tool Approval",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["ai"],
+      "dependencies": ["@opentui/react"],
+      "description": "Displays an AI tool invocation with status indicator, args, result, and elapsed time",
+      "files": [
+        {
+          "path": "registry/opentui/ui/tool-call.tsx",
+          "target": "components/ui/tool-call.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-tool-call",
+      "title": "Tool Call",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["overlays"],
+      "dependencies": ["@opentui/react"],
+      "description": "Contextual tooltip on focus or hover",
+      "files": [
+        {
+          "path": "registry/opentui/ui/tooltip.tsx",
+          "target": "components/ui/tooltip.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-tooltip",
+      "title": "Tooltip",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["data"],
+      "dependencies": ["@opentui/react"],
+      "description": "Expandable/collapsible tree view",
+      "files": [
+        {
+          "path": "registry/opentui/ui/tree.tsx",
+          "target": "components/ui/tree.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-tree",
+      "title": "Tree",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["selection"],
+      "dependencies": ["@opentui/react"],
+      "description": "Hierarchical tree selection",
+      "files": [
+        {
+          "path": "registry/opentui/ui/tree-select.tsx",
+          "target": "components/ui/tree-select.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-tree-select",
+      "title": "Tree Select",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["templates"],
+      "dependencies": ["@opentui/react"],
+      "description": "Real-time dashboard with diamond header, progress metrics, burn rate, predictions, and status bar",
+      "files": [
+        {
+          "path": "registry/opentui/ui/usage-monitor.tsx",
+          "target": "components/ui/usage-monitor.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-usage-monitor",
+      "title": "Usage Monitor",
+      "type": "registry:ui"
+    },
+    {
+      "categories": ["data"],
+      "dependencies": ["@opentui/react"],
+      "description": "Virtualized list for 10k+ items",
+      "files": [
+        {
+          "path": "registry/opentui/ui/virtual-list.tsx",
+          "target": "components/ui/virtual-list.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-virtual-list",
+      "title": "Virtual List",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["templates"],
+      "dependencies": ["@opentui/react"],
+      "description": "Two-panel welcome dashboard with titled border, logo, greeting, and sections",
+      "files": [
+        {
+          "path": "registry/opentui/ui/welcome-screen.tsx",
+          "target": "components/ui/welcome-screen.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-welcome-screen",
+      "title": "Welcome Screen",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["forms"],
+      "dependencies": ["@opentui/react"],
+      "description": "Multi-step wizard with per-step validation",
+      "files": [
+        {
+          "path": "registry/opentui/ui/wizard.tsx",
+          "target": "components/ui/wizard.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui-wizard",
+      "title": "Wizard",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui-theme-provider.json"
+      ]
+    },
+    {
       "categories": ["navigation"],
       "dependencies": ["ink"],
       "description": "Page navigation with prev/next and jump",

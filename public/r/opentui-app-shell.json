@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui-app-shell",
+  "title": "App Shell",
+  "description": "Full-screen TUI layout with header, tip bar, full-width input, scrollable content, and hints footer",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui-theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/app-shell.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useKeyboard } from \"@opentui/react\";\nimport React, { useState } from \"react\";\nimport type { ReactNode } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface AppShellProps {\n  children: ReactNode;\n  fullscreen?: boolean;\n}\n\nexport interface AppShellHeaderProps {\n  children: ReactNode;\n}\n\nexport interface AppShellTipProps {\n  children: ReactNode;\n}\n\nexport interface AppShellInputProps {\n  value?: string;\n  onChange?: (value: string) => void;\n  onSubmit?: (value: string) => void;\n  placeholder?: string;\n  borderStyle?: \"single\" | \"double\" | \"round\" | \"bold\";\n  borderColor?: string;\n  prefix?: string;\n}\n\nexport interface AppShellContentProps {\n  children: ReactNode;\n  autoscroll?: boolean;\n  height?: number;\n}\n\nexport interface AppShellHintsProps {\n  items?: string[];\n  children?: ReactNode;\n}\n\nconst AppShellRoot = ({ children }: AppShellProps) => (\n  <box flexDirection=\"column\" flexGrow={1}>\n    {children}\n  </box>\n);\n\nconst AppShellHeader = ({ children }: AppShellHeaderProps) => (\n  <box flexDirection=\"column\">{children}</box>\n);\n\nconst AppShellTip = ({ children }: AppShellTipProps) => (\n  <box paddingLeft={2} paddingTop={0} paddingBottom={0}>\n    <text fg=\"#666\">{\"  Tip: \"}</text>\n    <text fg=\"#666\">{children}</text>\n  </box>\n);\n\nconst AppShellInput = ({\n  value: controlledValue,\n  onChange,\n  onSubmit,\n  placeholder = \"Type something...\",\n  borderStyle = \"single\",\n  borderColor,\n  prefix = \">\",\n}: AppShellInputProps) => {\n  const [internalValue, setInternalValue] = useState(\"\");\n  const theme = useTheme();\n  const value = controlledValue ?? internalValue;\n\n  useKeyboard((key) => {\n    if (key.name === \"return\") {\n      onSubmit?.(value);\n      if (!controlledValue) {\n        setInternalValue(\"\");\n      }\n      return;\n    }\n    if (key.name === \"backspace\" || key.name === \"delete\") {\n      const next = value.slice(0, -1);\n      if (onChange) {\n        onChange(next);\n      } else {\n        setInternalValue(next);\n      }\n      return;\n    }\n    if (\n      key.name === \"escape\" ||\n      key.name === \"up\" ||\n      key.name === \"down\" ||\n      key.name === \"tab\"\n    ) {\n      return;\n    }\n    if (key.name.length > 1) {\n      return;\n    }\n    const next = value + key.name;\n    if (onChange) {\n      onChange(next);\n    } else {\n      setInternalValue(next);\n    }\n  });\n\n  return (\n    <box\n      borderColor={borderColor ?? theme.colors.border}\n      flexDirection=\"row\"\n      paddingLeft={1}\n      paddingRight={1}\n    >\n      {prefix && (\n        <text fg={theme.colors.primary}>\n          <b>{`${prefix} `}</b>\n        </text>\n      )}\n      <text>{value || <text fg=\"#666\">{placeholder}</text>}</text>\n      <text fg={theme.colors.focusRing}>█</text>\n    </box>\n  );\n};\n\nconst AppShellContent = ({ children, height = 20 }: AppShellContentProps) => {\n  const [scrollTop, setScrollTop] = useState(0);\n\n  useKeyboard((key) => {\n    if (key.name === \"up\") {\n      setScrollTop((s) => Math.max(0, s - 1));\n    } else if (key.name === \"down\") {\n      setScrollTop((s) => s + 1);\n    }\n  });\n\n  return (\n    <box flexDirection=\"row\" overflow=\"hidden\">\n      <box flexGrow={1} flexDirection=\"column\" marginTop={-scrollTop as number}>\n        {children}\n      </box>\n    </box>\n  );\n};\n\nconst AppShellHints = ({ items, children }: AppShellHintsProps) => {\n  const theme = useTheme();\n  const content = items ? items.join(\" | \") : children;\n  return (\n    <box paddingLeft={1} paddingRight={1}>\n      <text fg={theme.colors.mutedForeground}>{content as string}</text>\n    </box>\n  );\n};\n\nexport const AppShell = Object.assign(AppShellRoot, {\n  Content: AppShellContent,\n  Header: AppShellHeader,\n  Hints: AppShellHints,\n  Input: AppShellInput,\n  Tip: AppShellTip,\n});\n",
+      "type": "registry:ui",
+      "target": "components/ui/app-shell.tsx"
+    }
+  ],
+  "categories": [
+    "templates"
+  ],
+  "type": "registry:ui"
+}

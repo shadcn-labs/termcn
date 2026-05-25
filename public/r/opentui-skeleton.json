@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui-skeleton",
+  "title": "Skeleton",
+  "description": "Shimmer loading placeholder",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui-theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/skeleton.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useState, useEffect } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface SkeletonProps {\n  width?: number;\n  height?: number;\n  animated?: boolean;\n}\n\nexport const Skeleton = ({\n  width = 20,\n  height = 1,\n  animated = true,\n}: SkeletonProps) => {\n  const theme = useTheme();\n  const [frame, setFrame] = useState(0);\n  useEffect(() => {\n    if (!animated) {\n      return;\n    }\n    const id = setInterval(() => {\n      setFrame((f) => f + 1);\n    }, 80);\n    return () => clearInterval(id);\n  }, [animated]);\n\n  const rows = Array.from({ length: height }, (_, rowIndex) => {\n    const rowOffset = animated ? (frame + rowIndex * 2) % (width + 6) : -1;\n    let row = \"\";\n    for (let i = 0; i < width; i += 1) {\n      const inHighlight = i >= rowOffset - 3 && i <= rowOffset + 3;\n      row += inHighlight ? \"█\" : \"░\";\n    }\n    return row;\n  });\n\n  return (\n    <box flexDirection=\"column\">\n      {rows.map((row, i) => (\n        <text key={i}>\n          {...[...row].map((char, j) => (\n            <text\n              key={j}\n              fg={\n                char === \"█\" ? theme.colors.mutedForeground : theme.colors.muted\n              }\n            >\n              {char}\n            </text>\n          ))}\n        </text>\n      ))}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/skeleton.tsx"
+    }
+  ],
+  "categories": [
+    "feedback"
+  ],
+  "type": "registry:ui"
+}

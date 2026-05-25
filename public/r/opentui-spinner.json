@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui-spinner",
+  "title": "Spinner",
+  "description": "Animated spinner with 12+ styles",
+  "dependencies": [
+    "@opentui/react",
+    "cli-spinners"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui-theme-provider.json",
+    "https://termcn.dev/r/use-animation.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/spinner.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport cliSpinners from \"cli-spinners\";\nimport type { SpinnerName } from \"cli-spinners\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\nimport { useAnimation } from \"@/hooks/use-animation\";\n\ntype OpenTUIBoxProps = Record<string, unknown>;\n\nexport type SpinnerType = SpinnerName;\n\nexport const spinnerNames = Object.keys(cliSpinners) as SpinnerName[];\n\nexport interface SpinnerProps extends OpenTUIBoxProps {\n  type?: SpinnerType;\n  label?: string;\n  color?: string;\n  fps?: number;\n  frames?: string[];\n}\n\nexport const Spinner = ({\n  type = \"dots\",\n  label,\n  color,\n  fps = 12,\n  frames: customFrames,\n  ...props\n}: SpinnerProps) => {\n  const theme = useTheme();\n  const builtin = cliSpinners[type] ?? cliSpinners.dots;\n  const useCustomFrames = customFrames !== undefined;\n  const frames = useCustomFrames ? customFrames : builtin.frames;\n  const frame = useAnimation(\n    useCustomFrames ? fps : { intervalMs: builtin.interval }\n  );\n  const icon = frames[frame % frames.length];\n  const resolvedColor = color ?? theme.colors.primary;\n\n  return (\n    <box alignItems=\"center\" flexDirection=\"row\" {...props}>\n      <text fg={resolvedColor}>{icon}</text>\n      {label ? <text marginLeft={1}>{label}</text> : null}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/spinner.tsx"
+    }
+  ],
+  "categories": [
+    "feedback"
+  ],
+  "type": "registry:ui"
+}

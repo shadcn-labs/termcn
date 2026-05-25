@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui-notification-center",
+  "title": "Notification Center",
+  "description": "Persistent queue-based notification panel with useNotifications hook",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui-theme-provider.json",
+    "https://termcn.dev/r/use-notifications.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/notification-center.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useKeyboard } from \"@opentui/react\";\nimport { createElement, useEffect } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\nimport {\n  useNotificationsProvider,\n  NotificationsContext,\n} from \"@/hooks/use-notifications\";\nimport type { NotificationVariant } from \"@/hooks/use-notifications\";\n\nexport interface NotificationCenterProps {\n  maxVisible?: number;\n  width?: number;\n}\n\nconst variantIcon = (v: NotificationVariant): string => {\n  switch (v) {\n    case \"success\": {\n      return \"✓\";\n    }\n    case \"warning\": {\n      return \"!\";\n    }\n    case \"error\": {\n      return \"✗\";\n    }\n    default: {\n      return \"i\";\n    }\n  }\n};\n\nconst variantColor = (\n  v: NotificationVariant,\n  colors: {\n    success: string;\n    warning: string;\n    error: string;\n    info: string;\n  }\n): string => {\n  switch (v) {\n    case \"success\": {\n      return colors.success;\n    }\n    case \"warning\": {\n      return colors.warning;\n    }\n    case \"error\": {\n      return colors.error;\n    }\n    default: {\n      return colors.info;\n    }\n  }\n};\n\nexport const NotificationCenter = ({\n  maxVisible = 5,\n  width = 40,\n}: NotificationCenterProps) => {\n  const ctx = useNotificationsProvider();\n  const theme = useTheme();\n  const { notifications, dismiss, clear } = ctx;\n\n  const visible = notifications.slice(-maxVisible);\n  const unread = notifications.filter((n) => !n.read).length;\n\n  useEffect(() => {\n    for (const n of notifications) {\n      if (!n.persistent) {\n        const dur = n.duration ?? 5000;\n        const elapsed = Date.now() - n.timestamp;\n        const remaining = dur - elapsed;\n        if (remaining <= 0) {\n          dismiss(n.id);\n        } else {\n          const t = setTimeout(() => dismiss(n.id), remaining);\n          return () => clearTimeout(t);\n        }\n      }\n    }\n  }, [notifications, dismiss]);\n\n  useKeyboard((key) => {\n    if (key.name === \"escape\") {\n      clear();\n    }\n  });\n\n  if (visible.length === 0) {\n    return null;\n  }\n\n  return createElement(\n    NotificationsContext.Provider,\n    { value: ctx },\n    <box flexDirection=\"column\">\n      <box flexDirection=\"row\" justifyContent=\"space-between\" marginBottom={0}>\n        <text fg={theme.colors.primary}>\n          <b>{`Notifications ${unread > 0 ? `[${unread} unread]` : \"\"}`}</b>\n        </text>\n        <text fg=\"#666\">Esc: clear</text>\n      </box>\n      {visible.map((n) => {\n        const color = variantColor(n.variant, theme.colors);\n        const icon = variantIcon(n.variant);\n        return (\n          <box\n            key={n.id}\n            flexDirection=\"column\"\n            borderStyle=\"single\"\n            borderColor={color}\n            padding={0}\n            paddingLeft={1}\n            paddingRight={1}\n            marginTop={0}\n          >\n            <box flexDirection=\"row\" gap={1}>\n              <text fg={color}>\n                <b>{icon}</b>\n              </text>\n              <text\n                fg={\n                  n.read\n                    ? theme.colors.mutedForeground\n                    : theme.colors.foreground\n                }\n              >\n                <b>{n.title}</b>\n              </text>\n            </box>\n            {n.body && <text fg=\"#666\">{n.body}</text>}\n          </box>\n        );\n      })}\n    </box>\n  );\n};\n",
+      "type": "registry:block",
+      "target": "components/ui/notification-center.tsx"
+    }
+  ],
+  "categories": [
+    "overlays"
+  ],
+  "type": "registry:block"
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui-help-screen",
+  "title": "Help Screen",
+  "description": "Figlet banner + tagline + aligned Options/Commands help sections",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui-theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/help-screen.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport React from \"react\";\nimport type { ReactNode } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nimport { BigText } from \"./big-text\";\nimport type { BigTextFont } from \"./big-text\";\n\nexport interface HelpScreenProps {\n  title: string;\n  font?: BigTextFont;\n  titleColor?: string;\n  tagline?: string;\n  usage?: string;\n  description?: string;\n  columnGap?: number;\n  flagWidth?: number;\n  children: ReactNode;\n}\n\nexport interface HelpScreenSectionProps {\n  label: string;\n  labelColor?: string;\n  children: ReactNode;\n}\n\nexport interface HelpScreenRowProps {\n  flag: string;\n  description: string;\n  flagColor?: string;\n  descriptionColor?: string;\n}\n\nconst computeFlagWidth = (children: ReactNode): number => {\n  let max = 0;\n  React.Children.forEach(children, (section) => {\n    if (React.isValidElement(section)) {\n      React.Children.forEach(\n        (\n          section.props as {\n            children?: ReactNode;\n          }\n        ).children,\n        (row) => {\n          const rowProps = React.isValidElement(row)\n            ? (row.props as Record<string, unknown>)\n            : null;\n          if (rowProps && rowProps[\"flag\"]) {\n            max = Math.max(max, String(rowProps[\"flag\"]).length);\n          }\n        }\n      );\n    }\n  });\n  return max;\n};\n\nconst HelpScreenRoot = ({\n  title,\n  font = \"block\",\n  titleColor,\n  tagline,\n  usage,\n  description,\n  columnGap = 4,\n  flagWidth,\n  children,\n}: HelpScreenProps) => {\n  const theme = useTheme();\n  const resolvedColor = titleColor ?? theme.colors.primary;\n\n  const resolvedFlagWidth = flagWidth ?? computeFlagWidth(children);\n\n  const enrichedChildren = React.Children.map(children, (child) => {\n    if (React.isValidElement(child)) {\n      return React.cloneElement(\n        child as React.ReactElement<Record<string, unknown>>,\n        {\n          _columnGap: columnGap,\n          _flagWidth: resolvedFlagWidth,\n        }\n      );\n    }\n    return child;\n  });\n\n  return (\n    <box flexDirection=\"column\" paddingLeft={2}>\n      <box marginBottom={1}>\n        <BigText color={resolvedColor}>{title}</BigText>\n      </box>\n\n      {tagline && (\n        <box marginBottom={1}>\n          <text fg=\"#666\">{tagline}</text>\n        </box>\n      )}\n\n      {usage && (\n        <box marginBottom={1}>\n          <text>\n            <text fg=\"#666\">{\"Usage: \"}</text>\n            {usage}\n          </text>\n        </box>\n      )}\n\n      {description && (\n        <box marginBottom={1}>\n          <text>{description}</text>\n        </box>\n      )}\n\n      {enrichedChildren}\n    </box>\n  );\n};\n\nconst HelpScreenSection = ({\n  label,\n  labelColor,\n  children,\n  _flagWidth = 20,\n  _columnGap = 4,\n}: HelpScreenSectionProps & {\n  _flagWidth?: number;\n  _columnGap?: number;\n}) => {\n  const theme = useTheme();\n\n  const enrichedRows = React.Children.map(children, (child) => {\n    if (React.isValidElement(child)) {\n      return React.cloneElement(\n        child as React.ReactElement<Record<string, unknown>>,\n        {\n          _columnGap,\n          _flagWidth,\n        }\n      );\n    }\n    return child;\n  });\n\n  return (\n    <box flexDirection=\"column\" marginBottom={1}>\n      <text fg={labelColor ?? theme.colors.foreground}>\n        <b>{label}</b>\n      </text>\n      {enrichedRows}\n    </box>\n  );\n};\n\nconst HelpScreenRow = ({\n  flag,\n  description,\n  flagColor,\n  descriptionColor,\n  _flagWidth = 20,\n  _columnGap = 4,\n}: HelpScreenRowProps & {\n  _flagWidth?: number;\n  _columnGap?: number;\n}) => {\n  const theme = useTheme();\n  const paddedFlag = flag.padEnd(_flagWidth + _columnGap);\n\n  return (\n    <box flexDirection=\"row\" paddingLeft={2}>\n      <text fg={flagColor ?? theme.colors.mutedForeground}>{paddedFlag}</text>\n      <text fg={descriptionColor}>{description}</text>\n    </box>\n  );\n};\n\nexport const HelpScreen = Object.assign(HelpScreenRoot, {\n  Row: HelpScreenRow,\n  Section: HelpScreenSection,\n});\n",
+      "type": "registry:ui",
+      "target": "components/ui/help-screen.tsx"
+    }
+  ],
+  "categories": [
+    "templates"
+  ],
+  "type": "registry:ui"
+}

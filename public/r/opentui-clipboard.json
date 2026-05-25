@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui-clipboard",
+  "title": "Clipboard",
+  "description": "Copy-to-clipboard button with success feedback",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui-theme-provider.json",
+    "https://termcn.dev/r/use-clipboard.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/clipboard.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useKeyboard } from \"@opentui/react\";\nimport { useState, useCallback, useEffect } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\nimport { useClipboard } from \"@/hooks/use-clipboard\";\n\nexport interface ClipboardProps {\n  value: string;\n  label?: string;\n  successMessage?: string;\n  timeout?: number;\n}\n\nexport const Clipboard = ({\n  value,\n  label,\n  successMessage = \"Copied!\",\n  timeout = 2000,\n}: ClipboardProps) => {\n  const theme = useTheme();\n  const { write } = useClipboard();\n  const [copied, setCopied] = useState(false);\n\n  const doCopy = useCallback(() => {\n    write(value);\n    setCopied(true);\n  }, [write, value]);\n\n  useEffect(() => {\n    if (!copied) {\n      return;\n    }\n    const timer = setTimeout(() => setCopied(false), timeout);\n    return () => clearTimeout(timer);\n  }, [copied, timeout]);\n\n  useKeyboard((key) => {\n    if (key.name === \"c\" || key.name === \" \") {\n      doCopy();\n    }\n  });\n\n  return (\n    <box flexDirection=\"column\" gap={0}>\n      {label && <text fg={theme.colors.mutedForeground}>{label}</text>}\n      <box gap={2} alignItems=\"center\">\n        <box\n          borderStyle=\"round\"\n          borderColor={theme.colors.border}\n          paddingLeft={1}\n          paddingRight={1}\n        >\n          <text fg={theme.colors.foreground}>{value}</text>\n        </box>\n        <box\n          borderStyle=\"round\"\n          borderColor={copied ? theme.colors.success : theme.colors.primary}\n          paddingLeft={1}\n          paddingRight={1}\n        >\n          <text fg={copied ? theme.colors.success : theme.colors.primary}>\n            <b>{copied ? `✓ ${successMessage}` : \"Copy\"}</b>\n          </text>\n        </box>\n      </box>\n      {!copied && <text fg=\"#666\">press c or space to copy</text>}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/clipboard.tsx"
+    }
+  ],
+  "categories": [
+    "utility"
+  ],
+  "type": "registry:ui"
+}
