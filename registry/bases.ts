@@ -15,8 +15,7 @@ export const BASES = [
   {
     ...opentuiRegistryBase,
     dependencies: ["@opentui/react"],
-    description:
-      "OpenTUI React components for internal previews and future CLI installs.",
+    description: "React-powered terminal components rendered with OpenTUI.",
     meta: {
       logo: "<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='2' y='3' width='20' height='18' fill='var(--color-foreground)'></rect><rect x='6' y='8' width='3' height='8' fill='var(--color-background)'></rect></svg>",
     },

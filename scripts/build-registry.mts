@@ -18,6 +18,10 @@ const syncTargets = [
     from: path.join(root, "registry", "themes"),
     to: "themes",
   },
+  {
+    from: path.join(root, "registry", "bases", "opentui", "ui"),
+    to: path.join("opentui", "ui"),
+  },
 ] as const;
 
 const ensureDir = async (dir: string) => {

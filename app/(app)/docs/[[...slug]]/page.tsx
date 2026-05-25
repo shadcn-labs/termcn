@@ -183,7 +183,8 @@ const Page = async (props: { params: Promise<{ slug?: string[] }> }) => {
                 {params.slug &&
                   params.slug[0] === "components" &&
                   params.slug[1] &&
-                  params.slug[2] && (
+                  params.slug[2] &&
+                  params.slug[3] && (
                     <DocsBaseSwitcher
                       base={params.slug[1]}
                       component={params.slug.slice(2).join("/")}

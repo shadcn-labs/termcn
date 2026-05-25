@@ -52,8 +52,8 @@ import { Kbd } from "./ui/kbd";
 
 type DocUrlKind =
   | { kind: "theme"; slug: string }
-  | { kind: "component"; slug: string }
-  | { kind: "template"; slug: string }
+  | { base?: string; kind: "component"; slug: string }
+  | { base?: string; kind: "template"; slug: string }
   | { kind: "page" };
 
 const GROUP_HEADING_CLS =
@@ -67,14 +67,26 @@ const parseDocPageUrl = (url: string): DocUrlKind => {
   }
   const componentsIdx = parts.indexOf("components");
   if (componentsIdx !== -1 && parts[componentsIdx + 1]) {
-    return { kind: "component", slug: parts.at(-1) ?? "" };
+    return {
+      base: parts[componentsIdx + 1],
+      kind: "component",
+      slug: parts.at(-1) ?? "",
+    };
   }
   const templatesIdx = parts.indexOf("templates");
   if (templatesIdx !== -1 && parts[templatesIdx + 1]) {
-    return { kind: "template", slug: parts.at(-1) ?? "" };
+    return {
+      base: parts[templatesIdx + 1],
+      kind: "template",
+      slug: parts.at(-1) ?? "",
+    };
   }
   return { kind: "page" };
 };
+
+const getRegistryInstallSlug = (
+  parsed: Extract<DocUrlKind, { kind: "component" | "template" }>
+) => (parsed.base === "opentui" ? `opentui-${parsed.slug}` : parsed.slug);
 
 const searchKeywordsFromUrl = (url: string) => {
   const segments = url.split("/").filter(Boolean);
@@ -250,7 +262,7 @@ export const CommandMenu = ({
       }
       if (parsed.kind === "component" || parsed.kind === "template") {
         setCopyPayload(
-          `${packageManager} dlx shadcn@latest add ${SITE.REGISTRY}/${parsed.slug}`
+          `${packageManager} dlx shadcn@latest add ${SITE.REGISTRY}/${getRegistryInstallSlug(parsed)}`
         );
         return;
       }

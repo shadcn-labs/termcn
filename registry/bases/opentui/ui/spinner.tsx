@@ -4,7 +4,8 @@ import type { SpinnerName } from "cli-spinners";
 
 import { useTheme } from "@/components/ui/theme-provider";
 import { useAnimation } from "@/hooks/use-animation";
-import type { OpenTUIBoxProps } from "@/types/opentui-react-jsx-runtime";
+
+type OpenTUIBoxProps = Record<string, unknown>;
 
 export type SpinnerType = SpinnerName;
 
