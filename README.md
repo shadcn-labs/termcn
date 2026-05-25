@@ -2,7 +2,7 @@
 
 <p align="center">
   Free & open-source, ready-to-use, customizable terminal UI components for React.<br/>
-  Zero config. One command setup. Built on <a href="https://github.com/vadimdemedes/ink">Ink</a>, works seamlessly with <a href="https://ui.shadcn.com/">shadcn/ui</a>.
+  Zero config. One command setup. Built on <a href="https://github.com/vadimdemedes/ink">Ink</a> and <a href="https://github.com/anomalyco/opentui">OpenTUI</a>, works seamlessly with <a href="https://ui.shadcn.com/">shadcn/ui</a>.
 </p>
 
 <p align="center">
@@ -22,7 +22,7 @@
 - 🎨 **Theme-aware** — Automatically adapts to your chosen terminal theme
 - 🎯 **Zero config** — Works out of the box with sensible defaults
 - 📦 **shadcn/ui compatible** — Uses the same registry format and CLI
-- ⌨️ **Ink powered** — Full access to Ink's powerful terminal rendering
+- ⌨️ **Ink and OpenTUI powered** — Full access powerful terminal rendering
 - 🧩 **Composable** — Build complex terminal UIs with simple, declarative components
 - 📊 **Charts & Data** — Bar charts, line charts, gauges, heat maps, and more
 - 🤖 **AI Components** — Chat messages, tool approvals, streaming text, and thinking blocks

@@ -18,7 +18,7 @@ export const SITE = {
     TWITTER: "@alaymanguy",
   },
   DESCRIPTION: {
-    LONG: "A collection of beautifully designed, accessible, and customizable terminal UI components. Built on Ink. Works with shadcn/ui.",
+    LONG: "A collection of beautifully designed, accessible, and customizable terminal UI components. Built on Ink and OpenTUI. Works with shadcn/ui.",
     SHORT: "Beautiful terminal UIs, made simple",
   },
   KEYWORDS: [
