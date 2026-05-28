@@ -12,6 +12,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
       url: SITE.URL,
     },
+    {
+      changeFrequency: "monthly",
+      lastModified: new Date(),
+      priority: 0.5,
+      url: `${SITE.URL}${ROUTES.SPONSOR}`,
+    },
   ];
 
   const docPages: MetadataRoute.Sitemap = source.getPages().map((page) => ({

@@ -1,12 +1,12 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useRef } from "react";
 
 import type { HeartHandshakeIconHandle } from "@/components/animated-icons/heart-handshake";
 import { HeartHandshakeIcon } from "@/components/animated-icons/heart-handshake";
-import { LINK } from "@/constants/links";
-
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
+import { ROUTES } from "@/constants/routes";
 
 export const SponsorLink = () => {
   const heartRef = useRef<HeartHandshakeIconHandle>(null);
@@ -29,10 +29,10 @@ export const SponsorLink = () => {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <a href={LINK.SPONSOR} target="_blank" rel="noopener noreferrer">
+      <Link href={ROUTES.SPONSOR}>
         <HeartHandshakeIcon className="text-pink-500" ref={heartRef} />
         <span className="max-sm:sr-only">Sponsor</span>
-      </a>
+      </Link>
     </Button>
   );
 };
