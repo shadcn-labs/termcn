@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="public/og.png" alt="termcn banner" />
+</p>
+
 <h1 align="center">termcn</h1>
 
 <p align="center">
@@ -6,15 +10,16 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/shadcn-labs/termcn"><img src="https://www.shieldcn.dev/github/stars/shadcn-labs/termcn.svg?variant=secondary&size=xs&theme=zinc" alt="GitHub Stars" /></a>
+  <a href="https://github.com/shadcn-labs/termcn/actions"><img src="https://www.shieldcn.dev/github/ci/shadcn-labs/termcn.svg?variant=secondary&size=xs&theme=zinc" alt="CI" /></a>
+  <a href="https://discord.gg/N6G36KhYK4"><img src="https://www.shieldcn.dev/discord/online-members/N6G36KhYK4.svg?variant=secondary&size=xs&theme=zinc" alt="Discord Members" /></a>
+  <a href="https://x.com/shadcnlabs"><img src="https://www.shieldcn.dev/x/follow/shadcnlabs.svg?variant=branded&size=xs&theme=zinc" alt="X Follow" /></a>
+</p>
+
+<p align="center">
   <a href="https://termcn.dev/docs">Get Started</a> ·
   <a href="https://termcn.dev/docs/installation">Installation</a> ·
   <a href="https://termcn.dev/docs/components">Components</a>
-</p>
-
-<br />
-
-<p align="center">
-  <img src="public/og.png" alt="termcn banner" />
 </p>
 
 ## Features
@@ -44,10 +49,10 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## Star History
 
-<a href="https://www.star-history.com/?repos=Aniket-508%2Ftermcn&type=date&legend=top-left">
+<a href="https://www.star-history.com/?repos=shadcn-labs%2Ftermcn&type=date&legend=top-left">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=Aniket-508/termcn&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=Aniket-508/termcn&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=Aniket-508/termcn&type=date&legend=top-left" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=shadcn-labs/termcn&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=shadcn-labs/termcn&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=shadcn-labs/termcn&type=date&legend=top-left" />
  </picture>
 </a>
