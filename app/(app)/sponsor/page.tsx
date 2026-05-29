@@ -1,12 +1,14 @@
 import { ExternalLink, Heart, Plus, Star } from "lucide-react";
 import type { Metadata } from "next";
-import { unstable_cache } from "next/cache";
 import Image from "next/image";
 
 import { DirectionalTransition } from "@/components/directional-transition";
-import { Button } from "@/components/ui/button";
-import { LINK, GITHUB } from "@/constants/links";
+import { ExternalLinkButton } from "@/components/external-link-button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { LINK } from "@/constants/links";
 import { ROUTES } from "@/constants/routes";
+import { getStargazers } from "@/lib/github";
+import { tiers } from "@/lib/sponsors";
 import { createPageMetadata } from "@/seo/metadata";
 
 export const metadata: Metadata = createPageMetadata({
@@ -16,140 +18,56 @@ export const metadata: Metadata = createPageMetadata({
   title: "Sponsor",
 });
 
-interface Sponsor {
-  name: string;
-  href: string;
-  logo?: string;
-}
-
-const tiers = [
-  {
-    colors: {
-      bg: "linear-gradient(145deg, #d4a84b 0%, #f5d98a 30%, #c9952e 60%, #e8c55a 100%)",
-      border: "#c9952e",
-      slotBg: "rgba(212, 168, 75, 0.08)",
-      slotBorder: "rgba(201, 149, 46, 0.25)",
-      text: "#5c3d0e",
-    },
-    name: "Gold",
-    slots: 3,
-    sponsors: [] as Sponsor[],
-  },
-  {
-    colors: {
-      bg: "linear-gradient(145deg, #a8a8a8 0%, #d4d4d4 30%, #8a8a8a 60%, #c0c0c0 100%)",
-      border: "#8a8a8a",
-      slotBg: "rgba(168, 168, 168, 0.06)",
-      slotBorder: "rgba(138, 138, 138, 0.2)",
-      text: "#2a2a2a",
-    },
-    name: "Silver",
-    slots: 3,
-    sponsors: [] as Sponsor[],
-  },
-  {
-    colors: {
-      bg: "linear-gradient(145deg, #b5745a 0%, #d4956e 30%, #8c5a3e 60%, #c98a68 100%)",
-      border: "#8c5a3e",
-      slotBg: "rgba(181, 116, 90, 0.06)",
-      slotBorder: "rgba(140, 90, 62, 0.2)",
-      text: "#3d1e0e",
-    },
-    name: "Bronze",
-    slots: 3,
-    sponsors: [] as Sponsor[],
-  },
-];
-
-interface Stargazer {
-  login: string;
-  avatar_url: string;
-}
-
-const getStargazers = unstable_cache(
-  async (): Promise<Stargazer[]> => {
-    try {
-      const pages: Stargazer[] = [];
-      let page = 1;
-
-      while (page <= 5) {
-        const response = await fetch(
-          `https://api.github.com/repos/${GITHUB.user}/${GITHUB.repo}/stargazers?per_page=100&page=${page}`,
-          {
-            headers: {
-              Accept: "application/vnd.github+json",
-              "X-GitHub-Api-Version": "2022-11-28",
-            },
-          }
-        );
-
-        if (!response.ok) {
-          break;
-        }
-
-        const data: Stargazer[] = await response.json();
-        if (data.length === 0) {
-          break;
-        }
-
-        pages.push(...data);
-        if (data.length < 100) {
-          break;
-        }
-        page += 1;
-      }
-
-      return pages.filter((s) => s.login !== GITHUB.user);
-    } catch {
-      return [];
-    }
-  },
-  ["github-stargazers"],
-  { revalidate: 86_400 }
-);
-
 const SponsorPage = async () => {
   const stargazers = await getStargazers();
 
   return (
     <DirectionalTransition>
-      <div className="mx-auto flex w-full max-w-2xl min-w-0 flex-1 flex-col gap-8 px-4 py-6 text-neutral-800 md:px-0 lg:py-8 dark:text-neutral-300">
-        <div className="flex flex-col gap-3">
-          <h1 className="scroll-m-20 text-4xl font-semibold tracking-tight sm:text-3xl xl:text-4xl">
+      <section className="container-wrapper relative">
+        <div className="container max-w-2xl flex flex-col items-center gap-4 py-16 text-center md:py-20 lg:py-24">
+          <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl from-foreground via-foreground to-foreground/65 bg-linear-to-b bg-clip-text text-transparent">
             Support the project
           </h1>
-          <p className="max-w-xl text-base leading-relaxed text-muted-foreground">
+          <p className="text-base text-muted-foreground text-balance">
             termcn is a collection of beautifully designed, accessible, and
             customizable terminal UI components for React. Every component is
             free and that&apos;s not changing.
           </p>
-          <p className="max-w-xl text-sm leading-relaxed text-muted-foreground">
+          <p className="text-sm text-muted-foreground text-balance">
             I&apos;m not going to paywall features or gate components behind a
             sponsorship tier. But if termcn made your project better, or you
             just like that this exists in the open, sponsoring is a nice way to
             say so. It helps me justify spending real time on it instead of
             treating it like a side-of-desk thing.
           </p>
-          <p className="max-w-xl text-sm leading-relaxed text-muted-foreground">
+          <p className="text-sm text-muted-foreground text-balance">
             Any amount is genuinely appreciated. And if money&apos;s not your
             thing, starring the repo or sharing something you liked works too.
           </p>
-        </div>
-        <a href={LINK.SPONSOR} target="_blank" rel="noopener noreferrer">
-          <Button size="lg">
+          <ExternalLinkButton
+            sound="heart"
+            size="lg"
+            className="mt-4"
+            href={LINK.SPONSOR}
+          >
             <Heart />
             Sponsor on GitHub
             <ExternalLink className="size-3.5 opacity-60" />
-          </Button>
-        </a>
+          </ExternalLinkButton>
+        </div>
+      </section>
 
-        <section className="flex flex-col">
+      <section className="container-wrapper relative">
+        <div className="container max-w-2xl flex flex-col">
           {tiers.map((tier) => {
             const filled = tier.sponsors.length;
             const empty = tier.slots - filled;
 
             return (
-              <div key={tier.name} className="flex flex-col gap-3 py-6">
+              <div
+                key={tier.name}
+                className="flex flex-col gap-3 py-6 first-of-type:pt-0"
+              >
                 <div
                   className="relative flex items-center justify-center rounded-md px-8 py-2.5"
                   style={{
@@ -233,46 +151,52 @@ const SponsorPage = async () => {
               </div>
             );
           })}
+        </div>
+      </section>
+
+      {stargazers.length > 0 && (
+        <section className="container-wrapper relative">
+          <div className="container max-w-2xl pt-6">
+            <Card className="shadow-none gap-4 py-4">
+              <CardHeader className="flex items-center gap-3 px-4">
+                <h3 className="text-xs font-bold uppercase tracking-wide text-foreground">
+                  Stargazers
+                </h3>
+                <span className="text-xs tabular-nums text-muted-foreground">
+                  {stargazers.length}
+                </span>
+              </CardHeader>
+              <CardContent className="flex flex-wrap justify-center gap-0 px-4">
+                {stargazers.map((user) => (
+                  <a
+                    key={user.login}
+                    href={`https://github.com/${user.login}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title={user.login}
+                    className="group relative p-1.5 transition-colors hover:bg-accent/50"
+                  >
+                    <Image
+                      src={user.avatar_url}
+                      alt={user.login}
+                      width={36}
+                      height={36}
+                      className="rounded-full ring-1 ring-border transition-all group-hover:ring-foreground/30 group-hover:scale-110"
+                      unoptimized
+                    />
+                  </a>
+                ))}
+              </CardContent>
+            </Card>
+          </div>
         </section>
+      )}
 
-        {stargazers.length > 0 && (
-          <section className="flex flex-col rounded-lg border p-4">
-            <div className="flex items-center gap-3 py-1">
-              <h3 className="text-xs font-bold uppercase tracking-wide text-foreground">
-                Stargazers
-              </h3>
-              <span className="text-xs tabular-nums text-muted-foreground">
-                {stargazers.length}
-              </span>
-            </div>
-            <div className="flex flex-wrap justify-center gap-0 py-4">
-              {stargazers.map((user) => (
-                <a
-                  key={user.login}
-                  href={`https://github.com/${user.login}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title={user.login}
-                  className="group relative p-1.5 transition-colors hover:bg-accent/50"
-                >
-                  <Image
-                    src={user.avatar_url}
-                    alt={user.login}
-                    width={36}
-                    height={36}
-                    className="rounded-full ring-1 ring-border transition-all group-hover:ring-foreground/30 group-hover:scale-110"
-                    unoptimized
-                  />
-                </a>
-              ))}
-            </div>
-          </section>
-        )}
-
-        <section className="flex flex-col items-center gap-5 py-14">
+      <section className="container-wrapper relative">
+        <div className="container flex flex-col items-center gap-4 py-16 md:py-20 lg:py-24">
           <div className="flex flex-col items-center gap-2 text-center">
             <h2 className="text-lg font-bold tracking-tight">
-              Want to support the project?
+              Want to back the project?
             </h2>
             <p className="max-w-sm text-sm text-muted-foreground">
               Every bit helps — whether it&apos;s a sponsorship, a star, or
@@ -280,21 +204,21 @@ const SponsorPage = async () => {
             </p>
           </div>
           <div className="flex items-center gap-3">
-            <a href={LINK.SPONSOR} target="_blank" rel="noopener noreferrer">
-              <Button size="default" className="gap-2">
-                <Heart />
-                Become a Sponsor
-              </Button>
-            </a>
-            <a href={LINK.GITHUB} target="_blank" rel="noopener noreferrer">
-              <Button variant="outline" size="default" className="gap-2">
-                <Star />
-                Star on GitHub
-              </Button>
-            </a>
+            <ExternalLinkButton sound="heart" href={LINK.SPONSOR}>
+              <Heart />
+              Become a Sponsor
+            </ExternalLinkButton>
+            <ExternalLinkButton
+              sound="star"
+              variant="outline"
+              href={LINK.GITHUB}
+            >
+              <Star />
+              Star on GitHub
+            </ExternalLinkButton>
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
     </DirectionalTransition>
   );
 };
