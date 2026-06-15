@@ -1,0 +1,23 @@
+{
+  "skill_name": "launch-shadcn-registry",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I just published my shadcn registry at https://motionkit.dev/r — it has 3 animation component presets. I want to get listed everywhere: official shadcn directory, registry.directory, the awesome lists, shadcntemplates. Also need social posts ready. Can you handle the full launch?",
+      "expected_output": "Agent collects registry profile, runs validate-registry.sh, generates artifacts for all 5 targets, presents them for approval, and drafts social posts for Reddit/X/Dev.to/HN.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Hey, my scope is @chartblocks — https://chartblocks.io. I just want to get listed on the official shadcn-ui/ui directory and registry.directory. Don't need the awesome lists or social stuff right now. What do I need to prepare?",
+      "expected_output": "Agent asks for confirmation of scope subset, collects profile fields, runs preflight validation, generates JSON entries for official directory and registry.directory only, presents artifacts with PR body templates.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "My registry @iconhive got merged into the shadcn official directory last week. Now I want to draft social posts to announce it — Reddit r/shadcn, X, Dev.to, and Hacker News. Registry is at https://iconhive.dev/r.",
+      "expected_output": "Agent skips preflight and PR generation (registry already live), collects profile, reads social reference files, produces ready-to-paste drafts for all 4 platforms tailored to the registry's details. Mentions 'now listed in the shadcn registry directory' in drafts.",
+      "files": []
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RegistryProfile",
+  "description": "Single source of truth for launch-shadcn-registry artifacts",
+  "type": "object",
+  "required": [
+    "scope",
+    "name",
+    "homepage",
+    "registryBaseUrl",
+    "componentUrlPattern",
+    "description",
+    "descriptionLong",
+    "githubUrl",
+    "githubUsername",
+    "distribution",
+    "categories",
+    "installExample"
+  ],
+  "properties": {
+    "scope": {
+      "type": "string",
+      "pattern": "^@[a-z0-9-]+$",
+      "description": "Registry scope, e.g. @ogimagecn"
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable display name"
+    },
+    "homepage": {
+      "type": "string",
+      "format": "uri",
+      "description": "Public docs or marketing site"
+    },
+    "registryBaseUrl": {
+      "type": "string",
+      "format": "uri",
+      "description": "Base URL for registry JSON (no trailing slash)"
+    },
+    "registryIndexPath": {
+      "type": "string",
+      "default": "/registry.json",
+      "description": "Path to registry index relative to registryBaseUrl"
+    },
+    "componentUrlPattern": {
+      "type": "string",
+      "description": "Component JSON URL with {name} placeholder"
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 160,
+      "description": "One sentence for official directory"
+    },
+    "descriptionLong": {
+      "type": "string",
+      "description": "2-3 sentences for awesome lists and social"
+    },
+    "githubUrl": {
+      "type": "string",
+      "format": "uri"
+    },
+    "githubUsername": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9-]+$"
+    },
+    "distribution": {
+      "type": "string",
+      "enum": ["open-source", "premium"]
+    },
+    "categories": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "installExample": {
+      "type": "string",
+      "description": "Full shadcn add command with scope or URL"
+    },
+    "logo": {
+      "type": "string",
+      "description": "Inline SVG for official directory.json"
+    },
+    "sampleComponents": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Component slugs to validate, e.g. og-image"
+    },
+    "features": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Bullet points for shadcntemplates and social"
+    }
+  }
+}
