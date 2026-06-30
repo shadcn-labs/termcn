@@ -14,7 +14,7 @@ export const GET = () => {
     .map((page) => {
       const data = page.data as ChangelogPageData;
       const date = page.date?.toUTCString() ?? new Date().toUTCString();
-      const link = `${SITE.URL}${ROUTES.DOCS}/${page.slugs.join("/")}`;
+      const link = `${SITE.URL}${page.url}`;
 
       return `    <item>
       <title><![CDATA[${data.title}]]></title>
@@ -33,7 +33,7 @@ export const GET = () => {
     <link>${SITE.URL}</link>
     <description>${SITE.DESCRIPTION.LONG}</description>
     <language>en-us</language>
-    <atom:link href="${SITE.URL}/rss.xml" rel="self" type="application/rss+xml"/>
+    <atom:link href="${SITE.URL}${ROUTES.RSS}" rel="self" type="application/rss+xml"/>
 ${items}
   </channel>
 </rss>`;

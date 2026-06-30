@@ -28,3 +28,5 @@ export const formatTitleFromSlug = (slug: string): string =>
 export const homeContentRoute = `${ROUTES.LLMS_MD}/content.md`;
 export const docsContentRoute = `${ROUTES.LLMS_MD}${ROUTES.DOCS}`;
 export const docsImageRoute = `${ROUTES.OG}${ROUTES.DOCS}`;
+
+export const PAGES_NEW: string[] = [ROUTES.DOCS_CHANGELOG];
