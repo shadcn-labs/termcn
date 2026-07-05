@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "theme-nord",
+  "name": "ink/theme-nord",
   "title": "Nord",
   "description": "A cool Nord palette tuned for terminal contrast.",
   "registryDependencies": [

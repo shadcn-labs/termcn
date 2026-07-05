@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "box",
+  "name": "opentui/box",
   "title": "Box",
   "description": "Enhanced flexbox container with theme-aware borders",
   "dependencies": [

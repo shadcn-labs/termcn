@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "theme-oc-2",
+  "name": "ink/theme-oc-2",
   "title": "OC-2",
   "description": "OC-2 - clean minimal theme.",
   "registryDependencies": [

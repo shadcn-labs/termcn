@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "card",
+  "name": "opentui/card",
   "title": "Card",
   "description": "Card with header, body, and footer slots",
   "dependencies": [

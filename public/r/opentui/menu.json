@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "menu",
+  "name": "opentui/menu",
   "title": "Menu",
   "description": "Dropdown menu with nested submenus",
   "dependencies": [

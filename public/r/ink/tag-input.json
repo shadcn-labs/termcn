@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "tag-input",
+  "name": "ink/tag-input",
   "title": "Tag Input",
   "description": "Add and remove tags inline",
   "dependencies": [

@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "toggle",
+  "name": "ink/toggle",
   "title": "Toggle",
   "description": "Toggle/switch component with on/off labels",
   "dependencies": [

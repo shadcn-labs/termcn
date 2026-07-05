@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "use-interval",
+  "name": "ink/use-interval",
   "title": "Use Interval",
   "description": "React-safe interval helper.",
   "files": [

@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "use-animation",
+  "name": "ink/use-animation",
   "title": "Use Animation",
   "description": "Frame-based animation helper for terminal UI components.",
   "files": [

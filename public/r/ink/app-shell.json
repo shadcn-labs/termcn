@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "app-shell",
+  "name": "ink/app-shell",
   "title": "App Shell",
   "description": "Full-screen TUI layout with header, tip bar, full-width input, scrollable content, and hints footer",
   "dependencies": [

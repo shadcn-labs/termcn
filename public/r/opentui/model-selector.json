@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "model-selector",
+  "name": "opentui/model-selector",
   "title": "Model Selector",
   "description": "Keyboard-navigable list for selecting an AI model, with optional provider grouping and context-window display",
   "dependencies": [

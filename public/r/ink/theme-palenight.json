@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "theme-palenight",
+  "name": "ink/theme-palenight",
   "title": "Palenight",
   "description": "Palenight - React Native purple.",
   "registryDependencies": [

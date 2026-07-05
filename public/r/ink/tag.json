@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "tag",
+  "name": "ink/tag",
   "title": "Tag",
   "description": "Removable chip/tag",
   "dependencies": [

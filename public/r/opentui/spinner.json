@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "spinner",
+  "name": "opentui/spinner",
   "title": "Spinner",
   "description": "Animated spinner with 12+ styles",
   "dependencies": [
@@ -9,7 +9,7 @@
   ],
   "registryDependencies": [
     "https://termcn.dev/r/opentui/theme-provider.json",
-    "https://termcn.dev/r/use-animation.json"
+    "https://termcn.dev/r/opentui/use-animation.json"
   ],
   "files": [
     {

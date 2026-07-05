@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "drawer",
+  "name": "ink/drawer",
   "title": "Drawer",
   "description": "Slide-in panel from any edge",
   "dependencies": [

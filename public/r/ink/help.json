@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "help",
+  "name": "ink/help",
   "title": "Help",
   "description": "Auto-generated help panel from a keymap",
   "dependencies": [

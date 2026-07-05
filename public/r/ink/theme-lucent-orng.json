@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "theme-lucent-orng",
+  "name": "ink/theme-lucent-orng",
   "title": "Lucent Orng",
   "description": "Lucent Orng - warm orange theme.",
   "registryDependencies": [

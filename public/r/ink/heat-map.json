@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "heat-map",
+  "name": "ink/heat-map",
   "title": "Heat Map",
   "description": "Grid heatmap with color intensity scale",
   "dependencies": [

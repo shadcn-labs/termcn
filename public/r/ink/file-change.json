@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "file-change",
+  "name": "ink/file-change",
   "title": "File Change",
   "description": "Interactive file-change review list with diff expansion, per-file accept/reject actions, and accept-all shortcut",
   "dependencies": [

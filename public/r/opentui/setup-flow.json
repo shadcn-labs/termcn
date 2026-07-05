@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "setup-flow",
+  "name": "opentui/setup-flow",
   "title": "Setup Flow",
   "description": "@clack-style step flow with ◇/◆/│ visual language, badge, info steps, and multi-select",
   "dependencies": [

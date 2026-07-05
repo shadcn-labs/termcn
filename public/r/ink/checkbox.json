@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "checkbox",
+  "name": "ink/checkbox",
   "title": "Checkbox",
   "description": "Checkbox with indeterminate state",
   "dependencies": [

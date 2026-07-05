@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "theme-opencode",
+  "name": "ink/theme-opencode",
   "title": "OpenCode",
   "description": "OpenCode official theme.",
   "registryDependencies": [

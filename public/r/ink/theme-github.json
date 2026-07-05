@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "theme-github",
+  "name": "ink/theme-github",
   "title": "GitHub",
   "description": "GitHub official dark theme.",
   "registryDependencies": [

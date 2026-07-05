@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "login-flow",
+  "name": "ink/login-flow",
   "title": "Login Flow",
   "description": "Full-page onboarding/login screen with announcement banner, big ASCII title, description, and numbered select",
   "dependencies": [

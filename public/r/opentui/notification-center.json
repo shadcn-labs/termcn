@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "notification-center",
+  "name": "opentui/notification-center",
   "title": "Notification Center",
   "description": "Persistent queue-based notification panel with useNotifications hook",
   "dependencies": [
@@ -8,7 +8,7 @@
   ],
   "registryDependencies": [
     "https://termcn.dev/r/opentui/theme-provider.json",
-    "https://termcn.dev/r/use-notifications.json"
+    "https://termcn.dev/r/opentui/use-notifications.json"
   ],
   "files": [
     {

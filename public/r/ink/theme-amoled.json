@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "theme-amoled",
+  "name": "ink/theme-amoled",
   "title": "AMOLED",
   "description": "AMOLED - high contrast dark theme with pure black.",
   "registryDependencies": [

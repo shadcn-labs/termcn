@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "sparkline",
+  "name": "ink/sparkline",
   "title": "Sparkline",
   "description": "Inline Unicode braille sparkline chart",
   "dependencies": [

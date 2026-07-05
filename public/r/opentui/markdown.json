@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "markdown",
+  "name": "opentui/markdown",
   "title": "Markdown",
   "description": "Full markdown renderer for terminal",
   "dependencies": [

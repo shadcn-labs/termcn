@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "theme-onedarkpro",
+  "name": "ink/theme-onedarkpro",
   "title": "One Dark Pro",
   "description": "One Dark Pro - VS Code version.",
   "registryDependencies": [

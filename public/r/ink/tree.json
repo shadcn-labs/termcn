@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "tree",
+  "name": "ink/tree",
   "title": "Tree",
   "description": "Expandable/collapsible tree view",
   "dependencies": [

@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "theme-catppuccin-macchiato",
+  "name": "ink/theme-catppuccin-macchiato",
   "title": "Catppuccin Macchiato",
   "description": "Catppuccin Macchiato - deeper pastel tones.",
   "registryDependencies": [

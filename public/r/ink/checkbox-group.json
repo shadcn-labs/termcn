@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "checkbox-group",
+  "name": "ink/checkbox-group",
   "title": "Checkbox Group",
   "description": "Checkbox group with min/max selection",
   "dependencies": [

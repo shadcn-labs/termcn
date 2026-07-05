@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "json",
+  "name": "opentui/json",
   "title": "JSON",
   "description": "Pretty-printed JSON with collapsible nodes",
   "dependencies": [

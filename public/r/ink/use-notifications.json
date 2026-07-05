@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "use-notifications",
+  "name": "ink/use-notifications",
   "title": "Use Notifications",
   "description": "Notifications state and context helpers.",
   "files": [

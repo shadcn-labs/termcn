@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "theme-flexoki",
+  "name": "ink/theme-flexoki",
   "title": "Flexoki",
   "description": "Flexoki - versatile theme.",
   "registryDependencies": [

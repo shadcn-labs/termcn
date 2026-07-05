@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "tabs",
+  "name": "opentui/tabs",
   "title": "Tabs",
   "description": "Tab bar with left/right arrow and tab-key navigation",
   "dependencies": [

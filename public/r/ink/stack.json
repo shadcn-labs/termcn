@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "stack",
+  "name": "ink/stack",
   "title": "Stack",
   "description": "Vertical/horizontal stack with gap",
   "dependencies": [

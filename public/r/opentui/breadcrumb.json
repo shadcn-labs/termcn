@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "breadcrumb",
+  "name": "opentui/breadcrumb",
   "title": "Breadcrumb",
   "description": "Breadcrumb navigation trail",
   "dependencies": [

@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "form",
+  "name": "opentui/form",
   "title": "Form",
   "description": "Form container with validation, Ctrl+S submit, and dirty tracking",
   "dependencies": [

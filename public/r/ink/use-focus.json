@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "use-focus",
+  "name": "ink/use-focus",
   "title": "Use Focus",
   "description": "Focus helper wrapping Ink's useFocus.",
   "dependencies": [

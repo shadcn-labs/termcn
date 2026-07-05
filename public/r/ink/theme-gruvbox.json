@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "theme-gruvbox",
+  "name": "ink/theme-gruvbox",
   "title": "Gruvbox",
   "description": "Gruvbox - retro earth tones.",
   "registryDependencies": [

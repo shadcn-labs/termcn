@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "aspect-ratio",
+  "name": "ink/aspect-ratio",
   "title": "Aspect Ratio",
   "description": "Constrains children to a given aspect ratio",
   "dependencies": [

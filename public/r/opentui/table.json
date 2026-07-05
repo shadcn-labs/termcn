@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "table",
+  "name": "opentui/table",
   "title": "Table",
   "description": "Sortable, selectable, paginated data table",
   "dependencies": [

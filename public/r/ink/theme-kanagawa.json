@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "theme-kanagawa",
+  "name": "ink/theme-kanagawa",
   "title": "Kanagawa",
   "description": "Kanagawa - Japanese wave theme.",
   "registryDependencies": [

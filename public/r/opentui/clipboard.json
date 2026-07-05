@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "clipboard",
+  "name": "opentui/clipboard",
   "title": "Clipboard",
   "description": "Copy-to-clipboard button with success feedback",
   "dependencies": [
@@ -8,7 +8,7 @@
   ],
   "registryDependencies": [
     "https://termcn.dev/r/opentui/theme-provider.json",
-    "https://termcn.dev/r/use-clipboard.json"
+    "https://termcn.dev/r/opentui/use-clipboard.json"
   ],
   "files": [
     {

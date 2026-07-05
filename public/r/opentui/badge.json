@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "badge",
+  "name": "opentui/badge",
   "title": "Badge",
   "description": "Semantic status indicator badge (success/error/warning/info)",
   "dependencies": [

@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "directory-tree",
+  "name": "opentui/directory-tree",
   "title": "Directory Tree",
   "description": "Filesystem browser with expand/collapse",
   "dependencies": [

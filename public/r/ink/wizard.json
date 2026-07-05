@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "wizard",
+  "name": "ink/wizard",
   "title": "Wizard",
   "description": "Multi-step wizard with per-step validation",
   "dependencies": [

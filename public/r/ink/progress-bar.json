@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "progress-bar",
+  "name": "ink/progress-bar",
   "title": "Progress Bar",
   "description": "Determinate progress bar with percent and value/total display",
   "dependencies": [

@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "theme-mercury",
+  "name": "ink/theme-mercury",
   "title": "Mercury",
   "description": "Mercury - clean minimal theme.",
   "registryDependencies": [

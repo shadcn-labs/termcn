@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "skeleton",
+  "name": "opentui/skeleton",
   "title": "Skeleton",
   "description": "Shimmer loading placeholder",
   "dependencies": [

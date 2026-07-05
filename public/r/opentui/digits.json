@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "digits",
+  "name": "opentui/digits",
   "title": "Digits",
   "description": "Box-drawing character numerals",
   "dependencies": [

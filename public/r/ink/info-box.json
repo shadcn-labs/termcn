@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "info-box",
+  "name": "ink/info-box",
   "title": "Info Box",
   "description": "Bordered info panel with header, key-value rows, and tree-prefix rows",
   "dependencies": [

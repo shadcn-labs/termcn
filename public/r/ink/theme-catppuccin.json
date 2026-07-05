@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "theme-catppuccin",
+  "name": "ink/theme-catppuccin",
   "title": "Catppuccin",
   "description": "A Catppuccin theme for rich terminal UI previews.",
   "registryDependencies": [

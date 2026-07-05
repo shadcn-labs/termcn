@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "notification-center",
+  "name": "ink/notification-center",
   "title": "Notification Center",
   "description": "Persistent queue-based notification panel with useNotifications hook",
   "dependencies": [

@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "divider",
+  "name": "ink/divider",
   "title": "Divider",
   "description": "Horizontal or vertical divider / rule",
   "dependencies": [

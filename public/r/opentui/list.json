@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "list",
+  "name": "opentui/list",
   "title": "List",
   "description": "Navigable list with optional filtering",
   "dependencies": [

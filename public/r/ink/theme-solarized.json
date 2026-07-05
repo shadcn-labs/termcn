@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "theme-solarized",
+  "name": "ink/theme-solarized",
   "title": "Solarized",
   "description": "A Solarized theme for terminal components.",
   "registryDependencies": [

@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "qr-code",
+  "name": "ink/qr-code",
   "title": "QR Code",
   "description": "Unicode block QR code generator",
   "dependencies": [

@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "sidebar",
+  "name": "opentui/sidebar",
   "title": "Sidebar",
   "description": "Collapsible navigation sidebar panel",
   "dependencies": [

@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "modal",
+  "name": "ink/modal",
   "title": "Modal",
   "description": "Focus-trapped overlay modal, close with Esc",
   "dependencies": [

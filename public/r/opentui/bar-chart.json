@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "bar-chart",
+  "name": "opentui/bar-chart",
   "title": "Bar Chart",
   "description": "Horizontal and vertical bar chart with labels",
   "dependencies": [

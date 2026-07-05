@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "key-value",
+  "name": "ink/key-value",
   "title": "Key Value",
   "description": "Aligned key–value pairs",
   "dependencies": [

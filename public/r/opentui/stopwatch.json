@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "stopwatch",
+  "name": "opentui/stopwatch",
   "title": "Stopwatch",
   "description": "Count-up stopwatch with laps and reset",
   "dependencies": [

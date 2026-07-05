@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "code",
+  "name": "opentui/code",
   "title": "Code",
   "description": "Syntax-highlighted code block (50+ languages)",
   "dependencies": [

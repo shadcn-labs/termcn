@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "use-clipboard",
+  "name": "ink/use-clipboard",
   "title": "Use Clipboard",
   "description": "Clipboard hook with browser and terminal fallbacks.",
   "files": [

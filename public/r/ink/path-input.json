@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "path-input",
+  "name": "ink/path-input",
   "title": "Path Input",
   "description": "Filesystem path input with tab autocomplete",
   "dependencies": [

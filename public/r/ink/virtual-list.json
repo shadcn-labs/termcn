@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "virtual-list",
+  "name": "ink/virtual-list",
   "title": "Virtual List",
   "description": "Virtualized list for 10k+ items",
   "dependencies": [

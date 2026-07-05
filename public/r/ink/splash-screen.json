@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "splash-screen",
+  "name": "ink/splash-screen",
   "title": "Splash Screen",
   "description": "Styled startup banner with big ASCII art title, subtitle, author credit, and status line",
   "dependencies": [

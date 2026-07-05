@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "tree-select",
+  "name": "ink/tree-select",
   "title": "Tree Select",
   "description": "Hierarchical tree selection",
   "dependencies": [

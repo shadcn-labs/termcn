@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "progress-circle",
+  "name": "ink/progress-circle",
   "title": "Progress Circle",
   "description": "Circular progress indicator using Unicode braille",
   "dependencies": [

@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "tabbed-content",
+  "name": "ink/tabbed-content",
   "title": "Tabbed Content",
   "description": "Tab bar wired to content panels",
   "dependencies": [

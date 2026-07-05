@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "image",
+  "name": "ink/image",
   "title": "Image",
   "description": "Image renderer with iTerm2/Kitty protocol and ASCII fallback",
   "dependencies": [

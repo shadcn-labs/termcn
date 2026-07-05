@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "use-input",
+  "name": "ink/use-input",
   "title": "Use Input",
   "description": "Keyboard input hook wrapping Ink's useInput.",
   "dependencies": [

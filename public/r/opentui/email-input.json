@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "email-input",
+  "name": "opentui/email-input",
   "title": "Email Input",
   "description": "Email input with validation and domain suggestions",
   "dependencies": [

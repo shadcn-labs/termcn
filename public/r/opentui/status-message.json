@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "status-message",
+  "name": "opentui/status-message",
   "title": "Status Message",
   "description": "Inline status message with icon and color",
   "dependencies": [

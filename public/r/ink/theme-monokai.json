@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "theme-monokai",
+  "name": "ink/theme-monokai",
   "title": "Monokai",
   "description": "A classic Monokai-inspired theme for terminal apps.",
   "registryDependencies": [

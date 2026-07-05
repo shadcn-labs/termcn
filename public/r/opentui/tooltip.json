@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "tooltip",
+  "name": "opentui/tooltip",
   "title": "Tooltip",
   "description": "Contextual tooltip on focus or hover",
   "dependencies": [

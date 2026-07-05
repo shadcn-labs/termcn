@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "chat-thread",
+  "name": "opentui/chat-thread",
   "title": "Chat Thread",
   "description": "Scrollable container for stacking ChatMessage components in a conversation thread",
   "dependencies": [

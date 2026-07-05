@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "file-picker",
+  "name": "ink/file-picker",
   "title": "File Picker",
   "description": "Interactive file browser and picker",
   "dependencies": [

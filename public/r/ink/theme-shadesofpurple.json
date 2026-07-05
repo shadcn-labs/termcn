@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "theme-shadesofpurple",
+  "name": "ink/theme-shadesofpurple",
   "title": "Shades of Purple",
   "description": "Shades of Purple - bold purple.",
   "registryDependencies": [

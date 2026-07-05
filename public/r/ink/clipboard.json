@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "clipboard",
+  "name": "ink/clipboard",
   "title": "Clipboard",
   "description": "Copy-to-clipboard button with success feedback",
   "dependencies": [

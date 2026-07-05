@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "clock",
+  "name": "ink/clock",
   "title": "Clock",
   "description": "Real-time clock display with 12h/24h and date",
   "dependencies": [

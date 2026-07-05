@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "confirm",
+  "name": "ink/confirm",
   "title": "Confirm",
   "description": "Yes/No confirmation prompt",
   "dependencies": [

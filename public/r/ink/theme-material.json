@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "theme-material",
+  "name": "ink/theme-material",
   "title": "Material",
   "description": "Material Design colors.",
   "registryDependencies": [

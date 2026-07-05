@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "select",
+  "name": "ink/select",
   "title": "Select",
   "description": "Single-select dropdown with arrow-key navigation",
   "dependencies": [

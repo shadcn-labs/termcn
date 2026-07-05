@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "columns",
+  "name": "opentui/columns",
   "title": "Columns",
   "description": "Multi-column layout with configurable widths",
   "dependencies": [

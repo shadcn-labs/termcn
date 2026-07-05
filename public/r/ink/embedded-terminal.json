@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "embedded-terminal",
+  "name": "ink/embedded-terminal",
   "title": "Embedded Terminal",
   "description": "Embedded PTY terminal panel (requires node-pty peer)",
   "dependencies": [

@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "theme-vercel",
+  "name": "ink/theme-vercel",
   "title": "Vercel",
   "description": "Vercel brand colors.",
   "registryDependencies": [

@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "alert",
+  "name": "ink/alert",
   "title": "Alert",
   "description": "Alert box with success/error/warning/info variants",
   "dependencies": [

@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "dialog",
+  "name": "opentui/dialog",
   "title": "Dialog",
   "description": "Confirmation dialog with OK/Cancel actions",
   "dependencies": [

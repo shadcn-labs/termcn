@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "theme-nightowl",
+  "name": "ink/theme-nightowl",
   "title": "Night Owl",
   "description": "Night Owl - late night coding.",
   "registryDependencies": [

@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "tool-approval",
+  "name": "opentui/tool-approval",
   "title": "Tool Approval",
   "description": "Interactive approval prompt for AI tool calls with risk-level badge, args display, and auto-deny timeout",
   "dependencies": [

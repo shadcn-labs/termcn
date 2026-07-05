@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "panel",
+  "name": "ink/panel",
   "title": "Panel",
   "description": "Titled bordered panel",
   "dependencies": [

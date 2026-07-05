@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "time-picker",
+  "name": "ink/time-picker",
   "title": "Time Picker",
   "description": "Time picker with hour/minute/second spinners",
   "dependencies": [

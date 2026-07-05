@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "theme-cobalt2",
+  "name": "ink/theme-cobalt2",
   "title": "Cobalt2",
   "description": "Cobalt2 - vibrant blue and gold.",
   "registryDependencies": [

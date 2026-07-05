@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "grid",
+  "name": "opentui/grid",
   "title": "Grid",
   "description": "Rows × columns grid layout",
   "dependencies": [

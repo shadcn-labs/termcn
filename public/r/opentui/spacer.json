@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "spacer",
+  "name": "opentui/spacer",
   "title": "Spacer",
   "description": "Flexible space between flex children",
   "dependencies": [

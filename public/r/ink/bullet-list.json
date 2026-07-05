@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "bullet-list",
+  "name": "ink/bullet-list",
   "title": "Bullet List",
   "description": "Nested structured content with ●/└/□ bullet prefixes",
   "dependencies": [

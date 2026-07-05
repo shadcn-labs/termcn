@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "theme-rosepine",
+  "name": "ink/theme-rosepine",
   "title": "Rose Pine",
   "description": "Rose Pine - warm rose tones.",
   "registryDependencies": [

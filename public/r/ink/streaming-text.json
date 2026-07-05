@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "streaming-text",
+  "name": "ink/streaming-text",
   "title": "Streaming Text",
   "description": "Token-by-token streaming text with blinking cursor and optional typing animation",
   "dependencies": [

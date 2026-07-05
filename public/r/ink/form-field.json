@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "form-field",
+  "name": "ink/form-field",
   "title": "Form Field",
   "description": "Form field wrapper with label, hint, and error",
   "dependencies": [

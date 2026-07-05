@@ -1,13 +1,13 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "theme-provider",
+  "name": "opentui/theme-provider",
   "title": "Theme Provider",
   "description": "Terminal theme provider, design tokens, and theme helpers.",
   "dependencies": [
     "@opentui/react"
   ],
   "registryDependencies": [
-    "https://termcn.dev/r/theme-default.json"
+    "https://termcn.dev/r/opentui/theme-default.json"
   ],
   "files": [
     {

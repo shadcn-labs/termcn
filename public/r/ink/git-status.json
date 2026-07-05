@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "git-status",
+  "name": "ink/git-status",
   "title": "Git Status",
   "description": "Git status display (branch, staged, modified, ahead/behind)",
   "dependencies": [

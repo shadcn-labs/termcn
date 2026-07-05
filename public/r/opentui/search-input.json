@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "search-input",
+  "name": "opentui/search-input",
   "title": "Search Input",
   "description": "Fuzzy search input with autocomplete",
   "dependencies": [

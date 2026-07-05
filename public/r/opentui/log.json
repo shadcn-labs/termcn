@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "log",
+  "name": "opentui/log",
   "title": "Log",
   "description": "Scrolling log viewer with severity levels and filtering",
   "dependencies": [

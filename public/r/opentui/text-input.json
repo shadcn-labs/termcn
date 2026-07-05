@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "text-input",
+  "name": "opentui/text-input",
   "title": "Text Input",
   "description": "Single-line text input with placeholder, validation, mask",
   "dependencies": [

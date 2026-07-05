@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "banner",
+  "name": "opentui/banner",
   "title": "Banner",
   "description": "Full-width announcement banner",
   "dependencies": [

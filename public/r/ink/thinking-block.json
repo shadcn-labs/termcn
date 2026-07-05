@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "thinking-block",
+  "name": "ink/thinking-block",
   "title": "Thinking Block",
   "description": "Collapsible block for displaying extended thinking / reasoning content from an AI model",
   "dependencies": [

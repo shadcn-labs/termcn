@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "radio-group",
+  "name": "opentui/radio-group",
   "title": "Radio Group",
   "description": "Mutually exclusive radio button group",
   "dependencies": [

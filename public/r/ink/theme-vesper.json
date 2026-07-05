@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "theme-vesper",
+  "name": "ink/theme-vesper",
   "title": "Vesper",
   "description": "Vesper - minimal high contrast.",
   "registryDependencies": [

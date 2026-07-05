@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "theme-tokyo-night",
+  "name": "ink/theme-tokyo-night",
   "title": "Tokyo Night",
   "description": "Tokyo Night colors for terminal interfaces.",
   "registryDependencies": [

@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "theme-synthwave84",
+  "name": "ink/theme-synthwave84",
   "title": "Synthwave '84",
   "description": "Synthwave '84 - retro neon.",
   "registryDependencies": [

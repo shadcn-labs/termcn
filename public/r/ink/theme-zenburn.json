@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "theme-zenburn",
+  "name": "ink/theme-zenburn",
   "title": "Zenburn",
   "description": "Zenburn - low contrast for long sessions.",
   "registryDependencies": [

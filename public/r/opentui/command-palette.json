@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "command-palette",
+  "name": "opentui/command-palette",
   "title": "Command Palette",
   "description": "VS Code–style command palette with fuzzy search",
   "dependencies": [

@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "line-chart",
+  "name": "ink/line-chart",
   "title": "Line Chart",
   "description": "ASCII line chart with axes and multi-series support",
   "dependencies": [

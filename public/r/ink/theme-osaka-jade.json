@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "theme-osaka-jade",
+  "name": "ink/theme-osaka-jade",
   "title": "Osaka Jade",
   "description": "Osaka Jade - Japanese jade theme.",
   "registryDependencies": [

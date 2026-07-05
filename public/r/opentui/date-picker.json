@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "date-picker",
+  "name": "opentui/date-picker",
   "title": "Date Picker",
   "description": "Calendar date picker with keyboard navigation",
   "dependencies": [

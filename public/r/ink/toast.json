@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "toast",
+  "name": "ink/toast",
   "title": "Toast",
   "description": "Auto-dismissing toast notification",
   "dependencies": [

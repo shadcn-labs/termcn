@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "multi-select",
+  "name": "opentui/multi-select",
   "title": "Multi Select",
   "description": "Multi-select list with checkboxes and select-all",
   "dependencies": [

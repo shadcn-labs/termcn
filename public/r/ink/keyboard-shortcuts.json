@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "keyboard-shortcuts",
+  "name": "ink/keyboard-shortcuts",
   "title": "Keyboard Shortcuts",
   "description": "Formatted keyboard shortcut reference table",
   "dependencies": [

@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "timer",
+  "name": "ink/timer",
   "title": "Timer",
   "description": "Countdown timer with pause/resume and auto-start",
   "dependencies": [

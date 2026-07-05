@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "big-text",
+  "name": "opentui/big-text",
   "title": "Big Text",
   "description": "Figlet-style large ASCII art text",
   "dependencies": [

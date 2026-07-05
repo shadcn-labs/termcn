@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "welcome-screen",
+  "name": "ink/welcome-screen",
   "title": "Welcome Screen",
   "description": "Two-panel welcome dashboard with titled border, logo, greeting, and sections",
   "dependencies": [

@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "data-grid",
+  "name": "ink/data-grid",
   "title": "Data Grid",
   "description": "Advanced data grid with sorting, filtering, pagination, and cell editing",
   "dependencies": [

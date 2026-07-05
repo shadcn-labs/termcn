@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "theme-cursor",
+  "name": "ink/theme-cursor",
   "title": "Cursor",
   "description": "Cursor IDE theme.",
   "registryDependencies": [

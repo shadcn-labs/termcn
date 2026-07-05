@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "radio-group",
+  "name": "ink/radio-group",
   "title": "Radio Group",
   "description": "Mutually exclusive radio button group",
   "dependencies": [

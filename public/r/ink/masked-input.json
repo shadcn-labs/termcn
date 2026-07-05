@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "masked-input",
+  "name": "ink/masked-input",
   "title": "Masked Input",
   "description": "Masked input for phone, date, credit card formats",
   "dependencies": [

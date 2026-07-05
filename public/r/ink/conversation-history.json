@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "conversation-history",
+  "name": "ink/conversation-history",
   "title": "Conversation History",
   "description": "Arrow-key scrollable stack for long assistant threads with optional hint",
   "dependencies": [

@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "error-boundary",
+  "name": "opentui/error-boundary",
   "title": "Error Boundary",
   "description": "React error boundary with graceful terminal display",
   "dependencies": [

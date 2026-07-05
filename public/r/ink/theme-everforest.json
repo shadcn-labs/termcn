@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "theme-everforest",
+  "name": "ink/theme-everforest",
   "title": "Everforest",
   "description": "Everforest - warm forest theme.",
   "registryDependencies": [

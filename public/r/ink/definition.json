@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "definition",
+  "name": "ink/definition",
   "title": "Definition",
   "description": "Term–description definition list",
   "dependencies": [

@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "number-input",
+  "name": "ink/number-input",
   "title": "Number Input",
   "description": "Numeric input with increment/decrement and bounds",
   "dependencies": [

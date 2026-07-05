@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "gradient",
+  "name": "ink/gradient",
   "title": "Gradient",
   "description": "Color gradient text",
   "dependencies": [

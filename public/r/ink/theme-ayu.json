@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "theme-ayu",
+  "name": "ink/theme-ayu",
   "title": "Ayu",
   "description": "Ayu - clean modern terminal theme.",
   "registryDependencies": [

@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "chat-message",
+  "name": "ink/chat-message",
   "title": "Chat Message",
   "description": "Chat message bubble with role label, streaming indicator, and collapsible content",
   "dependencies": [

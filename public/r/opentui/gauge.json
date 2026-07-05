@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "gauge",
+  "name": "opentui/gauge",
   "title": "Gauge",
   "description": "Arc/speedometer gauge meter",
   "dependencies": [

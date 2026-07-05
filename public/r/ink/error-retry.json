@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "error-retry",
+  "name": "ink/error-retry",
   "title": "Error Retry",
   "description": "Inline error panel with retry, dismiss, and max-retry guard",
   "dependencies": [

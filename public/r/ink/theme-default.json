@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "theme-default",
+  "name": "ink/theme-default",
   "title": "Default",
   "description": "The default termcn terminal theme.",
   "registryDependencies": [

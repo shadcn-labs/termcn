@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "center",
+  "name": "opentui/center",
   "title": "Center",
   "description": "Centers children horizontally and vertically",
   "dependencies": [

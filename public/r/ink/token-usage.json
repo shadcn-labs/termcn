@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "token-usage",
+  "name": "ink/token-usage",
   "title": "Token Usage",
   "description": "Compact token counter showing prompt and completion usage with optional cost estimate; also exports ContextMeter for visualising context window fill",
   "dependencies": [

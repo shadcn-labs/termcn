@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "scroll-view",
+  "name": "opentui/scroll-view",
   "title": "Scroll View",
   "description": "Scrollable container with scrollbar",
   "dependencies": [

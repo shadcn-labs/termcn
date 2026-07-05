@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "pagination",
+  "name": "ink/pagination",
   "title": "Pagination",
   "description": "Page navigation with prev/next and jump",
   "dependencies": [

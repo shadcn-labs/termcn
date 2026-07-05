@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "pie-chart",
+  "name": "opentui/pie-chart",
   "title": "Pie Chart",
   "description": "Unicode block pie chart with legend",
   "dependencies": [

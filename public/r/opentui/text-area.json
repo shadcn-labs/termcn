@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "text-area",
+  "name": "opentui/text-area",
   "title": "Text Area",
   "description": "Multi-line text editor with word wrap",
   "dependencies": [

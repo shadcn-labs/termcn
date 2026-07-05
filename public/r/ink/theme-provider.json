@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "theme-provider",
+  "name": "ink/theme-provider",
   "title": "Theme Provider",
   "description": "Terminal theme provider, design tokens, and theme helpers.",
   "files": [

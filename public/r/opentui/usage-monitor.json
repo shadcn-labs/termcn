@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "usage-monitor",
+  "name": "opentui/usage-monitor",
   "title": "Usage Monitor",
   "description": "Real-time dashboard with diamond header, progress metrics, burn rate, predictions, and status bar",
   "dependencies": [

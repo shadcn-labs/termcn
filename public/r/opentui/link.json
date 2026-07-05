@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "link",
+  "name": "opentui/link",
   "title": "Link",
   "description": "OSC 8 clickable hyperlink",
   "dependencies": [

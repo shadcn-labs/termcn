@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "theme-carbonfox",
+  "name": "ink/theme-carbonfox",
   "title": "Carbonfox",
   "description": "Carbonfox - minimal dark theme.",
   "registryDependencies": [

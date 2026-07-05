@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "theme-matrix",
+  "name": "ink/theme-matrix",
   "title": "Matrix",
   "description": "Matrix - green code rain.",
   "registryDependencies": [

@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "notification-badge",
+  "name": "opentui/notification-badge",
   "title": "Notification Badge",
   "description": "Notification Badge component for OpenTUI React.",
   "dependencies": [

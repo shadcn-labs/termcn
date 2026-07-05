@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "tool-call",
+  "name": "ink/tool-call",
   "title": "Tool Call",
   "description": "Displays an AI tool invocation with status indicator, args, result, and elapsed time",
   "dependencies": [

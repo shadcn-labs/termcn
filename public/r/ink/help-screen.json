@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "help-screen",
+  "name": "ink/help-screen",
   "title": "Help Screen",
   "description": "Figlet banner + tagline + aligned Options/Commands help sections",
   "dependencies": [

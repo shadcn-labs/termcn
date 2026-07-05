@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "theme-catppuccin-frappe",
+  "name": "ink/theme-catppuccin-frappe",
   "title": "Catppuccin Frappe",
   "description": "Catppuccin Frappe - soothing pastel.",
   "registryDependencies": [

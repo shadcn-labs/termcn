@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "color-picker",
+  "name": "opentui/color-picker",
   "title": "Color Picker",
   "description": "Color picker with palette, hex, and RGB input",
   "dependencies": [
