@@ -1,4 +1,4 @@
-import type { Theme } from "@/components/ui/ink-theme-provider";
+import type { Theme } from "@/registry/bases/ink/ui/types";
 
 export const monokaiTheme: Theme = {
   border: {

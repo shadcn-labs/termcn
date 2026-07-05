@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import React from "react";
 
 import { useTheme } from "@/components/ui/ink-theme-provider";
-import type { BorderStyle } from "@/components/ui/ink-theme-provider";
+import type { BorderStyle } from "@/registry/bases/ink/ui/types";
 
 export interface WelcomeScreenProps {
   appName: string;

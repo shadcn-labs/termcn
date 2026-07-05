@@ -1,6 +1,6 @@
-import type { Theme as InkTheme } from "@/components/ui/ink-theme-provider";
 import { BASE_NAMES } from "@/registry/bases";
 import type { BaseName } from "@/registry/bases";
+import type { Theme as InkTheme } from "@/registry/bases/ink/ui/types";
 
 import { amoledTheme } from "./amoled";
 import { auraTheme } from "./aura";

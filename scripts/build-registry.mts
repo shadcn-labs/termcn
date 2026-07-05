@@ -38,19 +38,13 @@ const transformPublishedImports = (
   providerImport: "ink-theme-provider" | "opentui-theme-provider"
 ) =>
   content
+    .replaceAll("@/registry/bases/ink/ui/types", "@/components/ui/types")
+    .replaceAll("@/registry/bases/opentui/ui/types", "@/components/ui/types")
     .replaceAll("@/registry/bases/ink/themes/", "@/lib/terminal-themes/")
     .replaceAll("@/registry/bases/opentui/themes/", "@/lib/terminal-themes/")
     .replaceAll(
       `@/components/ui/${providerImport}`,
       "@/components/ui/theme-provider"
-    )
-    .replaceAll(
-      `from "./theme-provider"`,
-      `from "@/components/ui/theme-provider"`
-    )
-    .replaceAll(
-      `from './theme-provider'`,
-      `from "@/components/ui/theme-provider"`
     );
 
 const ensureDir = async (dir: string) => {

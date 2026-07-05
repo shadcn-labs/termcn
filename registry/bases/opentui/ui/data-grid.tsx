@@ -3,7 +3,7 @@ import { useKeyboard } from "@opentui/react";
 import { useState, useMemo } from "react";
 
 import { useTheme } from "@/components/ui/opentui-theme-provider";
-import type { BorderStyle } from "@/components/ui/opentui-theme-provider";
+import type { BorderStyle } from "@/registry/bases/opentui/ui/types";
 
 export interface DataGridColumn<T = Record<string, unknown>> {
   key: keyof T & string;

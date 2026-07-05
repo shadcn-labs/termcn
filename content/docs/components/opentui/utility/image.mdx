@@ -30,7 +30,29 @@ npx shadcn@latest add @termcn/opentui/image
 
 <Steps>
 
+<Step>Install the following dependencies:</Step>
+
+```bash
+npm install @opentui/react
+```
+
 <Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource
+  src="registry/bases/opentui/ui/types.ts"
+  title="components/ui/types.ts"
+/>
+
+<ComponentSource
+  src="registry/bases/opentui/themes/default.ts"
+  title="lib/terminal-themes/default.ts"
+/>
+
+<ComponentSource
+  base="opentui"
+  name="theme-provider"
+  title="components/ui/theme-provider.tsx"
+/>
 
 <ComponentSource base="opentui" name="image" title="components/ui/image.tsx" />
 

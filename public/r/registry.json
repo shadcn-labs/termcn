@@ -4,6 +4,22 @@
   "items": [
     {
       "categories": [
+        "core"
+      ],
+      "description": "Shared terminal theme and provider types.",
+      "files": [
+        {
+          "path": "registry/ui/types.ts",
+          "target": "components/ui/types.ts",
+          "type": "registry:file"
+        }
+      ],
+      "name": "ink/types",
+      "title": "Types",
+      "type": "registry:file"
+    },
+    {
+      "categories": [
         "feedback"
       ],
       "dependencies": [
@@ -1437,6 +1453,22 @@
       ],
       "title": "Number Input",
       "type": "registry:ui"
+    },
+    {
+      "categories": [
+        "core"
+      ],
+      "description": "Shared terminal theme and provider types.",
+      "files": [
+        {
+          "path": "registry/opentui/ui/types.ts",
+          "target": "components/ui/types.ts",
+          "type": "registry:file"
+        }
+      ],
+      "name": "opentui/types",
+      "title": "Types",
+      "type": "registry:file"
     },
     {
       "categories": [
@@ -3588,6 +3620,7 @@
       "title": "Theme Provider",
       "type": "registry:ui",
       "registryDependencies": [
+        "https://termcn.dev/r/opentui/types.json",
         "https://termcn.dev/r/opentui/theme-default.json"
       ]
     },
@@ -4590,7 +4623,7 @@
       ],
       "name": "ink/theme-catppuccin",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "Catppuccin",
       "type": "registry:file"
@@ -4609,7 +4642,7 @@
       ],
       "name": "ink/theme-default",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "Default",
       "type": "registry:file"
@@ -4628,7 +4661,7 @@
       ],
       "name": "ink/theme-dracula",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "Dracula",
       "type": "registry:file"
@@ -4647,7 +4680,7 @@
       ],
       "name": "ink/theme-high-contrast",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "High Contrast",
       "type": "registry:file"
@@ -4666,7 +4699,7 @@
       ],
       "name": "ink/theme-monokai",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "Monokai",
       "type": "registry:file"
@@ -4685,7 +4718,7 @@
       ],
       "name": "ink/theme-nord",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "Nord",
       "type": "registry:file"
@@ -4704,7 +4737,7 @@
       ],
       "name": "ink/theme-one-dark",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "One Dark",
       "type": "registry:file"
@@ -4723,7 +4756,11 @@
       ],
       "name": "ink/theme-provider",
       "title": "Theme Provider",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/types.json",
+        "https://termcn.dev/r/ink/theme-default.json"
+      ]
     },
     {
       "categories": [
@@ -4739,7 +4776,7 @@
       ],
       "name": "ink/theme-solarized",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "Solarized",
       "type": "registry:file"
@@ -4758,7 +4795,7 @@
       ],
       "name": "ink/theme-tokyo-night",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "Tokyo Night",
       "type": "registry:file"
@@ -4777,7 +4814,7 @@
       ],
       "name": "ink/theme-amoled",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "AMOLED",
       "type": "registry:file"
@@ -4796,7 +4833,7 @@
       ],
       "name": "ink/theme-aura",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "Aura",
       "type": "registry:file"
@@ -4815,7 +4852,7 @@
       ],
       "name": "ink/theme-ayu",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "Ayu",
       "type": "registry:file"
@@ -4834,7 +4871,7 @@
       ],
       "name": "ink/theme-carbonfox",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "Carbonfox",
       "type": "registry:file"
@@ -4853,7 +4890,7 @@
       ],
       "name": "ink/theme-catppuccin-frappe",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "Catppuccin Frappe",
       "type": "registry:file"
@@ -4872,7 +4909,7 @@
       ],
       "name": "ink/theme-catppuccin-macchiato",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "Catppuccin Macchiato",
       "type": "registry:file"
@@ -4891,7 +4928,7 @@
       ],
       "name": "ink/theme-cobalt2",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "Cobalt2",
       "type": "registry:file"
@@ -4910,7 +4947,7 @@
       ],
       "name": "ink/theme-cursor",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "Cursor",
       "type": "registry:file"
@@ -4929,7 +4966,7 @@
       ],
       "name": "ink/theme-everforest",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "Everforest",
       "type": "registry:file"
@@ -4948,7 +4985,7 @@
       ],
       "name": "ink/theme-flexoki",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "Flexoki",
       "type": "registry:file"
@@ -4967,7 +5004,7 @@
       ],
       "name": "ink/theme-github",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "GitHub",
       "type": "registry:file"
@@ -4986,7 +5023,7 @@
       ],
       "name": "ink/theme-gruvbox",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "Gruvbox",
       "type": "registry:file"
@@ -5005,7 +5042,7 @@
       ],
       "name": "ink/theme-kanagawa",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "Kanagawa",
       "type": "registry:file"
@@ -5024,7 +5061,7 @@
       ],
       "name": "ink/theme-lucent-orng",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "Lucent Orng",
       "type": "registry:file"
@@ -5043,7 +5080,7 @@
       ],
       "name": "ink/theme-material",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "Material",
       "type": "registry:file"
@@ -5062,7 +5099,7 @@
       ],
       "name": "ink/theme-matrix",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "Matrix",
       "type": "registry:file"
@@ -5081,7 +5118,7 @@
       ],
       "name": "ink/theme-mercury",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "Mercury",
       "type": "registry:file"
@@ -5100,7 +5137,7 @@
       ],
       "name": "ink/theme-nightowl",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "Night Owl",
       "type": "registry:file"
@@ -5119,7 +5156,7 @@
       ],
       "name": "ink/theme-oc-2",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "OC-2",
       "type": "registry:file"
@@ -5138,7 +5175,7 @@
       ],
       "name": "ink/theme-onedarkpro",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "One Dark Pro",
       "type": "registry:file"
@@ -5157,7 +5194,7 @@
       ],
       "name": "ink/theme-opencode",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "OpenCode",
       "type": "registry:file"
@@ -5176,7 +5213,7 @@
       ],
       "name": "ink/theme-orng",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "Orng",
       "type": "registry:file"
@@ -5195,7 +5232,7 @@
       ],
       "name": "ink/theme-osaka-jade",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "Osaka Jade",
       "type": "registry:file"
@@ -5214,7 +5251,7 @@
       ],
       "name": "ink/theme-palenight",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "Palenight",
       "type": "registry:file"
@@ -5233,7 +5270,7 @@
       ],
       "name": "ink/theme-rosepine",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "Rose Pine",
       "type": "registry:file"
@@ -5252,7 +5289,7 @@
       ],
       "name": "ink/theme-shadesofpurple",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "Shades of Purple",
       "type": "registry:file"
@@ -5271,7 +5308,7 @@
       ],
       "name": "ink/theme-synthwave84",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "Synthwave '84",
       "type": "registry:file"
@@ -5290,7 +5327,7 @@
       ],
       "name": "ink/theme-vercel",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "Vercel",
       "type": "registry:file"
@@ -5309,7 +5346,7 @@
       ],
       "name": "ink/theme-vesper",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "Vesper",
       "type": "registry:file"
@@ -5328,7 +5365,7 @@
       ],
       "name": "ink/theme-zenburn",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "Zenburn",
       "type": "registry:file"
@@ -5768,7 +5805,7 @@
       ],
       "name": "opentui/theme-catppuccin",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "Catppuccin",
       "type": "registry:file"
@@ -5787,7 +5824,7 @@
       ],
       "name": "opentui/theme-default",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "Default",
       "type": "registry:file"
@@ -5806,7 +5843,7 @@
       ],
       "name": "opentui/theme-dracula",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "Dracula",
       "type": "registry:file"
@@ -5825,7 +5862,7 @@
       ],
       "name": "opentui/theme-high-contrast",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "High Contrast",
       "type": "registry:file"
@@ -5844,7 +5881,7 @@
       ],
       "name": "opentui/theme-monokai",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "Monokai",
       "type": "registry:file"
@@ -5863,7 +5900,7 @@
       ],
       "name": "opentui/theme-nord",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "Nord",
       "type": "registry:file"
@@ -5882,7 +5919,7 @@
       ],
       "name": "opentui/theme-one-dark",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "One Dark",
       "type": "registry:file"
@@ -5901,7 +5938,7 @@
       ],
       "name": "opentui/theme-solarized",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "Solarized",
       "type": "registry:file"
@@ -5920,7 +5957,7 @@
       ],
       "name": "opentui/theme-tokyo-night",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "Tokyo Night",
       "type": "registry:file"
@@ -5939,7 +5976,7 @@
       ],
       "name": "opentui/theme-amoled",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "AMOLED",
       "type": "registry:file"
@@ -5958,7 +5995,7 @@
       ],
       "name": "opentui/theme-aura",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "Aura",
       "type": "registry:file"
@@ -5977,7 +6014,7 @@
       ],
       "name": "opentui/theme-ayu",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "Ayu",
       "type": "registry:file"
@@ -5996,7 +6033,7 @@
       ],
       "name": "opentui/theme-carbonfox",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "Carbonfox",
       "type": "registry:file"
@@ -6015,7 +6052,7 @@
       ],
       "name": "opentui/theme-catppuccin-frappe",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "Catppuccin Frappe",
       "type": "registry:file"
@@ -6034,7 +6071,7 @@
       ],
       "name": "opentui/theme-catppuccin-macchiato",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "Catppuccin Macchiato",
       "type": "registry:file"
@@ -6053,7 +6090,7 @@
       ],
       "name": "opentui/theme-cobalt2",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "Cobalt2",
       "type": "registry:file"
@@ -6072,7 +6109,7 @@
       ],
       "name": "opentui/theme-cursor",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "Cursor",
       "type": "registry:file"
@@ -6091,7 +6128,7 @@
       ],
       "name": "opentui/theme-everforest",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "Everforest",
       "type": "registry:file"
@@ -6110,7 +6147,7 @@
       ],
       "name": "opentui/theme-flexoki",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "Flexoki",
       "type": "registry:file"
@@ -6129,7 +6166,7 @@
       ],
       "name": "opentui/theme-github",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "GitHub",
       "type": "registry:file"
@@ -6148,7 +6185,7 @@
       ],
       "name": "opentui/theme-gruvbox",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "Gruvbox",
       "type": "registry:file"
@@ -6167,7 +6204,7 @@
       ],
       "name": "opentui/theme-kanagawa",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "Kanagawa",
       "type": "registry:file"
@@ -6186,7 +6223,7 @@
       ],
       "name": "opentui/theme-lucent-orng",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "Lucent Orng",
       "type": "registry:file"
@@ -6205,7 +6242,7 @@
       ],
       "name": "opentui/theme-material",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "Material",
       "type": "registry:file"
@@ -6224,7 +6261,7 @@
       ],
       "name": "opentui/theme-matrix",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "Matrix",
       "type": "registry:file"
@@ -6243,7 +6280,7 @@
       ],
       "name": "opentui/theme-mercury",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "Mercury",
       "type": "registry:file"
@@ -6262,7 +6299,7 @@
       ],
       "name": "opentui/theme-nightowl",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "Night Owl",
       "type": "registry:file"
@@ -6281,7 +6318,7 @@
       ],
       "name": "opentui/theme-oc-2",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "OC-2",
       "type": "registry:file"
@@ -6300,7 +6337,7 @@
       ],
       "name": "opentui/theme-onedarkpro",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "One Dark Pro",
       "type": "registry:file"
@@ -6319,7 +6356,7 @@
       ],
       "name": "opentui/theme-opencode",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "OpenCode",
       "type": "registry:file"
@@ -6338,7 +6375,7 @@
       ],
       "name": "opentui/theme-orng",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "Orng",
       "type": "registry:file"
@@ -6357,7 +6394,7 @@
       ],
       "name": "opentui/theme-osaka-jade",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "Osaka Jade",
       "type": "registry:file"
@@ -6376,7 +6413,7 @@
       ],
       "name": "opentui/theme-palenight",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "Palenight",
       "type": "registry:file"
@@ -6395,7 +6432,7 @@
       ],
       "name": "opentui/theme-rosepine",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "Rose Pine",
       "type": "registry:file"
@@ -6414,7 +6451,7 @@
       ],
       "name": "opentui/theme-shadesofpurple",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "Shades of Purple",
       "type": "registry:file"
@@ -6433,7 +6470,7 @@
       ],
       "name": "opentui/theme-synthwave84",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "Synthwave '84",
       "type": "registry:file"
@@ -6452,7 +6489,7 @@
       ],
       "name": "opentui/theme-vercel",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "Vercel",
       "type": "registry:file"
@@ -6471,7 +6508,7 @@
       ],
       "name": "opentui/theme-vesper",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "Vesper",
       "type": "registry:file"
@@ -6490,7 +6527,7 @@
       ],
       "name": "opentui/theme-zenburn",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "Zenburn",
       "type": "registry:file"
@@ -6509,7 +6546,7 @@
       ],
       "name": "ink/theme-high-contrast-light",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/types.json"
       ],
       "title": "High Contrast Light",
       "type": "registry:file"
@@ -6528,7 +6565,7 @@
       ],
       "name": "opentui/theme-high-contrast-light",
       "registryDependencies": [
-        "https://termcn.dev/r/opentui/theme-provider.json"
+        "https://termcn.dev/r/opentui/types.json"
       ],
       "title": "High Contrast Light",
       "type": "registry:file"

@@ -2,8 +2,8 @@ import { Box, Text } from "ink";
 import React, { useState, useMemo } from "react";
 
 import { useTheme } from "@/components/ui/ink-theme-provider";
-import type { BorderStyle } from "@/components/ui/ink-theme-provider";
 import { useInput } from "@/hooks/use-input";
+import type { BorderStyle } from "@/registry/bases/ink/ui/types";
 
 export interface DataGridColumn<T = Record<string, unknown>> {
   key: keyof T & string;

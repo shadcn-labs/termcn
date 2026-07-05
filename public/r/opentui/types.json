@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/types",
+  "title": "Types",
+  "description": "Shared terminal theme and provider types.",
+  "files": [
+    {
+      "path": "registry/opentui/ui/types.ts",
+      "content": "import type { ReactNode } from \"react\";\n\nexport type BorderStyle = \"single\" | \"double\" | \"rounded\" | \"heavy\";\n\nexport interface ColorTokens {\n  primary: string;\n  primaryForeground: string;\n  secondary: string;\n  secondaryForeground: string;\n  accent: string;\n  accentForeground: string;\n  success: string;\n  successForeground: string;\n  warning: string;\n  warningForeground: string;\n  error: string;\n  errorForeground: string;\n  info: string;\n  infoForeground: string;\n  background: string;\n  foreground: string;\n  muted: string;\n  mutedForeground: string;\n  border: string;\n  focusRing: string;\n  selection: string;\n  selectionForeground: string;\n}\n\nexport interface SpacingTokens {\n  0: number;\n  1: number;\n  2: number;\n  3: number;\n  4: number;\n  6: number;\n  8: number;\n}\n\nexport interface TypographyTokens {\n  bold: boolean;\n  sm: string;\n  base: string;\n  lg: string;\n  xl: string;\n}\n\nexport interface BorderTokens {\n  style: BorderStyle;\n  color: string;\n  focusColor: string;\n}\n\nexport interface Theme {\n  name: string;\n  colors: ColorTokens;\n  spacing: SpacingTokens;\n  typography: TypographyTokens;\n  border: BorderTokens;\n}\n\nexport interface MotionContextValue {\n  reduced: boolean;\n}\n\nexport interface UnicodeContextValue {\n  unicode: boolean;\n}\n\nexport interface ThemeContextValue {\n  setTheme: (theme: Theme) => void;\n  theme: Theme;\n}\n\nexport interface ThemeProviderProps {\n  children: ReactNode;\n  noUnicode?: boolean;\n  reducedMotion?: boolean;\n  theme?: Theme;\n}\n\nexport interface AutoThemeProviderProps {\n  children: ReactNode;\n  darkTheme: Theme;\n  lightTheme: Theme;\n}\n",
+      "type": "registry:file",
+      "target": "components/ui/types.ts"
+    }
+  ],
+  "categories": [
+    "core"
+  ],
+  "type": "registry:file"
+}

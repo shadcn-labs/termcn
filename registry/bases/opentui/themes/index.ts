@@ -1,6 +1,6 @@
-import type { Theme as OpenTuiTheme } from "@/components/ui/opentui-theme-provider";
 import { BASE_NAMES } from "@/registry/bases";
 import type { BaseName } from "@/registry/bases";
+import type { Theme as OpenTuiTheme } from "@/registry/bases/opentui/ui/types";
 
 import { amoledTheme } from "./amoled";
 import { auraTheme } from "./aura";

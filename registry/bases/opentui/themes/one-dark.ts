@@ -1,4 +1,4 @@
-import type { Theme } from "@/components/ui/opentui-theme-provider";
+import type { Theme } from "@/registry/bases/opentui/ui/types";
 
 export const oneDarkTheme: Theme = {
   border: {

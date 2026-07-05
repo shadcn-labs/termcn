@@ -1,7 +1,7 @@
 import { Box, Text } from "ink";
 
 import { useTheme } from "@/components/ui/ink-theme-provider";
-import type { BorderStyle } from "@/components/ui/ink-theme-provider";
+import type { BorderStyle } from "@/registry/bases/ink/ui/types";
 
 export interface CodeProps {
   children: string;

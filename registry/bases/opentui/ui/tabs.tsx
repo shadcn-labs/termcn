@@ -4,7 +4,7 @@ import { useState } from "react";
 import type { ReactNode } from "react";
 
 import { useTheme } from "@/components/ui/opentui-theme-provider";
-import type { BorderStyle } from "@/components/ui/opentui-theme-provider";
+import type { BorderStyle } from "@/registry/bases/opentui/ui/types";
 
 export interface Tab {
   key: string;
