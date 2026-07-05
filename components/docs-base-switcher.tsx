@@ -1,15 +1,50 @@
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
-import { BASES, getBase } from "@/registry/bases";
+import { BASE_NAMES, BASES, getBase } from "@/registry/bases";
+import type { BaseName } from "@/registry/bases";
+
+export const getDocsBaseSwitcherProps = (
+  slug: string[] | undefined
+): {
+  section: "components" | "themes";
+  base: string;
+  slug: string;
+} | null => {
+  if (!slug || slug.length < 3) {
+    return null;
+  }
+
+  const [section, base, ...rest] = slug;
+
+  if (
+    !BASE_NAMES.includes(base as BaseName) ||
+    (section !== "components" && section !== "themes") ||
+    !rest.length
+  ) {
+    return null;
+  }
+
+  if (section === "themes") {
+    return { base, section, slug: rest[0] };
+  }
+
+  if (rest.length < 2) {
+    return null;
+  }
+
+  return { base, section, slug: rest.join("/") };
+};
 
 export const DocsBaseSwitcher = ({
   base,
-  component,
+  slug,
+  section,
   className,
 }: {
   base: string;
-  component: string;
+  slug: string;
+  section: "components" | "themes";
   className?: string;
 }) => {
   const activeBase = getBase(base as (typeof BASES)[number]["name"]);
@@ -19,7 +54,7 @@ export const DocsBaseSwitcher = ({
       {BASES.map((baseItem) => (
         <Link
           key={baseItem.name}
-          href={`/docs/components/${baseItem.name}/${component}`}
+          href={`/docs/${section}/${baseItem.name}/${slug}`}
           data-active={base === baseItem.name}
           className="relative inline-flex items-center justify-center gap-1 pt-1 pb-0.5 text-base font-medium text-muted-foreground transition-colors after:absolute after:inset-x-0 after:bottom-[-4px] after:h-0.5 after:bg-foreground after:opacity-0 after:transition-opacity hover:text-foreground data-[active=true]:text-foreground data-[active=true]:after:opacity-100"
         >

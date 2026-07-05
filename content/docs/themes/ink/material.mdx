@@ -1,0 +1,57 @@
+---
+title: "Material"
+description: "Material Design color palette theme."
+---
+
+<ComponentPreview base="ink" name="theme-showcase" theme="material" hideCode />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+```bash
+npx shadcn@latest add @termcn/ink/theme-material
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource
+  src="registry/bases/ink/themes/material.ts"
+  title="lib/terminal-themes/material.ts"
+/>
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import { ThemeProvider } from "@/components/ui/theme-provider";
+import { materialTheme } from "@/lib/terminal-themes/material";
+import { Badge } from "@/components/ui/badge";
+
+export function Example() {
+  return (
+    <ThemeProvider theme={materialTheme}>
+      <Badge variant="info">{"Material"}</Badge>
+    </ThemeProvider>
+  );
+}
+```

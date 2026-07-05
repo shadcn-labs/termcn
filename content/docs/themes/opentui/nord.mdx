@@ -1,0 +1,57 @@
+---
+title: "Nord"
+description: "A cool Nord palette tuned for terminal contrast."
+---
+
+<ComponentPreview base="opentui" name="theme-showcase" theme="nord" hideCode />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+```bash
+npx shadcn@latest add @termcn/opentui/theme-nord
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource
+  src="registry/bases/opentui/themes/nord.ts"
+  title="lib/terminal-themes/nord.ts"
+/>
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import { ThemeProvider } from "@/components/ui/theme-provider";
+import { nordTheme } from "@/lib/terminal-themes/nord";
+import { Badge } from "@/components/ui/badge";
+
+export function Example() {
+  return (
+    <ThemeProvider theme={nordTheme}>
+      <Badge variant="info">Nord</Badge>
+    </ThemeProvider>
+  );
+}
+```

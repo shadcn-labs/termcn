@@ -65,6 +65,11 @@ const nextConfig = {
         permanent: true,
         source: `${ROUTES.DOCS_TEMPLATES}/:template((?!ink|opentui)[^/]+)`,
       },
+      {
+        destination: `${ROUTES.DOCS}/themes/ink/:theme`,
+        permanent: true,
+        source: `${ROUTES.DOCS}/themes/:theme((?!ink|opentui)[^/]+)`,
+      },
     ];
   },
   rewrites() {

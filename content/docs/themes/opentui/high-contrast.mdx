@@ -1,0 +1,64 @@
+---
+title: "High Contrast"
+description: "High contrast themes for dark and light terminal backgrounds."
+---
+
+<ComponentPreview
+  base="opentui"
+  name="theme-showcase"
+  theme="high-contrast"
+  hideCode
+/>
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+```bash
+npx shadcn@latest add @termcn/opentui/theme-high-contrast
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource
+  src="registry/bases/opentui/themes/high-contrast.ts"
+  title="lib/terminal-themes/high-contrast.ts"
+/>
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import { ThemeProvider } from "@/components/ui/theme-provider";
+import { highContrastTheme } from "@/lib/terminal-themes/high-contrast";
+import { Badge } from "@/components/ui/badge";
+
+export function Example() {
+  return (
+    <ThemeProvider theme={highContrastTheme}>
+      <Badge variant="info">High Contrast</Badge>
+    </ThemeProvider>
+  );
+}
+```
+
+This file also exports `highContrastLightTheme` for bright terminal backgrounds.

@@ -1,0 +1,57 @@
+---
+title: "Vercel"
+description: "Vercel's official brand colors."
+---
+
+<ComponentPreview base="ink" name="theme-showcase" theme="vercel" hideCode />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+```bash
+npx shadcn@latest add @termcn/ink/theme-vercel
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource
+  src="registry/bases/ink/themes/vercel.ts"
+  title="lib/terminal-themes/vercel.ts"
+/>
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import { ThemeProvider } from "@/components/ui/theme-provider";
+import { vercelTheme } from "@/lib/terminal-themes/vercel";
+import { Badge } from "@/components/ui/badge";
+
+export function Example() {
+  return (
+    <ThemeProvider theme={vercelTheme}>
+      <Badge variant="info">{"Vercel"}</Badge>
+    </ThemeProvider>
+  );
+}
+```
