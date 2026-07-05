@@ -90,6 +90,7 @@ const nextConfig = {
   },
   turbopack: {
     resolveAlias: {
+      "@opentui/react": "@gridland/utils",
       "@opentui/react/jsx-dev-runtime": opentuiJsxDevRuntimeTurbo,
       "@opentui/react/jsx-runtime": opentuiJsxRuntimeTurbo,
       ink: "ink-web",

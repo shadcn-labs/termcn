@@ -15,6 +15,7 @@
     "prepare": "lefthook install"
   },
   "dependencies": {
+    "@gridland/utils": "^0.4.3",
     "@gridland/web": "^0.4.3",
     "@vercel/analytics": "^2.0.1",
     "@web-kits/audio": "^0.1.0",
