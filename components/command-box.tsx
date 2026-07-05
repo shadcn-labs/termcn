@@ -14,6 +14,11 @@ import { usePackageManager } from "@/hooks/use-package-manager";
 import { cn } from "@/lib/utils";
 import registry from "@/registry.json";
 
+const toInstallSlug = (name: string) =>
+  name.startsWith("opentui-")
+    ? `opentui/${name.slice("opentui-".length)}`
+    : `ink/${name}`;
+
 const pmCommands = {
   bun: "bunx --bun",
   npm: "npx",
@@ -22,7 +27,7 @@ const pmCommands = {
 };
 
 const registryItemNames = registry.items
-  .map((item) => item.name)
+  .map((item) => toInstallSlug(item.name))
   .toSorted((a, b) =>
     a.localeCompare(b, "en", {
       sensitivity: "base",
