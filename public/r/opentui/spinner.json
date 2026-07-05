@@ -9,7 +9,7 @@
   ],
   "registryDependencies": [
     "https://termcn.dev/r/opentui/theme-provider.json",
-    "https://termcn.dev/r/opentui/use-animation.json"
+    "https://termcn.dev/r/ink/use-animation.json"
   ],
   "files": [
     {

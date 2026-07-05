@@ -8,7 +8,8 @@
     "mnemonist"
   ],
   "registryDependencies": [
-    "https://termcn.dev/r/ink/theme-provider.json"
+    "https://termcn.dev/r/ink/theme-provider.json",
+    "https://termcn.dev/r/ink/use-input.json"
   ],
   "files": [
     {

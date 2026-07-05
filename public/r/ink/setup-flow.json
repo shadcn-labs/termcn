@@ -9,7 +9,8 @@
   "registryDependencies": [
     "https://termcn.dev/r/ink/big-text.json",
     "https://termcn.dev/r/ink/use-animation.json",
-    "https://termcn.dev/r/ink/theme-provider.json"
+    "https://termcn.dev/r/ink/theme-provider.json",
+    "https://termcn.dev/r/ink/use-input.json"
   ],
   "files": [
     {

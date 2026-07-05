@@ -7,7 +7,8 @@
     "ink"
   ],
   "registryDependencies": [
-    "https://termcn.dev/r/ink/theme-provider.json"
+    "https://termcn.dev/r/ink/theme-provider.json",
+    "https://termcn.dev/r/ink/use-interval.json"
   ],
   "files": [
     {

@@ -8,7 +8,7 @@
   ],
   "registryDependencies": [
     "https://termcn.dev/r/opentui/theme-provider.json",
-    "https://termcn.dev/r/opentui/use-clipboard.json"
+    "https://termcn.dev/r/ink/use-clipboard.json"
   ],
   "files": [
     {
