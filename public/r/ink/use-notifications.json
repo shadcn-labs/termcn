@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-notifications",
+  "title": "Use Notifications",
+  "description": "Notifications state and context helpers.",
+  "files": [
+    {
+      "path": "registry/hooks/use-notifications.ts",
+      "content": "import * as React from \"react\";\n\nexport type NotificationVariant = \"info\" | \"success\" | \"warning\" | \"error\";\n\nexport interface Notification {\n  body?: string;\n  duration?: number;\n  id: string;\n  persistent?: boolean;\n  read: boolean;\n  timestamp: number;\n  title: string;\n  variant: NotificationVariant;\n}\n\nexport interface NotificationsContextValue {\n  clear: () => void;\n  dismiss: (id: string) => void;\n  markRead: (id: string) => void;\n  notifications: Notification[];\n  notify: (options: Omit<Notification, \"id\" | \"read\" | \"timestamp\">) => string;\n}\n\nlet counter = 0;\n\nexport const NotificationsContext =\n  React.createContext<NotificationsContextValue>({\n    clear: () => {\n      /* noop */\n    },\n    dismiss: () => {\n      /* noop */\n    },\n    markRead: () => {\n      /* noop */\n    },\n    notifications: [],\n    notify: () => \"\",\n  });\n\nexport const useNotifications = (): NotificationsContextValue =>\n  React.useContext(NotificationsContext);\n\nexport const useNotificationsProvider = (): NotificationsContextValue => {\n  const [notifications, setNotifications] = React.useState<Notification[]>([]);\n\n  const notify = React.useCallback(\n    (options: Omit<Notification, \"id\" | \"read\" | \"timestamp\">) => {\n      const id = `notif-${(counter += 1)}`;\n      setNotifications((current) => [\n        ...current,\n        {\n          ...options,\n          id,\n          read: false,\n          timestamp: Date.now(),\n        },\n      ]);\n      return id;\n    },\n    []\n  );\n\n  const dismiss = React.useCallback((id: string) => {\n    setNotifications((current) =>\n      current.filter((notification) => notification.id !== id)\n    );\n  }, []);\n\n  const markRead = React.useCallback((id: string) => {\n    setNotifications((current) =>\n      current.map((notification) =>\n        notification.id === id ? { ...notification, read: true } : notification\n      )\n    );\n  }, []);\n\n  const clear = React.useCallback(() => setNotifications([]), []);\n\n  return { clear, dismiss, markRead, notifications, notify };\n};\n",
+      "type": "registry:hook"
+    }
+  ],
+  "categories": [
+    "core"
+  ],
+  "type": "registry:hook"
+}

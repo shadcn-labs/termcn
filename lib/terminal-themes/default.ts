@@ -1,1 +1,1 @@
-export { defaultTheme } from "@/registry/themes/default";
+export { defaultTheme } from "@/registry/bases/ink/themes/default";

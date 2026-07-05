@@ -2,7 +2,8 @@
 import { useKeyboard } from "@opentui/react";
 import { useEffect, useState } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
+import type { BorderStyle } from "@/components/ui/opentui-theme-provider";
 
 export interface TextInputProps {
   value?: string;
@@ -18,14 +19,7 @@ export interface TextInputProps {
   autoFocus?: boolean;
   id?: string;
   bordered?: boolean;
-  borderStyle?:
-    | "single"
-    | "double"
-    | "round"
-    | "bold"
-    | "singleDouble"
-    | "doubleSingle"
-    | "classic";
+  borderStyle?: BorderStyle;
   paddingX?: number;
   cursor?: string;
 }
@@ -44,7 +38,7 @@ export const TextInput = ({
   autoFocus: _autoFocus = false,
   id: _id,
   bordered = true,
-  borderStyle = "round",
+  borderStyle = "rounded",
   paddingX = 1,
   cursor = "█",
 }: TextInputProps) => {

@@ -1,7 +1,7 @@
 /* @jsxImportSource @opentui/react */
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
 
 export type HeadingLevel = 1 | 2 | 3 | 4;
 

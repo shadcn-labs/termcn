@@ -4,9 +4,9 @@ import { TUI } from "@gridland/web";
 import { useEffect, useMemo } from "react";
 import type { CSSProperties, ReactNode } from "react";
 
-import { ThemeProvider } from "@/components/ui/theme-provider";
+import { ThemeProvider } from "@/components/ui/opentui-theme-provider";
 import { useTerminalTheme } from "@/hooks/use-terminal-theme";
-import { terminalThemeMap } from "@/lib/terminal-themes";
+import { opentuiTerminalThemeMap } from "@/lib/terminal-themes";
 
 const TERMINAL_LINE_HEIGHT = 18;
 const TERMINAL_PADDING = 20;
@@ -16,7 +16,7 @@ const getTerminalHeight = (rows: number): number =>
 
 export interface OpenTuiPreviewProps {
   children: ReactNode;
-  theme?: keyof typeof terminalThemeMap;
+  theme?: keyof typeof opentuiTerminalThemeMap;
   rows?: number;
   style?: CSSProperties;
 }
@@ -37,7 +37,7 @@ const OpenTuiPreview = ({
   }, [theme, setTerminalThemeKey]);
 
   const baseTheme = useMemo(
-    () => terminalThemeMap[terminalThemeKey],
+    () => opentuiTerminalThemeMap[terminalThemeKey],
     [terminalThemeKey]
   );
 

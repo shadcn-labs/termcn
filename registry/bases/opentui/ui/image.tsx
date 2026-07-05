@@ -4,7 +4,7 @@ import * as path from "node:path";
 
 import { useEffect, useState } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
 
 export type ImageProtocol = "auto" | "iterm2" | "kitty" | "ascii";
 

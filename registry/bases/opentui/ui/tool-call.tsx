@@ -2,7 +2,7 @@
 import { useKeyboard } from "@opentui/react";
 import { useEffect, useRef, useState } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
 
 export type ToolCallStatus = "pending" | "running" | "success" | "error";
 

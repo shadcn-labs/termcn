@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "spacer",
+  "title": "Spacer",
+  "description": "Flexible space between flex children",
+  "dependencies": [
+    "ink"
+  ],
+  "files": [
+    {
+      "path": "registry/ui/spacer.tsx",
+      "content": "import { Box } from \"ink\";\n\nexport interface SpacerProps {\n  size?: number;\n  direction?: \"horizontal\" | \"vertical\";\n}\n\nexport const Spacer = ({ size, direction = \"horizontal\" }: SpacerProps) => {\n  if (size === undefined) {\n    return <Box flexGrow={1} />;\n  }\n\n  if (direction === \"vertical\") {\n    return <Box height={size} />;\n  }\n\n  return <Box width={size} />;\n};\n",
+      "type": "registry:ui"
+    }
+  ],
+  "categories": [
+    "layout"
+  ],
+  "type": "registry:ui"
+}

@@ -3,7 +3,7 @@ import { useKeyboard } from "@opentui/react";
 import type { Key } from "react";
 import { useMemo, useState } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
 
 export interface Column<T = Record<string, unknown>> {
   key: keyof T & string;

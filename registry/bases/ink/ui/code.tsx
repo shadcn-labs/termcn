@@ -1,19 +1,13 @@
 import { Box, Text } from "ink";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/ink-theme-provider";
+import type { BorderStyle } from "@/components/ui/ink-theme-provider";
 
 export interface CodeProps {
   children: string;
   language?: string;
   inline?: boolean;
-  borderStyle?:
-    | "single"
-    | "double"
-    | "round"
-    | "bold"
-    | "singleDouble"
-    | "doubleSingle"
-    | "classic";
+  borderStyle?: BorderStyle;
   showLineNumbers?: boolean;
   lineNumberSeparator?: string;
   keywordColor?: string;

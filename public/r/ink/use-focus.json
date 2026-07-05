@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-focus",
+  "title": "Use Focus",
+  "description": "Focus helper wrapping Ink's useFocus.",
+  "dependencies": [
+    "ink"
+  ],
+  "files": [
+    {
+      "path": "registry/hooks/use-focus.ts",
+      "content": "import { useFocus as inkUseFocus } from \"ink\";\n\nexport const useFocus = (options?: {\n  autoFocus?: boolean;\n  id?: string;\n  isActive?: boolean;\n}) => inkUseFocus(options);\n",
+      "type": "registry:hook"
+    }
+  ],
+  "categories": [
+    "core"
+  ],
+  "type": "registry:hook"
+}

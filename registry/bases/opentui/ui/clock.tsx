@@ -1,7 +1,7 @@
 /* @jsxImportSource @opentui/react */
 import React, { useState, useEffect, useCallback } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
 
 export interface ClockProps {
   format?: "12h" | "24h";

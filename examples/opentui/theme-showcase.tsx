@@ -1,4 +1,4 @@
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
 import { Box } from "@/registry/bases/opentui/ui/box";
 
 export default function ThemeShowcasePreview() {

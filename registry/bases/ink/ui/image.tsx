@@ -4,7 +4,7 @@ import * as path from "node:path";
 import { Box, Text } from "ink";
 import React, { useEffect, useState } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/ink-theme-provider";
 
 export type ImageProtocol = "auto" | "iterm2" | "kitty" | "ascii";
 

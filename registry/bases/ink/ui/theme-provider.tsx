@@ -1,8 +1,8 @@
 import * as React from "react";
 
-import { defaultTheme } from "@/lib/terminal-themes/default";
+import { defaultTheme } from "@/registry/bases/ink/themes/default";
 
-type BorderStyle =
+export type BorderStyle =
   | "single"
   | "double"
   | "round"
@@ -131,12 +131,12 @@ export const useMotion = (): MotionContextValue =>
 export const useUnicode = (): boolean =>
   React.useContext(UnicodeContext).unicode;
 
-interface ThemeContextValue {
+export interface ThemeContextValue {
   setTheme: (theme: Theme) => void;
   theme: Theme;
 }
 
-const ThemeContext = React.createContext<ThemeContextValue>({
+export const ThemeContext = React.createContext<ThemeContextValue>({
   setTheme: () => {
     /* noop */
   },

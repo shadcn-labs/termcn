@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "select",
+  "title": "Select",
+  "description": "Single-select dropdown with arrow-key navigation",
+  "dependencies": [
+    "ink"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/ink/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/ui/select.tsx",
+      "content": "import { Box, Text } from \"ink\";\nimport React, { useState } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\nimport { useInput } from \"@/hooks/use-input\";\n\nexport interface SelectOption<T = string> {\n  value: T;\n  label: string;\n  hint?: string;\n  disabled?: boolean;\n}\n\nexport interface SelectProps<T = string> {\n  options: SelectOption<T>[];\n  value?: T;\n  onChange?: (value: T) => void;\n  onSubmit?: (value: T) => void;\n  label?: string;\n  cursor?: string;\n  cursorColor?: string;\n}\n\nexport const Select = <T = string,>({\n  options,\n  value: controlledValue,\n  onChange,\n  onSubmit,\n  label,\n  cursor = \"›\",\n  cursorColor,\n}: SelectProps<T>) => {\n  const theme = useTheme();\n  const [activeIndex, setActiveIndex] = useState(0);\n\n  const resolvedCursorColor = cursorColor ?? theme.colors.primary;\n\n  useInput((input, key) => {\n    if (key.upArrow) {\n      setActiveIndex((i) => {\n        let next = i - 1;\n        while (next >= 0 && options[next]?.disabled) {\n          next -= 1;\n        }\n        return next < 0 ? i : next;\n      });\n    } else if (key.downArrow) {\n      setActiveIndex((i) => {\n        let next = i + 1;\n        while (next < options.length && options[next]?.disabled) {\n          next += 1;\n        }\n        return next >= options.length ? i : next;\n      });\n    } else if (key.return) {\n      const opt = options[activeIndex];\n      if (opt && !opt.disabled) {\n        onChange?.(opt.value);\n        onSubmit?.(opt.value);\n      }\n    }\n  });\n\n  return (\n    <Box flexDirection=\"column\">\n      {label && <Text bold>{label}</Text>}\n      {options.map((opt, idx) => {\n        const isActive = idx === activeIndex;\n        const isSelected =\n          controlledValue !== undefined && opt.value === controlledValue;\n\n        let optColor: string;\n        if (opt.disabled) {\n          optColor = theme.colors.mutedForeground;\n        } else if (isActive) {\n          optColor = resolvedCursorColor;\n        } else {\n          optColor = theme.colors.foreground;\n        }\n\n        return (\n          <Box key={idx} gap={1}>\n            <Text color={isActive ? resolvedCursorColor : undefined}>\n              {isActive ? cursor : \" \"}\n            </Text>\n            <Text\n              color={optColor}\n              bold={isActive || isSelected}\n              dimColor={opt.disabled}\n            >\n              {opt.label}\n            </Text>\n            {opt.hint && (\n              <Text color={theme.colors.mutedForeground} dimColor>\n                {opt.hint}\n              </Text>\n            )}\n          </Box>\n        );\n      })}\n    </Box>\n  );\n};\n",
+      "type": "registry:ui"
+    }
+  ],
+  "categories": [
+    "selection"
+  ],
+  "type": "registry:ui"
+}

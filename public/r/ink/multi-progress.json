@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "multi-progress",
+  "title": "Multi Progress",
+  "description": "Parallel progress display for package managers, build pipelines, and deploy tools",
+  "dependencies": [
+    "ink"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/ink/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/ui/multi-progress.tsx",
+      "content": "import { Box, Text } from \"ink\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport type MultiProgressStatus = \"pending\" | \"running\" | \"done\" | \"error\";\n\nexport interface MultiProgressItem {\n  id: string;\n  label: string;\n  value: number;\n  total: number;\n  status?: MultiProgressStatus;\n  statusText?: string;\n}\n\nexport interface MultiProgressProps {\n  items: MultiProgressItem[];\n  barWidth?: number;\n  labelWidth?: number;\n  compact?: boolean;\n  showPercent?: boolean;\n}\n\nconst truncate = (s: string, n: number): string =>\n  s.length > n ? `${s.slice(0, n - 1)}…` : s.padEnd(n);\n\nexport const MultiProgress = ({\n  items,\n  barWidth = 20,\n  labelWidth = 20,\n  compact = false,\n  showPercent = true,\n}: MultiProgressProps) => {\n  const theme = useTheme();\n\n  const statusColor = (status: MultiProgressStatus | undefined): string => {\n    switch (status) {\n      case \"done\": {\n        return theme.colors.success;\n      }\n      case \"error\": {\n        return theme.colors.error;\n      }\n      case \"pending\": {\n        return theme.colors.mutedForeground;\n      }\n      default: {\n        return theme.colors.primary;\n      }\n    }\n  };\n\n  const renderBar = (item: MultiProgressItem): string => {\n    const pct = item.total > 0 ? Math.min(1, item.value / item.total) : 0;\n    const filled = Math.round(pct * barWidth);\n    const empty = barWidth - filled;\n    return `${\"█\".repeat(filled)}${\"░\".repeat(empty)}`;\n  };\n\n  return (\n    <Box flexDirection=\"column\">\n      {items.map((item) => {\n        const pct =\n          item.total > 0\n            ? Math.min(100, Math.round((item.value / item.total) * 100))\n            : 0;\n        const color = statusColor(item.status);\n        const bar = renderBar(item);\n        const label = truncate(item.label, labelWidth);\n\n        if (compact) {\n          return (\n            <Box key={item.id} flexDirection=\"row\" gap={1}>\n              <Text color={color}>{label}</Text>\n              <Text color={theme.colors.mutedForeground}>[</Text>\n              <Text color={color}>{bar}</Text>\n              <Text color={theme.colors.mutedForeground}>]</Text>\n              {showPercent && (\n                <Text color={theme.colors.mutedForeground}>\n                  {String(pct).padStart(3)}%\n                </Text>\n              )}\n              {item.statusText && (\n                <Text color={theme.colors.mutedForeground} dimColor>\n                  {item.statusText}\n                </Text>\n              )}\n            </Box>\n          );\n        }\n\n        return (\n          <Box key={item.id} flexDirection=\"column\" marginBottom={0}>\n            <Box flexDirection=\"row\" gap={1}>\n              <Text bold color={color}>\n                {label}\n              </Text>\n              {item.statusText && (\n                <Text color={theme.colors.mutedForeground} dimColor>\n                  {item.statusText}\n                </Text>\n              )}\n            </Box>\n            <Box flexDirection=\"row\" gap={1}>\n              <Text color={theme.colors.mutedForeground}>[</Text>\n              <Text color={color}>{bar}</Text>\n              <Text color={theme.colors.mutedForeground}>]</Text>\n              {showPercent && (\n                <Text color={theme.colors.mutedForeground}>\n                  {String(pct).padStart(3)}%\n                </Text>\n              )}\n            </Box>\n          </Box>\n        );\n      })}\n    </Box>\n  );\n};\n",
+      "type": "registry:ui"
+    }
+  ],
+  "categories": [
+    "feedback"
+  ],
+  "type": "registry:ui"
+}

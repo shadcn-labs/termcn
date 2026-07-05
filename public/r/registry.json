@@ -3705,6 +3705,7 @@
       "files": [
         {
           "path": "registry/ui/theme-provider.tsx",
+          "target": "components/ui/theme-provider.tsx",
           "type": "registry:ui"
         }
       ],

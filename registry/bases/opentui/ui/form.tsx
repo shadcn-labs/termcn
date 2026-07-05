@@ -10,7 +10,7 @@ import {
 } from "react";
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
 
 interface FormContextValue {
   values: Record<string, unknown>;

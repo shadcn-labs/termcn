@@ -2,7 +2,8 @@ import { Box, Text } from "ink";
 import React, { useState } from "react";
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/ink-theme-provider";
+import type { BorderStyle } from "@/components/ui/ink-theme-provider";
 import { useInput } from "@/hooks/use-input";
 
 export interface AppShellProps {
@@ -23,7 +24,7 @@ export interface AppShellInputProps {
   onChange?: (value: string) => void;
   onSubmit?: (value: string) => void;
   placeholder?: string;
-  borderStyle?: "single" | "double" | "round" | "bold";
+  borderStyle?: BorderStyle;
   borderColor?: string;
   prefix?: string;
 }

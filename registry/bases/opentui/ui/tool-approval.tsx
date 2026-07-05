@@ -2,7 +2,7 @@
 import { useKeyboard } from "@opentui/react";
 import { useEffect, useRef, useState } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
 
 export type RiskLevel = "low" | "medium" | "high";
 
@@ -86,7 +86,7 @@ export const ToolApproval = ({
   return (
     <box
       flexDirection="column"
-      borderStyle="round"
+      borderStyle="rounded"
       paddingLeft={1}
       paddingRight={1}
       paddingTop={0}

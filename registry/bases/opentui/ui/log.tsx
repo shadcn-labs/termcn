@@ -2,7 +2,7 @@
 import { useKeyboard } from "@opentui/react";
 import { useState, useMemo, useEffect } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
 
 export type LogLevel = "debug" | "info" | "warn" | "error";
 

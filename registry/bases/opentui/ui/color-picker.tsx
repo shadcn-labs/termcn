@@ -2,7 +2,7 @@
 import { useKeyboard } from "@opentui/react";
 import { useState } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
 
 const DEFAULT_PALETTE = [
   "#000000",
@@ -142,7 +142,7 @@ export const ColorPicker = ({
       </box>
 
       <box
-        borderStyle="round"
+        borderStyle="rounded"
         borderColor={
           mode === "hex" ? theme.colors.focusRing : theme.colors.border
         }

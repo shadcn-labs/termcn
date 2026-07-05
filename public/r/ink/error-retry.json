@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "error-retry",
+  "title": "Error Retry",
+  "description": "Inline error panel with retry, dismiss, and max-retry guard",
+  "dependencies": [
+    "ink"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/ink/theme-provider.json",
+    "https://termcn.dev/r/ink/use-input.json"
+  ],
+  "files": [
+    {
+      "path": "registry/ui/error-retry.tsx",
+      "content": "import { Box, Text } from \"ink\";\nimport React from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\nimport { useInput } from \"@/hooks/use-input\";\n\nexport interface ErrorRetryProps {\n  error: Error | string;\n  onRetry?: () => void;\n  onDismiss?: () => void;\n  retryCount?: number;\n  maxRetries?: number;\n  isActive?: boolean;\n}\n\nexport function ErrorRetry({\n  error,\n  onRetry,\n  onDismiss,\n  retryCount = 0,\n  maxRetries = 3,\n  isActive = true,\n}: ErrorRetryProps) {\n  const theme = useTheme();\n  const message = typeof error === \"string\" ? error : error.message;\n  const maxReached = retryCount >= maxRetries;\n\n  useInput(\n    (input, key) => {\n      if (!maxReached && (key.return || input === \"r\")) {\n        onRetry?.();\n      } else if (key.escape) {\n        onDismiss?.();\n      }\n    },\n    { isActive }\n  );\n\n  return (\n    <Box\n      flexDirection=\"column\"\n      borderStyle=\"round\"\n      borderColor={theme.colors.error ?? \"red\"}\n      paddingX={1}\n      paddingY={0}\n    >\n      <Box gap={1}>\n        <Text color={theme.colors.error ?? \"red\"} bold>\n          ✗\n        </Text>\n        <Text>{message}</Text>\n      </Box>\n\n      {retryCount > 0 && (\n        <Text dimColor color={theme.colors.mutedForeground}>\n          Retry attempt {retryCount}\n        </Text>\n      )}\n\n      {maxReached ? (\n        <Text dimColor color={theme.colors.mutedForeground}>\n          Max retries reached\n        </Text>\n      ) : (\n        <Text dimColor color={theme.colors.mutedForeground}>\n          Enter / r — retry · Esc — dismiss\n        </Text>\n      )}\n    </Box>\n  );\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "categories": [
+    "ai"
+  ],
+  "type": "registry:ui"
+}

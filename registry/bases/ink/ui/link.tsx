@@ -1,7 +1,7 @@
 import { Box, Text, Transform } from "ink";
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/ink-theme-provider";
 
 const OSC = "\u001B]";
 const SEP = ";";

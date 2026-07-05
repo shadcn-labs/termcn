@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tool-approval",
+  "title": "Tool Approval",
+  "description": "Interactive approval prompt for AI tool calls with risk-level badge, args display, and auto-deny timeout",
+  "dependencies": [
+    "ink"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/ink/theme-provider.json",
+    "https://termcn.dev/r/ink/use-input.json"
+  ],
+  "files": [
+    {
+      "path": "registry/ui/tool-approval.tsx",
+      "content": "import { Box, Text } from \"ink\";\nimport React, { useState, useEffect, useRef } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\nimport { useInput } from \"@/hooks/use-input\";\n\nexport type RiskLevel = \"low\" | \"medium\" | \"high\";\n\nexport interface ToolApprovalProps {\n  name: string;\n  description?: string;\n  args?: Record<string, unknown>;\n  risk?: RiskLevel;\n  onApprove?: () => void;\n  onDeny?: () => void;\n  onAlwaysAllow?: () => void;\n  timeout?: number;\n}\n\nexport const ToolApproval = ({\n  name,\n  description,\n  args,\n  risk = \"low\",\n  onApprove,\n  onDeny,\n  onAlwaysAllow,\n  timeout,\n}: ToolApprovalProps) => {\n  const theme = useTheme();\n  const [remaining, setRemaining] = useState(timeout ?? 0);\n  const onDenyRef = useRef(onDeny);\n\n  useEffect(() => {\n    onDenyRef.current = onDeny;\n  }, [onDeny]);\n\n  useEffect(() => {\n    if (!timeout) {\n      return;\n    }\n    setRemaining(timeout);\n    const id = setInterval(() => {\n      setRemaining((r) => {\n        if (r <= 1) {\n          clearInterval(id);\n          onDenyRef.current?.();\n          return 0;\n        }\n        return r - 1;\n      });\n    }, 1000);\n    return () => clearInterval(id);\n  }, [timeout]);\n\n  useInput((input) => {\n    if (input === \"y\" || input === \"Y\") {\n      onApprove?.();\n    } else if (input === \"n\" || input === \"N\") {\n      onDeny?.();\n    } else if ((input === \"a\" || input === \"A\") && onAlwaysAllow) {\n      onAlwaysAllow();\n    }\n  });\n\n  const riskBorderColor: Record<RiskLevel, string> = {\n    high: theme.colors.error ?? \"red\",\n    low: theme.colors.success ?? \"green\",\n    medium: theme.colors.warning ?? \"yellow\",\n  };\n\n  const riskLabel: Record<RiskLevel, string> = {\n    high: \"HIGH\",\n    low: \"LOW\",\n    medium: \"MEDIUM\",\n  };\n\n  const riskLabelColor: Record<RiskLevel, string> = {\n    high: theme.colors.error ?? \"red\",\n    low: theme.colors.success ?? \"green\",\n    medium: theme.colors.warning ?? \"yellow\",\n  };\n\n  const borderColor = riskBorderColor[risk];\n\n  return (\n    <Box\n      flexDirection=\"column\"\n      borderStyle=\"round\"\n      borderColor={borderColor}\n      paddingX={1}\n      paddingY={0}\n    >\n      <Box gap={2}>\n        <Text bold color={theme.colors.foreground}>\n          Tool Approval Required\n        </Text>\n        <Text bold color={riskLabelColor[risk]}>\n          [{riskLabel[risk]} RISK]\n        </Text>\n        {timeout && remaining > 0 && (\n          <Text color={theme.colors.warning ?? \"yellow\"} dimColor>\n            Auto-deny in {remaining}s\n          </Text>\n        )}\n      </Box>\n\n      <Box flexDirection=\"column\" marginTop={1}>\n        <Box gap={1}>\n          <Text color={theme.colors.mutedForeground}>Tool:</Text>\n          <Text bold color={theme.colors.primary}>\n            {name}\n          </Text>\n        </Box>\n        {description && (\n          <Box gap={1}>\n            <Text color={theme.colors.mutedForeground}>Description:</Text>\n            <Text dimColor>{description}</Text>\n          </Box>\n        )}\n      </Box>\n\n      {args && Object.keys(args).length > 0 && (\n        <Box flexDirection=\"column\" marginTop={1}>\n          <Text color={theme.colors.mutedForeground} dimColor>\n            Arguments:\n          </Text>\n          {Object.entries(args).map(([k, v]) => (\n            <Box key={k} gap={1} paddingLeft={2}>\n              <Text color={theme.colors.accent}>{k}:</Text>\n              <Text dimColor>{JSON.stringify(v)}</Text>\n            </Box>\n          ))}\n        </Box>\n      )}\n\n      <Box gap={2} marginTop={1}>\n        <Text color={theme.colors.success ?? \"green\"} bold>\n          [y] Approve\n        </Text>\n        <Text color={theme.colors.error ?? \"red\"} bold>\n          [n] Deny\n        </Text>\n        {onAlwaysAllow && (\n          <Text color={theme.colors.warning ?? \"yellow\"} bold>\n            [a] Always Allow\n          </Text>\n        )}\n      </Box>\n    </Box>\n  );\n};\n",
+      "type": "registry:ui"
+    }
+  ],
+  "categories": [
+    "ai"
+  ],
+  "type": "registry:ui"
+}

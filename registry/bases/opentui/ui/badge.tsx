@@ -1,5 +1,6 @@
 /* @jsxImportSource @opentui/react */
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
+import type { BorderStyle } from "@/components/ui/opentui-theme-provider";
 
 export type BadgeVariant =
   | "default"
@@ -15,14 +16,7 @@ export interface BadgeProps {
   color?: string;
   bold?: boolean;
   bordered?: boolean;
-  borderStyle?:
-    | "single"
-    | "double"
-    | "round"
-    | "bold"
-    | "singleDouble"
-    | "doubleSingle"
-    | "classic";
+  borderStyle?: BorderStyle;
   paddingX?: number;
 }
 
@@ -32,7 +26,7 @@ export const Badge = ({
   color,
   bold = false,
   bordered = true,
-  borderStyle = "round",
+  borderStyle = "rounded",
   paddingX = 1,
 }: BadgeProps) => {
   const theme = useTheme();

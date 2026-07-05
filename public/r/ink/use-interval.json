@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-interval",
+  "title": "Use Interval",
+  "description": "React-safe interval helper.",
+  "files": [
+    {
+      "path": "registry/hooks/use-interval.ts",
+      "content": "import * as React from \"react\";\n\nexport const useInterval = (\n  callback: () => void,\n  delay: number | null\n): void => {\n  const savedCallback = React.useRef(callback);\n\n  React.useEffect(() => {\n    savedCallback.current = callback;\n  }, [callback]);\n\n  React.useEffect(() => {\n    if (delay === null) {\n      return;\n    }\n\n    const id = setInterval(() => savedCallback.current(), delay);\n    return () => clearInterval(id);\n  }, [delay]);\n};\n",
+      "type": "registry:hook"
+    }
+  ],
+  "categories": [
+    "core"
+  ],
+  "type": "registry:hook"
+}

@@ -1,7 +1,8 @@
 import { Box, Text } from "ink";
 import React, { useState } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/ink-theme-provider";
+import type { BorderStyle } from "@/components/ui/ink-theme-provider";
 import { useFocus } from "@/hooks/use-focus";
 import { useInput } from "@/hooks/use-input";
 
@@ -13,14 +14,7 @@ export interface TextAreaProps {
   rows?: number;
   label?: string;
   id?: string;
-  borderStyle?:
-    | "single"
-    | "double"
-    | "round"
-    | "bold"
-    | "singleDouble"
-    | "doubleSingle"
-    | "classic";
+  borderStyle?: BorderStyle;
   paddingX?: number;
   cursor?: string;
 }

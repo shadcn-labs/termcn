@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-animation",
+  "title": "Use Animation",
+  "description": "Frame-based animation helper for terminal UI components.",
+  "files": [
+    {
+      "path": "registry/hooks/use-animation.ts",
+      "content": "import * as React from \"react\";\n\ntype Subscriber = (tick: number) => void;\nconst pool = new Map<\n  number,\n  { id: ReturnType<typeof setInterval>; subs: Set<Subscriber>; tick: number }\n>();\n\nconst subscribe = (milliseconds: number, subscriber: Subscriber) => {\n  if (!pool.has(milliseconds)) {\n    const entry = {\n      id: null as unknown as ReturnType<typeof setInterval>,\n      subs: new Set<Subscriber>(),\n      tick: 0,\n    };\n\n    entry.id = setInterval(() => {\n      entry.tick += 1;\n      for (const sub of entry.subs) {\n        sub(entry.tick);\n      }\n    }, milliseconds);\n\n    pool.set(milliseconds, entry);\n  }\n\n  pool.get(milliseconds)?.subs.add(subscriber);\n};\n\nconst unsubscribe = (milliseconds: number, subscriber: Subscriber) => {\n  const entry = pool.get(milliseconds);\n  if (!entry) {\n    return;\n  }\n\n  entry.subs.delete(subscriber);\n  if (entry.subs.size === 0) {\n    clearInterval(entry.id);\n    pool.delete(milliseconds);\n  }\n};\n\nexport const useAnimation = (\n  rate: number | { intervalMs: number } = 12\n): number => {\n  const [frame, setFrame] = React.useState(0);\n  const milliseconds =\n    typeof rate === \"number\" ? Math.round(1000 / rate) : rate.intervalMs;\n\n  React.useEffect(() => {\n    const callback: Subscriber = (tick) => setFrame(tick);\n    subscribe(milliseconds, callback);\n\n    return () => unsubscribe(milliseconds, callback);\n  }, [milliseconds]);\n\n  return frame;\n};\n",
+      "type": "registry:hook"
+    }
+  ],
+  "categories": [
+    "core"
+  ],
+  "type": "registry:hook"
+}

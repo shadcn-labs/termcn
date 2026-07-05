@@ -1,7 +1,7 @@
 import { Text } from "ink";
 import React, { useState, useEffect, useRef } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/ink-theme-provider";
 
 export interface StreamingTextProps {
   text?: string;

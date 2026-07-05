@@ -2,7 +2,7 @@ import { Box as InkBox } from "ink";
 import type { BoxProps as InkBoxProps } from "ink";
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/ink-theme-provider";
 
 export type BorderVariant =
   | "default"

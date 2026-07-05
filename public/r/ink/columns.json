@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "columns",
+  "title": "Columns",
+  "description": "Multi-column layout with configurable widths",
+  "dependencies": [
+    "ink"
+  ],
+  "files": [
+    {
+      "path": "registry/ui/columns.tsx",
+      "content": "import { Box } from \"ink\";\nimport type { ReactNode } from \"react\";\nimport React from \"react\";\n\nexport interface ColumnsProps {\n  children: ReactNode;\n  gap?: number;\n  align?: \"top\" | \"center\" | \"bottom\";\n}\n\nconst ALIGN_MAP: Record<\n  NonNullable<ColumnsProps[\"align\"]>,\n  \"flex-start\" | \"center\" | \"flex-end\"\n> = {\n  bottom: \"flex-end\",\n  center: \"center\",\n  top: \"flex-start\",\n};\n\nexport const Columns = ({ children, gap = 0, align = \"top\" }: ColumnsProps) => {\n  const items = React.Children.toArray(children);\n\n  return (\n    <Box flexDirection=\"row\" gap={gap} alignItems={ALIGN_MAP[align]}>\n      {items.map((child, index) => (\n        <Box key={index} flexGrow={1} flexDirection=\"column\">\n          {child}\n        </Box>\n      ))}\n    </Box>\n  );\n};\n",
+      "type": "registry:ui"
+    }
+  ],
+  "categories": [
+    "layout"
+  ],
+  "type": "registry:ui"
+}

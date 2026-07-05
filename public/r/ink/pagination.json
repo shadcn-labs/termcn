@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "pagination",
+  "title": "Pagination",
+  "description": "Page navigation with prev/next and jump",
+  "dependencies": [
+    "ink"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/ink/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/ui/pagination.tsx",
+      "content": "import { Box, Text } from \"ink\";\nimport React, { useState } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\nimport { useInput } from \"@/hooks/use-input\";\n\nexport interface PaginationProps {\n  total: number;\n  current: number;\n  onChange?: (page: number) => void;\n  showEdges?: boolean;\n  siblings?: number;\n}\n\nconst buildPages = (\n  total: number,\n  current: number,\n  siblings: number\n): (number | \"...\")[] => {\n  if (total <= 7) {\n    return Array.from({ length: total }, (_, i) => i + 1);\n  }\n\n  const pages: (number | \"...\")[] = [1];\n\n  const leftSibling = Math.max(2, current - siblings);\n  const rightSibling = Math.min(total - 1, current + siblings);\n\n  if (leftSibling > 2) {\n    pages.push(\"...\");\n  }\n\n  for (let i = leftSibling; i <= rightSibling; i += 1) {\n    pages.push(i);\n  }\n\n  if (rightSibling < total - 1) {\n    pages.push(\"...\");\n  }\n\n  pages.push(total);\n\n  return pages;\n};\n\nexport const Pagination = ({\n  total,\n  current,\n  onChange,\n  showEdges = true,\n  siblings = 1,\n}: PaginationProps) => {\n  const theme = useTheme();\n  const [internalPage, setInternalPage] = useState(current);\n  const activePage = current ?? internalPage;\n\n  const goTo = (page: number) => {\n    const clamped = Math.min(Math.max(1, page), total);\n    if (clamped === activePage) {\n      return;\n    }\n    if (onChange) {\n      onChange(clamped);\n    } else {\n      setInternalPage(clamped);\n    }\n  };\n\n  useInput((_input, key) => {\n    if (key.leftArrow) {\n      goTo(activePage - 1);\n    }\n    if (key.rightArrow) {\n      goTo(activePage + 1);\n    }\n  });\n\n  const pages = buildPages(total, activePage, siblings);\n\n  return (\n    <Box flexDirection=\"row\" alignItems=\"center\" gap={1}>\n      <Text\n        color={\n          activePage === 1 ? theme.colors.mutedForeground : theme.colors.primary\n        }\n        dimColor={activePage === 1}\n      >\n        ‹\n      </Text>\n\n      {showEdges && total > 7 ? null : null}\n\n      {pages.map((p, idx) => {\n        if (p === \"...\") {\n          return (\n            <Text key={`ellipsis-${idx}`} color={theme.colors.mutedForeground}>\n              …\n            </Text>\n          );\n        }\n        const isActive = p === activePage;\n        return (\n          <Text\n            key={p}\n            color={\n              isActive ? theme.colors.primary : theme.colors.mutedForeground\n            }\n            bold={isActive}\n          >\n            {isActive ? `[${p}]` : `${p}`}\n          </Text>\n        );\n      })}\n\n      <Text\n        color={\n          activePage === total\n            ? theme.colors.mutedForeground\n            : theme.colors.primary\n        }\n        dimColor={activePage === total}\n      >\n        ›\n      </Text>\n    </Box>\n  );\n};\n",
+      "type": "registry:ui"
+    }
+  ],
+  "categories": [
+    "navigation"
+  ],
+  "type": "registry:ui"
+}

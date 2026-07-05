@@ -1,16 +1,9 @@
 /* @jsxImportSource @opentui/react */
 import * as React from "react";
 
-import { defaultTheme } from "@/lib/terminal-themes/default";
+import { defaultTheme } from "@/registry/bases/opentui/themes/default";
 
-type BorderStyle =
-  | "single"
-  | "double"
-  | "round"
-  | "bold"
-  | "singleDouble"
-  | "doubleSingle"
-  | "classic";
+export type BorderStyle = "single" | "double" | "rounded" | "heavy";
 
 export interface ColorTokens {
   primary: string;
@@ -77,6 +70,11 @@ export interface UnicodeContextValue {
   unicode: boolean;
 }
 
+export interface ThemeContextValue {
+  setTheme: (theme: Theme) => void;
+  theme: Theme;
+}
+
 const getEnv = (name: string): string | undefined =>
   typeof process !== "undefined" && process.env ? process.env[name] : undefined;
 
@@ -126,23 +124,25 @@ export const UnicodeContext = React.createContext<UnicodeContextValue>({
   unicode: !isNoUnicode(),
 });
 
+const defaultThemeForContext = defaultTheme;
+
+export const ThemeContext = React.createContext<ThemeContextValue>({
+  setTheme: () => {
+    /* noop */
+  },
+  theme: defaultThemeForContext,
+});
+
 export const useMotion = (): MotionContextValue =>
   React.useContext(MotionContext);
 
 export const useUnicode = (): boolean =>
   React.useContext(UnicodeContext).unicode;
 
-interface ThemeContextValue {
-  setTheme: (theme: Theme) => void;
-  theme: Theme;
-}
+export const useTheme = (): Theme => React.useContext(ThemeContext).theme;
 
-const ThemeContext = React.createContext<ThemeContextValue>({
-  setTheme: () => {
-    /* noop */
-  },
-  theme: defaultTheme,
-});
+export const useThemeUpdater = (): ((theme: Theme) => void) =>
+  React.useContext(ThemeContext).setTheme;
 
 export interface ThemeProviderProps {
   children: React.ReactNode;
@@ -230,11 +230,6 @@ export const AutoThemeProvider = ({
     </ThemeProvider>
   );
 };
-
-export const useTheme = (): Theme => React.useContext(ThemeContext).theme;
-
-export const useThemeUpdater = (): ((theme: Theme) => void) =>
-  React.useContext(ThemeContext).setTheme;
 
 export const createTheme = (
   overrides: Partial<Theme> & { name: string }

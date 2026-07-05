@@ -2,7 +2,7 @@ import cliSpinners from "cli-spinners";
 import type { SpinnerName } from "cli-spinners";
 import { Text } from "ink";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/ink-theme-provider";
 import { useAnimation } from "@/hooks/use-animation";
 
 export type SpinnerType = SpinnerName;

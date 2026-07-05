@@ -1,5 +1,5 @@
 /* @jsxImportSource @opentui/react */
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
 
 export type ProgressCircleSize = "sm" | "md" | "lg";
 

@@ -12,13 +12,13 @@ A project with [Ink](https://github.com/vadimdemedes/ink) or [OpenTUI](https://g
 Run the following command to add any component:
 
 ```bash
-npx shadcn@latest add @termcn/spinner
+npx shadcn@latest add @termcn/ink/spinner
 ```
 
-OpenTUI components use the `opentui-` prefix:
+OpenTUI components use the `opentui/` namespace:
 
 ```bash
-npx shadcn@latest add @termcn/opentui-spinner
+npx shadcn@latest add @termcn/opentui/spinner
 ```
 
 ## Usage
@@ -43,8 +43,16 @@ export function App() {
 
 termcn ships bundled terminal themes that integrate with the `ThemeProvider`:
 
+For Ink:
+
 ```bash
-npx shadcn@latest add @termcn/theme-dracula
+npx shadcn@latest add @termcn/ink/theme-dracula
+```
+
+For OpenTUI:
+
+```bash
+npx shadcn@latest add @termcn/opentui/theme-dracula
 ```
 
 Then wrap your app:

@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "modal",
+  "title": "Modal",
+  "description": "Focus-trapped overlay modal, close with Esc",
+  "dependencies": [
+    "ink"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/ink/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/ui/modal.tsx",
+      "content": "import { Box, Text } from \"ink\";\nimport type { ReactNode } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\nimport type { BorderStyle } from \"@/components/ui/theme-provider\";\nimport { useInput } from \"@/hooks/use-input\";\n\nexport interface ModalProps {\n  open: boolean;\n  onClose?: () => void;\n  title?: string;\n  width?: number;\n  children?: ReactNode;\n  borderStyle?: BorderStyle;\n  borderColor?: string;\n  paddingX?: number;\n  paddingY?: number;\n  titleBorderStyle?: BorderStyle;\n  closeHint?: string | false;\n}\n\nexport const Modal = ({\n  open,\n  onClose,\n  title,\n  width = 60,\n  children,\n  borderStyle = \"round\",\n  borderColor,\n  paddingX = 1,\n  paddingY = 0,\n  titleBorderStyle = \"single\",\n  closeHint = \"Press Esc to close\",\n}: ModalProps) => {\n  const theme = useTheme();\n  const resolvedBorderColor = borderColor ?? theme.colors.primary;\n\n  useInput(\n    (input, key) => {\n      if (!open) {\n        return;\n      }\n      if (key.escape) {\n        onClose?.();\n      }\n    },\n    { isActive: open }\n  );\n\n  if (!open) {\n    return null;\n  }\n\n  return (\n    <Box\n      flexDirection=\"column\"\n      borderStyle={borderStyle}\n      borderColor={resolvedBorderColor}\n      width={width}\n      paddingX={paddingX}\n      paddingY={paddingY}\n    >\n      {title && (\n        <Box\n          marginBottom={1}\n          borderStyle={titleBorderStyle}\n          borderColor={theme.colors.border}\n          paddingX={1}\n        >\n          <Text bold color={resolvedBorderColor}>\n            {title}\n          </Text>\n        </Box>\n      )}\n      <Box flexDirection=\"column\">{children}</Box>\n      {closeHint !== false && (\n        <Box marginTop={1}>\n          <Text color={theme.colors.mutedForeground} dimColor>\n            {closeHint}\n          </Text>\n        </Box>\n      )}\n    </Box>\n  );\n};\n",
+      "type": "registry:ui"
+    }
+  ],
+  "categories": [
+    "overlays"
+  ],
+  "type": "registry:ui"
+}

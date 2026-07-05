@@ -3,7 +3,7 @@ import { useKeyboard } from "@opentui/react";
 import { useMemo, useState } from "react";
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
 
 export interface VirtualListProps<T> {
   items: T[];

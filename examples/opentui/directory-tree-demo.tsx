@@ -2,7 +2,7 @@ import { Box } from "@/registry/bases/opentui/ui/box";
 
 export default function DirectoryTreeDemo() {
   return (
-    <Box borderStyle="round" flexDirection="column" paddingX={1}>
+    <Box borderStyle="rounded" flexDirection="column" paddingX={1}>
       <text>
         <b>DirectoryTree</b>
       </text>

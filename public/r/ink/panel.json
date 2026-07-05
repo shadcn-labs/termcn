@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "panel",
+  "title": "Panel",
+  "description": "Titled bordered panel",
+  "dependencies": [
+    "ink"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/ink/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/ui/panel.tsx",
+      "content": "import { Box, Text } from \"ink\";\nimport type { ReactNode } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\nimport type { BorderStyle } from \"@/components/ui/theme-provider\";\n\nexport interface PanelProps {\n  title?: string;\n  titleColor?: string;\n  borderColor?: string;\n  borderStyle?: BorderStyle;\n  bordered?: boolean;\n  width?: number;\n  height?: number;\n  paddingX?: number;\n  paddingY?: number;\n  children?: ReactNode;\n}\n\nexport const Panel = ({\n  title,\n  titleColor,\n  borderColor,\n  borderStyle,\n  bordered = true,\n  width,\n  height,\n  paddingX = 1,\n  paddingY = 0,\n  children,\n}: PanelProps) => {\n  const theme = useTheme();\n\n  const inner = (\n    <>\n      {title && (\n        <Box\n          paddingX={paddingX}\n          borderStyle=\"single\"\n          borderColor={borderColor ?? theme.colors.border}\n        >\n          <Text bold color={titleColor ?? theme.colors.primary}>\n            {title}\n          </Text>\n        </Box>\n      )}\n      <Box flexDirection=\"column\" paddingX={paddingX} paddingY={paddingY}>\n        {children}\n      </Box>\n    </>\n  );\n\n  if (!bordered) {\n    return (\n      <Box flexDirection=\"column\" width={width} height={height}>\n        {inner}\n      </Box>\n    );\n  }\n\n  return (\n    <Box\n      flexDirection=\"column\"\n      borderStyle={borderStyle ?? theme.border.style}\n      borderColor={borderColor ?? theme.colors.border}\n      width={width}\n      height={height}\n    >\n      {inner}\n    </Box>\n  );\n};\n",
+      "type": "registry:ui"
+    }
+  ],
+  "categories": [
+    "utility"
+  ],
+  "type": "registry:ui"
+}

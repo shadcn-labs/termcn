@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "link",
+  "title": "Link",
+  "description": "OSC 8 clickable hyperlink",
+  "dependencies": [
+    "ink"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/ink/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/ui/link.tsx",
+      "content": "import { Box, Text, Transform } from \"ink\";\nimport type { ReactNode } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nconst OSC = \"\\u001B]\";\nconst SEP = \";\";\nconst BEL = \"\\u0007\";\n\nconst supportsHyperlinks = (): boolean => {\n  const term = process.env[\"TERM_PROGRAM\"] ?? \"\";\n  if (\n    term === \"iTerm.app\" ||\n    term === \"WezTerm\" ||\n    term === \"Hyper\" ||\n    term === \"vscode\"\n  ) {\n    return true;\n  }\n  if (process.env[\"TERM\"]?.startsWith(\"xterm\")) {\n    return true;\n  }\n  return false;\n};\n\nconst wrapWithLink = (text: string, url: string): string =>\n  `${OSC}8${SEP}${SEP}${url}${BEL}${text}${OSC}8${SEP}${SEP}${BEL}`;\n\nexport interface LinkProps {\n  children: ReactNode;\n  href: string;\n  color?: string;\n  showHref?: boolean;\n  fallback?: boolean | ((text: string, url: string) => string);\n}\n\nexport const Link = ({\n  children,\n  href,\n  color,\n  showHref = false,\n  fallback = true,\n}: LinkProps) => {\n  const theme = useTheme();\n  const resolvedColor = color ?? theme.colors.info;\n  const hasSupport = supportsHyperlinks();\n\n  const transformOutput = (output: string): string => {\n    if (hasSupport) {\n      return wrapWithLink(output, href);\n    }\n\n    if (fallback === false) {\n      return output;\n    }\n\n    if (typeof fallback === \"function\") {\n      return fallback(output, href);\n    }\n\n    return `${output} (${href})`;\n  };\n\n  if (hasSupport) {\n    return (\n      <Box flexDirection=\"row\">\n        <Transform transform={transformOutput}>\n          <Text color={resolvedColor} underline>\n            {children}\n          </Text>\n        </Transform>\n      </Box>\n    );\n  }\n\n  return (\n    <Box flexDirection=\"row\">\n      <Text color={resolvedColor} underline>\n        {children}\n      </Text>\n      {(showHref || fallback === true) && <Text dimColor>{` (${href})`}</Text>}\n    </Box>\n  );\n};\n",
+      "type": "registry:ui"
+    }
+  ],
+  "categories": [
+    "typography"
+  ],
+  "type": "registry:ui"
+}

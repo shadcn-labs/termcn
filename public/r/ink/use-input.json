@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-input",
+  "title": "Use Input",
+  "description": "Keyboard input hook wrapping Ink's useInput.",
+  "dependencies": [
+    "ink"
+  ],
+  "files": [
+    {
+      "path": "registry/hooks/use-input.ts",
+      "content": "import { useInput as inkUseInput } from \"ink\";\n\nexport interface Key {\n  upArrow: boolean;\n  downArrow: boolean;\n  leftArrow: boolean;\n  rightArrow: boolean;\n  pageDown: boolean;\n  pageUp: boolean;\n  return: boolean;\n  escape: boolean;\n  ctrl: boolean;\n  shift: boolean;\n  tab: boolean;\n  backspace: boolean;\n  delete: boolean;\n  meta: boolean;\n  eventType?: \"press\" | \"repeat\" | \"release\";\n  home?: boolean;\n  end?: boolean;\n  fn?: boolean;\n}\n\nexport type InputHandler = (input: string, key: Key) => void;\n\nexport const useInput = (\n  handler: InputHandler,\n  options?: { isActive?: boolean }\n): void => {\n  inkUseInput(handler, options);\n};\n",
+      "type": "registry:hook"
+    }
+  ],
+  "categories": [
+    "core"
+  ],
+  "type": "registry:hook"
+}

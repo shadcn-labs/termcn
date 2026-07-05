@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "box",
+  "title": "Box",
+  "description": "Enhanced flexbox container with theme-aware borders",
+  "dependencies": [
+    "ink"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/ink/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/ui/box.tsx",
+      "content": "import { Box as InkBox } from \"ink\";\nimport type { BoxProps as InkBoxProps } from \"ink\";\nimport type { ReactNode } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport type BorderVariant =\n  | \"default\"\n  | \"muted\"\n  | \"focus\"\n  | \"success\"\n  | \"error\"\n  | \"warning\";\n\nexport interface BoxProps extends InkBoxProps {\n  border?: boolean;\n  borderVariant?: BorderVariant;\n  borderColor?: string;\n  children?: ReactNode;\n}\n\nexport const Box = ({\n  border,\n  borderVariant = \"default\",\n  borderColor,\n  children,\n  ...props\n}: BoxProps) => {\n  const theme = useTheme();\n\n  const resolvedBorderColor =\n    borderColor ??\n    (() => {\n      switch (borderVariant) {\n        case \"focus\": {\n          return theme.colors.focusRing;\n        }\n        case \"success\": {\n          return theme.colors.success;\n        }\n        case \"error\": {\n          return theme.colors.error;\n        }\n        case \"warning\": {\n          return theme.colors.warning;\n        }\n        case \"muted\": {\n          return theme.colors.mutedForeground;\n        }\n        default: {\n          return theme.colors.border;\n        }\n      }\n    })();\n\n  return (\n    <InkBox\n      borderStyle={\n        border ? (props.borderStyle ?? theme.border.style) : undefined\n      }\n      borderColor={border ? resolvedBorderColor : undefined}\n      {...props}\n    >\n      {children}\n    </InkBox>\n  );\n};\n",
+      "type": "registry:ui"
+    }
+  ],
+  "categories": [
+    "layout"
+  ],
+  "type": "registry:ui"
+}

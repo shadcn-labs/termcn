@@ -2,7 +2,7 @@
 import { useKeyboard } from "@opentui/react";
 import { useState, useCallback, useRef, useEffect } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
 
 export interface StopwatchProps {
   autoStart?: boolean;

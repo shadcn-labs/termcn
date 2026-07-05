@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "embedded-terminal",
+  "title": "Embedded Terminal",
+  "description": "Embedded PTY terminal panel (requires node-pty peer)",
+  "dependencies": [
+    "ink"
+  ],
+  "files": [
+    {
+      "path": "registry/ui/embedded-terminal.tsx",
+      "content": "import { Box, Text } from \"ink\";\nimport { useEffect, useMemo, useState } from \"react\";\nimport stripAnsi from \"strip-ansi\";\n\ninterface IPty {\n  kill: () => void;\n  onData: (cb: (data: string) => void) => void;\n  onExit: (cb: (e: { exitCode: number }) => void) => void;\n}\n\ninterface NodePtyModule {\n  spawn: (\n    command: string,\n    args: string[],\n    options: { cols: number; cwd?: string; name: string; rows: number }\n  ) => IPty;\n}\n\nexport interface EmbeddedTerminalProps {\n  command: string;\n  args?: string[];\n  cwd?: string;\n  width?: number;\n  height?: number;\n  onExit?: (code: number) => void;\n}\n\n/**\n * Renders a pseudo-terminal session inside the TUI.\n * Requires optional dependency `node-pty` (native build).\n */\nexport const EmbeddedTerminal = ({\n  command,\n  args = [],\n  cwd,\n  width = 80,\n  height = 24,\n  onExit,\n}: EmbeddedTerminalProps) => {\n  const [raw, setRaw] = useState(\"\");\n  const [err, setErr] = useState<string | null>(null);\n\n  useEffect(() => {\n    let p: IPty | null = null;\n    let cancelled = false;\n\n    (async () => {\n      try {\n        const loadPty = new Function(\n          'return import(\"node-pty\")'\n        ) as () => Promise<NodePtyModule>;\n        const mod = await loadPty();\n        if (cancelled) {\n          return;\n        }\n        const pty = mod.spawn(command, args, {\n          cols: width,\n          cwd,\n          name: \"xterm-color\",\n          rows: height,\n        });\n        p = pty;\n        pty.onData((d: string) => {\n          setRaw((prev) => (prev + d).slice(-500_000));\n        });\n        pty.onExit((e: { exitCode: number }) => {\n          onExit?.(e.exitCode);\n        });\n      } catch {\n        setErr(\n          \"Install optional peer: node-pty (native build required for your platform).\"\n        );\n      }\n    })();\n\n    return () => {\n      cancelled = true;\n      if (p) {\n        p.kill();\n      }\n    };\n  }, [command, args, cwd, width, height, onExit]);\n\n  const lines = useMemo(\n    () => stripAnsi(raw).split(\"\\n\").slice(-height),\n    [raw, height]\n  );\n\n  return (\n    <Box\n      flexDirection=\"column\"\n      borderStyle=\"round\"\n      borderColor=\"cyan\"\n      width={width}\n    >\n      {err ? (\n        <Text color=\"red\">{err}</Text>\n      ) : (\n        lines.map((line, i) => <Text key={i}>{line}</Text>)\n      )}\n    </Box>\n  );\n};\n",
+      "type": "registry:ui"
+    }
+  ],
+  "categories": [
+    "utility"
+  ],
+  "type": "registry:ui"
+}

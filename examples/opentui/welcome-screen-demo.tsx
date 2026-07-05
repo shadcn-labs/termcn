@@ -2,7 +2,7 @@ import { WelcomeScreen } from "@/registry/bases/opentui/ui/welcome-screen";
 
 export default function WelcomeScreenDemo() {
   return (
-    <WelcomeScreen appName="DevTool" version="v2.1.0" borderStyle="round">
+    <WelcomeScreen appName="DevTool" version="v2.1.0" borderStyle="rounded">
       <WelcomeScreen.Left>
         <WelcomeScreen.Logo>{"  ╔══╗\n  ║DT║\n  ╚══╝"}</WelcomeScreen.Logo>
         <WelcomeScreen.Greeting>

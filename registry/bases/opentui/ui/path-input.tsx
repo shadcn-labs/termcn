@@ -5,7 +5,7 @@ import { join, dirname, basename } from "node:path";
 import { useKeyboard } from "@opentui/react";
 import { useState } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
 
 export interface PathInputProps {
   value?: string;
@@ -152,7 +152,7 @@ export const PathInput = ({
           <b>{label}</b>
         </text>
       )}
-      <box borderStyle="round" paddingLeft={1} paddingRight={1}>
+      <box borderStyle="rounded" paddingLeft={1} paddingRight={1}>
         <text
           fg={value ? theme.colors.foreground : theme.colors.mutedForeground}
         >

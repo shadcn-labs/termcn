@@ -1,7 +1,7 @@
 /* @jsxImportSource @opentui/react */
 import { useState, useEffect } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
 
 export type ToastVariant = "success" | "error" | "warning" | "info";
 
@@ -84,7 +84,7 @@ export const Toast = ({
 
   return (
     <box
-      borderStyle="round"
+      borderStyle="rounded"
       borderColor={variantColor}
       paddingLeft={1}
       paddingRight={1}

@@ -1,7 +1,8 @@
 /* @jsxImportSource @opentui/react */
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
+import type { BorderStyle } from "@/components/ui/opentui-theme-provider";
 
 export type BorderVariant =
   | "default"
@@ -15,14 +16,7 @@ export interface BoxProps {
   border?: boolean;
   borderVariant?: BorderVariant;
   borderColor?: string;
-  borderStyle?:
-    | "single"
-    | "double"
-    | "round"
-    | "bold"
-    | "singleDouble"
-    | "doubleSingle"
-    | "classic";
+  borderStyle?: BorderStyle;
   children?: ReactNode;
   flexDirection?: "row" | "column" | "row-reverse" | "column-reverse";
   flexGrow?: number;

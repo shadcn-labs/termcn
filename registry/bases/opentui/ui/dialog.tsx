@@ -3,7 +3,7 @@ import { useKeyboard } from "@opentui/react";
 import { useState } from "react";
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
 
 export interface DialogProps {
   title?: string;
@@ -56,7 +56,7 @@ export const Dialog = ({
   return (
     <box
       flexDirection="column"
-      borderStyle="round"
+      borderStyle="rounded"
       borderColor={
         variant === "danger"
           ? (theme.colors.error ?? "red")

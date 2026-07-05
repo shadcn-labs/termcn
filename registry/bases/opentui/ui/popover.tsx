@@ -2,7 +2,7 @@
 import { useKeyboard } from "@opentui/react";
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
 
 export interface PopoverProps {
   trigger: ReactNode;

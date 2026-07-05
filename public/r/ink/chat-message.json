@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chat-message",
+  "title": "Chat Message",
+  "description": "Chat message bubble with role label, streaming indicator, and collapsible content",
+  "dependencies": [
+    "ink"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/ink/theme-provider.json",
+    "https://termcn.dev/r/ink/use-input.json"
+  ],
+  "files": [
+    {
+      "path": "registry/ui/chat-message.tsx",
+      "content": "import { Box, Text } from \"ink\";\nimport React, { useState, useEffect } from \"react\";\nimport type { ReactNode } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\nimport { useInput } from \"@/hooks/use-input\";\n\nexport type ChatRole = \"user\" | \"assistant\" | \"system\" | \"error\";\n\nexport interface ChatMessageProps {\n  sender: ChatRole;\n  name?: string;\n  timestamp?: Date;\n  streaming?: boolean;\n  collapsed?: boolean;\n  children?: ReactNode;\n}\n\nconst formatTime = (date: Date): string =>\n  date.toLocaleTimeString([], { hour: \"2-digit\", minute: \"2-digit\" });\n\nconst wrapPlainChildren = (node: ReactNode): ReactNode =>\n  typeof node === \"string\" || typeof node === \"number\" ? (\n    <Text>{node}</Text>\n  ) : (\n    node\n  );\n\nexport const ChatMessage = ({\n  sender,\n  name,\n  timestamp,\n  streaming = false,\n  collapsed: initialCollapsed = false,\n  children,\n}: ChatMessageProps) => {\n  const theme = useTheme();\n  const [isCollapsed, setIsCollapsed] = useState(initialCollapsed);\n  const [dotFrame, setDotFrame] = useState(0);\n\n  useEffect(() => {\n    if (!streaming) {\n      return;\n    }\n    const id = setInterval(() => setDotFrame((f) => (f + 1) % 4), 400);\n    return () => clearInterval(id);\n  }, [streaming]);\n\n  useInput((input, key) => {\n    if (initialCollapsed && (key.return || input === \" \")) {\n      setIsCollapsed((c) => !c);\n    }\n  });\n\n  const roleColor: Record<ChatRole, string> = {\n    assistant: theme.colors.success ?? \"green\",\n    error: theme.colors.error ?? \"red\",\n    system: theme.colors.mutedForeground,\n    user: theme.colors.primary,\n  };\n\n  const roleLabel: Record<ChatRole, string> = {\n    assistant: \"assistant\",\n    error: \"error\",\n    system: \"system\",\n    user: \"user\",\n  };\n\n  const color = roleColor[sender];\n\n  const dots = [\"\", \"●\", \"●●\", \"●●●\"][dotFrame] ?? \"\";\n\n  const childrenText = typeof children === \"string\" ? children : \"\";\n  const firstLine = childrenText.split(\"\\n\")[0] ?? \"\";\n\n  const renderContent = () => {\n    if (streaming) {\n      return (\n        <Box>\n          {children ? (\n            wrapPlainChildren(children)\n          ) : (\n            <Text color={color} dimColor>\n              {dots}\n            </Text>\n          )}\n        </Box>\n      );\n    }\n    if (isCollapsed) {\n      return (\n        <Box>\n          <Text dimColor>\n            {firstLine.slice(0, 60)}\n            {firstLine.length > 60 || childrenText.includes(\"\\n\") ? \"...\" : \"\"}\n          </Text>\n        </Box>\n      );\n    }\n    return <Box>{wrapPlainChildren(children)}</Box>;\n  };\n\n  return (\n    <Box flexDirection=\"column\" marginBottom={1}>\n      <Box gap={1}>\n        <Text color={color} bold>\n          {name ?? roleLabel[sender]}\n        </Text>\n        {timestamp && (\n          <Text dimColor color={theme.colors.mutedForeground}>\n            {formatTime(timestamp)}\n          </Text>\n        )}\n        {isCollapsed && !streaming && (\n          <Text dimColor color={theme.colors.mutedForeground}>\n            [expand]\n          </Text>\n        )}\n      </Box>\n\n      {renderContent()}\n    </Box>\n  );\n};\n",
+      "type": "registry:ui"
+    }
+  ],
+  "categories": [
+    "ai"
+  ],
+  "type": "registry:ui"
+}

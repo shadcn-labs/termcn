@@ -2,7 +2,8 @@
 import { useKeyboard } from "@opentui/react";
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
+import type { BorderStyle } from "@/components/ui/opentui-theme-provider";
 
 export interface ModalProps {
   open: boolean;
@@ -10,25 +11,11 @@ export interface ModalProps {
   title?: string;
   width?: number;
   children?: ReactNode;
-  borderStyle?:
-    | "single"
-    | "double"
-    | "round"
-    | "bold"
-    | "singleDouble"
-    | "doubleSingle"
-    | "classic";
+  borderStyle?: BorderStyle;
   borderColor?: string;
   paddingX?: number;
   paddingY?: number;
-  titleBorderStyle?:
-    | "single"
-    | "double"
-    | "round"
-    | "bold"
-    | "singleDouble"
-    | "doubleSingle"
-    | "classic";
+  titleBorderStyle?: BorderStyle;
   closeHint?: string | false;
 }
 
@@ -38,7 +25,7 @@ export const Modal = ({
   title,
   width = 60,
   children,
-  borderStyle = "round",
+  borderStyle = "rounded",
   borderColor,
   paddingX = 1,
   paddingY = 0,

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-clipboard",
+  "title": "Use Clipboard",
+  "description": "Clipboard hook with browser and terminal fallbacks.",
+  "files": [
+    {
+      "path": "registry/hooks/use-clipboard.ts",
+      "content": "import * as React from \"react\";\n\nconst clipboardWrite = (text: string) => {\n  const encoded = Buffer.from(text).toString(\"base64\");\n  return `\u001b]52;c;${encoded}\u0007`;\n};\n\nexport const useClipboard = () => {\n  const write = React.useCallback(async (text: string) => {\n    if (\n      typeof navigator !== \"undefined\" &&\n      navigator.clipboard &&\n      typeof navigator.clipboard.writeText === \"function\"\n    ) {\n      await navigator.clipboard.writeText(text);\n      return;\n    }\n\n    if (typeof process !== \"undefined\" && process.stdout?.write) {\n      process.stdout.write(clipboardWrite(text));\n    }\n  }, []);\n\n  return { write };\n};\n",
+      "type": "registry:hook"
+    }
+  ],
+  "categories": [
+    "core"
+  ],
+  "type": "registry:hook"
+}

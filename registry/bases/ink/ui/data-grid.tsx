@@ -1,7 +1,8 @@
 import { Box, Text } from "ink";
 import React, { useState, useMemo } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/ink-theme-provider";
+import type { BorderStyle } from "@/components/ui/ink-theme-provider";
 import { useInput } from "@/hooks/use-input";
 
 export interface DataGridColumn<T = Record<string, unknown>> {
@@ -23,7 +24,7 @@ export interface DataGridProps<
   onRowSelect?: (row: T) => void;
   onCellEdit?: (row: T, key: string, value: string) => void;
   borderColor?: string;
-  borderStyle?: "single" | "double" | "round" | "bold";
+  borderStyle?: BorderStyle;
   showRowNumbers?: boolean;
   filterPlaceholder?: string;
 }

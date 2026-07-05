@@ -2,8 +2,15 @@ import { z } from "zod";
 
 import { BASE_NAMES, BASES, DEFAULT_BASE_NAME } from "@/registry/bases";
 import type { Base, BaseName } from "@/registry/bases";
-import { getThemesForBase, THEMES, THEME_NAMES } from "@/registry/themes";
-import type { RegistryTheme, RegistryThemeName } from "@/registry/themes";
+import {
+  getThemesForBase,
+  THEMES,
+  THEME_NAMES,
+} from "@/registry/bases/ink/themes";
+import type {
+  RegistryTheme,
+  RegistryThemeName,
+} from "@/registry/bases/ink/themes";
 
 export { BASES, type Base, type BaseName, DEFAULT_BASE_NAME };
 export { THEMES, type RegistryTheme, type RegistryThemeName };

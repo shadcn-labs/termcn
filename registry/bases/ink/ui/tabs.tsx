@@ -2,7 +2,8 @@ import { Box, Text, useStdout } from "ink";
 import React, { useState } from "react";
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/ink-theme-provider";
+import type { BorderStyle } from "@/components/ui/ink-theme-provider";
 import { useInput } from "@/hooks/use-input";
 
 export interface Tab {
@@ -17,14 +18,7 @@ export interface TabsProps {
   activeTab?: string;
   onTabChange?: (key: string) => void;
   borderColor?: string;
-  borderStyle?:
-    | "single"
-    | "double"
-    | "round"
-    | "bold"
-    | "singleDouble"
-    | "doubleSingle"
-    | "classic";
+  borderStyle?: BorderStyle;
   separator?: string;
   tabBarPaddingX?: number;
   paddingX?: number;

@@ -2,14 +2,15 @@ import { Box, Text } from "ink";
 import type { ReactNode } from "react";
 import React from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/ink-theme-provider";
+import type { BorderStyle } from "@/components/ui/ink-theme-provider";
 
 export interface WelcomeScreenProps {
   appName: string;
   appNameColor?: string;
   version?: string;
   borderColor?: string;
-  borderStyle?: "single" | "round" | "double" | "bold";
+  borderStyle?: BorderStyle;
   leftWidth?: number;
   children: ReactNode;
 }

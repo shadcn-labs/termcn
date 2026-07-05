@@ -1,20 +1,14 @@
 import { Box, Text } from "ink";
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/ink-theme-provider";
+import type { BorderStyle } from "@/components/ui/ink-theme-provider";
 
 export interface PanelProps {
   title?: string;
   titleColor?: string;
   borderColor?: string;
-  borderStyle?:
-    | "single"
-    | "double"
-    | "round"
-    | "bold"
-    | "singleDouble"
-    | "doubleSingle"
-    | "classic";
+  borderStyle?: BorderStyle;
   bordered?: boolean;
   width?: number;
   height?: number;

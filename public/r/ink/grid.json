@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "grid",
+  "title": "Grid",
+  "description": "Rows × columns grid layout",
+  "dependencies": [
+    "ink"
+  ],
+  "files": [
+    {
+      "path": "registry/ui/grid.tsx",
+      "content": "import { Box } from \"ink\";\nimport React, { Children } from \"react\";\nimport type { ReactNode } from \"react\";\n\nexport interface GridProps {\n  columns: number;\n  gap?: number;\n  children: ReactNode;\n}\n\nexport const Grid = ({ columns, gap = 0, children }: GridProps) => {\n  const items = Children.toArray(children);\n  const rows: ReactNode[][] = [];\n\n  for (let i = 0; i < items.length; i += columns) {\n    rows.push(items.slice(i, i + columns));\n  }\n\n  return (\n    <Box flexDirection=\"column\" gap={gap}>\n      {rows.map((row, rowIdx) => (\n        <Box key={rowIdx} flexDirection=\"row\" gap={gap}>\n          {row.map((cell, colIdx) => (\n            <Box key={colIdx} flexGrow={1}>\n              {cell}\n            </Box>\n          ))}\n        </Box>\n      ))}\n    </Box>\n  );\n};\n",
+      "type": "registry:ui"
+    }
+  ],
+  "categories": [
+    "layout"
+  ],
+  "type": "registry:ui"
+}

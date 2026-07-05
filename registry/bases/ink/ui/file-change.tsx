@@ -1,7 +1,7 @@
 import { Box, Text } from "ink";
 import React, { useState } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/ink-theme-provider";
 import { useInput } from "@/hooks/use-input";
 
 import { DiffView } from "./diff-view";

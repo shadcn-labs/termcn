@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "error-boundary",
+  "title": "Error Boundary",
+  "description": "React error boundary with graceful terminal display",
+  "dependencies": [
+    "ink"
+  ],
+  "files": [
+    {
+      "path": "registry/ui/error-boundary.tsx",
+      "content": "import { Box, Text } from \"ink\";\nimport React, { Component } from \"react\";\nimport type { ReactNode } from \"react\";\n\nexport interface ErrorBoundaryProps {\n  children: ReactNode;\n  fallback?: ReactNode;\n  onError?: (error: Error, info: { componentStack: string }) => void;\n  title?: string;\n}\n\ninterface ErrorBoundaryState {\n  hasError: boolean;\n  error: Error | null;\n  componentStack: string;\n}\n\nexport class ErrorBoundary extends Component<\n  ErrorBoundaryProps,\n  ErrorBoundaryState\n> {\n  constructor(props: ErrorBoundaryProps) {\n    super(props);\n    this.state = { componentStack: \"\", error: null, hasError: false };\n  }\n\n  static getDerivedStateFromError(error: Error): Partial<ErrorBoundaryState> {\n    return { error, hasError: true };\n  }\n\n  componentDidCatch(error: Error, info: React.ErrorInfo) {\n    this.setState({ componentStack: info.componentStack ?? \"\" });\n    this.props.onError?.(error, { componentStack: info.componentStack ?? \"\" });\n  }\n\n  render() {\n    const { hasError, error, componentStack } = this.state;\n    const { children, fallback, title = \"Error\" } = this.props;\n\n    if (hasError) {\n      if (fallback) {\n        return fallback;\n      }\n\n      const message = error?.message ?? \"An unknown error occurred\";\n      const stackLines = componentStack\n        .split(\"\\n\")\n        .map((l) => l.trim())\n        .filter(Boolean)\n        .slice(0, 6);\n\n      return (\n        <Box\n          flexDirection=\"column\"\n          borderStyle=\"round\"\n          borderColor=\"red\"\n          paddingX={1}\n          paddingY={0}\n          gap={0}\n        >\n          <Text color=\"red\" bold>\n            ✖ {title}\n          </Text>\n          <Box marginTop={1}>\n            <Text color=\"white\" bold>\n              {message}\n            </Text>\n          </Box>\n          {stackLines.length > 0 && (\n            <Box flexDirection=\"column\" marginTop={1}>\n              <Text color=\"red\" dimColor>\n                Stack trace:\n              </Text>\n              {stackLines.map((line, idx) => (\n                <Text key={idx} color=\"red\" dimColor>\n                  {line}\n                </Text>\n              ))}\n            </Box>\n          )}\n          <Box marginTop={1}>\n            <Text color=\"red\" dimColor>\n              The application encountered an unexpected error.\n            </Text>\n          </Box>\n        </Box>\n      );\n    }\n\n    return children;\n  }\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "categories": [
+    "utility"
+  ],
+  "type": "registry:ui"
+}

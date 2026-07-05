@@ -2,7 +2,8 @@
 import { useKeyboard } from "@opentui/react";
 import { useState } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
+import type { BorderStyle } from "@/components/ui/opentui-theme-provider";
 
 export interface ToggleProps {
   checked?: boolean;
@@ -14,14 +15,7 @@ export interface ToggleProps {
   disabled?: boolean;
   checkedIcon?: string;
   uncheckedIcon?: string;
-  borderStyle?:
-    | "single"
-    | "double"
-    | "round"
-    | "bold"
-    | "singleDouble"
-    | "doubleSingle"
-    | "classic";
+  borderStyle?: BorderStyle;
   paddingX?: number;
 }
 
@@ -35,7 +29,7 @@ export const Toggle = ({
   disabled = false,
   checkedIcon = "●",
   uncheckedIcon = "○",
-  borderStyle = "round",
+  borderStyle = "rounded",
   paddingX = 1,
 }: ToggleProps) => {
   const theme = useTheme();

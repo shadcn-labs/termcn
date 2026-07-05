@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "bullet-list",
+  "title": "Bullet List",
+  "description": "Nested structured content with ●/└/□ bullet prefixes",
+  "dependencies": [
+    "ink"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/ink/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/ui/bullet-list.tsx",
+      "content": "import { Box, Text } from \"ink\";\nimport type { ReactNode } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface BulletListItemProps {\n  label: string;\n  bold?: boolean;\n  color?: string;\n  children?: ReactNode;\n}\n\nexport interface BulletListTreeItemProps {\n  label: string;\n  color?: string;\n}\n\nexport interface BulletListCheckItemProps {\n  label: string;\n  done?: boolean;\n  color?: string;\n}\n\nconst BulletListRoot = ({ children }: { children: ReactNode }) => (\n  <Box flexDirection=\"column\">{children}</Box>\n);\n\nconst BulletListItem = ({\n  label,\n  bold: boldText = false,\n  color,\n  children,\n}: BulletListItemProps) => {\n  const theme = useTheme();\n  return (\n    <Box flexDirection=\"column\">\n      <Box flexDirection=\"row\">\n        <Text color={color ?? theme.colors.primary}>{\"● \"}</Text>\n        <Text bold={boldText} color={color}>\n          {label}\n        </Text>\n      </Box>\n      {children}\n    </Box>\n  );\n};\n\nconst BulletListSub = ({ children }: { children: ReactNode }) => (\n  <Box flexDirection=\"column\" paddingLeft={2}>\n    {children}\n  </Box>\n);\n\nconst BulletListTreeItem = ({ label, color }: BulletListTreeItemProps) => {\n  const theme = useTheme();\n  return (\n    <Box flexDirection=\"row\">\n      <Text color={theme.colors.mutedForeground}>{\"└ \"}</Text>\n      <Text color={color}>{label}</Text>\n    </Box>\n  );\n};\n\nconst BulletListCheckItem = ({\n  label,\n  done = false,\n  color,\n}: BulletListCheckItemProps) => {\n  const theme = useTheme();\n  const icon = done ? \"■\" : \"□\";\n  const resolvedColor =\n    color ?? (done ? theme.colors.success : theme.colors.mutedForeground);\n  return (\n    <Box flexDirection=\"row\">\n      <Text color={resolvedColor}>{`${icon} `}</Text>\n      <Text color={done ? undefined : color}>{label}</Text>\n    </Box>\n  );\n};\n\nexport const BulletList = Object.assign(BulletListRoot, {\n  CheckItem: BulletListCheckItem,\n  Item: BulletListItem,\n  Sub: BulletListSub,\n  TreeItem: BulletListTreeItem,\n});\n",
+      "type": "registry:ui"
+    }
+  ],
+  "categories": [
+    "templates"
+  ],
+  "type": "registry:ui"
+}
