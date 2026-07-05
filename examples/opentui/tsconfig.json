@@ -13,13 +13,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
-    "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-    "baseUrl": ".",
+    "baseUrl": "../..",
     "paths": {
       "@/*": ["./*"],
       "@opentui/react": ["./types/opentui-react.d.ts"],
@@ -28,18 +22,10 @@
       ],
       "@opentui/react/jsx-dev-runtime": [
         "./lib/opentui-bridge/react-jsx-dev-runtime.ts"
-      ],
-      "react": ["./node_modules/@types/react"]
-    }
+      ]
+    },
+    "types": ["node"]
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
-    "scripts/build-registry.mts",
-    "next.config.mjs",
-    ".next/dev/types/**/*.ts"
-  ],
-  "exclude": ["node_modules", "examples/opentui"]
+  "include": ["./**/*.tsx", "../../types/opentui-react-jsx-runtime.d.ts"],
+  "exclude": []
 }

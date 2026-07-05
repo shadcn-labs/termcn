@@ -41,14 +41,18 @@ const OpenTuiPreviewPlaceholder = ({
 }: {
   componentName: string;
   description: string;
-}) => (
-  <div className="flex min-h-72 items-center justify-center p-6 text-center text-sm text-muted-foreground">
-    <div className="space-y-2">
-      <div className="font-medium text-foreground">{componentName}</div>
-      <div>{description}</div>
-    </div>
-  </div>
-);
+}) => {
+  const theme = useTheme();
+
+  return (
+    <box flexDirection="column" padding={1}>
+      <text fg={theme.colors.primary}>
+        <b>{componentName}</b>
+      </text>
+      <text fg={theme.colors.foreground}>{description}</text>
+    </box>
+  );
+};
 
 const PreviewPlaceholder = ({
   componentName,

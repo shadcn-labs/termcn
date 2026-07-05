@@ -4,6 +4,7 @@ import { createDynamicTerminal } from "ink-web/next";
 
 import { ExamplePreview } from "@/components/example-preview";
 import type { InkPreviewProps } from "@/components/ink-preview";
+import OpenTuiPreview from "@/components/opentui-preview";
 import type { terminalThemeMap } from "@/lib/terminal-themes";
 import { DEFAULT_BASE_NAME } from "@/registry/bases";
 import type { BaseName } from "@/registry/bases";
@@ -30,7 +31,11 @@ export const TerminalPreview = ({
   theme,
 }: TerminalPreviewProps) => {
   if (base !== DEFAULT_BASE_NAME) {
-    return <ExamplePreview base={base} name={name} />;
+    return (
+      <OpenTuiPreview theme={theme}>
+        <ExamplePreview base={base} name={name} />
+      </OpenTuiPreview>
+    );
   }
 
   return (
