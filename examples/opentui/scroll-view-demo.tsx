@@ -4,9 +4,7 @@ import { ScrollView } from "@/registry/bases/opentui/ui/scroll-view";
 export default function ScrollViewDemo() {
   return (
     <Box flexDirection="column" gap={1}>
-      <text>
-        <dim>↑↓ scroll · set contentHeight for thumb size</dim>
-      </text>
+      <text fg="#666">↑↓ scroll · set contentHeight for thumb size</text>
       <ScrollView contentHeight={8} height={5}>
         <text>Line 1</text>
         <text>Line 2</text>

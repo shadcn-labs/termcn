@@ -7,9 +7,7 @@ export default function PathInputDemo() {
         <b>PathInput</b>
       </text>
       <text>Interactive file path input with autocomplete.</text>
-      <text>
-        <dim>Requires Node.js filesystem access.</dim>
-      </text>
+      <text fg="#666">Requires Node.js filesystem access.</text>
     </Box>
   );
 }

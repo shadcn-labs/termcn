@@ -39,8 +39,8 @@ export const Skeleton = ({
   return (
     <box flexDirection="column">
       {rows.map((row, i) => (
-        <text key={i}>
-          {...[...row].map((char, j) => (
+        <box key={i} flexDirection="row">
+          {[...row].map((char, j) => (
             <text
               key={j}
               fg={
@@ -50,7 +50,7 @@ export const Skeleton = ({
               {char}
             </text>
           ))}
-        </text>
+        </box>
       ))}
     </box>
   );

@@ -164,20 +164,25 @@ const UsageMonitorRoot = ({
 
   return (
     <box flexDirection="column">
-      {React.Children.toArray(children).map((child, i, arr) => (
-        <>
-          {child}
-          {i < arr.length - 1 &&
-            React.isValidElement(child) &&
-            (
-              child.type as unknown as {
-                displayName?: string;
-              }
-            ).displayName !== "UsageMonitor.StatusBar" && (
-              <text fg="#666">{separatorChar.repeat(44)}</text>
-            )}
-        </>
-      ))}
+      {React.Children.toArray(children).map((child, i, arr) => {
+        const childKey =
+          React.isValidElement(child) && child.key !== null ? child.key : i;
+
+        return (
+          <box key={childKey} flexDirection="column">
+            {child}
+            {i < arr.length - 1 &&
+              React.isValidElement(child) &&
+              (
+                child.type as unknown as {
+                  displayName?: string;
+                }
+              ).displayName !== "UsageMonitor.StatusBar" && (
+                <text fg="#666">{separatorChar.repeat(44)}</text>
+              )}
+          </box>
+        );
+      })}
     </box>
   );
 };
@@ -209,14 +214,14 @@ const UsageMonitorTags = ({
 }: UsageMonitorTagsProps) => (
   <box flexDirection="row" marginBottom={1}>
     <text fg={bracketColor ?? "cyan"}>{"[ "}</text>
-    {items.map((item, i) => (
-      <>
-        <text>{item}</text>
-        {i < items.length - 1 && (
-          <text fg={separatorColor ?? "cyan"}>{" | "}</text>
-        )}
-      </>
-    ))}
+    {items.flatMap((item, i) => [
+      <text key={`${item}-${i}-label`}>{item}</text>,
+      i < items.length - 1 ? (
+        <text key={`${item}-${i}-separator`} fg={separatorColor ?? "cyan"}>
+          {" | "}
+        </text>
+      ) : null,
+    ])}
     <text fg={bracketColor ?? "cyan"}>{" ]"}</text>
   </box>
 );

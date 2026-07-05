@@ -24,13 +24,9 @@ export default function TableSelectable() {
         onSelect={(row) => setPicked(`${row.id}: ${row.name}`)}
       />
       {picked ? (
-        <text>
-          <dim>Selected: {picked}</dim>
-        </text>
+        <text fg="#666">Selected: {picked}</text>
       ) : (
-        <text>
-          <dim>↑↓ move · Enter select</dim>
-        </text>
+        <text fg="#666">↑↓ move · Enter select</text>
       )}
     </Box>
   );

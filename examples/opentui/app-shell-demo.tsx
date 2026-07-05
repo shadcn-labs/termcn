@@ -10,9 +10,7 @@ export default function AppShellDemo() {
       <AppShell.Content height={8}>
         <text>Welcome to the interactive shell.</text>
         <text>Type a command to get started.</text>
-        <text>
-          <dim>Last login: Mon Apr 5 09:22:13</dim>
-        </text>
+        <text fg="#666">Last login: Mon Apr 5 09:22:13</text>
       </AppShell.Content>
       <AppShell.Hints items={["↑↓ scroll", "enter submit", "esc quit"]} />
     </AppShell>

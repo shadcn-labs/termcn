@@ -93,16 +93,21 @@ const SetupFlowRoot = ({
           </BigText>
         </box>
       )}
-      {React.Children.toArray(children).map((child, i, arr) => (
-        <>
-          {child}
-          {i < arr.length - 1 && (
-            <box paddingLeft={0}>
-              <text fg={connectorColor || "#666"}>{connectorChar}</text>
-            </box>
-          )}
-        </>
-      ))}
+      {React.Children.toArray(children).map((child, i, arr) => {
+        const childKey =
+          React.isValidElement(child) && child.key !== null ? child.key : i;
+
+        return (
+          <box key={childKey} flexDirection="column">
+            {child}
+            {i < arr.length - 1 && (
+              <box paddingLeft={0}>
+                <text fg={connectorColor || "#666"}>{connectorChar}</text>
+              </box>
+            )}
+          </box>
+        );
+      })}
     </box>
   );
 };

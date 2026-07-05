@@ -84,7 +84,7 @@ export const Pagination = ({
           activePage === 1 ? theme.colors.mutedForeground : theme.colors.primary
         }
       >
-        {activePage === 1 ? <text fg="#666">‹</text> : "‹"}
+        ‹
       </text>
 
       {pages.map((p, idx) => {
@@ -113,7 +113,7 @@ export const Pagination = ({
             : theme.colors.primary
         }
       >
-        {activePage === total ? <text fg="#666">›</text> : "›"}
+        ›
       </text>
     </box>
   );

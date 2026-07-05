@@ -47,10 +47,10 @@ export const Confirm = ({
 
   return (
     <box flexDirection="column" gap={0}>
-      <text>
+      <box flexDirection="row">
         <text fg={theme.colors.primary}>{"? "}</text>
-        {message}
-      </text>
+        <text>{message}</text>
+      </box>
       <box gap={2} paddingLeft={2}>
         <box gap={1}>
           {selected ? (

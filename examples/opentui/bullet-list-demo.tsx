@@ -5,8 +5,8 @@ export default function BulletListDemo() {
     <BulletList>
       <BulletList.Item label="Install dependencies" bold>
         <BulletList.Sub>
-          <BulletList.TreeItem label="ink@5.1.0" />
-          <BulletList.TreeItem label="react@18.3.0" />
+          <BulletList.TreeItem label="@opentui/react@latest" />
+          <BulletList.TreeItem label="react@latest" />
         </BulletList.Sub>
       </BulletList.Item>
       <BulletList.Item label="Configure project" />

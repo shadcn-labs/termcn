@@ -7,9 +7,7 @@ export default function FilePickerDemo() {
         <b>FilePicker</b>
       </text>
       <text>Interactive file browser with directory navigation.</text>
-      <text>
-        <dim>Requires Node.js filesystem access.</dim>
-      </text>
+      <text fg="#666">Requires Node.js filesystem access.</text>
     </Box>
   );
 }

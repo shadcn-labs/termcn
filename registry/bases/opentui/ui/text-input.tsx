@@ -139,10 +139,14 @@ export const TextInput = ({
     if (!value && placeholder) {
       if (showCursor && isFocused) {
         return (
-          <text fg={theme.colors.mutedForeground}>
-            <text reverse={true}>{placeholder[0] ?? " "}</text>
-            {placeholder.slice(1)}
-          </text>
+          <>
+            <text fg={theme.colors.mutedForeground} reverse={true}>
+              {placeholder[0] ?? " "}
+            </text>
+            <text fg={theme.colors.mutedForeground}>
+              {placeholder.slice(1)}
+            </text>
+          </>
         );
       }
       return <text fg={theme.colors.mutedForeground}>{placeholder}</text>;
@@ -162,14 +166,18 @@ export const TextInput = ({
     const after = displayValue.slice(cursorOffset + 1);
 
     return (
-      <text fg={theme.colors.foreground}>
-        {before}
-        {highlighted && <text reverse={true}>{highlighted}</text>}
+      <>
+        {before && <text fg={theme.colors.foreground}>{before}</text>}
+        {highlighted && (
+          <text fg={theme.colors.foreground} reverse={true}>
+            {highlighted}
+          </text>
+        )}
         <text reverse={true} fg={theme.colors.focusRing}>
           {cursorChar}
         </text>
-        {after}
-      </text>
+        {after && <text fg={theme.colors.foreground}>{after}</text>}
+      </>
     );
   };
   const boxProps = bordered

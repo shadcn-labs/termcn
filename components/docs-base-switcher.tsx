@@ -4,10 +4,23 @@ import { cn } from "@/lib/utils";
 import { BASE_NAMES, BASES, getBase } from "@/registry/bases";
 import type { BaseName } from "@/registry/bases";
 
+type DocsBaseSwitcherSection = "components" | "templates" | "themes";
+
+const DOCS_BASE_SWITCHER_SECTIONS = new Set<DocsBaseSwitcherSection>([
+  "components",
+  "templates",
+  "themes",
+]);
+
+const isDocsBaseSwitcherSection = (
+  section: string
+): section is DocsBaseSwitcherSection =>
+  DOCS_BASE_SWITCHER_SECTIONS.has(section as DocsBaseSwitcherSection);
+
 export const getDocsBaseSwitcherProps = (
   slug: string[] | undefined
 ): {
-  section: "components" | "themes";
+  section: DocsBaseSwitcherSection;
   base: string;
   slug: string;
 } | null => {
@@ -19,13 +32,13 @@ export const getDocsBaseSwitcherProps = (
 
   if (
     !BASE_NAMES.includes(base as BaseName) ||
-    (section !== "components" && section !== "themes") ||
+    !isDocsBaseSwitcherSection(section) ||
     !rest.length
   ) {
     return null;
   }
 
-  if (section === "themes") {
+  if (section === "templates" || section === "themes") {
     return { base, section, slug: rest[0] };
   }
 
@@ -44,7 +57,7 @@ export const DocsBaseSwitcher = ({
 }: {
   base: string;
   slug: string;
-  section: "components" | "themes";
+  section: DocsBaseSwitcherSection;
   className?: string;
 }) => {
   const activeBase = getBase(base as (typeof BASES)[number]["name"]);

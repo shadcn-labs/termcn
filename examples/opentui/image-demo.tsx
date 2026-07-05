@@ -7,9 +7,7 @@ export default function ImageDemo() {
         <b>Image</b>
       </text>
       <text>Renders images in terminal via sixel/kitty/iterm protocols.</text>
-      <text>
-        <dim>Requires compatible terminal emulator.</dim>
-      </text>
+      <text fg="#666">Requires compatible terminal emulator.</text>
     </Box>
   );
 }

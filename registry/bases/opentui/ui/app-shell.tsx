@@ -118,7 +118,7 @@ const AppShellInput = ({
           <b>{`${prefix} `}</b>
         </text>
       )}
-      <text>{value || <text fg="#666">{placeholder}</text>}</text>
+      {value ? <text>{value}</text> : <text fg="#666">{placeholder}</text>}
       <text fg={theme.colors.focusRing}>█</text>
     </box>
   );

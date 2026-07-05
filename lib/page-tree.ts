@@ -70,9 +70,11 @@ export const getFolderPages = (
 };
 
 export const getCurrentBase = (pathname: string): string => {
-  const componentsMatch = pathname.match(/\/docs\/components\/([^/]+)\//);
-  if (componentsMatch) {
-    return componentsMatch[1];
+  const baseScopedMatch = pathname.match(
+    /\/docs\/(?:components|templates)\/([^/]+)\//
+  );
+  if (baseScopedMatch) {
+    return baseScopedMatch[1];
   }
 
   const themesMatch = pathname.match(/\/docs\/themes\/([^/]+)\//);

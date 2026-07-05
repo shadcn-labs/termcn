@@ -99,10 +99,8 @@ const HelpScreenRoot = ({
 
       {usage && (
         <box marginBottom={1}>
-          <text>
-            <text fg="#666">{"Usage: "}</text>
-            {usage}
-          </text>
+          <text fg="#666">{"Usage: "}</text>
+          <text>{usage}</text>
         </box>
       )}
 
