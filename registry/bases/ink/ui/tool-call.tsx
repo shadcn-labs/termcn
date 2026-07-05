@@ -1,7 +1,7 @@
 import { Box, Text } from "ink";
 import React, { useState, useEffect, useRef } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/ink-theme-provider";
 import { useAnimation } from "@/hooks/use-animation";
 import { useInput } from "@/hooks/use-input";
 

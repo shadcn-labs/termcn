@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-palenight",
+  "title": "Palenight",
+  "description": "Palenight - React Native purple.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/palenight.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const palenightTheme: Theme = {\n  border: {\n    color: \"#676e95\",\n    focusColor: \"#c792ea\",\n    style: \"rounded\",\n  },\n  colors: {\n    accent: \"#89ddff\",\n    accentForeground: \"#292d3e\",\n    background: \"#292d3e\",\n    border: \"#676e95\",\n    error: \"#f07178\",\n    errorForeground: \"#292d3e\",\n    focusRing: \"#c792ea\",\n    foreground: \"#a6accd\",\n    info: \"#f78c6c\",\n    infoForeground: \"#292d3e\",\n    muted: \"#1e2130\",\n    mutedForeground: \"#676e95\",\n    primary: \"#82aaff\",\n    primaryForeground: \"#292d3e\",\n    secondary: \"#383d4f\",\n    secondaryForeground: \"#a6accd\",\n    selection: \"#82aaff\",\n    selectionForeground: \"#292d3e\",\n    success: \"#c3e88d\",\n    successForeground: \"#292d3e\",\n    warning: \"#ffcb6b\",\n    warningForeground: \"#292d3e\",\n  },\n  name: \"palenight\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/palenight.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

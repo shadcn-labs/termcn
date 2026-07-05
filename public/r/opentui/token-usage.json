@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/token-usage",
+  "title": "Token Usage",
+  "description": "Compact token counter showing prompt and completion usage with optional cost estimate; also exports ContextMeter for visualising context window fill",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/token-usage.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface TokenUsageProps {\n  prompt: number;\n  completion: number;\n  model?: string;\n  showCost?: boolean;\n}\n\nconst MODEL_PRICING: Record<\n  string,\n  {\n    input: number;\n    output: number;\n  }\n> = {\n  \"claude-3-5-haiku\": { input: 0.8, output: 4 },\n  \"claude-3-5-sonnet\": { input: 3, output: 15 },\n  \"claude-3-opus\": { input: 15, output: 75 },\n  \"gpt-4-turbo\": { input: 10, output: 30 },\n  \"gpt-4o\": { input: 5, output: 15 },\n  \"gpt-4o-mini\": { input: 0.15, output: 0.6 },\n};\n\nconst formatTokens = (n: number): string => {\n  if (n >= 1_000_000) {\n    return `${(n / 1_000_000).toFixed(1)}M`;\n  }\n  if (n >= 1000) {\n    return `${(n / 1000).toFixed(1)}k`;\n  }\n  return String(n);\n};\n\nconst estimateCost = (\n  prompt: number,\n  completion: number,\n  model?: string\n): number | null => {\n  if (!model) {\n    return null;\n  }\n  const key = Object.keys(MODEL_PRICING).find((k) =>\n    model.toLowerCase().includes(k)\n  );\n  if (!key) {\n    return null;\n  }\n  const pricing = MODEL_PRICING[key];\n  return (\n    (prompt / 1_000_000) * pricing.input +\n    (completion / 1_000_000) * pricing.output\n  );\n};\n\nexport const TokenUsage = ({\n  prompt,\n  completion,\n  model,\n  showCost = false,\n}: TokenUsageProps) => {\n  const theme = useTheme();\n  const cost = showCost ? estimateCost(prompt, completion, model) : null;\n\n  return (\n    <box gap={0}>\n      <text fg={theme.colors.mutedForeground}>{\"⟨ \"}</text>\n      <text fg={theme.colors.primary}>{formatTokens(prompt)}</text>\n      <text fg={theme.colors.mutedForeground}>{\" in / \"}</text>\n      <text fg={theme.colors.secondary ?? theme.colors.accent}>\n        {formatTokens(completion)}\n      </text>\n      <text fg={theme.colors.mutedForeground}>{\" out\"}</text>\n      {model && <text fg={theme.colors.mutedForeground}>{` · ${model}`}</text>}\n      {cost !== null && (\n        <text\n          fg={theme.colors.mutedForeground}\n        >{` · $${cost.toFixed(4)}`}</text>\n      )}\n      <text fg={theme.colors.mutedForeground}>{\" ⟩\"}</text>\n    </box>\n  );\n};\n\nexport interface ContextMeterProps {\n  used: number;\n  limit: number;\n  label?: string;\n  showPercent?: boolean;\n  warnAt?: number;\n  criticalAt?: number;\n  width?: number;\n}\n\nexport const ContextMeter = ({\n  used,\n  limit,\n  label,\n  showPercent = true,\n  warnAt = 75,\n  criticalAt = 90,\n  width = 20,\n}: ContextMeterProps) => {\n  const theme = useTheme();\n  const percent = Math.min(100, Math.round((used / limit) * 100));\n  const filled = Math.round((percent / 100) * width);\n  const empty = width - filled;\n\n  let barColor: string;\n  if (percent >= criticalAt) {\n    barColor = theme.colors.error ?? \"red\";\n  } else if (percent >= warnAt) {\n    barColor = theme.colors.warning ?? \"yellow\";\n  } else {\n    barColor = theme.colors.success ?? \"green\";\n  }\n\n  const bar = \"█\".repeat(filled) + \"░\".repeat(empty);\n\n  return (\n    <box gap={1}>\n      {label && <text fg={theme.colors.mutedForeground}>{label}</text>}\n      <text fg={barColor}>{bar}</text>\n      {showPercent && <text fg={barColor}>{`${percent}%`}</text>}\n      <text\n        fg={theme.colors.mutedForeground}\n      >{`${formatTokens(used)}/${formatTokens(limit)}`}</text>\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/token-usage.tsx"
+    }
+  ],
+  "categories": [
+    "ai"
+  ],
+  "type": "registry:ui"
+}

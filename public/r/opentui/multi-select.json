@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/multi-select",
+  "title": "Multi Select",
+  "description": "Multi-select list with checkboxes and select-all",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/multi-select.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useKeyboard } from \"@opentui/react\";\nimport { useState } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface MultiSelectOption<T = string> {\n  value: T;\n  label: string;\n  hint?: string;\n  disabled?: boolean;\n}\n\nexport interface MultiSelectProps<T = string> {\n  options: MultiSelectOption<T>[];\n  value?: T[];\n  onChange?: (values: T[]) => void;\n  onSubmit?: (values: T[]) => void;\n  cursor?: string;\n  checkmark?: string;\n  height?: number;\n}\n\nexport const MultiSelect = <T = string,>({\n  options,\n  value: controlledValue,\n  onChange,\n  onSubmit,\n  cursor = \"›\",\n  checkmark = \"◉\",\n  height,\n}: MultiSelectProps<T>) => {\n  const theme = useTheme();\n  const [activeIndex, setActiveIndex] = useState(0);\n  const [internalSelected, setInternalSelected] = useState<T[]>([]);\n\n  const selected = controlledValue ?? internalSelected;\n\n  const scrollOffset = (() => {\n    if (!height) {\n      return 0;\n    }\n    const half = Math.floor(height / 2);\n    const maxOffset = options.length - height;\n    const offset = activeIndex - half;\n    if (offset < 0) {\n      return 0;\n    }\n    if (offset > maxOffset) {\n      return Math.max(0, maxOffset);\n    }\n    return offset;\n  })();\n\n  const visibleOptions = height\n    ? options.slice(scrollOffset, scrollOffset + height)\n    : options;\n\n  useKeyboard((key) => {\n    if (key.name === \"up\") {\n      setActiveIndex((i) => {\n        let next = i - 1;\n        while (next >= 0 && options[next]?.disabled) {\n          next -= 1;\n        }\n        return next < 0 ? i : next;\n      });\n    } else if (key.name === \"down\") {\n      setActiveIndex((i) => {\n        let next = i + 1;\n        while (next < options.length && options[next]?.disabled) {\n          next += 1;\n        }\n        return next >= options.length ? i : next;\n      });\n    } else if (key.name === \" \") {\n      const opt = options[activeIndex];\n      if (!opt || opt.disabled) {\n        return;\n      }\n      const isSelected = selected.includes(opt.value);\n      const next = isSelected\n        ? selected.filter((v) => v !== opt.value)\n        : [...selected, opt.value];\n      if (controlledValue === undefined) {\n        setInternalSelected(next);\n      }\n      onChange?.(next);\n    } else if (key.name === \"return\") {\n      onSubmit?.(selected);\n    }\n  });\n\n  return (\n    <box flexDirection=\"column\">\n      {visibleOptions.map((opt, visibleIdx) => {\n        const idx = scrollOffset + visibleIdx;\n        const isActive = idx === activeIndex;\n        const isSelected = selected.includes(opt.value);\n        const icon = isSelected ? checkmark : \"○\";\n        let iconColor: string;\n        if (opt.disabled) {\n          iconColor = theme.colors.mutedForeground;\n        } else if (isSelected) {\n          iconColor = theme.colors.primary;\n        } else {\n          iconColor = theme.colors.foreground;\n        }\n        let labelColor: string;\n        if (opt.disabled) {\n          labelColor = theme.colors.mutedForeground;\n        } else if (isActive) {\n          labelColor = theme.colors.primary;\n        } else {\n          labelColor = theme.colors.foreground;\n        }\n        return (\n          <box key={idx} gap={1}>\n            <text fg={isActive ? theme.colors.primary : undefined}>\n              {isActive ? cursor : \" \"}\n            </text>\n            <text fg={opt.disabled ? \"#666\" : iconColor}>{icon}</text>\n            <text fg={opt.disabled ? \"#666\" : labelColor}>\n              {isActive ? <b>{opt.label}</b> : opt.label}\n            </text>\n            {opt.hint && <text fg=\"#666\">{opt.hint}</text>}\n          </box>\n        );\n      })}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/multi-select.tsx"
+    }
+  ],
+  "categories": [
+    "selection"
+  ],
+  "type": "registry:ui"
+}

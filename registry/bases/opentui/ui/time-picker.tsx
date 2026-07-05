@@ -2,7 +2,7 @@
 import { useKeyboard } from "@opentui/react";
 import React, { useState } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
 
 export interface TimePickerProps {
   value?: {
@@ -144,7 +144,7 @@ export const TimePicker = ({
       )}
       <box
         gap={0}
-        borderStyle="round"
+        borderStyle="rounded"
         borderColor={isFocused ? theme.colors.focusRing : theme.colors.border}
         paddingLeft={1}
         paddingRight={1}

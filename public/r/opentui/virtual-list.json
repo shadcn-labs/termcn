@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/virtual-list",
+  "title": "Virtual List",
+  "description": "Virtualized list for 10k+ items",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/virtual-list.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useKeyboard } from \"@opentui/react\";\nimport { useMemo, useState } from \"react\";\nimport type { ReactNode } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface VirtualListProps<T> {\n  items: T[];\n  renderItem: (item: T, index: number, isActive: boolean) => ReactNode;\n  height: number;\n  onSelect?: (item: T, index: number) => void;\n  cursor?: string;\n  overscan?: number;\n}\n\nexport const VirtualList = <T,>({\n  items,\n  renderItem,\n  height,\n  onSelect,\n  overscan = 2,\n}: VirtualListProps<T>) => {\n  const theme = useTheme();\n  const [activeIndex, setActiveIndex] = useState(0);\n  const [windowStart, setWindowStart] = useState(0);\n\n  useKeyboard((key) => {\n    if (key.name === \"up\") {\n      setActiveIndex((prev) => {\n        const next = Math.max(0, prev - 1);\n        setWindowStart((ws) => Math.min(ws, next));\n        return next;\n      });\n    } else if (key.name === \"down\") {\n      setActiveIndex((prev) => {\n        const next = Math.min(items.length - 1, prev + 1);\n        setWindowStart((ws) => {\n          if (next >= ws + height) {\n            return next - height + 1;\n          }\n          return ws;\n        });\n        return next;\n      });\n    } else if (key.name === \"return\") {\n      const item = items[activeIndex];\n      if (item !== undefined) {\n        onSelect?.(item, activeIndex);\n      }\n    }\n  });\n\n  const visibleStart = Math.max(0, windowStart - overscan);\n  const visibleEnd = Math.min(items.length, windowStart + height + overscan);\n  const visibleItems = useMemo(\n    () => items.slice(visibleStart, visibleEnd),\n    [items, visibleStart, visibleEnd]\n  );\n\n  const thumbSize = Math.max(1, Math.floor((height * height) / items.length));\n  const thumbPosition =\n    items.length <= height\n      ? 0\n      : Math.floor((activeIndex / (items.length - 1)) * (height - thumbSize));\n\n  const scrollbar = useMemo(\n    () =>\n      Array.from({ length: height }, (_, i) => {\n        if (i >= thumbPosition && i < thumbPosition + thumbSize) {\n          return \"█\";\n        }\n        return \"│\";\n      }),\n    [height, thumbPosition, thumbSize]\n  );\n\n  return (\n    <box flexDirection=\"row\">\n      <box flexDirection=\"column\" flexGrow={1}>\n        {...visibleItems\n          .map((item, localIdx) => {\n            const globalIdx = visibleStart + localIdx;\n            const isVisible =\n              globalIdx >= windowStart && globalIdx < windowStart + height;\n            if (!isVisible) {\n              return null;\n            }\n            const isActive = globalIdx === activeIndex;\n            return (\n              <box key={globalIdx}>{renderItem(item, globalIdx, isActive)}</box>\n            );\n          })\n          .filter(Boolean)}\n      </box>\n      {items.length > height && (\n        <box flexDirection=\"column\" marginLeft={1}>\n          {scrollbar.map((char, i) => (\n            <text\n              key={i}\n              fg={\n                char === \"█\"\n                  ? theme.colors.primary\n                  : theme.colors.mutedForeground\n              }\n            >\n              {char}\n            </text>\n          ))}\n        </box>\n      )}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/virtual-list.tsx"
+    }
+  ],
+  "categories": [
+    "data"
+  ],
+  "type": "registry:ui"
+}

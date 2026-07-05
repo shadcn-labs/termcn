@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/divider",
+  "title": "Divider",
+  "description": "Horizontal or vertical divider / rule",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/divider.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface DividerProps {\n  variant?: \"single\" | \"double\" | \"bold\";\n  orientation?: \"horizontal\" | \"vertical\";\n  color?: string;\n  label?: string;\n  labelColor?: string;\n  dividerChar?: string;\n  titlePadding?: number;\n  padding?: number;\n  height?: number;\n  width?: number | \"auto\";\n}\n\nconst DIVIDER_CHARS: Record<NonNullable<DividerProps[\"variant\"]>, string> = {\n  bold: \"┃\",\n  double: \"║\",\n  single: \"│\",\n};\n\nexport const Divider = ({\n  variant = \"single\",\n  orientation = \"horizontal\",\n  color,\n  label,\n  labelColor,\n  dividerChar,\n  titlePadding = 1,\n  padding = 0,\n  height = 1,\n  width = \"auto\",\n}: DividerProps) => {\n  const theme = useTheme();\n  const resolvedColor = color ?? theme.colors.border;\n  const vChar = dividerChar ?? DIVIDER_CHARS[variant];\n\n  if (orientation === \"vertical\") {\n    const lines = Array.from({ length: height }, (_, i) => i);\n    return (\n      <box flexDirection=\"column\">\n        {lines.map((i) => (\n          <text key={i} fg={resolvedColor}>\n            {vChar}\n          </text>\n        ))}\n      </box>\n    );\n  }\n\n  const paddingStr = \" \".repeat(padding);\n  const titlePad = \" \".repeat(titlePadding);\n  const hrBox = (\n    <box\n      flexGrow={1}\n      borderStyle=\"single\"\n      borderColor={resolvedColor}\n      borderBottom={false}\n      borderLeft={false}\n      borderRight={false}\n      borderTop={true}\n    />\n  );\n\n  if (label) {\n    const resolvedLabelColor = labelColor ?? resolvedColor;\n    return (\n      <box flexDirection=\"row\" width={width === \"auto\" ? undefined : width}>\n        {padding > 0 && <text>{paddingStr}</text>}\n        {hrBox}\n        <text fg={resolvedLabelColor}>{`${titlePad}${label}${titlePad}`}</text>\n        <box\n          flexGrow={1}\n          borderStyle=\"single\"\n          borderColor={resolvedColor}\n          borderBottom={false}\n          borderLeft={false}\n          borderRight={false}\n          borderTop={true}\n        />\n        {padding > 0 && <text>{paddingStr}</text>}\n      </box>\n    );\n  }\n\n  return (\n    <box flexDirection=\"row\" width={width === \"auto\" ? undefined : width}>\n      {padding > 0 && <text>{paddingStr}</text>}\n      {hrBox}\n      {padding > 0 && <text>{paddingStr}</text>}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/divider.tsx"
+    }
+  ],
+  "categories": [
+    "layout"
+  ],
+  "type": "registry:ui"
+}

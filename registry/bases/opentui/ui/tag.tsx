@@ -1,7 +1,7 @@
 /* @jsxImportSource @opentui/react */
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
 
 export type TagVariant = "default" | "outline";
 
@@ -25,7 +25,7 @@ export const Tag = ({
 
   return (
     <box
-      borderStyle="round"
+      borderStyle="rounded"
       paddingLeft={1}
       paddingRight={1}
       flexDirection="row"

@@ -1,21 +1,15 @@
 import { Box, Text } from "ink";
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/ink-theme-provider";
+import type { BorderStyle } from "@/registry/bases/ink/ui/types";
 
 export interface TooltipProps {
   children: ReactNode;
   content: string;
   position?: "top" | "bottom" | "left" | "right";
   isVisible?: boolean;
-  borderStyle?:
-    | "single"
-    | "double"
-    | "round"
-    | "bold"
-    | "singleDouble"
-    | "doubleSingle"
-    | "classic";
+  borderStyle?: BorderStyle;
   borderColor?: string;
   paddingX?: number;
   paddingY?: number;

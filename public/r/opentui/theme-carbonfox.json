@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-carbonfox",
+  "title": "Carbonfox",
+  "description": "Carbonfox - minimal dark theme.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/carbonfox.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const carbonfoxTheme: Theme = {\n  border: {\n    color: \"#6f6f6f\",\n    focusColor: \"#be95ff\",\n    style: \"rounded\",\n  },\n  colors: {\n    accent: \"#ff8389\",\n    accentForeground: \"#393939\",\n    background: \"#393939\",\n    border: \"#6f6f6f\",\n    error: \"#ff8389\",\n    errorForeground: \"#393939\",\n    focusRing: \"#be95ff\",\n    foreground: \"#f2f4f8\",\n    info: \"#78a9ff\",\n    infoForeground: \"#393939\",\n    muted: \"#2d2d2d\",\n    mutedForeground: \"#6f6f6f\",\n    primary: \"#33b1ff\",\n    primaryForeground: \"#393939\",\n    secondary: \"#454545\",\n    secondaryForeground: \"#f2f4f8\",\n    selection: \"#33b1ff\",\n    selectionForeground: \"#393939\",\n    success: \"#42be65\",\n    successForeground: \"#393939\",\n    warning: \"#f1c21b\",\n    warningForeground: \"#393939\",\n  },\n  name: \"carbonfox\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/carbonfox.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

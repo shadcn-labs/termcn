@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/key-value",
+  "title": "Key Value",
+  "description": "Aligned key–value pairs",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/key-value.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useMemo } from \"react\";\nimport type { ReactNode } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface KeyValueItem {\n  key: string;\n  value: ReactNode;\n  color?: string;\n}\n\nexport interface KeyValueProps {\n  items: KeyValueItem[];\n  keyWidth?: number;\n  separator?: string;\n  keyColor?: string;\n  valueColor?: string;\n}\n\nexport const KeyValue = ({\n  items,\n  keyWidth,\n  separator = \":\",\n  keyColor,\n  valueColor,\n}: KeyValueProps) => {\n  const theme = useTheme();\n\n  const resolvedKeyWidth = useMemo(() => {\n    if (keyWidth !== undefined) {\n      return keyWidth;\n    }\n    let max = 0;\n    for (const item of items) {\n      max = Math.max(max, item.key.length);\n    }\n    return max + 1;\n  }, [items, keyWidth]);\n\n  const resolvedKeyColor = keyColor ?? theme.colors.mutedForeground;\n  const resolvedValueColor = valueColor ?? theme.colors.foreground;\n\n  return (\n    <box flexDirection=\"column\">\n      {items.map((item, idx) => {\n        const paddedKey = item.key.padEnd(resolvedKeyWidth, \" \");\n        return (\n          <box key={idx} flexDirection=\"row\" gap={1}>\n            <text fg={resolvedKeyColor}>{paddedKey}</text>\n            <text fg={resolvedKeyColor}>{separator}</text>\n            <text fg={item.color ?? resolvedValueColor}>{item.value}</text>\n          </box>\n        );\n      })}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/key-value.tsx"
+    }
+  ],
+  "categories": [
+    "data"
+  ],
+  "type": "registry:ui"
+}

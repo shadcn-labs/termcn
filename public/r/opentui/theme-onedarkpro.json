@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-onedarkpro",
+  "title": "One Dark Pro",
+  "description": "One Dark Pro - VS Code version.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/onedarkpro.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const onedarkproTheme: Theme = {\n  border: {\n    color: \"#5c6370\",\n    focusColor: \"#c678dd\",\n    style: \"rounded\",\n  },\n  colors: {\n    accent: \"#e06c75\",\n    accentForeground: \"#1e222a\",\n    background: \"#1e222a\",\n    border: \"#5c6370\",\n    error: \"#e06c75\",\n    errorForeground: \"#1e222a\",\n    focusRing: \"#c678dd\",\n    foreground: \"#abb2bf\",\n    info: \"#56b6c2\",\n    infoForeground: \"#1e222a\",\n    muted: \"#15181f\",\n    mutedForeground: \"#5c6370\",\n    primary: \"#61afef\",\n    primaryForeground: \"#1e222a\",\n    secondary: \"#2c313a\",\n    secondaryForeground: \"#abb2bf\",\n    selection: \"#61afef\",\n    selectionForeground: \"#1e222a\",\n    success: \"#98c379\",\n    successForeground: \"#1e222a\",\n    warning: \"#e5c07b\",\n    warningForeground: \"#1e222a\",\n  },\n  name: \"onedarkpro\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/onedarkpro.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

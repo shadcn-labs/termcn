@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/columns",
+  "title": "Columns",
+  "description": "Multi-column layout with configurable widths",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/columns.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport React from \"react\";\nimport type { ReactNode } from \"react\";\n\nexport interface ColumnsProps {\n  children: ReactNode;\n  gap?: number;\n  align?: \"top\" | \"center\" | \"bottom\";\n}\n\nconst ALIGN_MAP: Record<\n  NonNullable<ColumnsProps[\"align\"]>,\n  \"flex-start\" | \"center\" | \"flex-end\"\n> = {\n  bottom: \"flex-end\",\n  center: \"center\",\n  top: \"flex-start\",\n};\n\nexport const Columns = ({ children, gap = 0, align = \"top\" }: ColumnsProps) => {\n  const items = React.Children.toArray(children);\n\n  return (\n    <box flexDirection=\"row\" alignItems={ALIGN_MAP[align]}>\n      {items.map((child, index) => (\n        <box key={index} flexGrow={1} flexDirection=\"column\">\n          {child}\n        </box>\n      ))}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/columns.tsx"
+    }
+  ],
+  "categories": [
+    "layout"
+  ],
+  "type": "registry:ui"
+}

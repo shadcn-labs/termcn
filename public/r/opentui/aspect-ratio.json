@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/aspect-ratio",
+  "title": "Aspect Ratio",
+  "description": "Constrains children to a given aspect ratio",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/aspect-ratio.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport type { ReactNode } from \"react\";\n\nexport interface AspectRatioProps {\n  children: ReactNode;\n  ratio?: number;\n  width?: number;\n}\n\nexport const AspectRatio = ({\n  children,\n  ratio = 16 / 9,\n  width = 80,\n}: AspectRatioProps) => {\n  const height = Math.round(width / ratio / 2);\n\n  return <box overflow=\"hidden\">{children}</box>;\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/aspect-ratio.tsx"
+    }
+  ],
+  "categories": [
+    "layout"
+  ],
+  "type": "registry:ui"
+}

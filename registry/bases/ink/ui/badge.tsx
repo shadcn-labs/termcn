@@ -1,6 +1,7 @@
 import { Box, Text } from "ink";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/ink-theme-provider";
+import type { BorderStyle } from "@/registry/bases/ink/ui/types";
 
 export type BadgeVariant =
   | "default"
@@ -16,14 +17,7 @@ export interface BadgeProps {
   color?: string;
   bold?: boolean;
   bordered?: boolean;
-  borderStyle?:
-    | "single"
-    | "double"
-    | "round"
-    | "bold"
-    | "singleDouble"
-    | "doubleSingle"
-    | "classic";
+  borderStyle?: BorderStyle;
   paddingX?: number;
 }
 

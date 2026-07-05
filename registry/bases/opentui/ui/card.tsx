@@ -1,7 +1,8 @@
 /* @jsxImportSource @opentui/react */
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
+import type { BorderStyle } from "@/registry/bases/opentui/ui/types";
 
 export interface CardProps {
   title?: string;
@@ -10,14 +11,7 @@ export interface CardProps {
   footer?: ReactNode;
   borderColor?: string;
   width?: number;
-  borderStyle?:
-    | "single"
-    | "double"
-    | "round"
-    | "bold"
-    | "singleDouble"
-    | "doubleSingle"
-    | "classic";
+  borderStyle?: BorderStyle;
   paddingX?: number;
   paddingY?: number;
   footerDividerChar?: string;
@@ -30,7 +24,7 @@ export const Card = ({
   footer,
   borderColor,
   width,
-  borderStyle = "round",
+  borderStyle = "rounded",
   paddingX = 1,
   paddingY = 0,
   footerDividerChar = "─",

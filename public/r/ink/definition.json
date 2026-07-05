@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ink/definition",
+  "title": "Definition",
+  "description": "Term–description definition list",
+  "dependencies": [
+    "ink"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/ink/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/ui/definition.tsx",
+      "content": "import { Box, Text } from \"ink\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface DefinitionItem {\n  term: string;\n  description: string;\n}\n\nexport interface DefinitionProps {\n  items: DefinitionItem[];\n  termColor?: string;\n}\n\nexport const Definition = ({ items, termColor }: DefinitionProps) => {\n  const theme = useTheme();\n  const resolvedTermColor = termColor ?? theme.colors.primary;\n\n  return (\n    <Box flexDirection=\"column\">\n      {items.map((item, idx) => (\n        <Box\n          key={idx}\n          flexDirection=\"column\"\n          marginBottom={idx < items.length - 1 ? 1 : 0}\n        >\n          <Text bold color={resolvedTermColor}>\n            {item.term}\n          </Text>\n          <Box paddingLeft={2}>\n            <Text color={theme.colors.foreground}>{item.description}</Text>\n          </Box>\n        </Box>\n      ))}\n    </Box>\n  );\n};\n",
+      "type": "registry:ui"
+    }
+  ],
+  "categories": [
+    "data"
+  ],
+  "type": "registry:ui"
+}

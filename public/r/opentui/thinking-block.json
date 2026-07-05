@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/thinking-block",
+  "title": "Thinking Block",
+  "description": "Collapsible block for displaying extended thinking / reasoning content from an AI model",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/thinking-block.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useKeyboard } from \"@opentui/react\";\nimport { useState } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface ThinkingBlockProps {\n  content: string;\n  streaming?: boolean;\n  defaultCollapsed?: boolean;\n  label?: string;\n  tokenCount?: number;\n  duration?: number;\n}\n\nexport const ThinkingBlock = ({\n  content,\n  streaming = false,\n  defaultCollapsed = true,\n  label = \"Reasoning\",\n  tokenCount,\n  duration,\n}: ThinkingBlockProps) => {\n  const theme = useTheme();\n  const [collapsed, setCollapsed] = useState(defaultCollapsed);\n\n  useKeyboard((key) => {\n    if (key.name === \"return\" || key.name === \" \") {\n      setCollapsed((c) => !c);\n    }\n  });\n\n  const tokenStr =\n    tokenCount === undefined ? null : `${tokenCount.toLocaleString()} tokens`;\n  const durationStr =\n    duration === undefined ? null : `${(duration / 1000).toFixed(1)}s`;\n\n  const headerParts = [\n    streaming ? \"Thinking...\" : label,\n    tokenStr,\n    durationStr,\n  ].filter(Boolean);\n\n  const headerText = headerParts.join(\" · \");\n\n  return (\n    <box\n      flexDirection=\"column\"\n      borderStyle=\"single\"\n      borderColor={theme.colors.border}\n      paddingLeft={1}\n      paddingRight={1}\n    >\n      <box gap={1}>\n        <text fg={theme.colors.mutedForeground}>{collapsed ? \"▶\" : \"▼\"}</text>\n        <text\n          fg={streaming ? theme.colors.primary : theme.colors.mutedForeground}\n        >\n          {headerText}\n        </text>\n      </box>\n\n      {!collapsed && (\n        <box flexDirection=\"column\" paddingTop={1}>\n          <text fg={theme.colors.mutedForeground}>{content}</text>\n        </box>\n      )}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/thinking-block.tsx"
+    }
+  ],
+  "categories": [
+    "ai"
+  ],
+  "type": "registry:ui"
+}

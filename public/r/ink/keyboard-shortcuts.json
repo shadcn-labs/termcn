@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ink/keyboard-shortcuts",
+  "title": "Keyboard Shortcuts",
+  "description": "Formatted keyboard shortcut reference table",
+  "dependencies": [
+    "ink"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/ink/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/ui/keyboard-shortcuts.tsx",
+      "content": "import { Box, Text } from \"ink\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface Shortcut {\n  key: string;\n  description: string;\n  category?: string;\n}\n\nexport interface KeyboardShortcutsProps {\n  shortcuts: Shortcut[];\n  columns?: number;\n  title?: string;\n}\n\nconst KeyLabel = ({ label, color }: { label: string; color: string }) => (\n  <Box borderStyle=\"single\" borderColor={color} paddingX={1}>\n    <Text color={color} bold>\n      {label}\n    </Text>\n  </Box>\n);\n\nconst ShortcutRow = ({\n  shortcut,\n  keyColor,\n  descColor,\n}: {\n  shortcut: Shortcut;\n  keyColor: string;\n  descColor: string;\n}) => (\n  <Box gap={1} alignItems=\"center\">\n    <KeyLabel label={shortcut.key} color={keyColor} />\n    <Text color={descColor}>{shortcut.description}</Text>\n  </Box>\n);\n\nconst ShortcutGrid = ({\n  items,\n  columns,\n  theme,\n}: {\n  items: Shortcut[];\n  columns: number;\n  theme: ReturnType<typeof useTheme>;\n}) => {\n  const rows: Shortcut[][] = [];\n  for (let i = 0; i < items.length; i += columns) {\n    rows.push(items.slice(i, i + columns));\n  }\n\n  return (\n    <Box flexDirection=\"column\" gap={0}>\n      {rows.map((row, ri) => (\n        <Box key={ri} gap={3}>\n          {row.map((s, ci) => (\n            <ShortcutRow\n              key={ci}\n              shortcut={s}\n              keyColor={theme.colors.primary}\n              descColor={theme.colors.foreground}\n            />\n          ))}\n        </Box>\n      ))}\n    </Box>\n  );\n};\n\nexport const KeyboardShortcuts = ({\n  shortcuts,\n  columns = 1,\n  title,\n}: KeyboardShortcutsProps) => {\n  const theme = useTheme();\n\n  const hasCategories = shortcuts.some((s) => s.category);\n\n  if (hasCategories) {\n    const grouped: Record<string, Shortcut[]> = {\n      /* noop */\n    };\n    for (const s of shortcuts) {\n      const cat = s.category ?? \"General\";\n      if (!grouped[cat]) {\n        grouped[cat] = [];\n      }\n      grouped[cat].push(s);\n    }\n\n    return (\n      <Box flexDirection=\"column\" gap={1}>\n        {title && (\n          <Text color={theme.colors.primary} bold>\n            ⌨ {title}\n          </Text>\n        )}\n        {Object.entries(grouped).map(([category, items]) => (\n          <Box key={category} flexDirection=\"column\" gap={0}>\n            <Text color={theme.colors.mutedForeground} bold underline>\n              {category}\n            </Text>\n            {columns > 1 ? (\n              <ShortcutGrid items={items} columns={columns} theme={theme} />\n            ) : (\n              items.map((s, i) => (\n                <ShortcutRow\n                  key={i}\n                  shortcut={s}\n                  keyColor={theme.colors.primary}\n                  descColor={theme.colors.foreground}\n                />\n              ))\n            )}\n          </Box>\n        ))}\n      </Box>\n    );\n  }\n\n  return (\n    <Box flexDirection=\"column\" gap={1}>\n      {title && (\n        <Text color={theme.colors.primary} bold>\n          ⌨ {title}\n        </Text>\n      )}\n      {columns > 1 ? (\n        <ShortcutGrid items={shortcuts} columns={columns} theme={theme} />\n      ) : (\n        shortcuts.map((s, i) => (\n          <ShortcutRow\n            key={i}\n            shortcut={s}\n            keyColor={theme.colors.primary}\n            descColor={theme.colors.foreground}\n          />\n        ))\n      )}\n    </Box>\n  );\n};\n",
+      "type": "registry:ui"
+    }
+  ],
+  "categories": [
+    "utility"
+  ],
+  "type": "registry:ui"
+}

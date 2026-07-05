@@ -78,6 +78,7 @@ declare module "@opentui/react/jsx-runtime" {
       br: Record<string, never>;
       code: Record<string, unknown>;
       diff: Record<string, unknown>;
+      dim: { children?: ReactNode };
       em: { children?: ReactNode };
       i: { children?: ReactNode };
       input: Record<string, unknown>;
@@ -114,6 +115,7 @@ declare module "@opentui/react/jsx-dev-runtime" {
       br: Record<string, never>;
       code: Record<string, unknown>;
       diff: Record<string, unknown>;
+      dim: { children?: ReactNode };
       em: { children?: ReactNode };
       i: { children?: ReactNode };
       input: Record<string, unknown>;
@@ -125,6 +127,32 @@ declare module "@opentui/react/jsx-dev-runtime" {
       strong: { children?: ReactNode };
       "tab-select": Record<string, unknown>;
       textarea: Record<string, unknown>;
+      text: OpenTUITextProps;
+      u: { children?: ReactNode };
+    }
+  }
+}
+
+declare module "react/jsx-runtime" {
+  export namespace JSX {
+    interface IntrinsicElements {
+      b: { children?: ReactNode };
+      box: OpenTUIBoxProps;
+      dim: { children?: ReactNode };
+      i: { children?: ReactNode };
+      text: OpenTUITextProps;
+      u: { children?: ReactNode };
+    }
+  }
+}
+
+declare module "react/jsx-dev-runtime" {
+  export namespace JSX {
+    interface IntrinsicElements {
+      b: { children?: ReactNode };
+      box: OpenTUIBoxProps;
+      dim: { children?: ReactNode };
+      i: { children?: ReactNode };
       text: OpenTUITextProps;
       u: { children?: ReactNode };
     }

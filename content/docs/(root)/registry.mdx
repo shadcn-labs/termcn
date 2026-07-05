@@ -21,30 +21,46 @@ You can replace `@termcn` with another namespace; it only needs to match what yo
 
 ## Usage
 
-Install a UI component using the namespace and the item `name` (same as the JSON file under `/r/` without `.json`):
+Items are namespaced by base: `ink/` for Ink and `opentui/` for OpenTUI.
+
+Install an Ink component:
 
 ```bash
-npx shadcn@latest add @termcn/spinner
+npx shadcn@latest add @termcn/ink/spinner
+```
+
+Install an OpenTUI component:
+
+```bash
+npx shadcn@latest add @termcn/opentui/spinner
+```
+
+Install a theme for the matching base:
+
+```bash
+npx shadcn@latest add @termcn/ink/theme-dracula
 ```
 
 ```bash
-npx shadcn@latest add @termcn/data-grid
+npx shadcn@latest add @termcn/opentui/theme-dracula
 ```
 
-OpenTUI components use the `opentui-` prefix:
+Install the theme provider for each base:
 
 ```bash
-npx shadcn@latest add @termcn/opentui-spinner
+npx shadcn@latest add @termcn/ink/theme-provider
 ```
 
-Install a theme (files are named `theme-<id>.json`):
-
 ```bash
-npx shadcn@latest add @termcn/theme-dracula
+npx shadcn@latest add @termcn/opentui/theme-provider
 ```
 
 Without a registry alias, use the full URL (as on each docs page):
 
 ```bash
-npx shadcn@latest add https://termcn.dev/r/badge.json
+npx shadcn@latest add https://termcn.dev/r/ink/spinner.json
+```
+
+```bash
+npx shadcn@latest add https://termcn.dev/r/opentui/spinner.json
 ```

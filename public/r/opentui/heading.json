@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/heading",
+  "title": "Heading",
+  "description": "h1–h4 styled headings with optional figlet ASCII art",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/heading.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport type { ReactNode } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport type HeadingLevel = 1 | 2 | 3 | 4;\n\nexport interface HeadingProps {\n  level?: HeadingLevel;\n  children: ReactNode;\n  color?: string;\n  prefix1?: string;\n  prefix2?: string;\n  prefix3?: string;\n  uppercase?: boolean;\n}\n\nexport const Heading = ({\n  level = 1,\n  children,\n  color,\n  prefix1 = \"██ \",\n  prefix2 = \"▌ \",\n  prefix3 = \"› \",\n  uppercase = true,\n}: HeadingProps) => {\n  const theme = useTheme();\n  const resolvedColor = color ?? theme.colors.primary;\n\n  switch (level) {\n    case 1: {\n      return (\n        <box>\n          <text fg={resolvedColor}>\n            <b>{prefix1}</b>\n          </text>\n          <text fg={resolvedColor}>\n            <b>\n              {uppercase && typeof children === \"string\"\n                ? children.toUpperCase()\n                : children}\n            </b>\n          </text>\n        </box>\n      );\n    }\n    case 2: {\n      return (\n        <box>\n          <text fg={resolvedColor}>\n            <b>{prefix2}</b>\n          </text>\n          <text fg={resolvedColor}>\n            <b>{children}</b>\n          </text>\n        </box>\n      );\n    }\n    case 3: {\n      return (\n        <box>\n          <text>\n            <b>{prefix3}</b>\n          </text>\n          <text>\n            <b>{children}</b>\n          </text>\n        </box>\n      );\n    }\n    case 4: {\n      return (\n        <box>\n          <text fg=\"#666\">\n            <u>{children}</u>\n          </text>\n        </box>\n      );\n    }\n    default: {\n      return (\n        <box>\n          <text>{children}</text>\n        </box>\n      );\n    }\n  }\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/heading.tsx"
+    }
+  ],
+  "categories": [
+    "typography"
+  ],
+  "type": "registry:ui"
+}

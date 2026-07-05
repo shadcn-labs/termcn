@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-vesper",
+  "title": "Vesper",
+  "description": "Vesper - minimal high contrast.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/vesper.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const vesperTheme: Theme = {\n  border: {\n    color: \"#8b8b8b\",\n    focusColor: \"#a0a0a0\",\n    style: \"rounded\",\n  },\n  colors: {\n    accent: \"#ff8080\",\n    accentForeground: \"#101010\",\n    background: \"#101010\",\n    border: \"#8b8b8b\",\n    error: \"#ff8080\",\n    errorForeground: \"#101010\",\n    focusRing: \"#a0a0a0\",\n    foreground: \"#ffffff\",\n    info: \"#ffc799\",\n    infoForeground: \"#101010\",\n    muted: \"#080808\",\n    mutedForeground: \"#8b8b8b\",\n    primary: \"#ffc799\",\n    primaryForeground: \"#101010\",\n    secondary: \"#181818\",\n    secondaryForeground: \"#ffffff\",\n    selection: \"#ffc799\",\n    selectionForeground: \"#101010\",\n    success: \"#99ffe4\",\n    successForeground: \"#101010\",\n    warning: \"#ffc799\",\n    warningForeground: \"#101010\",\n  },\n  name: \"vesper\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/vesper.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

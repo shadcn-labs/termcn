@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/form-field",
+  "title": "Form Field",
+  "description": "Form field wrapper with label, hint, and error",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/form-field.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport type { ReactNode } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface FormFieldProps {\n  label: string;\n  children: ReactNode;\n  error?: string;\n  hint?: string;\n  required?: boolean;\n  gap?: number;\n  errorIcon?: string;\n  labelColor?: string;\n}\n\nexport const FormField = ({\n  label,\n  children,\n  error,\n  hint,\n  required,\n  gap = 0,\n  errorIcon = \"✗\",\n  labelColor,\n}: FormFieldProps) => {\n  const theme = useTheme();\n  const resolvedLabelColor = labelColor ?? theme.colors.foreground;\n\n  return (\n    <box flexDirection=\"column\">\n      <box gap={0}>\n        <text fg={resolvedLabelColor}>\n          <b>{label}</b>\n        </text>\n        {required && <text fg={theme.colors.error}>{\" *\"}</text>}\n      </box>\n      <box>{children}</box>\n      {hint && !error && <text fg=\"#666\">{hint}</text>}\n      {error && (\n        <text fg={theme.colors.error}>\n          {errorIcon} {error}\n        </text>\n      )}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/form-field.tsx"
+    }
+  ],
+  "categories": [
+    "forms"
+  ],
+  "type": "registry:ui"
+}

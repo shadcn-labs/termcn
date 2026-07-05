@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-ayu",
+  "title": "Ayu",
+  "description": "Ayu - clean modern terminal theme.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/ayu.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const ayuTheme: Theme = {\n  border: {\n    color: \"#5a6673\",\n    focusColor: \"#3fb7e3\",\n    style: \"rounded\",\n  },\n  colors: {\n    accent: \"#f2856f\",\n    accentForeground: \"#0f1419\",\n    background: \"#0f1419\",\n    border: \"#5a6673\",\n    error: \"#f58572\",\n    errorForeground: \"#0f1419\",\n    focusRing: \"#3fb7e3\",\n    foreground: \"#d6dae0\",\n    info: \"#66c6f1\",\n    infoForeground: \"#0f1419\",\n    muted: \"#1e2229\",\n    mutedForeground: \"#5a6673\",\n    primary: \"#3fb7e3\",\n    primaryForeground: \"#0f1419\",\n    secondary: \"#242a33\",\n    secondaryForeground: \"#d6dae0\",\n    selection: \"#3fb7e3\",\n    selectionForeground: \"#0f1419\",\n    success: \"#78d05c\",\n    successForeground: \"#0f1419\",\n    warning: \"#e4a75c\",\n    warningForeground: \"#0f1419\",\n  },\n  name: \"ayu\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/ayu.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

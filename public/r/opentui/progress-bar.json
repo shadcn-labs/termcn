@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/progress-bar",
+  "title": "Progress Bar",
+  "description": "Determinate progress bar with percent and value/total display",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/progress-bar.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface ProgressBarProps {\n  value: number;\n  total?: number;\n  width?: number;\n  showPercent?: boolean;\n  showEta?: boolean;\n  fillChar?: string;\n  emptyChar?: string;\n  color?: string;\n  label?: string;\n}\n\nexport const ProgressBar = ({\n  value,\n  total,\n  width = 30,\n  showPercent = true,\n  showEta: _showEta = false,\n  fillChar = \"█\",\n  emptyChar = \"░\",\n  color,\n  label,\n}: ProgressBarProps) => {\n  const theme = useTheme();\n  const resolvedColor = color ?? theme.colors.primary;\n\n  const percent =\n    total === undefined\n      ? Math.min(100, Math.round(value))\n      : Math.min(100, Math.round((value / total) * 100));\n  const filled = Math.round((percent / 100) * width);\n  const empty = width - filled;\n\n  const bar = fillChar.repeat(filled) + emptyChar.repeat(empty);\n\n  return (\n    <box flexDirection=\"column\">\n      {label && <text>{label}</text>}\n      <box gap={1}>\n        <text fg={resolvedColor}>{bar}</text>\n        {showPercent && (\n          <text fg={theme.colors.mutedForeground}>{`${percent}%`}</text>\n        )}\n        {total !== undefined && <text fg=\"#666\">{`${value}/${total}`}</text>}\n      </box>\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/progress-bar.tsx"
+    }
+  ],
+  "categories": [
+    "feedback"
+  ],
+  "type": "registry:ui"
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/tooltip",
+  "title": "Tooltip",
+  "description": "Contextual tooltip on focus or hover",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/tooltip.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport type { ReactNode } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\nimport type { BorderStyle } from \"@/components/ui/types\";\n\nexport interface TooltipProps {\n  children: ReactNode;\n  content: string;\n  position?: \"top\" | \"bottom\" | \"left\" | \"right\";\n  isVisible?: boolean;\n  borderStyle?: BorderStyle;\n  borderColor?: string;\n  paddingX?: number;\n  paddingY?: number;\n  gap?: number;\n  arrowDown?: string;\n  arrowUp?: string;\n}\n\nexport const Tooltip = ({\n  children,\n  content,\n  position = \"top\",\n  isVisible = false,\n  borderStyle = \"single\",\n  borderColor,\n  paddingX = 1,\n  paddingY = 0,\n  gap = 1,\n  arrowDown = \"↓\",\n  arrowUp = \"↑\",\n}: TooltipProps) => {\n  const theme = useTheme();\n  const resolvedBorderColor = borderColor ?? theme.colors.border;\n\n  const tooltipBox = (\n    <box\n      borderColor={resolvedBorderColor}\n      paddingLeft={paddingX}\n      paddingRight={paddingX}\n      paddingTop={paddingY}\n      paddingBottom={paddingY}\n    >\n      <text fg={theme.colors.foreground}>{content}</text>\n    </box>\n  );\n\n  if (!isVisible) {\n    return <box>{children}</box>;\n  }\n\n  if (position === \"top\") {\n    return (\n      <box flexDirection=\"column\" alignItems=\"flex-start\">\n        {tooltipBox}\n        <text fg={theme.colors.mutedForeground}>{arrowDown}</text>\n        <box>{children}</box>\n      </box>\n    );\n  }\n\n  if (position === \"bottom\") {\n    return (\n      <box flexDirection=\"column\" alignItems=\"flex-start\">\n        <box>{children}</box>\n        <text fg={theme.colors.mutedForeground}>{arrowUp}</text>\n        {tooltipBox}\n      </box>\n    );\n  }\n\n  if (position === \"left\") {\n    return (\n      <box flexDirection=\"row\" alignItems=\"center\">\n        {tooltipBox}\n        <box>{children}</box>\n      </box>\n    );\n  }\n\n  return (\n    <box flexDirection=\"row\" alignItems=\"center\">\n      <box>{children}</box>\n      {tooltipBox}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/tooltip.tsx"
+    }
+  ],
+  "categories": [
+    "overlays"
+  ],
+  "type": "registry:ui"
+}

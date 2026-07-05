@@ -1,7 +1,7 @@
 /* @jsxImportSource @opentui/react */
 import React from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
 
 export interface MarkdownProps {
   children: string;

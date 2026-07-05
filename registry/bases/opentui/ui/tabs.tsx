@@ -3,7 +3,8 @@ import { useKeyboard } from "@opentui/react";
 import { useState } from "react";
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
+import type { BorderStyle } from "@/registry/bases/opentui/ui/types";
 
 export interface Tab {
   key: string;
@@ -17,14 +18,7 @@ export interface TabsProps {
   activeTab?: string;
   onTabChange?: (key: string) => void;
   borderColor?: string;
-  borderStyle?:
-    | "single"
-    | "double"
-    | "round"
-    | "bold"
-    | "singleDouble"
-    | "doubleSingle"
-    | "classic";
+  borderStyle?: BorderStyle;
   separator?: string;
   tabBarPaddingX?: number;
   paddingX?: number;

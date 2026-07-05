@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/list",
+  "title": "List",
+  "description": "Navigable list with optional filtering",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/list.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useKeyboard } from \"@opentui/react\";\nimport { useState, useMemo } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface ListItem {\n  key: string;\n  label: string;\n  description?: string;\n  color?: string;\n}\n\nexport interface ListProps {\n  items: ListItem[];\n  onSelect?: (item: ListItem) => void;\n  filterable?: boolean;\n  height?: number;\n  cursor?: string;\n}\n\nexport const List = ({\n  items,\n  onSelect,\n  filterable = false,\n  height = 10,\n  cursor = \"›\",\n}: ListProps) => {\n  const theme = useTheme();\n  const [activeIndex, setActiveIndex] = useState(0);\n  const [filter, setFilter] = useState(\"\");\n\n  const filtered = useMemo(() => {\n    if (!filter) {\n      return items;\n    }\n    const q = filter.toLowerCase();\n    return items.filter((item) => item.label.toLowerCase().includes(q));\n  }, [items, filter]);\n\n  useKeyboard((key) => {\n    if (key.name === \"up\") {\n      setActiveIndex((i) => Math.max(0, i - 1));\n    } else if (key.name === \"down\") {\n      setActiveIndex((i) => Math.min(filtered.length - 1, i + 1));\n    } else if (key.name === \"return\") {\n      const item = filtered[activeIndex];\n      if (item) {\n        onSelect?.(item);\n      }\n    } else if (filterable && key.name === \"backspace\") {\n      setFilter((f) => f.slice(0, -1));\n    } else if (\n      filterable &&\n      key.name !== \"escape\" &&\n      key.name !== \"return\" &&\n      key.name !== \"up\" &&\n      key.name !== \"down\" &&\n      key.name.length === 1\n    ) {\n      setFilter((f) => f + key.name);\n    }\n  });\n\n  const visible = filtered.slice(0, height);\n\n  return (\n    <box flexDirection=\"column\">\n      {filterable ? (\n        <box\n          borderStyle=\"rounded\"\n          borderColor={theme.colors.border}\n          paddingLeft={1}\n          paddingRight={1}\n          marginBottom={1}\n        >\n          <text fg={filter ? undefined : \"#666\"}>\n            {filter || \"Type to filter…\"}\n          </text>\n        </box>\n      ) : null}\n      {visible.map((item, idx) => {\n        const isActive = idx === activeIndex;\n        const labelEl = isActive ? (\n          <text fg={item.color ?? theme.colors.primary}>\n            <b>{item.label}</b>\n          </text>\n        ) : (\n          <text fg={item.color ?? theme.colors.foreground}>{item.label}</text>\n        );\n        return (\n          <box key={item.key} gap={1}>\n            <text fg={isActive ? theme.colors.primary : undefined}>\n              {isActive ? cursor : \" \"}\n            </text>\n            {labelEl}\n            {item.description ? (\n              <text fg=\"#666\">{item.description}</text>\n            ) : null}\n          </box>\n        );\n      })}\n      {filtered.length > height ? (\n        <text fg=\"#666\">{`${filtered.length - height} more…`}</text>\n      ) : null}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/list.tsx"
+    }
+  ],
+  "categories": [
+    "data"
+  ],
+  "type": "registry:ui"
+}

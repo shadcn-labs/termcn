@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/center",
+  "title": "Center",
+  "description": "Centers children horizontally and vertically",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/center.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport type { ReactNode } from \"react\";\n\nexport interface CenterProps {\n  children: ReactNode;\n  axis?: \"both\" | \"horizontal\" | \"vertical\";\n}\n\nexport const Center = ({ children, axis = \"both\" }: CenterProps) => {\n  const justifyContent =\n    axis === \"both\" || axis === \"horizontal\" ? \"center\" : undefined;\n  const alignItems =\n    axis === \"both\" || axis === \"vertical\" ? \"center\" : undefined;\n\n  return (\n    <box\n      flexGrow={1}\n      justifyContent={justifyContent as \"center\" | undefined}\n      alignItems={alignItems as \"center\" | undefined}\n    >\n      {children}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/center.tsx"
+    }
+  ],
+  "categories": [
+    "layout"
+  ],
+  "type": "registry:ui"
+}

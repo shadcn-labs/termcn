@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-matrix",
+  "title": "Matrix",
+  "description": "Matrix - green code rain.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/matrix.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const matrixTheme: Theme = {\n  border: {\n    color: \"#8ca391\",\n    focusColor: \"#c770ff\",\n    style: \"rounded\",\n  },\n  colors: {\n    accent: \"#c770ff\",\n    accentForeground: \"#0a0e0a\",\n    background: \"#0a0e0a\",\n    border: \"#8ca391\",\n    error: \"#ff4b4b\",\n    errorForeground: \"#0a0e0a\",\n    focusRing: \"#c770ff\",\n    foreground: \"#62ff94\",\n    info: \"#30b3ff\",\n    infoForeground: \"#0a0e0a\",\n    muted: \"#050805\",\n    mutedForeground: \"#8ca391\",\n    primary: \"#2eff6a\",\n    primaryForeground: \"#0a0e0a\",\n    secondary: \"#0f140f\",\n    secondaryForeground: \"#62ff94\",\n    selection: \"#2eff6a\",\n    selectionForeground: \"#0a0e0a\",\n    success: \"#62ff94\",\n    successForeground: \"#0a0e0a\",\n    warning: \"#e6ff57\",\n    warningForeground: \"#0a0e0a\",\n  },\n  name: \"matrix\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/matrix.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

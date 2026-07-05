@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/gauge",
+  "title": "Gauge",
+  "description": "Arc/speedometer gauge meter",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/gauge.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport type { ReactNode } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport type GaugeSize = \"sm\" | \"md\" | \"lg\";\n\nexport interface GaugeProps {\n  value: number;\n  min?: number;\n  max?: number;\n  label?: string;\n  color?: string;\n  size?: GaugeSize;\n}\n\nconst ARC_CHARS_FILL = \"█\";\nconst ARC_CHARS_EMPTY = \"░\";\n\nconst clamp = (value: number, min: number, max: number): number =>\n  Math.max(min, Math.min(max, value));\n\nconst renderSmGauge = (\n  pct: number,\n  color: string,\n  mutedColor: string\n): ReactNode => {\n  const width = 10;\n  const filled = Math.round(pct * width);\n  const empty = width - filled;\n  const bar = `${ARC_CHARS_FILL.repeat(filled)}${ARC_CHARS_EMPTY.repeat(empty)}`;\n\n  return (\n    <box flexDirection=\"row\" gap={1}>\n      <text fg={mutedColor}>[</text>\n      <text fg={color}>{bar}</text>\n      <text fg={mutedColor}>]</text>\n      <text fg={color}>{`${Math.round(pct * 100)}%`}</text>\n    </box>\n  );\n};\n\nconst renderMdGauge = (\n  pct: number,\n  color: string,\n  mutedColor: string,\n  fgColor: string\n): ReactNode => {\n  const arcWidth = 14;\n  const filled = Math.round(pct * arcWidth);\n  const empty = arcWidth - filled;\n  const bottomFill = `${ARC_CHARS_FILL.repeat(filled)}${ARC_CHARS_EMPTY.repeat(empty)}`;\n  const pctStr = `${Math.round(pct * 100)}%`;\n\n  return (\n    <box flexDirection=\"column\">\n      <text fg={mutedColor}>{`╭${\"─\".repeat(arcWidth)}╮`}</text>\n      <box flexDirection=\"row\">\n        <text fg={mutedColor}>│</text>\n        <text fg={fgColor}>{` ${pctStr} `.padEnd(arcWidth)}</text>\n        <text fg={mutedColor}>│</text>\n      </box>\n      <box flexDirection=\"row\">\n        <text fg={mutedColor}>╰</text>\n        <text fg={color}>{bottomFill}</text>\n        <text fg={mutedColor}>╯</text>\n      </box>\n    </box>\n  );\n};\n\nconst renderLgGauge = (\n  pct: number,\n  color: string,\n  mutedColor: string,\n  fgColor: string\n): ReactNode => {\n  const arcWidth = 22;\n  const filled = Math.round(pct * arcWidth);\n  const empty = arcWidth - filled;\n  const bottomFill = `${ARC_CHARS_FILL.repeat(filled)}${ARC_CHARS_EMPTY.repeat(empty)}`;\n  const pctStr = `${Math.round(pct * 100)}%`;\n  const centeredPct = pctStr\n    .padStart(Math.floor((arcWidth + pctStr.length) / 2))\n    .padEnd(arcWidth);\n\n  return (\n    <box flexDirection=\"column\">\n      <text fg={mutedColor}>{` ╭${\"─\".repeat(arcWidth)}╮`}</text>\n      <text fg={mutedColor}>{`╱${\" \".repeat(arcWidth)}╲`}</text>\n      <box flexDirection=\"row\">\n        <text fg={mutedColor}>│</text>\n        <text fg={fgColor}>\n          <b>{centeredPct}</b>\n        </text>\n        <text fg={mutedColor}>│</text>\n      </box>\n      <text fg={mutedColor}>{`╲${\" \".repeat(arcWidth)}╱`}</text>\n      <box flexDirection=\"row\">\n        <text fg={mutedColor}>{\" ╰\"}</text>\n        <text fg={color}>{bottomFill}</text>\n        <text fg={mutedColor}>╯</text>\n      </box>\n    </box>\n  );\n};\n\nexport const Gauge = ({\n  value,\n  min = 0,\n  max = 100,\n  label,\n  color,\n  size = \"md\",\n}: GaugeProps) => {\n  const theme = useTheme();\n  const resolvedColor = color ?? theme.colors.primary;\n  const clamped = clamp(value, min, max);\n  const pct = max === min ? 0 : (clamped - min) / (max - min);\n\n  let gaugeNode: ReactNode;\n  if (size === \"sm\") {\n    gaugeNode = renderSmGauge(pct, resolvedColor, theme.colors.mutedForeground);\n  } else if (size === \"lg\") {\n    gaugeNode = renderLgGauge(\n      pct,\n      resolvedColor,\n      theme.colors.mutedForeground,\n      theme.colors.foreground\n    );\n  } else {\n    gaugeNode = renderMdGauge(\n      pct,\n      resolvedColor,\n      theme.colors.mutedForeground,\n      theme.colors.foreground\n    );\n  }\n\n  return (\n    <box flexDirection=\"column\">\n      {gaugeNode}\n      {label && <text fg={theme.colors.mutedForeground}>{label}</text>}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/gauge.tsx"
+    }
+  ],
+  "categories": [
+    "charts"
+  ],
+  "type": "registry:ui"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-catppuccin",
+  "title": "Catppuccin",
+  "description": "A Catppuccin theme for rich terminal UI previews.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/catppuccin.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const catppuccinTheme: Theme = {\n  border: {\n    color: \"#45475A\",\n    focusColor: \"#CBA6F7\",\n    style: \"rounded\",\n  },\n  colors: {\n    accent: \"#F38BA8\",\n    accentForeground: \"#1E1E2E\",\n    background: \"#1E1E2E\",\n    border: \"#45475A\",\n    error: \"#F38BA8\",\n    errorForeground: \"#1E1E2E\",\n\n    focusRing: \"#CBA6F7\",\n    foreground: \"#CDD6F4\",\n    info: \"#89B4FA\",\n    infoForeground: \"#1E1E2E\",\n    muted: \"#313244\",\n    mutedForeground: \"#6C7086\",\n    primary: \"#CBA6F7\",\n    primaryForeground: \"#1E1E2E\",\n\n    secondary: \"#89B4FA\",\n    secondaryForeground: \"#1E1E2E\",\n    selection: \"#313244\",\n    selectionForeground: \"#CDD6F4\",\n    success: \"#A6E3A1\",\n\n    successForeground: \"#1E1E2E\",\n    warning: \"#F9E2AF\",\n    warningForeground: \"#1E1E2E\",\n  },\n  name: \"catppuccin\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/catppuccin.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "ignoreDeprecations": "6.0",
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "baseUrl": "../..",
+    "paths": {
+      "@/*": ["./*"],
+      "@opentui/react": ["./types/opentui-react.d.ts"],
+      "@opentui/react/jsx-runtime": [
+        "./lib/opentui-bridge/react-jsx-runtime.ts"
+      ],
+      "@opentui/react/jsx-dev-runtime": [
+        "./lib/opentui-bridge/react-jsx-dev-runtime.ts"
+      ]
+    },
+    "types": ["node"]
+  },
+  "include": ["./**/*.tsx", "../../types/opentui-react-jsx-runtime.d.ts"],
+  "exclude": []
+}

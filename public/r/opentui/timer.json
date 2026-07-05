@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/timer",
+  "title": "Timer",
+  "description": "Countdown timer with pause/resume and auto-start",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/timer.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useKeyboard } from \"@opentui/react\";\nimport { useState, useCallback, useEffect } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface TimerProps {\n  duration: number;\n  onComplete?: () => void;\n  autoStart?: boolean;\n  format?: \"hms\" | \"ms\" | \"s\";\n  color?: string;\n  label?: string;\n}\n\nconst padNum = (n: number) => String(n).padStart(2, \"0\");\n\nconst formatTime = (seconds: number, format: \"hms\" | \"ms\" | \"s\"): string => {\n  const h = Math.floor(seconds / 3600);\n  const m = Math.floor((seconds % 3600) / 60);\n  const s = seconds % 60;\n\n  if (format === \"s\") {\n    return `${seconds}s`;\n  }\n  if (format === \"ms\") {\n    return `${padNum(m)}:${padNum(s)}`;\n  }\n  return `${padNum(h)}:${padNum(m)}:${padNum(s)}`;\n};\n\nexport const Timer = ({\n  duration,\n  onComplete,\n  autoStart = false,\n  format = \"hms\",\n  color,\n  label,\n}: TimerProps) => {\n  const theme = useTheme();\n  const resolvedColor = color ?? theme.colors.primary;\n\n  const [remaining, setRemaining] = useState(duration);\n  const [running, setRunning] = useState(autoStart);\n  const [completed, setCompleted] = useState(false);\n\n  const tick = useCallback(() => {\n    setRemaining((prev) => {\n      if (prev <= 1) {\n        setRunning(false);\n        setCompleted(true);\n        onComplete?.();\n        return 0;\n      }\n      return prev - 1;\n    });\n  }, [onComplete]);\n\n  useEffect(() => {\n    if (!running) {\n      return;\n    }\n    const id = setInterval(tick, 1000);\n    return () => clearInterval(id);\n  }, [running, tick]);\n\n  useKeyboard((key) => {\n    if (key.name === \" \") {\n      if (!completed) {\n        setRunning((r) => !r);\n      }\n    } else if (key.name === \"r\") {\n      setRemaining(duration);\n      setRunning(false);\n      setCompleted(false);\n    }\n  });\n\n  const runningStatus = running ? \"Running\" : \"Paused\";\n  const status = completed ? \"Done!\" : runningStatus;\n  const runningStatusColor = running\n    ? resolvedColor\n    : theme.colors.mutedForeground;\n  const statusColor = completed ? theme.colors.success : runningStatusColor;\n\n  return (\n    <box flexDirection=\"column\" gap={0}>\n      {label && <text fg={theme.colors.mutedForeground}>{label}</text>}\n      <box gap={2} alignItems=\"center\">\n        <text fg={resolvedColor}>\n          <b>{formatTime(remaining, format)}</b>\n        </text>\n        <text fg={statusColor}>{`[${status}]`}</text>\n      </box>\n      <text fg=\"#666\">\n        {completed ? \"r to reset\" : \"space pause/resume · r reset\"}\n      </text>\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/timer.tsx"
+    }
+  ],
+  "categories": [
+    "utility"
+  ],
+  "type": "registry:ui"
+}

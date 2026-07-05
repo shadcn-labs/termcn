@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/number-input",
+  "title": "Number Input",
+  "description": "Numeric input with increment/decrement and bounds",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/number-input.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useKeyboard } from \"@opentui/react\";\nimport { useState } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\nimport type { BorderStyle } from \"@/components/ui/types\";\n\nexport interface NumberInputProps {\n  value?: number;\n  onChange?: (value: number) => void;\n  onSubmit?: (value: number) => void;\n  min?: number;\n  max?: number;\n  step?: number;\n  placeholder?: string;\n  label?: string;\n  id?: string;\n  format?: (n: number) => string;\n  borderStyle?: BorderStyle;\n  paddingX?: number;\n  cursor?: string;\n  stepHint?: string;\n}\n\nexport const NumberInput = ({\n  value: controlledValue,\n  onChange,\n  onSubmit,\n  min,\n  max,\n  step = 1,\n  placeholder = \"\",\n  label,\n  id: _id,\n  format,\n  borderStyle = \"rounded\",\n  paddingX = 1,\n  cursor = \"█\",\n  stepHint,\n}: NumberInputProps) => {\n  const [internalValue, setInternalValue] = useState<number | undefined>();\n  const [buffer, setBuffer] = useState<string>(\"\");\n  const theme = useTheme();\n  const [isFocused] = useState(true);\n\n  const value = controlledValue ?? internalValue;\n\n  const clamp = (n: number): number => {\n    let result = n;\n    if (min !== undefined) {\n      result = Math.max(min, result);\n    }\n    if (max !== undefined) {\n      result = Math.min(max, result);\n    }\n    return result;\n  };\n\n  const applyValue = (clamped: number) => {\n    if (onChange) {\n      onChange(clamped);\n    } else {\n      setInternalValue(clamped);\n    }\n  };\n\n  const commitValue = (n: number) => {\n    const clamped = clamp(n);\n    applyValue(clamped);\n    setBuffer(String(clamped));\n  };\n\n  useKeyboard((key) => {\n    if (!isFocused) {\n      return;\n    }\n    if (key.name === \"up\") {\n      const current = value ?? 0;\n      commitValue(current + step);\n      return;\n    }\n    if (key.name === \"down\") {\n      const current = value ?? 0;\n      commitValue(current - step);\n      return;\n    }\n    if (key.name === \"return\") {\n      const parsed = buffer === \"\" ? value : Number.parseFloat(buffer);\n      if (parsed !== undefined && !Number.isNaN(parsed)) {\n        const clamped = clamp(parsed);\n        onSubmit?.(clamped);\n      }\n      return;\n    }\n    if (key.name === \"backspace\" || key.name === \"delete\") {\n      const newBuffer = buffer.slice(0, -1);\n      setBuffer(newBuffer);\n      if (newBuffer === \"\" || newBuffer === \"-\") {\n        return;\n      }\n      const parsed = Number.parseFloat(newBuffer);\n      if (!Number.isNaN(parsed)) {\n        applyValue(clamp(parsed));\n      }\n      return;\n    }\n    if (key.name === \"escape\" || key.name === \"tab\") {\n      return;\n    }\n    if (key.name && /^[\\d.-]$/.test(key.name)) {\n      if (key.name === \"-\" && buffer.length > 0) {\n        return;\n      }\n      if (key.name === \".\" && buffer.includes(\".\")) {\n        return;\n      }\n      const newBuffer = buffer + key.name;\n      setBuffer(newBuffer);\n      const parsed = Number.parseFloat(newBuffer);\n      if (!Number.isNaN(parsed)) {\n        applyValue(clamp(parsed));\n      }\n    }\n  });\n\n  const borderColor = isFocused ? theme.colors.focusRing : theme.colors.border;\n\n  let displayValue = \"\";\n  if (isFocused && buffer !== \"\") {\n    displayValue = buffer;\n  } else if (value !== undefined) {\n    displayValue = format ? format(value) : String(value);\n  }\n\n  const resolvedStepHint = stepHint ?? `↑ +${step}  ↓ -${step}`;\n\n  return (\n    <box flexDirection=\"column\">\n      {label && (\n        <text>\n          <b>{label}</b>\n        </text>\n      )}\n      <box flexDirection=\"row\" alignItems=\"center\" gap={1}>\n        <box paddingLeft={paddingX} paddingRight={paddingX}>\n          <text\n            fg={\n              displayValue\n                ? theme.colors.foreground\n                : theme.colors.mutedForeground\n            }\n          >\n            {displayValue || placeholder}\n          </text>\n          {isFocused && <text fg={theme.colors.focusRing}>{cursor}</text>}\n        </box>\n        {isFocused && (\n          <text fg={theme.colors.mutedForeground}>{resolvedStepHint}</text>\n        )}\n      </box>\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/number-input.tsx"
+    }
+  ],
+  "categories": [
+    "input"
+  ],
+  "type": "registry:ui"
+}

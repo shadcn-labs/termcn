@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-nightowl",
+  "title": "Night Owl",
+  "description": "Night Owl - late night coding.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/nightowl.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const nightowlTheme: Theme = {\n  border: {\n    color: \"#637777\",\n    focusColor: \"#c792ea\",\n    style: \"rounded\",\n  },\n  colors: {\n    accent: \"#f78c6c\",\n    accentForeground: \"#011627\",\n    background: \"#011627\",\n    border: \"#637777\",\n    error: \"#ef5350\",\n    errorForeground: \"#011627\",\n    focusRing: \"#c792ea\",\n    foreground: \"#d6deeb\",\n    info: \"#82aaff\",\n    infoForeground: \"#011627\",\n    muted: \"#010c15\",\n    mutedForeground: \"#637777\",\n    primary: \"#82aaff\",\n    primaryForeground: \"#011627\",\n    secondary: \"#021a2b\",\n    secondaryForeground: \"#d6deeb\",\n    selection: \"#82aaff\",\n    selectionForeground: \"#011627\",\n    success: \"#c5e478\",\n    successForeground: \"#011627\",\n    warning: \"#ecc48d\",\n    warningForeground: \"#011627\",\n  },\n  name: \"nightowl\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/nightowl.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

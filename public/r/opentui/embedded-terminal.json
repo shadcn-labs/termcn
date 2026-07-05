@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/embedded-terminal",
+  "title": "Embedded Terminal",
+  "description": "Embedded PTY terminal panel (requires node-pty peer)",
+  "dependencies": [
+    "@opentui/react",
+    "strip-ansi"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/embedded-terminal.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useEffect, useMemo, useState } from \"react\";\nimport stripAnsi from \"strip-ansi\";\n\ninterface IPty {\n  kill: () => void;\n  onData: (cb: (data: string) => void) => void;\n  onExit: (cb: (e: { exitCode: number }) => void) => void;\n}\n\ninterface NodePtyModule {\n  spawn: (\n    command: string,\n    args: string[],\n    options: {\n      cols: number;\n      cwd?: string;\n      name: string;\n      rows: number;\n    }\n  ) => IPty;\n}\n\nexport interface EmbeddedTerminalProps {\n  command: string;\n  args?: string[];\n  cwd?: string;\n  width?: number;\n  height?: number;\n  onExit?: (code: number) => void;\n}\n\n/**\n * Renders a pseudo-terminal session inside the TUI.\n * Requires optional dependency `node-pty` (native build).\n */\nexport const EmbeddedTerminal = ({\n  command,\n  args = [],\n  cwd,\n  width = 80,\n  height = 24,\n  onExit,\n}: EmbeddedTerminalProps) => {\n  const [raw, setRaw] = useState(\"\");\n  const [err, setErr] = useState<string | null>(null);\n\n  useEffect(() => {\n    let p: IPty | null = null;\n    let cancelled = false;\n    (async () => {\n      try {\n        const loadPty = new Function(\n          'return import(\"node-pty\")'\n        ) as () => Promise<NodePtyModule>;\n        const mod = await loadPty();\n        if (cancelled) {\n          return;\n        }\n        const pty = mod.spawn(command, args, {\n          cols: width,\n          cwd,\n          name: \"xterm-color\",\n          rows: height,\n        });\n        p = pty;\n        pty.onData((d: string) => {\n          setRaw((prev) => (prev + d).slice(-500_000));\n        });\n        pty.onExit((e: { exitCode: number }) => {\n          onExit?.(e.exitCode);\n        });\n      } catch {\n        setErr(\n          \"Install optional peer: node-pty (native build required for your platform).\"\n        );\n      }\n    })();\n    return () => {\n      cancelled = true;\n      if (p) {\n        p.kill();\n      }\n    };\n  }, [command, args, cwd, width, height, onExit]);\n\n  const lines = useMemo(\n    () => stripAnsi(raw).split(\"\\n\").slice(-height),\n    [raw, height]\n  );\n\n  return (\n    <box flexDirection=\"column\" borderStyle=\"rounded\" borderColor=\"cyan\">\n      {err ? (\n        <text fg=\"red\">{err}</text>\n      ) : (\n        lines.map((line, i) => <text key={i}>{line}</text>)\n      )}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/embedded-terminal.tsx"
+    }
+  ],
+  "categories": [
+    "utility"
+  ],
+  "type": "registry:ui"
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/alert",
+  "title": "Alert",
+  "description": "Alert box with success/error/warning/info variants",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/alert.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport type { ReactNode } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\nimport type { BorderStyle } from \"@/components/ui/types\";\n\nexport type AlertVariant = \"success\" | \"error\" | \"warning\" | \"info\";\n\nconst ICONS: Record<AlertVariant, string> = {\n  error: \"✗\",\n  info: \"ℹ\",\n  success: \"✓\",\n  warning: \"⚠\",\n};\n\nexport interface AlertProps {\n  variant?: AlertVariant;\n  title?: string;\n  children?: ReactNode;\n  icon?: string;\n  bordered?: boolean;\n  borderStyle?: BorderStyle;\n  color?: string;\n  paddingX?: number;\n  paddingY?: number;\n}\n\nexport const Alert = ({\n  variant = \"info\",\n  title,\n  children,\n  icon,\n  bordered = true,\n  borderStyle,\n  color,\n  paddingX = 1,\n  paddingY = 0,\n}: AlertProps) => {\n  const theme = useTheme();\n\n  const variantColor =\n    color ??\n    (() => {\n      switch (variant) {\n        case \"success\": {\n          return theme.colors.success;\n        }\n        case \"error\": {\n          return theme.colors.error;\n        }\n        case \"warning\": {\n          return theme.colors.warning;\n        }\n        default: {\n          return theme.colors.info;\n        }\n      }\n    })();\n\n  const resolvedIcon = icon ?? ICONS[variant];\n\n  const inner = (\n    <>\n      <box gap={1}>\n        <text fg={variantColor}>\n          <b>{resolvedIcon}</b>\n        </text>\n        {title && (\n          <text fg={variantColor}>\n            <b>{title}</b>\n          </text>\n        )}\n      </box>\n      {children && <text>{children}</text>}\n    </>\n  );\n\n  if (!bordered) {\n    return (\n      <box\n        flexDirection=\"column\"\n        paddingBottom={paddingY}\n        paddingLeft={paddingX}\n        paddingRight={paddingX}\n        paddingTop={paddingY}\n      >\n        {inner}\n      </box>\n    );\n  }\n\n  return (\n    <box\n      borderColor={variantColor}\n      borderStyle={borderStyle ?? theme.border.style}\n      flexDirection=\"column\"\n      paddingBottom={paddingY}\n      paddingLeft={paddingX}\n      paddingRight={paddingX}\n      paddingTop={paddingY}\n    >\n      {inner}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/alert.tsx"
+    }
+  ],
+  "categories": [
+    "feedback"
+  ],
+  "type": "registry:ui"
+}

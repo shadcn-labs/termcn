@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-lucent-orng",
+  "title": "Lucent Orng",
+  "description": "Lucent Orng - warm orange theme.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/lucent-orng.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const lucentOrngTheme: Theme = {\n  border: {\n    color: \"#808080\",\n    focusColor: \"#ec5b2b\",\n    style: \"rounded\",\n  },\n  colors: {\n    accent: \"#fff7f1\",\n    accentForeground: \"#2a1a15\",\n    background: \"#2a1a15\",\n    border: \"#808080\",\n    error: \"#e06c75\",\n    errorForeground: \"#2a1a15\",\n    focusRing: \"#ec5b2b\",\n    foreground: \"#eeeeee\",\n    info: \"#56b6c2\",\n    infoForeground: \"#2a1a15\",\n    muted: \"#1a100d\",\n    mutedForeground: \"#808080\",\n    primary: \"#ec5b2b\",\n    primaryForeground: \"#2a1a15\",\n    secondary: \"#3d2521\",\n    secondaryForeground: \"#eeeeee\",\n    selection: \"#ec5b2b\",\n    selectionForeground: \"#2a1a15\",\n    success: \"#6ba1e6\",\n    successForeground: \"#2a1a15\",\n    warning: \"#ec5b2b\",\n    warningForeground: \"#2a1a15\",\n  },\n  name: \"lucent-orng\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/lucent-orng.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/streaming-text",
+  "title": "Streaming Text",
+  "description": "Token-by-token streaming text with blinking cursor and optional typing animation",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/streaming-text.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useState, useEffect, useRef } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface StreamingTextProps {\n  text?: string;\n  stream?: AsyncIterable<string>;\n  cursor?: boolean;\n  animate?: boolean;\n  speed?: number;\n  onComplete?: (fullText: string) => void;\n  cursorColor?: string;\n}\n\nexport const StreamingText = ({\n  text: controlledText,\n  stream,\n  cursor = true,\n  animate = false,\n  speed = 30,\n  onComplete,\n  cursorColor,\n}: StreamingTextProps) => {\n  const theme = useTheme();\n  const [internalText, setInternalText] = useState(\"\");\n  const [isStreaming, setIsStreaming] = useState(false);\n  const [cursorVisible, setCursorVisible] = useState(true);\n  const [animatedIndex, setAnimatedIndex] = useState(0);\n  const onCompleteRef = useRef(onComplete);\n\n  useEffect(() => {\n    onCompleteRef.current = onComplete;\n  }, [onComplete]);\n\n  useEffect(() => {\n    if (!cursor) {\n      return;\n    }\n    const id = setInterval(() => {\n      setCursorVisible((v) => !v);\n    }, 530);\n    return () => clearInterval(id);\n  }, [cursor]);\n\n  useEffect(() => {\n    if (!stream) {\n      return;\n    }\n    let cancelled = false;\n    setInternalText(\"\");\n    setIsStreaming(true);\n    (async () => {\n      let full = \"\";\n      try {\n        for await (const chunk of stream) {\n          if (cancelled) {\n            break;\n          }\n          full += chunk;\n          setInternalText(full);\n        }\n      } catch {\n        /* noop */\n      }\n      if (!cancelled) {\n        setIsStreaming(false);\n        onCompleteRef.current?.(full);\n      }\n    })();\n    return () => {\n      cancelled = true;\n    };\n  }, [stream]);\n\n  useEffect(() => {\n    if (!animate || !controlledText || stream) {\n      return;\n    }\n    setAnimatedIndex(0);\n    setIsStreaming(true);\n    let idx = 0;\n    const id = setInterval(() => {\n      idx += 1;\n      setAnimatedIndex(idx);\n      if (idx >= controlledText.length) {\n        clearInterval(id);\n        setIsStreaming(false);\n        onCompleteRef.current?.(controlledText);\n      }\n    }, speed);\n    return () => clearInterval(id);\n  }, [controlledText, animate, speed, stream]);\n\n  let displayText: string;\n  if (stream) {\n    displayText = internalText;\n  } else if (animate && controlledText) {\n    displayText = controlledText.slice(0, animatedIndex);\n  } else {\n    displayText = controlledText ?? \"\";\n  }\n\n  const showCursor = cursor && isStreaming && cursorVisible;\n  const resolvedCursorColor = cursorColor ?? theme.colors.primary;\n\n  return (\n    <text>\n      {displayText}\n      {showCursor && <text fg={resolvedCursorColor}>▌</text>}\n    </text>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/streaming-text.tsx"
+    }
+  ],
+  "categories": [
+    "ai"
+  ],
+  "type": "registry:ui"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-oc-2",
+  "title": "OC-2",
+  "description": "OC-2 - clean minimal theme.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/oc-2.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const oc2Theme: Theme = {\n  border: {\n    color: \"#282828\",\n    focusColor: \"#edb2f1\",\n    style: \"rounded\",\n  },\n  colors: {\n    accent: \"#edb2f1\",\n    accentForeground: \"#1f1f1f\",\n    background: \"#1f1f1f\",\n    border: \"#282828\",\n    error: \"#fc533a\",\n    errorForeground: \"#1f1f1f\",\n    focusRing: \"#edb2f1\",\n    foreground: \"#f1ece8\",\n    info: \"#edb2f1\",\n    infoForeground: \"#1f1f1f\",\n    muted: \"#141414\",\n    mutedForeground: \"#707070\",\n    primary: \"#fab283\",\n    primaryForeground: \"#1f1f1f\",\n    secondary: \"#262626\",\n    secondaryForeground: \"#f1ece8\",\n    selection: \"#fab283\",\n    selectionForeground: \"#1f1f1f\",\n    success: \"#12c905\",\n    successForeground: \"#1f1f1f\",\n    warning: \"#fcd53a\",\n    warningForeground: \"#1f1f1f\",\n  },\n  name: \"oc-2\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/oc-2.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-nord",
+  "title": "Nord",
+  "description": "A cool Nord palette tuned for terminal contrast.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/nord.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const nordTheme: Theme = {\n  border: {\n    color: \"#4C566A\",\n    focusColor: \"#88C0D0\",\n    style: \"rounded\",\n  },\n  colors: {\n    accent: \"#81A1C1\",\n    accentForeground: \"#2E3440\",\n    background: \"#2E3440\",\n    border: \"#4C566A\",\n    error: \"#BF616A\",\n    errorForeground: \"#ECEFF4\",\n\n    focusRing: \"#88C0D0\",\n    foreground: \"#ECEFF4\",\n    info: \"#5E81AC\",\n    infoForeground: \"#ECEFF4\",\n    muted: \"#3B4252\",\n    mutedForeground: \"#4C566A\",\n    primary: \"#88C0D0\",\n    primaryForeground: \"#2E3440\",\n\n    secondary: \"#4C566A\",\n    secondaryForeground: \"#ECEFF4\",\n    selection: \"#3B4252\",\n    selectionForeground: \"#ECEFF4\",\n    success: \"#A3BE8C\",\n\n    successForeground: \"#2E3440\",\n    warning: \"#EBCB8B\",\n    warningForeground: \"#2E3440\",\n  },\n  name: \"nord\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/nord.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

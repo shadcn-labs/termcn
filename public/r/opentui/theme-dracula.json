@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-dracula",
+  "title": "Dracula",
+  "description": "A purple-heavy Dracula theme for terminal UI components.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/dracula.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const draculaTheme: Theme = {\n  border: {\n    color: \"#6272A4\",\n    focusColor: \"#BD93F9\",\n    style: \"rounded\",\n  },\n  colors: {\n    accent: \"#FF79C6\",\n    accentForeground: \"#282A36\",\n    background: \"#282A36\",\n    border: \"#6272A4\",\n    error: \"#FF5555\",\n    errorForeground: \"#F8F8F2\",\n\n    focusRing: \"#BD93F9\",\n    foreground: \"#F8F8F2\",\n    info: \"#8BE9FD\",\n    infoForeground: \"#282A36\",\n    muted: \"#44475A\",\n    mutedForeground: \"#6272A4\",\n    primary: \"#BD93F9\",\n    primaryForeground: \"#282A36\",\n\n    secondary: \"#6272A4\",\n    secondaryForeground: \"#F8F8F2\",\n    selection: \"#44475A\",\n    selectionForeground: \"#F8F8F2\",\n    success: \"#50FA7B\",\n\n    successForeground: \"#282A36\",\n    warning: \"#F1FA8C\",\n    warningForeground: \"#282A36\",\n  },\n  name: \"dracula\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/dracula.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-tokyo-night",
+  "title": "Tokyo Night",
+  "description": "Tokyo Night colors for terminal interfaces.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/tokyo-night.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const tokyoNightTheme: Theme = {\n  border: {\n    color: \"#3B4261\",\n    focusColor: \"#7AA2F7\",\n    style: \"rounded\",\n  },\n  colors: {\n    accent: \"#BB9AF7\",\n    accentForeground: \"#1A1B26\",\n    background: \"#24283B\",\n    border: \"#3B4261\",\n    error: \"#F7768E\",\n    errorForeground: \"#1A1B26\",\n\n    focusRing: \"#7AA2F7\",\n    foreground: \"#C0CAF5\",\n    info: \"#7DCFFF\",\n    infoForeground: \"#1A1B26\",\n    muted: \"#1F2335\",\n    mutedForeground: \"#565F89\",\n    primary: \"#7AA2F7\",\n    primaryForeground: \"#1A1B26\",\n\n    secondary: \"#BB9AF7\",\n    secondaryForeground: \"#1A1B26\",\n    selection: \"#364A82\",\n    selectionForeground: \"#C0CAF5\",\n    success: \"#9ECE6A\",\n\n    successForeground: \"#1A1B26\",\n    warning: \"#E0AF68\",\n    warningForeground: \"#1A1B26\",\n  },\n  name: \"tokyo-night\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/tokyo-night.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

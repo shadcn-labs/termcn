@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/clock",
+  "title": "Clock",
+  "description": "Real-time clock display with 12h/24h and date",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/clock.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport React, { useState, useEffect, useCallback } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface ClockProps {\n  format?: \"12h\" | \"24h\";\n  showSeconds?: boolean;\n  showDate?: boolean;\n  timezone?: string;\n  color?: string;\n  size?: \"sm\" | \"lg\";\n}\n\nconst BIG_DIGITS: Record<string, string[]> = {\n  \" \": [\"   \", \"   \", \"   \", \"   \", \"   \"],\n  \"0\": [\"╔═╗\", \"║ ║\", \"║ ║\", \"║ ║\", \"╚═╝\"],\n  \"1\": [\" ╗ \", \" ║ \", \" ║ \", \" ║ \", \" ╩ \"],\n  \"2\": [\"╔═╗\", \"  ║\", \"╔═╝\", \"║  \", \"╚══\"],\n  \"3\": [\"╔═╗\", \"  ║\", \" ═╣\", \"  ║\", \"╚═╝\"],\n  \"4\": [\"╗ ╗\", \"║ ║\", \"╚═╣\", \"  ║\", \"  ╩\"],\n  \"5\": [\"╔══\", \"║  \", \"╚═╗\", \"  ║\", \"╚═╝\"],\n  \"6\": [\"╔══\", \"║  \", \"╠═╗\", \"║ ║\", \"╚═╝\"],\n  \"7\": [\"╔═╗\", \"  ║\", \"  ║\", \"  ║\", \"  ╩\"],\n  \"8\": [\"╔═╗\", \"║ ║\", \"╠═╣\", \"║ ║\", \"╚═╝\"],\n  \"9\": [\"╔═╗\", \"║ ║\", \"╚═╣\", \"  ║\", \"╚═╝\"],\n  \":\": [\"   \", \" ● \", \"   \", \" ● \", \"   \"],\n};\n\nconst renderBigText = (str: string, color: string): React.ReactElement => {\n  const rows: string[] = [\"\", \"\", \"\", \"\", \"\"];\n  for (const ch of str) {\n    const segs = BIG_DIGITS[ch] ?? BIG_DIGITS[\" \"] ?? [];\n    for (let r = 0; r < 5; r += 1) {\n      rows[r] += segs[r];\n    }\n  }\n  return (\n    <box flexDirection=\"column\">\n      {rows.map((row, i) => (\n        <text key={i} fg={color}>\n          {row}\n        </text>\n      ))}\n    </box>\n  );\n};\n\nconst padNum = (n: number) => String(n).padStart(2, \"0\");\n\nconst getTimeParts = (\n  format: \"12h\" | \"24h\",\n  showSeconds: boolean,\n  timezone?: string\n) => {\n  const now = timezone\n    ? new Date(new Date().toLocaleString(\"en-US\", { timeZone: timezone }))\n    : new Date();\n\n  let hours = now.getHours();\n  const minutes = now.getMinutes();\n  const seconds = now.getSeconds();\n  let ampm = \"\";\n\n  if (format === \"12h\") {\n    ampm = hours >= 12 ? \" PM\" : \" AM\";\n    hours = hours % 12 || 12;\n  }\n\n  const time = showSeconds\n    ? `${padNum(hours)}:${padNum(minutes)}:${padNum(seconds)}`\n    : `${padNum(hours)}:${padNum(minutes)}`;\n\n  return { ampm, time };\n};\n\nconst getDateString = (timezone?: string): string => {\n  const now = timezone\n    ? new Date(new Date().toLocaleString(\"en-US\", { timeZone: timezone }))\n    : new Date();\n  return now.toLocaleDateString(\"en-US\", {\n    day: \"numeric\",\n    month: \"short\",\n    weekday: \"short\",\n    year: \"numeric\",\n  });\n};\n\nexport const Clock = ({\n  format = \"24h\",\n  showSeconds = true,\n  showDate = false,\n  timezone,\n  color,\n  size = \"sm\",\n}: ClockProps) => {\n  const theme = useTheme();\n  const resolvedColor = color ?? theme.colors.primary;\n\n  const [_tick, setTick] = useState(0);\n  const tick = useCallback(() => setTick((t) => t + 1), []);\n  useEffect(() => {\n    const id = setInterval(tick, 1000);\n    return () => clearInterval(id);\n  }, [tick]);\n\n  const { time, ampm } = getTimeParts(format, showSeconds, timezone);\n\n  if (size === \"lg\") {\n    return (\n      <box flexDirection=\"column\" gap={0}>\n        {showDate && (\n          <text fg={theme.colors.mutedForeground}>\n            {getDateString(timezone)}\n          </text>\n        )}\n        <box alignItems=\"flex-end\" gap={0}>\n          {renderBigText(time, resolvedColor)}\n          {ampm && (\n            <text fg={theme.colors.mutedForeground}>\n              <b>{ampm}</b>\n            </text>\n          )}\n        </box>\n      </box>\n    );\n  }\n\n  return (\n    <box flexDirection=\"column\" gap={0}>\n      {showDate && (\n        <text fg={theme.colors.mutedForeground}>{getDateString(timezone)}</text>\n      )}\n      <box gap={0}>\n        <text fg={resolvedColor}>\n          <b>{time}</b>\n        </text>\n        {ampm && <text fg={theme.colors.mutedForeground}>{ampm}</text>}\n      </box>\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/clock.tsx"
+    }
+  ],
+  "categories": [
+    "utility"
+  ],
+  "type": "registry:ui"
+}

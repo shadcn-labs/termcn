@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-high-contrast-light",
+  "title": "High Contrast Light",
+  "description": "WCAG-friendly light high-contrast theme.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/high-contrast-light.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const highContrastLightTheme: Theme = {\n  border: {\n    color: \"#000000\",\n    focusColor: \"#0000CC\",\n    style: \"heavy\",\n  },\n  colors: {\n    accent: \"#004499\",\n    accentForeground: \"#FFFFFF\",\n    background: \"#FFFFFF\",\n    border: \"#000000\",\n    error: \"#CC0000\",\n    errorForeground: \"#FFFFFF\",\n    focusRing: \"#0000CC\",\n    foreground: \"#000000\",\n    info: \"#004499\",\n    infoForeground: \"#FFFFFF\",\n    muted: \"#F0F0F0\",\n    mutedForeground: \"#444444\",\n    primary: \"#000000\",\n    primaryForeground: \"#FFFFFF\",\n    secondary: \"#6600CC\",\n    secondaryForeground: \"#FFFFFF\",\n    selection: \"#000000\",\n    selectionForeground: \"#FFFFFF\",\n    success: \"#006600\",\n    successForeground: \"#FFFFFF\",\n    warning: \"#884400\",\n    warningForeground: \"#FFFFFF\",\n  },\n  name: \"high-contrast-light\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/high-contrast-light.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

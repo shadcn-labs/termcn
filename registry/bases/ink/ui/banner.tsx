@@ -2,7 +2,7 @@ import { Box, Text, useInput } from "ink";
 import React, { useState } from "react";
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/ink-theme-provider";
 
 export type BannerVariant =
   | "info"

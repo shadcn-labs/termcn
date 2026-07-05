@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-synthwave84",
+  "title": "Synthwave '84",
+  "description": "Synthwave '84 - retro neon.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/synthwave84.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const synthwave84Theme: Theme = {\n  border: {\n    color: \"#848bbd\",\n    focusColor: \"#ff7edb\",\n    style: \"rounded\",\n  },\n  colors: {\n    accent: \"#b084eb\",\n    accentForeground: \"#262335\",\n    background: \"#262335\",\n    border: \"#848bbd\",\n    error: \"#fe4450\",\n    errorForeground: \"#262335\",\n    focusRing: \"#ff7edb\",\n    foreground: \"#ffffff\",\n    info: \"#ff8b39\",\n    infoForeground: \"#262335\",\n    muted: \"#1a1a24\",\n    mutedForeground: \"#848bbd\",\n    primary: \"#36f9f6\",\n    primaryForeground: \"#262335\",\n    secondary: \"#35334a\",\n    secondaryForeground: \"#ffffff\",\n    selection: \"#36f9f6\",\n    selectionForeground: \"#262335\",\n    success: \"#72f1b8\",\n    successForeground: \"#262335\",\n    warning: \"#fede5d\",\n    warningForeground: \"#262335\",\n  },\n  name: \"synthwave84\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/synthwave84.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/toast",
+  "title": "Toast",
+  "description": "Auto-dismissing toast notification",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/toast.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useState, useEffect } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport type ToastVariant = \"success\" | \"error\" | \"warning\" | \"info\";\n\nconst ICONS: Record<ToastVariant, string> = {\n  error: \"✗\",\n  info: \"ℹ\",\n  success: \"✓\",\n  warning: \"⚠\",\n};\n\nexport interface ToastProps {\n  message: string;\n  variant?: ToastVariant;\n  duration?: number;\n  onDismiss?: () => void;\n  icon?: string;\n}\n\nconst BAR_WIDTH = 20;\nconst TICK_MS = 100;\n\nexport const Toast = ({\n  message,\n  variant = \"info\",\n  duration = 3000,\n  onDismiss,\n  icon,\n}: ToastProps) => {\n  const theme = useTheme();\n  const [elapsed, setElapsed] = useState(0);\n  const [dismissed, setDismissed] = useState(false);\n\n  const variantColor = (() => {\n    switch (variant) {\n      case \"success\": {\n        return theme.colors.success;\n      }\n      case \"error\": {\n        return theme.colors.error;\n      }\n      case \"warning\": {\n        return theme.colors.warning;\n      }\n      default: {\n        return theme.colors.info;\n      }\n    }\n  })();\n\n  useEffect(() => {\n    const id = setTimeout(() => {\n      setDismissed(true);\n      onDismiss?.();\n    }, duration);\n    return () => clearTimeout(id);\n  }, [duration, onDismiss]);\n\n  useEffect(() => {\n    if (dismissed) {\n      return;\n    }\n    const id = setInterval(() => {\n      setElapsed((e) => Math.min(e + TICK_MS, duration));\n    }, TICK_MS);\n    return () => clearInterval(id);\n  }, [dismissed, duration]);\n\n  if (dismissed) {\n    return null;\n  }\n\n  const remaining = Math.max(0, duration - elapsed);\n  const remainingSeconds = (remaining / 1000).toFixed(1);\n  const progress = remaining / duration;\n  const filledChars = Math.round(progress * BAR_WIDTH);\n  const emptyChars = BAR_WIDTH - filledChars;\n  const bar = \"█\".repeat(filledChars) + \"░\".repeat(emptyChars);\n\n  const resolvedIcon = icon ?? ICONS[variant];\n\n  return (\n    <box\n      borderStyle=\"rounded\"\n      borderColor={variantColor}\n      paddingLeft={1}\n      paddingRight={1}\n      paddingTop={0}\n      paddingBottom={0}\n      flexDirection=\"column\"\n    >\n      <box gap={1}>\n        <text fg={variantColor}>\n          <b>{resolvedIcon}</b>\n        </text>\n        <text>{message}</text>\n      </box>\n      <box gap={1}>\n        <text fg={variantColor}>{bar}</text>\n        <text fg={theme.colors.muted}>{`${remainingSeconds}s`}</text>\n      </box>\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/toast.tsx"
+    }
+  ],
+  "categories": [
+    "feedback"
+  ],
+  "type": "registry:ui"
+}

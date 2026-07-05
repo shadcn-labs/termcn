@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-one-dark",
+  "title": "One Dark",
+  "description": "A One Dark theme for terminal components.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/one-dark.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const oneDarkTheme: Theme = {\n  border: {\n    color: \"#4B5263\",\n    focusColor: \"#61AFEF\",\n    style: \"rounded\",\n  },\n  colors: {\n    accent: \"#C678DD\",\n    accentForeground: \"#282C34\",\n    background: \"#282C34\",\n    border: \"#4B5263\",\n    error: \"#E06C75\",\n    errorForeground: \"#282C34\",\n\n    focusRing: \"#61AFEF\",\n    foreground: \"#ABB2BF\",\n    info: \"#56B6C2\",\n    infoForeground: \"#282C34\",\n    muted: \"#3E4451\",\n    mutedForeground: \"#5C6370\",\n    primary: \"#61AFEF\",\n    primaryForeground: \"#282C34\",\n\n    secondary: \"#C678DD\",\n    secondaryForeground: \"#282C34\",\n    selection: \"#3E4451\",\n    selectionForeground: \"#ABB2BF\",\n    success: \"#98C379\",\n\n    successForeground: \"#282C34\",\n    warning: \"#E5C07B\",\n    warningForeground: \"#282C34\",\n  },\n  name: \"one-dark\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/one-dark.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

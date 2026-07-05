@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ink/checkbox",
+  "title": "Checkbox",
+  "description": "Checkbox with indeterminate state",
+  "dependencies": [
+    "ink"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/ink/use-focus.json",
+    "https://termcn.dev/r/ink/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/ui/checkbox.tsx",
+      "content": "import { Box, Text } from \"ink\";\nimport React, { useState } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\nimport { useFocus } from \"@/hooks/use-focus\";\nimport { useInput } from \"@/hooks/use-input\";\n\nexport interface CheckboxProps {\n  checked?: boolean;\n  onChange?: (checked: boolean) => void;\n  label?: string;\n  indeterminate?: boolean;\n  disabled?: boolean;\n  id?: string;\n  checkedIcon?: string;\n  uncheckedIcon?: string;\n  indeterminateIcon?: string;\n}\n\nexport const Checkbox = ({\n  checked: controlledChecked,\n  onChange,\n  label,\n  indeterminate = false,\n  disabled = false,\n  id,\n  checkedIcon = \"■\",\n  uncheckedIcon = \"□\",\n  indeterminateIcon = \"▪\",\n}: CheckboxProps) => {\n  const [internalChecked, setInternalChecked] = useState(false);\n  const theme = useTheme();\n  const { isFocused } = useFocus({ id });\n\n  const checked = controlledChecked ?? internalChecked;\n\n  useInput((input) => {\n    if (!isFocused || disabled) {\n      return;\n    }\n    if (input === \" \") {\n      const next = !checked;\n      if (onChange) {\n        onChange(next);\n      } else {\n        setInternalChecked(next);\n      }\n    }\n  });\n\n  const checkedIcon_ = checked ? checkedIcon : uncheckedIcon;\n  const icon = indeterminate ? indeterminateIcon : checkedIcon_;\n  const activeColor =\n    checked || indeterminate ? theme.colors.primary : theme.colors.border;\n  const iconColor = disabled ? theme.colors.mutedForeground : activeColor;\n\n  return (\n    <Box gap={1}>\n      <Text\n        color={isFocused ? theme.colors.focusRing : iconColor}\n        bold={isFocused}\n      >\n        {icon}\n      </Text>\n      {label && (\n        <Text\n          color={\n            disabled ? theme.colors.mutedForeground : theme.colors.foreground\n          }\n          dimColor={disabled}\n        >\n          {label}\n        </Text>\n      )}\n    </Box>\n  );\n};\n",
+      "type": "registry:ui"
+    }
+  ],
+  "categories": [
+    "selection"
+  ],
+  "type": "registry:ui"
+}

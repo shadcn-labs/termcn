@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-amoled",
+  "title": "AMOLED",
+  "description": "AMOLED - high contrast dark theme with pure black.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/amoled.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const amoledTheme: Theme = {\n  border: {\n    color: \"#555555\",\n    focusColor: \"#b388ff\",\n    style: \"rounded\",\n  },\n  colors: {\n    accent: \"#ff4081\",\n    accentForeground: \"#000000\",\n    background: \"#000000\",\n    border: \"#555555\",\n    error: \"#ff1744\",\n    errorForeground: \"#ffffff\",\n    focusRing: \"#b388ff\",\n    foreground: \"#ffffff\",\n    info: \"#18ffff\",\n    infoForeground: \"#000000\",\n    muted: \"#1a1a1a\",\n    mutedForeground: \"#888888\",\n    primary: \"#b388ff\",\n    primaryForeground: \"#000000\",\n    secondary: \"#333333\",\n    secondaryForeground: \"#ffffff\",\n    selection: \"#b388ff\",\n    selectionForeground: \"#000000\",\n    success: \"#00ff88\",\n    successForeground: \"#000000\",\n    warning: \"#ffea00\",\n    warningForeground: \"#000000\",\n  },\n  name: \"amoled\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/amoled.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

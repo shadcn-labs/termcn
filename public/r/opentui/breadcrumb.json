@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/breadcrumb",
+  "title": "Breadcrumb",
+  "description": "Breadcrumb navigation trail",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/breadcrumb.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useKeyboard } from \"@opentui/react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface BreadcrumbItem {\n  label: string;\n  key: string;\n  onSelect?: () => void;\n}\n\nexport interface BreadcrumbProps {\n  items: BreadcrumbItem[];\n  separator?: string;\n  activeKey?: string;\n}\n\nexport const Breadcrumb = ({\n  items,\n  separator = \"›\",\n  activeKey,\n}: BreadcrumbProps) => {\n  const theme = useTheme();\n\n  const activeIndex =\n    activeKey === undefined\n      ? items.length - 1\n      : items.findIndex((i) => i.key === activeKey);\n\n  useKeyboard((key) => {\n    if (key.name === \"left\" && activeIndex > 0) {\n      const prev = items[activeIndex - 1];\n      if (prev?.onSelect) {\n        prev.onSelect();\n      }\n    }\n  });\n\n  return (\n    <box flexDirection=\"row\" alignItems=\"center\">\n      {items.map((item, idx) => {\n        const isActive = idx === activeIndex;\n        return (\n          <box key={item.key} flexDirection=\"row\" alignItems=\"center\">\n            {isActive ? (\n              <text fg={theme.colors.primary}>\n                <b>{item.label}</b>\n              </text>\n            ) : (\n              <text fg={theme.colors.mutedForeground}>{item.label}</text>\n            )}\n            {idx < items.length - 1 && (\n              <text fg={theme.colors.mutedForeground}>{` ${separator} `}</text>\n            )}\n          </box>\n        );\n      })}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/breadcrumb.tsx"
+    }
+  ],
+  "categories": [
+    "navigation"
+  ],
+  "type": "registry:ui"
+}

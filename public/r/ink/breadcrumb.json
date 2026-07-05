@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ink/breadcrumb",
+  "title": "Breadcrumb",
+  "description": "Breadcrumb navigation trail",
+  "dependencies": [
+    "ink"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/ink/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/ui/breadcrumb.tsx",
+      "content": "import { Box, Text } from \"ink\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\nimport { useInput } from \"@/hooks/use-input\";\n\nexport interface BreadcrumbItem {\n  label: string;\n  key: string;\n  onSelect?: () => void;\n}\n\nexport interface BreadcrumbProps {\n  items: BreadcrumbItem[];\n  separator?: string;\n  activeKey?: string;\n}\n\nexport const Breadcrumb = ({\n  items,\n  separator = \"›\",\n  activeKey,\n}: BreadcrumbProps) => {\n  const theme = useTheme();\n\n  const activeIndex =\n    activeKey === undefined\n      ? items.length - 1\n      : items.findIndex((i) => i.key === activeKey);\n\n  useInput((_input, key) => {\n    if (key.leftArrow && activeIndex > 0) {\n      const prev = items[activeIndex - 1];\n      if (prev?.onSelect) {\n        prev.onSelect();\n      }\n    }\n  });\n\n  return (\n    <Box flexDirection=\"row\" alignItems=\"center\">\n      {items.map((item, idx) => {\n        const isActive = idx === activeIndex;\n        return (\n          <Box key={item.key} flexDirection=\"row\" alignItems=\"center\">\n            <Text\n              color={\n                isActive ? theme.colors.primary : theme.colors.mutedForeground\n              }\n              bold={isActive}\n            >\n              {item.label}\n            </Text>\n            {idx < items.length - 1 && (\n              <Text color={theme.colors.mutedForeground}> {separator} </Text>\n            )}\n          </Box>\n        );\n      })}\n    </Box>\n  );\n};\n",
+      "type": "registry:ui"
+    }
+  ],
+  "categories": [
+    "navigation"
+  ],
+  "type": "registry:ui"
+}

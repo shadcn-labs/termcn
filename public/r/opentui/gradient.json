@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/gradient",
+  "title": "Gradient",
+  "description": "Color gradient text",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/gradient.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nexport type GradientName =\n  | \"cristal\"\n  | \"teen\"\n  | \"mind\"\n  | \"morning\"\n  | \"vice\"\n  | \"passion\"\n  | \"fruit\"\n  | \"instagram\"\n  | \"atlas\"\n  | \"retro\"\n  | \"summer\"\n  | \"pastel\"\n  | \"rainbow\";\n\nconst GRADIENT_PRESETS: Record<GradientName, string[]> = {\n  atlas: [\"#feac5e\", \"#c779d0\", \"#4bc0c8\"],\n  cristal: [\"#bdfff3\", \"#4ac29a\"],\n  fruit: [\"#ff4e50\", \"#f9d423\"],\n  instagram: [\"#833ab4\", \"#fd1d1d\", \"#fcb045\"],\n  mind: [\"#473b7b\", \"#3584a7\", \"#30d2be\"],\n  morning: [\"#ff5f6d\", \"#ffc371\"],\n  passion: [\"#f43b47\", \"#453a94\"],\n  pastel: [\"#74ebd5\", \"#9face6\"],\n  rainbow: [\"#ff0000\", \"#ff7700\", \"#ffff00\", \"#00ff00\", \"#0000ff\", \"#8b00ff\"],\n  retro: [\n    \"#3f51b1\",\n    \"#5a55ae\",\n    \"#7b5fac\",\n    \"#8f6aae\",\n    \"#a86aa4\",\n    \"#cc6b8e\",\n    \"#f18271\",\n    \"#f3a469\",\n    \"#f7c978\",\n  ],\n  summer: [\"#22c1c3\", \"#fdbb2d\"],\n  teen: [\"#77a1d3\", \"#79cbca\", \"#e684ae\"],\n  vice: [\"#5ee7df\", \"#b490ca\"],\n};\n\nexport interface GradientProps {\n  children: string;\n  name?: GradientName;\n  colors?: string[];\n  bold?: boolean;\n}\n\ninterface RGB {\n  r: number;\n  g: number;\n  b: number;\n}\n\nconst parseHex = (hex: string): RGB => {\n  const clean = hex.replace(\"#\", \"\");\n  const full =\n    clean.length === 3 ? [...clean].map((c) => c + c).join(\"\") : clean;\n  return {\n    b: Number.parseInt(full.slice(4, 6), 16),\n    g: Number.parseInt(full.slice(2, 4), 16),\n    r: Number.parseInt(full.slice(0, 2), 16),\n  };\n};\n\nconst toHex = ({ r, g, b }: RGB): string =>\n  `#${[r, g, b]\n    .map((v) =>\n      Math.round(Math.max(0, Math.min(255, v)))\n        .toString(16)\n        .padStart(2, \"0\")\n    )\n    .join(\"\")}`;\n\nconst lerpColor = (a: RGB, b: RGB, t: number): RGB => ({\n  b: a.b + (b.b - a.b) * t,\n  g: a.g + (b.g - a.g) * t,\n  r: a.r + (b.r - a.r) * t,\n});\n\nexport interface GradientChar {\n  char: string;\n  color: string;\n}\n\nexport const gradientText = (\n  text: string,\n  colors: string[]\n): GradientChar[] => {\n  if (colors.length === 0) {\n    return [...text].map((char) => ({ char, color: \"\" }));\n  }\n  if (colors.length === 1) {\n    return [...text].map((char) => ({ char, color: colors[0] }));\n  }\n\n  const parsedColors = colors.map(parseHex);\n  const segments = colors.length - 1;\n  const len = text.length;\n\n  return [...text].map((char, i) => {\n    if (len <= 1) {\n      return { char, color: colors[0] };\n    }\n    const pos = (i / (len - 1)) * segments;\n    const segIndex = Math.min(Math.floor(pos), segments - 1);\n    const t = pos - segIndex;\n    const color = toHex(\n      lerpColor(parsedColors[segIndex], parsedColors[segIndex + 1], t)\n    );\n    return { char, color };\n  });\n};\n\nexport const Gradient = ({\n  children,\n  name,\n  colors,\n  bold = false,\n}: GradientProps) => {\n  const resolvedColors = colors ?? (name ? GRADIENT_PRESETS[name] : []);\n  const chars = gradientText(children, resolvedColors);\n\n  return (\n    <box flexDirection=\"row\">\n      {chars.map((item, idx) =>\n        bold ? (\n          <text key={idx} fg={item.color}>\n            <b>{item.char}</b>\n          </text>\n        ) : (\n          <text key={idx} fg={item.color}>\n            {item.char}\n          </text>\n        )\n      )}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/gradient.tsx"
+    }
+  ],
+  "categories": [
+    "typography"
+  ],
+  "type": "registry:ui"
+}

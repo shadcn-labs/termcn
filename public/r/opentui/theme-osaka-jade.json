@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-osaka-jade",
+  "title": "Osaka Jade",
+  "description": "Osaka Jade - Japanese jade theme.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/osaka-jade.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const osakaJadeTheme: Theme = {\n  border: {\n    color: \"#53685b\",\n    focusColor: \"#2dd5b7\",\n    style: \"rounded\",\n  },\n  colors: {\n    accent: \"#549e6a\",\n    accentForeground: \"#111c18\",\n    background: \"#111c18\",\n    border: \"#53685b\",\n    error: \"#ff5345\",\n    errorForeground: \"#111c18\",\n    focusRing: \"#2dd5b7\",\n    foreground: \"#c1c497\",\n    info: \"#2dd5b7\",\n    infoForeground: \"#111c18\",\n    muted: \"#0a110f\",\n    mutedForeground: \"#53685b\",\n    primary: \"#2dd5b7\",\n    primaryForeground: \"#111c18\",\n    secondary: \"#1a2921\",\n    secondaryForeground: \"#c1c497\",\n    selection: \"#2dd5b7\",\n    selectionForeground: \"#111c18\",\n    success: \"#549e6a\",\n    successForeground: \"#111c18\",\n    warning: \"#e5c736\",\n    warningForeground: \"#111c18\",\n  },\n  name: \"osaka-jade\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/osaka-jade.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

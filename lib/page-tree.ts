@@ -70,6 +70,18 @@ export const getFolderPages = (
 };
 
 export const getCurrentBase = (pathname: string): string => {
-  const match = pathname.match(/\/docs\/components\/([^/]+)\//);
-  return match ? match[1] : DEFAULT_BASE_NAME;
+  const componentsMatch = pathname.match(/\/docs\/components\/([^/]+)\//);
+  if (componentsMatch) {
+    return componentsMatch[1];
+  }
+
+  const themesMatch = pathname.match(/\/docs\/themes\/([^/]+)\//);
+  if (
+    themesMatch &&
+    (themesMatch[1] === "ink" || themesMatch[1] === "opentui")
+  ) {
+    return themesMatch[1];
+  }
+
+  return DEFAULT_BASE_NAME;
 };

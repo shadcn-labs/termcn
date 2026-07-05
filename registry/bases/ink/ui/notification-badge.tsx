@@ -1,6 +1,6 @@
 import { Text } from "ink";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/ink-theme-provider";
 
 export interface NotificationBadgeProps {
   count: number;

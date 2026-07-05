@@ -1,8 +1,9 @@
 import { Box, Text } from "ink";
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/ink-theme-provider";
 import { useInput } from "@/hooks/use-input";
+import type { BorderStyle } from "@/registry/bases/ink/ui/types";
 
 export interface ModalProps {
   open: boolean;
@@ -10,25 +11,11 @@ export interface ModalProps {
   title?: string;
   width?: number;
   children?: ReactNode;
-  borderStyle?:
-    | "single"
-    | "double"
-    | "round"
-    | "bold"
-    | "singleDouble"
-    | "doubleSingle"
-    | "classic";
+  borderStyle?: BorderStyle;
   borderColor?: string;
   paddingX?: number;
   paddingY?: number;
-  titleBorderStyle?:
-    | "single"
-    | "double"
-    | "round"
-    | "bold"
-    | "singleDouble"
-    | "doubleSingle"
-    | "classic";
+  titleBorderStyle?: BorderStyle;
   closeHint?: string | false;
 }
 

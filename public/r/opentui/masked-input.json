@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/masked-input",
+  "title": "Masked Input",
+  "description": "Masked input for phone, date, credit card formats",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/masked-input.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useKeyboard } from \"@opentui/react\";\nimport { useState } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface MaskedInputProps {\n  mask: string;\n  value?: string;\n  onChange?: (value: string) => void;\n  onSubmit?: (value: string) => void;\n  label?: string;\n  placeholder?: string;\n  autoFocus?: boolean;\n  id?: string;\n  width?: number;\n}\n\nconst isClosingLiteral = (mask: string, pos: number): boolean => {\n  for (let j = pos - 1; j >= 0; j -= 1) {\n    if (mask[j] === \"#\") {\n      continue;\n    }\n    const between = mask.slice(j + 1, pos);\n    return between.length > 0 && [...between].every((c) => c === \"#\");\n  }\n  return false;\n};\n\nconst applyMask = (raw: string, mask: string): string => {\n  let rawIdx = 0;\n  let result = \"\";\n\n  for (let i = 0; i < mask.length; i += 1) {\n    const maskChar = mask[i];\n    if (rawIdx >= raw.length) {\n      if (maskChar !== \"#\" && isClosingLiteral(mask, i)) {\n        result += maskChar;\n      }\n      break;\n    }\n    if (maskChar === \"#\") {\n      result += raw[rawIdx];\n      rawIdx += 1;\n    } else if (mask.includes(\"#\", i + 1)) {\n      result += maskChar;\n    }\n  }\n\n  return result;\n};\n\nconst maxDigits = (mask: string): number =>\n  [...mask].filter((c) => c === \"#\").length;\n\nexport const MaskedInput = ({\n  mask,\n  value: controlledValue,\n  onChange,\n  onSubmit,\n  label,\n  placeholder,\n  autoFocus: _autoFocus = false,\n  id: _id,\n  width = 40,\n}: MaskedInputProps) => {\n  const [internalValue, setInternalValue] = useState(\"\");\n  const theme = useTheme();\n  const [isFocused] = useState(true);\n\n  const raw = controlledValue ?? internalValue;\n  const max = maxDigits(mask);\n\n  useKeyboard((key) => {\n    if (!isFocused) {\n      return;\n    }\n    if (key.name === \"return\") {\n      onSubmit?.(raw);\n      return;\n    }\n    if (key.name === \"backspace\" || key.name === \"delete\") {\n      const newVal = raw.slice(0, -1);\n      if (onChange) {\n        onChange(newVal);\n      } else {\n        setInternalValue(newVal);\n      }\n      return;\n    }\n    if (\n      key.name === \"escape\" ||\n      key.name === \"up\" ||\n      key.name === \"down\" ||\n      key.name === \"tab\"\n    ) {\n      return;\n    }\n    if (/^\\d$/.test(key.name) && raw.length < max) {\n      const newVal = raw + key.name;\n      if (onChange) {\n        onChange(newVal);\n      } else {\n        setInternalValue(newVal);\n      }\n    }\n  });\n\n  const display = raw.length > 0 ? applyMask(raw, mask) : \"\";\n  const borderColor = isFocused ? theme.colors.focusRing : theme.colors.border;\n\n  const remainingMask = mask.slice(display.length);\n\n  return (\n    <box flexDirection=\"column\">\n      {label && (\n        <text>\n          <b>{label}</b>\n        </text>\n      )}\n      <box borderStyle=\"rounded\" paddingLeft={1} paddingRight={1}>\n        {display.length > 0 ? (\n          <text fg={theme.colors.foreground}>{display}</text>\n        ) : placeholder ? (\n          <text fg={theme.colors.mutedForeground}>{placeholder}</text>\n        ) : null}\n        {isFocused && display.length < mask.length && (\n          <text fg={theme.colors.focusRing}>█</text>\n        )}\n        {display.length > 0 && display.length < mask.length && (\n          <text fg=\"#666\">{remainingMask}</text>\n        )}\n      </box>\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/masked-input.tsx"
+    }
+  ],
+  "categories": [
+    "input"
+  ],
+  "type": "registry:ui"
+}

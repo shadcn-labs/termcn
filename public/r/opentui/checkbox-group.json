@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/checkbox-group",
+  "title": "Checkbox Group",
+  "description": "Checkbox group with min/max selection",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/checkbox-group.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useKeyboard } from \"@opentui/react\";\nimport { useState } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface CheckboxGroupOption {\n  value: string;\n  label: string;\n  disabled?: boolean;\n}\n\nexport interface CheckboxGroupProps {\n  label?: string;\n  options: CheckboxGroupOption[];\n  value?: string[];\n  onChange?: (values: string[]) => void;\n  min?: number;\n  max?: number;\n}\n\nexport const CheckboxGroup = ({\n  label,\n  options,\n  value: controlledValue,\n  onChange,\n  min,\n  max,\n}: CheckboxGroupProps) => {\n  const theme = useTheme();\n  const [activeIndex, setActiveIndex] = useState(0);\n  const [internalSelected, setInternalSelected] = useState<string[]>([]);\n  const [error, setError] = useState<string | undefined>();\n\n  const selected = controlledValue ?? internalSelected;\n\n  const validateAndUpdate = (next: string[]) => {\n    if (min !== undefined && next.length < min) {\n      setError(`Select at least ${min} option${min === 1 ? \"\" : \"s\"}.`);\n    } else if (max !== undefined && next.length > max) {\n      setError(`Select at most ${max} option${max === 1 ? \"\" : \"s\"}.`);\n      return;\n    } else {\n      setError(undefined);\n    }\n    if (controlledValue === undefined) {\n      setInternalSelected(next);\n    }\n    onChange?.(next);\n  };\n\n  useKeyboard((key) => {\n    if (key.name === \"up\") {\n      setActiveIndex((i) => {\n        let next = i - 1;\n        while (next >= 0 && options[next]?.disabled) {\n          next -= 1;\n        }\n        return next < 0 ? i : next;\n      });\n    } else if (key.name === \"down\") {\n      setActiveIndex((i) => {\n        let next = i + 1;\n        while (next < options.length && options[next]?.disabled) {\n          next += 1;\n        }\n        return next >= options.length ? i : next;\n      });\n    } else if (key.name === \" \") {\n      const opt = options[activeIndex];\n      if (!opt || opt.disabled) {\n        return;\n      }\n      const isSelected = selected.includes(opt.value);\n      const next = isSelected\n        ? selected.filter((v) => v !== opt.value)\n        : [...selected, opt.value];\n      validateAndUpdate(next);\n    }\n  });\n\n  return (\n    <box flexDirection=\"column\">\n      {label && (\n        <text fg={theme.colors.foreground}>\n          <b>{label}</b>\n        </text>\n      )}\n      {options.map((opt, idx) => {\n        const isActive = idx === activeIndex;\n        const isSelected = selected.includes(opt.value);\n        const icon = isSelected ? \"◉\" : \"○\";\n        let iconColor: string;\n        if (opt.disabled) {\n          iconColor = theme.colors.mutedForeground;\n        } else if (isSelected) {\n          iconColor = theme.colors.primary;\n        } else {\n          iconColor = theme.colors.foreground;\n        }\n        let optLabelColor: string;\n        if (opt.disabled) {\n          optLabelColor = theme.colors.mutedForeground;\n        } else if (isActive) {\n          optLabelColor = theme.colors.primary;\n        } else {\n          optLabelColor = theme.colors.foreground;\n        }\n        return (\n          <box key={idx} gap={1}>\n            <text fg={isActive ? theme.colors.primary : undefined}>\n              {isActive ? \"›\" : \" \"}\n            </text>\n            <text fg={opt.disabled ? \"#666\" : iconColor}>{icon}</text>\n            <text fg={opt.disabled ? \"#666\" : optLabelColor}>\n              {isActive ? <b>{opt.label}</b> : opt.label}\n            </text>\n          </box>\n        );\n      })}\n      {error && <text fg={theme.colors.error}>{error}</text>}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/checkbox-group.tsx"
+    }
+  ],
+  "categories": [
+    "selection"
+  ],
+  "type": "registry:ui"
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/help",
+  "title": "Help",
+  "description": "Auto-generated help panel from a keymap",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/help.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface HelpProps {\n  keymap: Record<string, string>;\n  title?: string;\n  compact?: boolean;\n}\n\nexport const Help = ({ keymap, title, compact = false }: HelpProps) => {\n  const theme = useTheme();\n  const entries = Object.entries(keymap);\n\n  if (compact) {\n    const parts = entries.map(([key, action]) => `${key}: ${action}`);\n    return (\n      <box gap={1} flexWrap=\"wrap\">\n        {title && (\n          <text fg={theme.colors.primary}>\n            <b>{`${title} |`}</b>\n          </text>\n        )}\n        <text fg={theme.colors.mutedForeground}>{parts.join(\" · \")}</text>\n      </box>\n    );\n  }\n\n  const keyWidth = Math.max(...entries.map(([k]) => k.length), 3);\n\n  return (\n    <box\n      flexDirection=\"column\"\n      borderStyle=\"rounded\"\n      borderColor={theme.colors.border}\n      paddingLeft={1}\n      paddingRight={1}\n      gap={0}\n    >\n      {title && (\n        <text fg={theme.colors.primary}>\n          <b>{title}</b>\n        </text>\n      )}\n      {entries.map(([key, action]) => (\n        <box key={key} gap={2}>\n          <box\n            borderStyle=\"single\"\n            borderColor={theme.colors.primary}\n            paddingLeft={1}\n            paddingRight={1}\n            minWidth={keyWidth + 4}\n          >\n            <text fg={theme.colors.primary}>\n              <b>{key}</b>\n            </text>\n          </box>\n          <text fg={theme.colors.foreground}>{action}</text>\n        </box>\n      ))}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/help.tsx"
+    }
+  ],
+  "categories": [
+    "utility"
+  ],
+  "type": "registry:ui"
+}

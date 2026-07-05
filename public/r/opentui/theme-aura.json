@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-aura",
+  "title": "Aura",
+  "description": "Aura - soft elegant theme with pastel purple.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/aura.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const auraTheme: Theme = {\n  border: {\n    color: \"#6d6a7e\",\n    focusColor: \"#a277ff\",\n    style: \"rounded\",\n  },\n  colors: {\n    accent: \"#ff6767\",\n    accentForeground: \"#15141b\",\n    background: \"#15141b\",\n    border: \"#6d6a7e\",\n    error: \"#ff6767\",\n    errorForeground: \"#15141b\",\n    focusRing: \"#a277ff\",\n    foreground: \"#edecee\",\n    info: \"#82e2ff\",\n    infoForeground: \"#15141b\",\n    muted: \"#242329\",\n    mutedForeground: \"#6d6a7e\",\n    primary: \"#a277ff\",\n    primaryForeground: \"#15141b\",\n    secondary: \"#2a2834\",\n    secondaryForeground: \"#edecee\",\n    selection: \"#a277ff\",\n    selectionForeground: \"#15141b\",\n    success: \"#61ffca\",\n    successForeground: \"#15141b\",\n    warning: \"#ffca85\",\n    warningForeground: \"#15141b\",\n  },\n  name: \"aura\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/aura.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

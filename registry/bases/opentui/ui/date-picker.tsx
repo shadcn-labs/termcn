@@ -2,7 +2,7 @@
 import { useKeyboard } from "@opentui/react";
 import { useState } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
 
 export interface DatePickerProps {
   value?: Date;
@@ -155,7 +155,7 @@ export const DatePicker = ({
       )}
       <box
         gap={1}
-        borderStyle="round"
+        borderStyle="rounded"
         borderColor={isFocused ? theme.colors.focusRing : theme.colors.border}
         paddingLeft={1}
         paddingRight={1}

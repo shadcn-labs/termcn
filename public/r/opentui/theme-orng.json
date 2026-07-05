@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-orng",
+  "title": "Orng",
+  "description": "Orng - vibrant orange theme.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/orng.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const orngTheme: Theme = {\n  border: {\n    color: \"#808080\",\n    focusColor: \"#ec5b2b\",\n    style: \"rounded\",\n  },\n  colors: {\n    accent: \"#fff7f1\",\n    accentForeground: \"#0a0a0a\",\n    background: \"#0a0a0a\",\n    border: \"#808080\",\n    error: \"#e06c75\",\n    errorForeground: \"#0a0a0a\",\n    focusRing: \"#ec5b2b\",\n    foreground: \"#eeeeee\",\n    info: \"#56b6c2\",\n    infoForeground: \"#0a0a0a\",\n    muted: \"#050505\",\n    mutedForeground: \"#808080\",\n    primary: \"#ec5b2b\",\n    primaryForeground: \"#0a0a0a\",\n    secondary: \"#151515\",\n    secondaryForeground: \"#eeeeee\",\n    selection: \"#ec5b2b\",\n    selectionForeground: \"#0a0a0a\",\n    success: \"#6ba1e6\",\n    successForeground: \"#0a0a0a\",\n    warning: \"#ec5b2b\",\n    warningForeground: \"#0a0a0a\",\n  },\n  name: \"orng\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/orng.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

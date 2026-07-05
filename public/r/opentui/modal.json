@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/modal",
+  "title": "Modal",
+  "description": "Focus-trapped overlay modal, close with Esc",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/modal.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useKeyboard } from \"@opentui/react\";\nimport type { ReactNode } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\nimport type { BorderStyle } from \"@/components/ui/types\";\n\nexport interface ModalProps {\n  open: boolean;\n  onClose?: () => void;\n  title?: string;\n  width?: number;\n  children?: ReactNode;\n  borderStyle?: BorderStyle;\n  borderColor?: string;\n  paddingX?: number;\n  paddingY?: number;\n  titleBorderStyle?: BorderStyle;\n  closeHint?: string | false;\n}\n\nexport const Modal = ({\n  open,\n  onClose,\n  title,\n  width = 60,\n  children,\n  borderStyle = \"rounded\",\n  borderColor,\n  paddingX = 1,\n  paddingY = 0,\n  titleBorderStyle = \"single\",\n  closeHint = \"Press Esc to close\",\n}: ModalProps) => {\n  const theme = useTheme();\n  const resolvedBorderColor = borderColor ?? theme.colors.primary;\n\n  useKeyboard((key) => {\n    if (!open) {\n      return;\n    }\n    if (key.name === \"escape\") {\n      onClose?.();\n    }\n  });\n\n  if (!open) {\n    return null;\n  }\n\n  return (\n    <box\n      flexDirection=\"column\"\n      borderColor={resolvedBorderColor}\n      paddingLeft={paddingX}\n      paddingRight={paddingX}\n      paddingTop={paddingY}\n      paddingBottom={paddingY}\n    >\n      {title && (\n        <box\n          marginBottom={1}\n          borderStyle={titleBorderStyle}\n          borderColor={theme.colors.border}\n          paddingLeft={1}\n          paddingRight={1}\n        >\n          <text fg={resolvedBorderColor}>\n            <b>{title}</b>\n          </text>\n        </box>\n      )}\n      <box flexDirection=\"column\">{children}</box>\n      {closeHint !== false && (\n        <box marginTop={1}>\n          <text fg=\"#666\">{closeHint}</text>\n        </box>\n      )}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/modal.tsx"
+    }
+  ],
+  "categories": [
+    "overlays"
+  ],
+  "type": "registry:ui"
+}

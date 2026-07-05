@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/box",
+  "title": "Box",
+  "description": "Enhanced flexbox container with theme-aware borders",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/box.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport type { ReactNode } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\nimport type { BorderStyle } from \"@/components/ui/types\";\n\nexport type BorderVariant =\n  | \"default\"\n  | \"muted\"\n  | \"focus\"\n  | \"success\"\n  | \"error\"\n  | \"warning\";\n\nexport interface BoxProps {\n  border?: boolean;\n  borderVariant?: BorderVariant;\n  borderColor?: string;\n  borderStyle?: BorderStyle;\n  children?: ReactNode;\n  flexDirection?: \"row\" | \"column\" | \"row-reverse\" | \"column-reverse\";\n  flexGrow?: number;\n  flexShrink?: number;\n  alignItems?: \"flex-start\" | \"center\" | \"flex-end\" | \"stretch\";\n  justifyContent?:\n    | \"flex-start\"\n    | \"center\"\n    | \"flex-end\"\n    | \"space-between\"\n    | \"space-around\"\n    | \"space-evenly\";\n  width?: number | string;\n  height?: number | string;\n  minWidth?: number;\n  minHeight?: number;\n  paddingLeft?: number;\n  paddingRight?: number;\n  paddingTop?: number;\n  paddingBottom?: number;\n  marginLeft?: number;\n  marginRight?: number;\n  marginTop?: number;\n  marginBottom?: number;\n  gap?: number;\n  [key: string]: unknown;\n}\n\nexport const Box = ({\n  border,\n  borderVariant = \"default\",\n  borderColor,\n  children,\n  ...props\n}: BoxProps) => {\n  const theme = useTheme();\n\n  const resolvedBorderColor =\n    borderColor ??\n    (() => {\n      switch (borderVariant) {\n        case \"focus\": {\n          return theme.colors.focusRing;\n        }\n        case \"success\": {\n          return theme.colors.success;\n        }\n        case \"error\": {\n          return theme.colors.error;\n        }\n        case \"warning\": {\n          return theme.colors.warning;\n        }\n        case \"muted\": {\n          return theme.colors.mutedForeground;\n        }\n        default: {\n          return theme.colors.border;\n        }\n      }\n    })();\n\n  return (\n    <box\n      borderStyle={\n        border ? (props.borderStyle ?? theme.border.style) : undefined\n      }\n      borderColor={border ? resolvedBorderColor : undefined}\n    >\n      {children}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/box.tsx"
+    }
+  ],
+  "categories": [
+    "layout"
+  ],
+  "type": "registry:ui"
+}

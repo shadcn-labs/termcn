@@ -1,10 +1,11 @@
 /* @jsxImportSource @opentui/react */
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
+import type { BorderStyle } from "@/registry/bases/opentui/ui/types";
 
 export interface InfoBoxProps {
-  borderStyle?: "single" | "round" | "double" | "bold";
+  borderStyle?: BorderStyle;
   borderColor?: string;
   padding?: [number, number];
   width?: number | "full";

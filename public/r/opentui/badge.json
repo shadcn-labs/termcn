@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/badge",
+  "title": "Badge",
+  "description": "Semantic status indicator badge (success/error/warning/info)",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/badge.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useTheme } from \"@/components/ui/theme-provider\";\nimport type { BorderStyle } from \"@/components/ui/types\";\n\nexport type BadgeVariant =\n  | \"default\"\n  | \"success\"\n  | \"warning\"\n  | \"error\"\n  | \"info\"\n  | \"secondary\";\n\nexport interface BadgeProps {\n  children: string;\n  variant?: BadgeVariant;\n  color?: string;\n  bold?: boolean;\n  bordered?: boolean;\n  borderStyle?: BorderStyle;\n  paddingX?: number;\n}\n\nexport const Badge = ({\n  children,\n  variant = \"default\",\n  color,\n  bold = false,\n  bordered = true,\n  borderStyle = \"rounded\",\n  paddingX = 1,\n}: BadgeProps) => {\n  const theme = useTheme();\n\n  const variantColor =\n    color ??\n    (() => {\n      switch (variant) {\n        case \"success\": {\n          return theme.colors.success;\n        }\n        case \"warning\": {\n          return theme.colors.warning;\n        }\n        case \"error\": {\n          return theme.colors.error;\n        }\n        case \"info\": {\n          return theme.colors.info;\n        }\n        case \"secondary\": {\n          return theme.colors.secondary;\n        }\n        default: {\n          return theme.colors.primary;\n        }\n      }\n    })();\n\n  const textContent = bold ? (\n    <text fg={variantColor}>\n      <b>{children}</b>\n    </text>\n  ) : (\n    <text fg={variantColor}>{children}</text>\n  );\n\n  if (!bordered) {\n    return textContent;\n  }\n\n  return (\n    <box\n      borderColor={variantColor}\n      paddingLeft={paddingX}\n      paddingRight={paddingX}\n    >\n      {textContent}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/badge.tsx"
+    }
+  ],
+  "categories": [
+    "typography"
+  ],
+  "type": "registry:ui"
+}

@@ -51,7 +51,7 @@ import { cn } from "@/lib/utils";
 import { Kbd } from "./ui/kbd";
 
 type DocUrlKind =
-  | { kind: "theme"; slug: string }
+  | { base?: string; kind: "theme"; slug: string }
   | { base?: string; kind: "component"; slug: string }
   | { base?: string; kind: "template"; slug: string }
   | { kind: "page" };
@@ -63,7 +63,15 @@ const parseDocPageUrl = (url: string): DocUrlKind => {
   const parts = url.split("/").filter(Boolean);
   const themesIdx = parts.indexOf("themes");
   if (themesIdx !== -1 && parts[themesIdx + 1]) {
-    return { kind: "theme", slug: parts[themesIdx + 1] };
+    const segment = parts[themesIdx + 1];
+    if (segment === "ink" || segment === "opentui") {
+      return {
+        base: segment,
+        kind: "theme",
+        slug: parts[themesIdx + 2] ?? "",
+      };
+    }
+    return { kind: "theme", slug: segment };
   }
   const componentsIdx = parts.indexOf("components");
   if (componentsIdx !== -1 && parts[componentsIdx + 1]) {
@@ -83,10 +91,6 @@ const parseDocPageUrl = (url: string): DocUrlKind => {
   }
   return { kind: "page" };
 };
-
-const getRegistryInstallSlug = (
-  parsed: Extract<DocUrlKind, { kind: "component" | "template" }>
-) => (parsed.base === "opentui" ? `opentui-${parsed.slug}` : parsed.slug);
 
 const searchKeywordsFromUrl = (url: string) => {
   const segments = url.split("/").filter(Boolean);
@@ -255,20 +259,25 @@ export const CommandMenu = ({
       setShowGoToPage(true);
       const parsed = parseDocPageUrl(item.url);
       if (parsed.kind === "theme") {
+        const base =
+          parsed.base === "opentui" || currentBase === "opentui"
+            ? "opentui"
+            : "ink";
         setCopyPayload(
-          `${packageManager} dlx shadcn@latest add ${SITE.REGISTRY}/theme-${parsed.slug}`
+          `${packageManager} dlx shadcn@latest add ${SITE.REGISTRY}/${base}/theme-${parsed.slug}`
         );
         return;
       }
       if (parsed.kind === "component" || parsed.kind === "template") {
+        const base = parsed.base === "opentui" ? "opentui" : "ink";
         setCopyPayload(
-          `${packageManager} dlx shadcn@latest add ${SITE.REGISTRY}/${getRegistryInstallSlug(parsed)}`
+          `${packageManager} dlx shadcn@latest add ${SITE.REGISTRY}/${base}/${parsed.slug}`
         );
         return;
       }
       setCopyPayload("");
     },
-    [packageManager]
+    [currentBase, packageManager]
   );
 
   const handleBlockHighlight = useCallback(

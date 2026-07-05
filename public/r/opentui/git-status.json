@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/git-status",
+  "title": "Git Status",
+  "description": "Git status display (branch, staged, modified, ahead/behind)",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/git-status.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface GitStatusProps {\n  branch: string;\n  staged?: number;\n  modified?: number;\n  ahead?: number;\n  behind?: number;\n}\n\nexport const GitStatus = ({\n  branch,\n  staged = 0,\n  modified = 0,\n  ahead = 0,\n  behind = 0,\n}: GitStatusProps) => {\n  const theme = useTheme();\n  return (\n    <box flexDirection=\"column\" gap={0}>\n      <text fg={theme.colors.primary}>\n        <b>{\"Branch \"}</b>\n        {branch}\n      </text>\n      <text\n        fg={theme.colors.mutedForeground}\n      >{`${ahead}↑ ${behind}↓ · staged ${staged} · modified ${modified}`}</text>\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/git-status.tsx"
+    }
+  ],
+  "categories": [
+    "data"
+  ],
+  "type": "registry:ui"
+}

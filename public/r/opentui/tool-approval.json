@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/tool-approval",
+  "title": "Tool Approval",
+  "description": "Interactive approval prompt for AI tool calls with risk-level badge, args display, and auto-deny timeout",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/tool-approval.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useKeyboard } from \"@opentui/react\";\nimport { useEffect, useRef, useState } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport type RiskLevel = \"low\" | \"medium\" | \"high\";\n\nexport interface ToolApprovalProps {\n  name: string;\n  description?: string;\n  args?: Record<string, unknown>;\n  risk?: RiskLevel;\n  onApprove?: () => void;\n  onDeny?: () => void;\n  onAlwaysAllow?: () => void;\n  timeout?: number;\n}\n\nexport const ToolApproval = ({\n  name,\n  description,\n  args,\n  risk = \"low\",\n  onApprove,\n  onDeny,\n  onAlwaysAllow,\n  timeout,\n}: ToolApprovalProps) => {\n  const theme = useTheme();\n  const [remaining, setRemaining] = useState(timeout ?? 0);\n  const onDenyRef = useRef(onDeny);\n\n  useEffect(() => {\n    onDenyRef.current = onDeny;\n  }, [onDeny]);\n\n  useEffect(() => {\n    if (!timeout) {\n      return;\n    }\n    setRemaining(timeout);\n    const id = setInterval(() => {\n      setRemaining((r) => {\n        if (r <= 1) {\n          clearInterval(id);\n          onDenyRef.current?.();\n          return 0;\n        }\n        return r - 1;\n      });\n    }, 1000);\n    return () => clearInterval(id);\n  }, [timeout]);\n\n  useKeyboard((key) => {\n    if (key.name === \"y\" || key.name === \"Y\") {\n      onApprove?.();\n    } else if (key.name === \"n\" || key.name === \"N\") {\n      onDeny?.();\n    } else if ((key.name === \"a\" || key.name === \"A\") && onAlwaysAllow) {\n      onAlwaysAllow();\n    }\n  });\n\n  const riskBorderColor: Record<RiskLevel, string> = {\n    high: theme.colors.error ?? \"red\",\n    low: theme.colors.success ?? \"green\",\n    medium: theme.colors.warning ?? \"yellow\",\n  };\n\n  const riskLabel: Record<RiskLevel, string> = {\n    high: \"HIGH\",\n    low: \"LOW\",\n    medium: \"MEDIUM\",\n  };\n\n  const riskLabelColor: Record<RiskLevel, string> = {\n    high: theme.colors.error ?? \"red\",\n    low: theme.colors.success ?? \"green\",\n    medium: theme.colors.warning ?? \"yellow\",\n  };\n\n  const borderColor = riskBorderColor[risk];\n\n  return (\n    <box\n      flexDirection=\"column\"\n      borderStyle=\"rounded\"\n      paddingLeft={1}\n      paddingRight={1}\n      paddingTop={0}\n      paddingBottom={0}\n    >\n      <box gap={2}>\n        <text fg={theme.colors.foreground}>\n          <b>Tool Approval Required</b>\n        </text>\n        <text fg={riskLabelColor[risk]}>\n          <b>{`[${riskLabel[risk]} RISK]`}</b>\n        </text>\n        {timeout && remaining > 0 && (\n          <text\n            fg={theme.colors.warning ?? \"yellow\"}\n          >{`Auto-deny in ${remaining}s`}</text>\n        )}\n      </box>\n\n      <box flexDirection=\"column\" marginTop={1}>\n        <box gap={1}>\n          <text fg={theme.colors.mutedForeground}>Tool:</text>\n          <text fg={theme.colors.primary}>\n            <b>{name}</b>\n          </text>\n        </box>\n        {description && (\n          <box gap={1}>\n            <text fg={theme.colors.mutedForeground}>Description:</text>\n            <text fg=\"#666\">{description}</text>\n          </box>\n        )}\n      </box>\n\n      {args && Object.keys(args).length > 0 && (\n        <box flexDirection=\"column\" marginTop={1}>\n          <text fg=\"#666\">Arguments:</text>\n          {...Object.entries(args).map(([k, v]) => (\n            <box key={k} gap={1} paddingLeft={2}>\n              <text fg={theme.colors.accent}>{`${k}:`}</text>\n              <text fg=\"#666\">{JSON.stringify(v)}</text>\n            </box>\n          ))}\n        </box>\n      )}\n\n      <box gap={2} marginTop={1}>\n        <text fg={theme.colors.success ?? \"green\"}>\n          <b>[y] Approve</b>\n        </text>\n        <text fg={theme.colors.error ?? \"red\"}>\n          <b>[n] Deny</b>\n        </text>\n        {onAlwaysAllow && (\n          <text fg={theme.colors.warning ?? \"yellow\"}>\n            <b>[a] Always Allow</b>\n          </text>\n        )}\n      </box>\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/tool-approval.tsx"
+    }
+  ],
+  "categories": [
+    "ai"
+  ],
+  "type": "registry:ui"
+}

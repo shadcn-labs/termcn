@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/sparkline",
+  "title": "Sparkline",
+  "description": "Inline Unicode braille sparkline chart",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/sparkline.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface SparklineProps {\n  data: number[];\n  width?: number;\n  color?: string;\n  label?: string;\n}\n\nconst BRAILLE_LEVELS = [\"⣀\", \"⣄\", \"⣤\", \"⣦\", \"⣶\", \"⣷\", \"⣿\", \"⣿\"];\n\nconst normalize = (data: number[], levels: number): number[] => {\n  if (data.length === 0) {\n    return [];\n  }\n  const min = Math.min(...data);\n  const max = Math.max(...data);\n  const range = max - min;\n  if (range === 0) {\n    return data.map(() => Math.floor(levels / 2));\n  }\n  return data.map((v) => Math.round(((v - min) / range) * (levels - 1)));\n};\n\nexport const Sparkline = ({\n  data,\n  width = 20,\n  color,\n  label,\n}: SparklineProps) => {\n  const theme = useTheme();\n  const resolvedColor = color ?? theme.colors.primary;\n\n  if (data.length === 0) {\n    return (\n      <box>\n        {label && <text fg={theme.colors.mutedForeground}>{`${label} `}</text>}\n        <text fg={theme.colors.mutedForeground}>{\"─\".repeat(width)}</text>\n      </box>\n    );\n  }\n\n  const sampled =\n    data.length > width\n      ? Array.from(\n          { length: width },\n          (_, i) => data[Math.round((i / (width - 1)) * (data.length - 1))] ?? 0\n        )\n      : data;\n\n  const levels = normalize(sampled, BRAILLE_LEVELS.length);\n  const sparkStr = levels\n    .map((l) => BRAILLE_LEVELS[l] ?? BRAILLE_LEVELS[0])\n    .join(\"\");\n\n  return (\n    <box flexDirection=\"row\" gap={1}>\n      {label && <text fg={theme.colors.mutedForeground}>{label}</text>}\n      <text fg={resolvedColor}>{sparkStr}</text>\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/sparkline.tsx"
+    }
+  ],
+  "categories": [
+    "charts"
+  ],
+  "type": "registry:ui"
+}

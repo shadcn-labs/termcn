@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ink/card",
+  "title": "Card",
+  "description": "Card with header, body, and footer slots",
+  "dependencies": [
+    "ink"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/ink/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/ui/card.tsx",
+      "content": "import { Box, Text } from \"ink\";\nimport type { ReactNode } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\nimport type { BorderStyle } from \"@/components/ui/types\";\n\nexport interface CardProps {\n  title?: string;\n  subtitle?: string;\n  children: ReactNode;\n  footer?: ReactNode;\n  borderColor?: string;\n  width?: number;\n  borderStyle?: BorderStyle;\n  paddingX?: number;\n  paddingY?: number;\n  footerDividerChar?: string;\n}\n\nexport const Card = ({\n  title,\n  subtitle,\n  children,\n  footer,\n  borderColor,\n  width,\n  borderStyle = \"round\",\n  paddingX = 1,\n  paddingY = 0,\n  footerDividerChar = \"─\",\n}: CardProps) => {\n  const theme = useTheme();\n  const resolvedBorderColor = borderColor ?? theme.colors.border;\n\n  return (\n    <Box\n      flexDirection=\"column\"\n      borderStyle={borderStyle}\n      borderColor={resolvedBorderColor}\n      width={width}\n      paddingX={paddingX}\n      paddingY={paddingY}\n    >\n      {(title || subtitle) && (\n        <Box flexDirection=\"column\" paddingBottom={1}>\n          {title && (\n            <Text bold color={theme.colors.foreground}>\n              {title}\n            </Text>\n          )}\n          {subtitle && (\n            <Text dimColor color={theme.colors.mutedForeground}>\n              {subtitle}\n            </Text>\n          )}\n        </Box>\n      )}\n      <Box flexDirection=\"column\">{children}</Box>\n      {footer && (\n        <Box flexDirection=\"column\" marginTop={1} paddingTop={1}>\n          <Text color={resolvedBorderColor}>\n            {footerDividerChar.repeat(30)}\n          </Text>\n          <Box marginTop={0}>{footer}</Box>\n        </Box>\n      )}\n    </Box>\n  );\n};\n",
+      "type": "registry:ui"
+    }
+  ],
+  "categories": [
+    "data"
+  ],
+  "type": "registry:ui"
+}

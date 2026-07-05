@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-opencode",
+  "title": "OpenCode",
+  "description": "OpenCode official theme.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/opencode.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const opencodeTheme: Theme = {\n  border: {\n    color: \"#808080\",\n    focusColor: \"#9d7cd8\",\n    style: \"rounded\",\n  },\n  colors: {\n    accent: \"#9d7cd8\",\n    accentForeground: \"#0a0a0a\",\n    background: \"#0a0a0a\",\n    border: \"#808080\",\n    error: \"#e06c75\",\n    errorForeground: \"#0a0a0a\",\n    focusRing: \"#9d7cd8\",\n    foreground: \"#eeeeee\",\n    info: \"#56b6c2\",\n    infoForeground: \"#0a0a0a\",\n    muted: \"#050505\",\n    mutedForeground: \"#808080\",\n    primary: \"#fab283\",\n    primaryForeground: \"#0a0a0a\",\n    secondary: \"#151515\",\n    secondaryForeground: \"#eeeeee\",\n    selection: \"#fab283\",\n    selectionForeground: \"#0a0a0a\",\n    success: \"#7fd88f\",\n    successForeground: \"#0a0a0a\",\n    warning: \"#f5a742\",\n    warningForeground: \"#0a0a0a\",\n  },\n  name: \"opencode\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/opencode.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

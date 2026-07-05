@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-mercury",
+  "title": "Mercury",
+  "description": "Mercury - clean minimal theme.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/mercury.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const mercuryTheme: Theme = {\n  border: {\n    color: \"#9d9da8\",\n    focusColor: \"#8da4f5\",\n    style: \"rounded\",\n  },\n  colors: {\n    accent: \"#8da4f5\",\n    accentForeground: \"#171721\",\n    background: \"#171721\",\n    border: \"#9d9da8\",\n    error: \"#fc92b4\",\n    errorForeground: \"#171721\",\n    focusRing: \"#8da4f5\",\n    foreground: \"#dddde5\",\n    info: \"#77becf\",\n    infoForeground: \"#171721\",\n    muted: \"#101018\",\n    mutedForeground: \"#9d9da8\",\n    primary: \"#8da4f5\",\n    primaryForeground: \"#171721\",\n    secondary: \"#1e1e28\",\n    secondaryForeground: \"#dddde5\",\n    selection: \"#8da4f5\",\n    selectionForeground: \"#171721\",\n    success: \"#77c599\",\n    successForeground: \"#171721\",\n    warning: \"#fc9b6f\",\n    warningForeground: \"#171721\",\n  },\n  name: \"mercury\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/mercury.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

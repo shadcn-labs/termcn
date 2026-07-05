@@ -2,7 +2,7 @@
 import { useKeyboard } from "@opentui/react";
 import { useState, useMemo } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
 
 export interface ListItem {
   key: string;
@@ -68,7 +68,7 @@ export const List = ({
     <box flexDirection="column">
       {filterable ? (
         <box
-          borderStyle="round"
+          borderStyle="rounded"
           borderColor={theme.colors.border}
           paddingLeft={1}
           paddingRight={1}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/scroll-view",
+  "title": "Scroll View",
+  "description": "Scrollable container with scrollbar",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/scroll-view.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useKeyboard } from \"@opentui/react\";\nimport { useMemo, useState } from \"react\";\nimport type { ReactNode } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface ScrollViewProps {\n  height: number;\n  children: ReactNode;\n  contentHeight?: number;\n  showScrollbar?: boolean;\n  scrollbarColor?: string;\n  thumbColor?: string;\n  trackChar?: string;\n  thumbChar?: string;\n}\n\nexport const ScrollView = ({\n  height,\n  children,\n  contentHeight = 0,\n  showScrollbar = true,\n  scrollbarColor,\n  thumbColor,\n  trackChar = \"│\",\n  thumbChar = \"█\",\n}: ScrollViewProps) => {\n  const theme = useTheme();\n  const [scrollTop, setScrollTop] = useState(0);\n\n  const resolvedTrackColor = scrollbarColor ?? theme.colors.mutedForeground;\n  const resolvedThumbColor = thumbColor ?? theme.colors.primary;\n\n  const maxScroll = Math.max(0, contentHeight - height);\n\n  const clampedScroll = Math.min(scrollTop, maxScroll);\n\n  useKeyboard((key) => {\n    if (key.name === \"up\") {\n      setScrollTop((s) => Math.max(0, s - 1));\n    } else if (key.name === \"down\") {\n      setScrollTop((s) => Math.min(maxScroll > 0 ? maxScroll : s + 1, s + 1));\n    } else if (key.name === \"pageup\") {\n      setScrollTop((s) => Math.max(0, s - height));\n    } else if (key.name === \"pagedown\") {\n      setScrollTop((s) =>\n        maxScroll > 0 ? Math.min(maxScroll, s + height) : s + height\n      );\n    } else if (key.name === \"home\") {\n      setScrollTop(0);\n    } else if (key.name === \"end\" && maxScroll > 0) {\n      setScrollTop(maxScroll);\n    }\n  });\n\n  const thumbSize = useMemo(() => {\n    if (contentHeight <= height) {\n      return height;\n    }\n    return Math.max(1, Math.round((height / contentHeight) * height));\n  }, [contentHeight, height]);\n\n  const thumbPosition = useMemo(() => {\n    if (contentHeight <= height || maxScroll === 0) {\n      return 0;\n    }\n    return Math.round((clampedScroll / maxScroll) * (height - thumbSize));\n  }, [clampedScroll, maxScroll, height, thumbSize, contentHeight]);\n\n  const scrollbar = useMemo(\n    () =>\n      Array.from({ length: height }, (_, i) => {\n        const isThumb = i >= thumbPosition && i < thumbPosition + thumbSize;\n        return { char: isThumb ? thumbChar : trackChar, isThumb };\n      }),\n    [height, thumbPosition, thumbSize, thumbChar, trackChar]\n  );\n\n  return (\n    <box flexDirection=\"row\" overflow=\"hidden\">\n      <box\n        flexGrow={1}\n        flexDirection=\"column\"\n        marginTop={-clampedScroll as number}\n      >\n        {children}\n      </box>\n      {showScrollbar && (\n        <box width={1} flexDirection=\"column\">\n          {scrollbar.map((seg, i) => (\n            <text\n              key={i}\n              fg={seg.isThumb ? resolvedThumbColor : resolvedTrackColor}\n            >\n              {seg.char}\n            </text>\n          ))}\n        </box>\n      )}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/scroll-view.tsx"
+    }
+  ],
+  "categories": [
+    "layout"
+  ],
+  "type": "registry:ui"
+}

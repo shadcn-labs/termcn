@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-kanagawa",
+  "title": "Kanagawa",
+  "description": "Kanagawa - Japanese wave theme.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/kanagawa.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const kanagawaTheme: Theme = {\n  border: {\n    color: \"#727169\",\n    focusColor: \"#957fbb\",\n    style: \"rounded\",\n  },\n  colors: {\n    accent: \"#d27e99\",\n    accentForeground: \"#1f1f28\",\n    background: \"#1f1f28\",\n    border: \"#727169\",\n    error: \"#e82424\",\n    errorForeground: \"#1f1f28\",\n    focusRing: \"#957fbb\",\n    foreground: \"#dcd7ba\",\n    info: \"#76946a\",\n    infoForeground: \"#1f1f28\",\n    muted: \"#16161f\",\n    mutedForeground: \"#727169\",\n    primary: \"#7e9cd8\",\n    primaryForeground: \"#1f1f28\",\n    secondary: \"#292a3f\",\n    secondaryForeground: \"#dcd7ba\",\n    selection: \"#7e9cd8\",\n    selectionForeground: \"#1f1f28\",\n    success: \"#98bb6c\",\n    successForeground: \"#1f1f28\",\n    warning: \"#d7a657\",\n    warningForeground: \"#1f1f28\",\n  },\n  name: \"kanagawa\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/kanagawa.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

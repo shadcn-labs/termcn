@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/tag-input",
+  "title": "Tag Input",
+  "description": "Add and remove tags inline",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/tag-input.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useKeyboard } from \"@opentui/react\";\nimport { useState } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface TagInputProps {\n  value?: string[];\n  onChange?: (tags: string[]) => void;\n  placeholder?: string;\n  maxTags?: number;\n  delimiter?: string;\n}\n\nexport const TagInput = ({\n  value: controlledValue,\n  onChange,\n  placeholder = \"Type and press Enter…\",\n  maxTags,\n}: TagInputProps) => {\n  const theme = useTheme();\n  const [internalTags, setInternalTags] = useState<string[]>([]);\n  const [inputText, setInputText] = useState(\"\");\n\n  const tags = controlledValue ?? internalTags;\n\n  const updateTags = (next: string[]) => {\n    if (controlledValue === undefined) {\n      setInternalTags(next);\n    }\n    onChange?.(next);\n  };\n\n  const addTag = () => {\n    const trimmed = inputText.trim();\n    if (!trimmed) {\n      return;\n    }\n    if (maxTags !== undefined && tags.length >= maxTags) {\n      return;\n    }\n    updateTags([...tags, trimmed]);\n    setInputText(\"\");\n  };\n\n  const removeLastTag = () => {\n    if (tags.length === 0) {\n      return;\n    }\n    updateTags(tags.slice(0, -1));\n  };\n\n  useKeyboard((key) => {\n    if (key.name === \"return\") {\n      addTag();\n    } else if (key.name === \"backspace\" || key.name === \"delete\") {\n      if (inputText.length > 0) {\n        setInputText((t) => t.slice(0, -1));\n      } else {\n        removeLastTag();\n      }\n    } else if (key.name.length === 1 && !key.ctrl && !key.meta) {\n      setInputText((t) => t + key.name);\n    }\n  });\n\n  const atMax = maxTags !== undefined && tags.length >= maxTags;\n\n  return (\n    <box flexDirection=\"column\" gap={1}>\n      <box flexWrap=\"wrap\" gap={1}>\n        {tags.map((tag, idx) => (\n          <box key={idx}>\n            <text>\n              <b>[</b>\n            </text>\n            <text>{tag}</text>\n            <text>\n              <b>{\" ×]\"}</b>\n            </text>\n          </box>\n        ))}\n      </box>\n      <box gap={1}>\n        <text fg={theme.colors.primary}>›</text>\n        {atMax ? (\n          <text fg=\"#666\">{`Max ${maxTags} tag${maxTags === 1 ? \"\" : \"s\"} reached`}</text>\n        ) : (\n          <text\n            fg={\n              inputText ? theme.colors.foreground : theme.colors.mutedForeground\n            }\n          >\n            {inputText || placeholder}\n          </text>\n        )}\n      </box>\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/tag-input.tsx"
+    }
+  ],
+  "categories": [
+    "selection"
+  ],
+  "type": "registry:ui"
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/log",
+  "title": "Log",
+  "description": "Scrolling log viewer with severity levels and filtering",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/log.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useKeyboard } from \"@opentui/react\";\nimport { useState, useMemo, useEffect } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport type LogLevel = \"debug\" | \"info\" | \"warn\" | \"error\";\n\nexport interface LogEntry {\n  level: LogLevel;\n  message: string;\n  timestamp?: Date;\n}\n\nexport interface LogProps {\n  entries: LogEntry[];\n  height?: number;\n  showTimestamp?: boolean;\n  filter?: string;\n  follow?: boolean;\n}\n\nconst LEVEL_COLORS: Record<LogLevel, string> = {\n  debug: \"gray\",\n  error: \"red\",\n  info: \"cyan\",\n  warn: \"yellow\",\n};\n\nconst LEVEL_LABELS: Record<LogLevel, string> = {\n  debug: \"DBG\",\n  error: \"ERR\",\n  info: \"INF\",\n  warn: \"WRN\",\n};\n\nconst formatTimestamp = (date: Date): string => {\n  const h = String(date.getHours()).padStart(2, \"0\");\n  const m = String(date.getMinutes()).padStart(2, \"0\");\n  const s = String(date.getSeconds()).padStart(2, \"0\");\n  return `${h}:${m}:${s}`;\n};\n\nexport const Log = ({\n  entries,\n  height = 10,\n  showTimestamp = true,\n  filter,\n  follow: followProp = false,\n}: LogProps) => {\n  const theme = useTheme();\n  const [scrollOffset, setScrollOffset] = useState(0);\n  const [follow, setFollow] = useState(followProp);\n\n  const filtered = useMemo(() => {\n    if (!filter) {\n      return entries;\n    }\n    const lower = filter.toLowerCase();\n    return entries.filter(\n      (e) =>\n        e.message.toLowerCase().includes(lower) ||\n        e.level.toLowerCase().includes(lower)\n    );\n  }, [entries, filter]);\n\n  const maxOffset = Math.max(0, filtered.length - height);\n\n  useEffect(() => {\n    if (follow) {\n      setScrollOffset(maxOffset);\n    }\n  }, [follow, maxOffset]);\n\n  useKeyboard((key) => {\n    if (key.name === \"j\" || key.name === \"down\") {\n      setScrollOffset((o) => Math.min(maxOffset, o + 1));\n      if (follow) {\n        setFollow(false);\n      }\n    } else if (key.name === \"k\" || key.name === \"up\") {\n      setScrollOffset((o) => Math.max(0, o - 1));\n      if (follow) {\n        setFollow(false);\n      }\n    } else if (key.name === \"f\") {\n      setFollow((f) => !f);\n    }\n  });\n\n  const visible = filtered.slice(scrollOffset, scrollOffset + height);\n\n  return (\n    <box flexDirection=\"column\" gap={0}>\n      <box flexDirection=\"column\">\n        {visible.map((entry, i) => {\n          const levelColor = LEVEL_COLORS[entry.level];\n          const levelLabel = LEVEL_LABELS[entry.level];\n          let messageColor: string;\n          if (entry.level === \"error\") {\n            messageColor = \"red\";\n          } else if (entry.level === \"warn\") {\n            messageColor = \"yellow\";\n          } else {\n            messageColor = theme.colors.foreground;\n          }\n          return (\n            <box key={i} gap={1}>\n              {showTimestamp && entry.timestamp && (\n                <text fg=\"#666\">{formatTimestamp(entry.timestamp)}</text>\n              )}\n              <text fg={levelColor}>\n                <b>{levelLabel}</b>\n              </text>\n              <text fg={messageColor}>{entry.message}</text>\n            </box>\n          );\n        })}\n      </box>\n      <box gap={2} marginTop={0}>\n        <text fg=\"#666\">{`${scrollOffset + 1}–${Math.min(scrollOffset + height, filtered.length)}/${filtered.length}`}</text>\n        <text fg={follow ? theme.colors.success : \"#666\"}>\n          {follow ? \"↓ follow\" : \"f follow\"}\n        </text>\n        <text fg=\"#666\">j/k scroll</text>\n        {filter && <text fg=\"#666\">{`filter: ${filter}`}</text>}\n      </box>\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/log.tsx"
+    }
+  ],
+  "categories": [
+    "utility"
+  ],
+  "type": "registry:ui"
+}

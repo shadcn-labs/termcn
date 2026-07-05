@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/spacer",
+  "title": "Spacer",
+  "description": "Flexible space between flex children",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/spacer.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nexport interface SpacerProps {\n  size?: number;\n  direction?: \"horizontal\" | \"vertical\";\n}\n\nexport const Spacer = ({ size, direction = \"horizontal\" }: SpacerProps) => {\n  if (size === undefined) {\n    return <box flexGrow={1} />;\n  }\n\n  if (direction === \"vertical\") {\n    return <box height={size} />;\n  }\n\n  return <box width={size} />;\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/spacer.tsx"
+    }
+  ],
+  "categories": [
+    "layout"
+  ],
+  "type": "registry:ui"
+}

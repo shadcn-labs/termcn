@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/checkbox",
+  "title": "Checkbox",
+  "description": "Checkbox with indeterminate state",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/checkbox.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useKeyboard } from \"@opentui/react\";\nimport { useState } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface CheckboxProps {\n  checked?: boolean;\n  onChange?: (checked: boolean) => void;\n  label?: string;\n  indeterminate?: boolean;\n  disabled?: boolean;\n  id?: string;\n  checkedIcon?: string;\n  uncheckedIcon?: string;\n  indeterminateIcon?: string;\n}\n\nexport const Checkbox = ({\n  checked: controlledChecked,\n  onChange,\n  label,\n  indeterminate = false,\n  disabled = false,\n  id: _id,\n  checkedIcon = \"■\",\n  uncheckedIcon = \"□\",\n  indeterminateIcon = \"▪\",\n}: CheckboxProps) => {\n  const [internalChecked, setInternalChecked] = useState(false);\n  const theme = useTheme();\n  const [isFocused] = useState(true);\n\n  const checked = controlledChecked ?? internalChecked;\n\n  useKeyboard((key) => {\n    if (!isFocused || disabled) {\n      return;\n    }\n    if (key.name === \" \") {\n      const next = !checked;\n      if (onChange) {\n        onChange(next);\n      } else {\n        setInternalChecked(next);\n      }\n    }\n  });\n\n  const checkedIcon_ = checked ? checkedIcon : uncheckedIcon;\n  const icon = indeterminate ? indeterminateIcon : checkedIcon_;\n  const activeColor =\n    checked || indeterminate ? theme.colors.primary : theme.colors.border;\n  const iconColor = disabled ? theme.colors.mutedForeground : activeColor;\n\n  return (\n    <box gap={1}>\n      <text fg={isFocused ? theme.colors.focusRing : iconColor}>\n        {isFocused ? <b>{icon}</b> : icon}\n      </text>\n      {label && (\n        <text fg={disabled ? \"#666\" : theme.colors.foreground}>{label}</text>\n      )}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/checkbox.tsx"
+    }
+  ],
+  "categories": [
+    "selection"
+  ],
+  "type": "registry:ui"
+}

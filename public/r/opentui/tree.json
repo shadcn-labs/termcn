@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/tree",
+  "title": "Tree",
+  "description": "Expandable/collapsible tree view",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/tree.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useKeyboard } from \"@opentui/react\";\nimport { useState, useMemo } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface TreeNode {\n  key: string;\n  label: string;\n  children?: TreeNode[];\n  icon?: string;\n}\n\nexport interface TreeProps {\n  nodes: TreeNode[];\n  onSelect?: (node: TreeNode) => void;\n  defaultExpanded?: string[];\n  expandedIcon?: string;\n  collapsedIcon?: string;\n  leafIcon?: string;\n}\n\ninterface FlatNode {\n  node: TreeNode;\n  depth: number;\n  hasChildren: boolean;\n}\n\nconst flattenTree = (\n  nodes: TreeNode[],\n  expandedKeys: Set<string>,\n  depth = 0\n): FlatNode[] => {\n  const result: FlatNode[] = [];\n  for (const node of nodes) {\n    const hasChildren = Boolean(node.children && node.children.length > 0);\n    result.push({ depth, hasChildren, node });\n    if (hasChildren && expandedKeys.has(node.key)) {\n      const childFlat = flattenTree(\n        node.children ?? [],\n        expandedKeys,\n        depth + 1\n      );\n      result.push(...childFlat);\n    }\n  }\n  return result;\n};\n\nexport const Tree = ({\n  nodes,\n  onSelect,\n  defaultExpanded = [],\n  expandedIcon = \"▼\",\n  collapsedIcon = \"▶\",\n  leafIcon = \"•\",\n}: TreeProps) => {\n  const theme = useTheme();\n  const [expandedKeys, setExpandedKeys] = useState<Set<string>>(\n    new Set(defaultExpanded)\n  );\n  const [activeIndex, setActiveIndex] = useState(0);\n\n  const flatNodes = useMemo(\n    () => flattenTree(nodes, expandedKeys),\n    [nodes, expandedKeys]\n  );\n\n  useKeyboard((key) => {\n    const current = flatNodes[activeIndex];\n    if (key.name === \"up\") {\n      setActiveIndex((i) => Math.max(0, i - 1));\n    } else if (key.name === \"down\") {\n      setActiveIndex((i) => Math.min(flatNodes.length - 1, i + 1));\n    } else if (key.name === \"right\" || key.name === \"space\") {\n      if (current?.hasChildren && !expandedKeys.has(current.node.key)) {\n        setExpandedKeys((prev) => new Set([...prev, current.node.key]));\n      }\n    } else if (key.name === \"left\") {\n      if (current?.hasChildren && expandedKeys.has(current.node.key)) {\n        setExpandedKeys((prev) => {\n          const next = new Set(prev);\n          next.delete(current.node.key);\n          return next;\n        });\n      }\n    } else if (key.name === \"return\" && current) {\n      onSelect?.(current.node);\n    }\n  });\n\n  return (\n    <box flexDirection=\"column\">\n      {flatNodes.map(({ node, depth, hasChildren }, idx) => {\n        const isActive = idx === activeIndex;\n        const isExpanded = expandedKeys.has(node.key);\n        const prefix = \"  \".repeat(depth);\n        let indicator: string;\n        if (hasChildren) {\n          indicator = isExpanded ? expandedIcon : collapsedIcon;\n        } else {\n          indicator = node.icon ?? leafIcon;\n        }\n        return (\n          <box key={node.key} flexDirection=\"row\">\n            <text>{prefix}</text>\n            <text\n              fg={\n                isActive ? theme.colors.primary : theme.colors.mutedForeground\n              }\n            >{`${indicator} `}</text>\n            <text\n              fg={isActive ? theme.colors.primary : theme.colors.foreground}\n            >\n              {isActive ? <b>{node.label}</b> : node.label}\n            </text>\n          </box>\n        );\n      })}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/tree.tsx"
+    }
+  ],
+  "categories": [
+    "data"
+  ],
+  "type": "registry:ui"
+}

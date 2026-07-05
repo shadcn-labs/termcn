@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/stopwatch",
+  "title": "Stopwatch",
+  "description": "Count-up stopwatch with laps and reset",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/stopwatch.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useKeyboard } from \"@opentui/react\";\nimport { useState, useCallback, useRef, useEffect } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface StopwatchProps {\n  autoStart?: boolean;\n  color?: string;\n  showLaps?: boolean;\n}\n\nconst pad = (n: number, len = 2) => String(n).padStart(len, \"0\");\n\nconst formatElapsed = (ms: number): string => {\n  const totalSeconds = Math.floor(ms / 1000);\n  const h = Math.floor(totalSeconds / 3600);\n  const m = Math.floor((totalSeconds % 3600) / 60);\n  const s = totalSeconds % 60;\n  const centis = Math.floor((ms % 1000) / 10);\n\n  return `${pad(h)}:${pad(m)}:${pad(s)}.${pad(centis)}`;\n};\n\nconst getStatus = (running: boolean, elapsed: number): string => {\n  if (running) {\n    return \"Running\";\n  }\n  if (elapsed === 0) {\n    return \"Ready\";\n  }\n  return \"Stopped\";\n};\n\nconst getStatusColor = (\n  running: boolean,\n  elapsed: number,\n  resolvedColor: string,\n  theme: ReturnType<typeof useTheme>\n): string => {\n  if (running) {\n    return resolvedColor;\n  }\n  if (elapsed === 0) {\n    return theme.colors.mutedForeground;\n  }\n  return theme.colors.warning;\n};\n\nexport const Stopwatch = ({\n  autoStart = false,\n  color,\n  showLaps = true,\n}: StopwatchProps) => {\n  const theme = useTheme();\n  const resolvedColor = color ?? theme.colors.primary;\n\n  const [running, setRunning] = useState(autoStart);\n  const [elapsed, setElapsed] = useState(0);\n  const [laps, setLaps] = useState<number[]>([]);\n  const lastTickRef = useRef<number>(autoStart ? Date.now() : 0);\n  const elapsedRef = useRef(0);\n\n  const tick = useCallback(() => {\n    const now = Date.now();\n    const delta = now - lastTickRef.current;\n    lastTickRef.current = now;\n    elapsedRef.current += delta;\n    setElapsed(elapsedRef.current);\n  }, []);\n\n  useEffect(() => {\n    if (!running) {\n      return;\n    }\n    const id = setInterval(tick, 50);\n    return () => clearInterval(id);\n  }, [running, tick]);\n\n  useKeyboard((key) => {\n    if (key.name === \" \") {\n      if (!running) {\n        lastTickRef.current = Date.now();\n      }\n      setRunning((r) => !r);\n    } else if (key.name === \"l\" && running) {\n      setLaps((prev) => [...prev, elapsedRef.current]);\n    } else if (key.name === \"r\") {\n      setRunning(false);\n      setElapsed(0);\n      elapsedRef.current = 0;\n      setLaps([]);\n    }\n  });\n\n  const status = getStatus(running, elapsed);\n  const statusColor = getStatusColor(running, elapsed, resolvedColor, theme);\n\n  return (\n    <box flexDirection=\"column\" gap={0}>\n      <box gap={2} alignItems=\"center\">\n        <text fg={resolvedColor}>\n          <b>{formatElapsed(elapsed)}</b>\n        </text>\n        <text fg={statusColor}>{`[${status}]`}</text>\n      </box>\n      <text fg=\"#666\">space start/stop · l lap · r reset</text>\n      {showLaps && laps.length > 0 && (\n        <box flexDirection=\"column\" marginTop={1}>\n          <text fg={theme.colors.mutedForeground}>\n            <b>Laps:</b>\n          </text>\n          {laps.map((lapTime, i) => {\n            const prevLap = laps[i - 1] ?? 0;\n            const split = i === 0 ? lapTime : lapTime - prevLap;\n            return (\n              <box key={i} gap={2}>\n                <text\n                  fg={theme.colors.mutedForeground}\n                >{`#${String(i + 1).padStart(2, \"0\")}`}</text>\n                <text fg={resolvedColor}>{formatElapsed(lapTime)}</text>\n                <text fg=\"#666\">{`+${formatElapsed(split)}`}</text>\n              </box>\n            );\n          })}\n        </box>\n      )}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/stopwatch.tsx"
+    }
+  ],
+  "categories": [
+    "utility"
+  ],
+  "type": "registry:ui"
+}

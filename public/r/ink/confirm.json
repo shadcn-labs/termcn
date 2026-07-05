@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ink/confirm",
+  "title": "Confirm",
+  "description": "Yes/No confirmation prompt",
+  "dependencies": [
+    "ink"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/ink/theme-provider.json",
+    "https://termcn.dev/r/ink/use-input.json"
+  ],
+  "files": [
+    {
+      "path": "registry/ui/confirm.tsx",
+      "content": "import { Box, Text } from \"ink\";\nimport React, { useState } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\nimport { useInput } from \"@/hooks/use-input\";\n\nexport interface ConfirmProps {\n  message: string;\n  onConfirm?: () => void;\n  onCancel?: () => void;\n  confirmLabel?: string;\n  cancelLabel?: string;\n  defaultValue?: boolean;\n  variant?: \"default\" | \"danger\";\n}\n\nexport const Confirm = ({\n  message,\n  onConfirm,\n  onCancel,\n  confirmLabel = \"Yes\",\n  cancelLabel = \"No\",\n  defaultValue = false,\n  variant = \"default\",\n}: ConfirmProps) => {\n  const theme = useTheme();\n  const [selected, setSelected] = useState<boolean>(defaultValue);\n\n  useInput((input, key) => {\n    if (key.leftArrow || key.rightArrow) {\n      setSelected((s) => !s);\n    } else if (key.return) {\n      if (selected) {\n        onConfirm?.();\n      } else {\n        onCancel?.();\n      }\n    } else if (input === \"y\" || input === \"Y\") {\n      onConfirm?.();\n    } else if (input === \"n\" || input === \"N\") {\n      onCancel?.();\n    }\n  });\n\n  const yesColor =\n    variant === \"danger\" ? theme.colors.error : theme.colors.primary;\n\n  return (\n    <Box flexDirection=\"column\" gap={0}>\n      <Text>\n        <Text color={theme.colors.primary}>{\"? \"}</Text>\n        {message}\n      </Text>\n      <Box gap={2} paddingLeft={2}>\n        <Box gap={1}>\n          {selected ? (\n            <Text color={yesColor} bold>\n              {\"› \"}\n              {confirmLabel}\n            </Text>\n          ) : (\n            <Text color={theme.colors.mutedForeground}>\n              {\"  \"}\n              {confirmLabel}\n            </Text>\n          )}\n        </Box>\n        <Box gap={1}>\n          {selected ? (\n            <Text color={theme.colors.mutedForeground}>\n              {\"  \"}\n              {cancelLabel}\n            </Text>\n          ) : (\n            <Text bold>\n              {\"› \"}\n              {cancelLabel}\n            </Text>\n          )}\n        </Box>\n      </Box>\n    </Box>\n  );\n};\n",
+      "type": "registry:ui"
+    }
+  ],
+  "categories": [
+    "forms"
+  ],
+  "type": "registry:ui"
+}

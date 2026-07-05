@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ink/key-value",
+  "title": "Key Value",
+  "description": "Aligned key–value pairs",
+  "dependencies": [
+    "ink"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/ink/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/ui/key-value.tsx",
+      "content": "import { Box, Text } from \"ink\";\nimport React, { useMemo } from \"react\";\nimport type { ReactNode } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface KeyValueItem {\n  key: string;\n  value: ReactNode;\n  color?: string;\n}\n\nexport interface KeyValueProps {\n  items: KeyValueItem[];\n  keyWidth?: number;\n  separator?: string;\n  keyColor?: string;\n  valueColor?: string;\n}\n\nexport const KeyValue = ({\n  items,\n  keyWidth,\n  separator = \":\",\n  keyColor,\n  valueColor,\n}: KeyValueProps) => {\n  const theme = useTheme();\n\n  const resolvedKeyWidth = useMemo(() => {\n    if (keyWidth !== undefined) {\n      return keyWidth;\n    }\n    let max = 0;\n    for (const item of items) {\n      max = Math.max(max, item.key.length);\n    }\n    return max + 1;\n  }, [items, keyWidth]);\n\n  const resolvedKeyColor = keyColor ?? theme.colors.mutedForeground;\n  const resolvedValueColor = valueColor ?? theme.colors.foreground;\n\n  return (\n    <Box flexDirection=\"column\">\n      {items.map((item, idx) => {\n        const paddedKey = item.key.padEnd(resolvedKeyWidth, \" \");\n        return (\n          <Box key={idx} flexDirection=\"row\" gap={1}>\n            <Text color={resolvedKeyColor}>{paddedKey}</Text>\n            <Text color={resolvedKeyColor}>{separator}</Text>\n            <Text color={item.color ?? resolvedValueColor}>{item.value}</Text>\n          </Box>\n        );\n      })}\n    </Box>\n  );\n};\n",
+      "type": "registry:ui"
+    }
+  ],
+  "categories": [
+    "data"
+  ],
+  "type": "registry:ui"
+}

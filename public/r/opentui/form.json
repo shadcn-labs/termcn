@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/form",
+  "title": "Form",
+  "description": "Form container with validation, Ctrl+S submit, and dirty tracking",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/form.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useKeyboard } from \"@opentui/react\";\nimport {\n  createElement,\n  useState,\n  useCallback,\n  useMemo,\n  createContext,\n  useContext,\n} from \"react\";\nimport type { ReactNode } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\ninterface FormContextValue {\n  values: Record<string, unknown>;\n  errors: Record<string, string>;\n  isDirty: boolean;\n  setFieldValue: (name: string, value: unknown) => void;\n  setFieldError: (name: string, error: string) => void;\n}\n\nconst FormContext = createContext<FormContextValue>({\n  errors: {},\n  isDirty: false,\n  setFieldError: () => {\n    /* noop */\n  },\n  setFieldValue: () => {\n    /* noop */\n  },\n  values: {},\n});\n\nexport const useFormContext = () => useContext(FormContext);\n\nexport interface FormField {\n  name: string;\n  validate?: (value: unknown) => string | null;\n}\n\nexport interface FormProps {\n  onSubmit?: (values: Record<string, unknown>) => void;\n  initialValues?: Record<string, unknown>;\n  fields?: FormField[];\n  children: ReactNode;\n}\n\nexport const Form = ({\n  onSubmit,\n  initialValues = {},\n  fields = [],\n  children,\n}: FormProps) => {\n  const theme = useTheme();\n  const [values, setValues] = useState<Record<string, unknown>>(initialValues);\n  const [errors, setErrors] = useState<Record<string, string>>({});\n  const [isDirty, setIsDirty] = useState(false);\n\n  const setFieldValue = useCallback((name: string, value: unknown) => {\n    setValues((v) => ({ ...v, [name]: value }));\n    setIsDirty(true);\n  }, []);\n\n  const setFieldError = useCallback((name: string, error: string) => {\n    setErrors((e) => ({ ...e, [name]: error }));\n  }, []);\n\n  useKeyboard((key) => {\n    if (key.ctrl && key.name === \"s\") {\n      const newErrors: Record<string, string> = {};\n      for (const field of fields) {\n        const err = field.validate ? field.validate(values[field.name]) : null;\n        if (err) {\n          newErrors[field.name] = err;\n        }\n      }\n      if (Object.keys(newErrors).length > 0) {\n        setErrors(newErrors);\n        return;\n      }\n      onSubmit?.(values);\n    }\n  });\n\n  const contextValue = useMemo(\n    () => ({ errors, isDirty, setFieldError, setFieldValue, values }),\n    [errors, isDirty, setFieldError, setFieldValue, values]\n  );\n\n  return createElement(\n    FormContext.Provider,\n    { value: contextValue },\n    <box flexDirection=\"column\" gap={1}>\n      {children}\n      <text fg=\"#666\">Press Ctrl+S to submit</text>\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/form.tsx"
+    }
+  ],
+  "categories": [
+    "forms"
+  ],
+  "type": "registry:ui"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-cobalt2",
+  "title": "Cobalt2",
+  "description": "Cobalt2 - vibrant blue and gold.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/cobalt2.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const cobalt2Theme: Theme = {\n  border: {\n    color: \"#0088ff\",\n    focusColor: \"#2affdf\",\n    style: \"rounded\",\n  },\n  colors: {\n    accent: \"#2affdf\",\n    accentForeground: \"#193549\",\n    background: \"#193549\",\n    border: \"#0088ff\",\n    error: \"#ff0088\",\n    errorForeground: \"#193549\",\n    focusRing: \"#2affdf\",\n    foreground: \"#ffffff\",\n    info: \"#ff9d00\",\n    infoForeground: \"#193549\",\n    muted: \"#0d1b2a\",\n    mutedForeground: \"#adb7c9\",\n    primary: \"#0088ff\",\n    primaryForeground: \"#193549\",\n    secondary: \"#284156\",\n    secondaryForeground: \"#ffffff\",\n    selection: \"#0088ff\",\n    selectionForeground: \"#193549\",\n    success: \"#9eff80\",\n    successForeground: \"#193549\",\n    warning: \"#ffc600\",\n    warningForeground: \"#193549\",\n  },\n  name: \"cobalt2\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/cobalt2.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

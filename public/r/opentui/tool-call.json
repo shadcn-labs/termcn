@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/tool-call",
+  "title": "Tool Call",
+  "description": "Displays an AI tool invocation with status indicator, args, result, and elapsed time",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/tool-call.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useKeyboard } from \"@opentui/react\";\nimport { useEffect, useRef, useState } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport type ToolCallStatus = \"pending\" | \"running\" | \"success\" | \"error\";\n\nexport interface ToolCallProps {\n  name: string;\n  args?: Record<string, unknown>;\n  status: ToolCallStatus;\n  result?: unknown;\n  duration?: number;\n  collapsible?: boolean;\n  defaultCollapsed?: boolean;\n}\n\nexport const ToolCall = ({\n  name,\n  args,\n  status,\n  result,\n  duration,\n  collapsible = true,\n  defaultCollapsed = true,\n}: ToolCallProps) => {\n  const theme = useTheme();\n  const [collapsed, setCollapsed] = useState(defaultCollapsed);\n  const [elapsed, setElapsed] = useState(0);\n  const startRef = useRef(Date.now());\n  const [frame, setFrame] = useState(0);\n\n  const spinnerFrames = [\"⠋\", \"⠙\", \"⠹\", \"⠸\", \"⠼\", \"⠴\", \"⠦\", \"⠧\", \"⠇\", \"⠏\"];\n  const spinnerIcon = spinnerFrames[frame % spinnerFrames.length] ?? \"⠋\";\n  useEffect(() => {\n    const id = setInterval(() => setFrame((f) => f + 1), Math.round(1000 / 12));\n    return () => clearInterval(id);\n  }, []);\n\n  useEffect(() => {\n    if (status !== \"running\") {\n      return;\n    }\n    startRef.current = Date.now();\n    const id = setInterval(() => {\n      setElapsed(Date.now() - startRef.current);\n    }, 100);\n    return () => clearInterval(id);\n  }, [status]);\n\n  useKeyboard((key) => {\n    if (collapsible && (key.name === \"return\" || key.name === \" \")) {\n      setCollapsed((c) => !c);\n    }\n  });\n\n  const statusIcon = () => {\n    switch (status) {\n      case \"pending\": {\n        return <text fg=\"#666\">○</text>;\n      }\n      case \"running\": {\n        return <text fg={theme.colors.primary}>{spinnerIcon}</text>;\n      }\n      case \"success\": {\n        return <text fg={theme.colors.success ?? \"green\"}>✓</text>;\n      }\n      case \"error\": {\n        return <text fg={theme.colors.error ?? \"red\"}>✗</text>;\n      }\n      default: {\n        break;\n      }\n    }\n  };\n\n  let durationText: string | null;\n  if (duration === undefined) {\n    durationText = status === \"running\" ? `${elapsed}ms` : null;\n  } else {\n    durationText = `${duration}ms`;\n  }\n\n  let nameColor: string;\n  if (status === \"error\") {\n    nameColor = theme.colors.error ?? \"red\";\n  } else if (status === \"success\") {\n    nameColor = theme.colors.success ?? \"green\";\n  } else if (status === \"running\") {\n    nameColor = theme.colors.primary;\n  } else {\n    nameColor = theme.colors.mutedForeground;\n  }\n\n  return (\n    <box flexDirection=\"column\">\n      <box gap={1}>\n        {statusIcon()}\n        <text fg={nameColor}>\n          {status !== \"pending\" ? <b>{name}</b> : name}\n        </text>\n        {durationText && (\n          <text fg={theme.colors.mutedForeground}>{`(${durationText})`}</text>\n        )}\n        {collapsible && <text fg=\"#666\">{collapsed ? \"▶\" : \"▼\"}</text>}\n      </box>\n\n      {!collapsed && (\n        <box flexDirection=\"column\" paddingLeft={2}>\n          {args && Object.keys(args).length > 0 && (\n            <box flexDirection=\"column\">\n              <text fg=\"#666\">Args:</text>\n              {...Object.entries(args).map(([k, v]) => (\n                <box key={k} gap={1}>\n                  <text fg={theme.colors.accent}>{`${k}:`}</text>\n                  <text fg=\"#666\">{JSON.stringify(v)}</text>\n                </box>\n              ))}\n            </box>\n          )}\n          {result !== undefined && (\n            <box flexDirection=\"column\">\n              <text fg=\"#666\">Result:</text>\n              <text fg=\"#666\">\n                {typeof result === \"string\"\n                  ? result\n                  : JSON.stringify(result, null, 2)}\n              </text>\n            </box>\n          )}\n        </box>\n      )}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/tool-call.tsx"
+    }
+  ],
+  "categories": [
+    "ai"
+  ],
+  "type": "registry:ui"
+}

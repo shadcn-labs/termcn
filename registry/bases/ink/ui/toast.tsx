@@ -1,7 +1,7 @@
 import { Box, Text } from "ink";
 import React, { useState, useEffect } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/ink-theme-provider";
 import { useInterval } from "@/hooks/use-interval";
 
 export type ToastVariant = "success" | "error" | "warning" | "info";

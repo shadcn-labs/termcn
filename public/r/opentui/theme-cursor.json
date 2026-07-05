@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-cursor",
+  "title": "Cursor",
+  "description": "Cursor IDE theme.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/cursor.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const cursorTheme: Theme = {\n  border: {\n    color: \"#e4e4e45e\",\n    focusColor: \"#82d2ce\",\n    style: \"rounded\",\n  },\n  colors: {\n    accent: \"#88c0d0\",\n    accentForeground: \"#181818\",\n    background: \"#181818\",\n    border: \"#e4e4e45e\",\n    error: \"#e34671\",\n    errorForeground: \"#181818\",\n    focusRing: \"#82d2ce\",\n    foreground: \"#e4e4e4\",\n    info: \"#81a1c1\",\n    infoForeground: \"#181818\",\n    muted: \"#0d0d0d\",\n    mutedForeground: \"#e4e4e45e\",\n    primary: \"#88c0d0\",\n    primaryForeground: \"#181818\",\n    secondary: \"#242424\",\n    secondaryForeground: \"#e4e4e4\",\n    selection: \"#88c0d0\",\n    selectionForeground: \"#181818\",\n    success: \"#3fa266\",\n    successForeground: \"#181818\",\n    warning: \"#f1b467\",\n    warningForeground: \"#181818\",\n  },\n  name: \"cursor\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/cursor.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

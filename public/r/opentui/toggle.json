@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/toggle",
+  "title": "Toggle",
+  "description": "Toggle/switch component with on/off labels",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/toggle.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useKeyboard } from \"@opentui/react\";\nimport { useState } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\nimport type { BorderStyle } from \"@/components/ui/types\";\n\nexport interface ToggleProps {\n  checked?: boolean;\n  onChange?: (checked: boolean) => void;\n  label?: string;\n  onLabel?: string;\n  offLabel?: string;\n  id?: string;\n  disabled?: boolean;\n  checkedIcon?: string;\n  uncheckedIcon?: string;\n  borderStyle?: BorderStyle;\n  paddingX?: number;\n}\n\nexport const Toggle = ({\n  checked: controlledChecked,\n  onChange,\n  label,\n  onLabel = \"ON\",\n  offLabel = \"OFF\",\n  id: _id,\n  disabled = false,\n  checkedIcon = \"●\",\n  uncheckedIcon = \"○\",\n  borderStyle = \"rounded\",\n  paddingX = 1,\n}: ToggleProps) => {\n  const theme = useTheme();\n  const [isFocused] = useState(true);\n  const [internalChecked, setInternalChecked] = useState(false);\n  const checked = controlledChecked ?? internalChecked;\n\n  useKeyboard((key) => {\n    if (!isFocused || disabled) {\n      return;\n    }\n    if (key.name === \" \") {\n      const next = !checked;\n      if (onChange) {\n        onChange(next);\n      } else {\n        setInternalChecked(next);\n      }\n    }\n  });\n\n  const trackColor = checked\n    ? theme.colors.success\n    : theme.colors.mutedForeground;\n  const focusColor = isFocused ? theme.colors.focusRing : trackColor;\n  const stateLabel = checked ? onLabel : offLabel;\n\n  return (\n    <box gap={1} alignItems=\"center\">\n      <box\n        borderColor={focusColor}\n        paddingLeft={paddingX}\n        paddingRight={paddingX}\n      >\n        <text fg={focusColor}>\n          {checked ? (\n            <b>{`${checkedIcon} ${stateLabel}`}</b>\n          ) : (\n            `${uncheckedIcon} ${stateLabel}`\n          )}\n        </text>\n      </box>\n      {label && (\n        <text\n          fg={disabled ? theme.colors.mutedForeground : theme.colors.foreground}\n        >\n          {label}\n        </text>\n      )}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/toggle.tsx"
+    }
+  ],
+  "categories": [
+    "utility"
+  ],
+  "type": "registry:ui"
+}

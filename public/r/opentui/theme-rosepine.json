@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-rosepine",
+  "title": "Rose Pine",
+  "description": "Rose Pine - warm rose tones.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/rosepine.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const rosepineTheme: Theme = {\n  border: {\n    color: \"#6e6a86\",\n    focusColor: \"#31748f\",\n    style: \"rounded\",\n  },\n  colors: {\n    accent: \"#ebbcba\",\n    accentForeground: \"#191724\",\n    background: \"#191724\",\n    border: \"#6e6a86\",\n    error: \"#eb6f92\",\n    errorForeground: \"#191724\",\n    focusRing: \"#31748f\",\n    foreground: \"#e0def4\",\n    info: \"#9ccfd8\",\n    infoForeground: \"#191724\",\n    muted: \"#100f18\",\n    mutedForeground: \"#6e6a86\",\n    primary: \"#9ccfd8\",\n    primaryForeground: \"#191724\",\n    secondary: \"#262330\",\n    secondaryForeground: \"#e0def4\",\n    selection: \"#9ccfd8\",\n    selectionForeground: \"#191724\",\n    success: \"#31748f\",\n    successForeground: \"#191724\",\n    warning: \"#f6c177\",\n    warningForeground: \"#191724\",\n  },\n  name: \"rosepine\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/rosepine.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

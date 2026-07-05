@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-catppuccin-frappe",
+  "title": "Catppuccin Frappe",
+  "description": "Catppuccin Frappe - soothing pastel.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/catppuccin-frappe.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const catppuccinFrappeTheme: Theme = {\n  border: {\n    color: \"#949cb8\",\n    focusColor: \"#ca9ee6\",\n    style: \"rounded\",\n  },\n  colors: {\n    accent: \"#f4b8e4\",\n    accentForeground: \"#303446\",\n    background: \"#303446\",\n    border: \"#949cb8\",\n    error: \"#e78284\",\n    errorForeground: \"#303446\",\n    focusRing: \"#ca9ee6\",\n    foreground: \"#c6d0f5\",\n    info: \"#81c8be\",\n    infoForeground: \"#303446\",\n    muted: \"#232330\",\n    mutedForeground: \"#949cb8\",\n    primary: \"#8da4e2\",\n    primaryForeground: \"#303446\",\n    secondary: \"#414559\",\n    secondaryForeground: \"#c6d0f5\",\n    selection: \"#8da4e2\",\n    selectionForeground: \"#303446\",\n    success: \"#a6d189\",\n    successForeground: \"#303446\",\n    warning: \"#e5c890\",\n    warningForeground: \"#303446\",\n  },\n  name: \"catppuccin-frappe\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/catppuccin-frappe.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

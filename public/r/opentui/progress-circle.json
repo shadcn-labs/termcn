@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/progress-circle",
+  "title": "Progress Circle",
+  "description": "Circular progress indicator using Unicode braille",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/progress-circle.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport type ProgressCircleSize = \"sm\" | \"md\" | \"lg\";\n\nexport interface ProgressCircleProps {\n  value: number;\n  size?: ProgressCircleSize;\n  color?: string;\n  label?: string;\n  showPercent?: boolean;\n}\n\nconst BRAILLE_CHARS = [\"○\", \"◔\", \"◑\", \"◕\", \"●\", \"◉\", \"⬤\", \"●\"];\n\nconst _MD_TOP = [\"▄▄▄\", \"▄██▄\"];\nconst _MD_MID_EMPTY = \"█   █\";\nconst _MD_MID_FILL = \"█████\";\nconst _MD_BOT = [\"▀▀▀\", \"▀██▀\"];\n\nconst getSmChar = (value: number): string => {\n  const clamped = Math.max(0, Math.min(100, value));\n  const step = Math.floor((clamped / 100) * 7);\n  return BRAILLE_CHARS[step];\n};\n\nexport const ProgressCircle = ({\n  value,\n  size = \"sm\",\n  color,\n  label,\n  showPercent = false,\n}: ProgressCircleProps) => {\n  const theme = useTheme();\n  const clamped = Math.max(0, Math.min(100, value));\n  const resolvedColor = color ?? theme.colors.primary;\n\n  if (size === \"sm\") {\n    const char = getSmChar(clamped);\n    return (\n      <box flexDirection=\"column\" alignItems=\"flex-start\">\n        <box flexDirection=\"row\" gap={1}>\n          <text fg={resolvedColor}>{char}</text>\n          {showPercent && (\n            <text fg={theme.colors.muted}>{`${Math.round(clamped)}%`}</text>\n          )}\n        </box>\n        {label && <text fg={theme.colors.muted}>{label}</text>}\n      </box>\n    );\n  }\n\n  const percentLabel = `${Math.round(clamped)}%`;\n\n  if (size === \"md\") {\n    return (\n      <box flexDirection=\"column\" alignItems=\"flex-start\">\n        <box flexDirection=\"row\">\n          <text fg={resolvedColor}>⟨</text>\n          <text fg={resolvedColor}>\n            <b>{percentLabel}</b>\n          </text>\n          <text fg={resolvedColor}>⟩</text>\n        </box>\n        {label && <text fg={theme.colors.muted}>{label}</text>}\n      </box>\n    );\n  }\n\n  const fillLevel = clamped / 100;\n  const topArc = \" ▄█▄\";\n  const midLeft = \"█\";\n  const midRight = \"█\";\n  const midInner = fillLevel >= 0.5 ? \"███\" : \"   \";\n  const botArc = \" ▀█▀\";\n\n  return (\n    <box flexDirection=\"column\" alignItems=\"flex-start\">\n      <text fg={resolvedColor}>{topArc}</text>\n      <box flexDirection=\"row\">\n        <text fg={resolvedColor}>{midLeft}</text>\n        <text fg={fillLevel > 0 ? resolvedColor : theme.colors.muted}>\n          {midInner}\n        </text>\n        <text fg={resolvedColor}>{midRight}</text>\n      </box>\n      <text fg={resolvedColor}>{botArc}</text>\n      {showPercent && <text fg={theme.colors.muted}>{percentLabel}</text>}\n      {label && <text fg={theme.colors.muted}>{label}</text>}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/progress-circle.tsx"
+    }
+  ],
+  "categories": [
+    "feedback"
+  ],
+  "type": "registry:ui"
+}

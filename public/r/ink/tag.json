@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ink/tag",
+  "title": "Tag",
+  "description": "Removable chip/tag",
+  "dependencies": [
+    "ink"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/ink/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/ui/tag.tsx",
+      "content": "import { Box, Text } from \"ink\";\nimport type { ReactNode } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport type TagVariant = \"default\" | \"outline\";\n\nexport interface TagProps {\n  children: ReactNode;\n  onRemove?: () => void;\n  color?: string;\n  variant?: TagVariant;\n}\n\nexport const Tag = ({\n  children,\n  onRemove,\n  color,\n  variant = \"default\",\n}: TagProps) => {\n  const theme = useTheme();\n  const resolvedColor = color ?? theme.colors.primary;\n  const borderColor =\n    variant === \"outline\" ? theme.colors.mutedForeground : resolvedColor;\n\n  return (\n    <Box\n      borderStyle=\"round\"\n      borderColor={borderColor}\n      paddingX={1}\n      flexDirection=\"row\"\n    >\n      <Text\n        color={\n          variant === \"outline\" ? theme.colors.mutedForeground : resolvedColor\n        }\n      >\n        {children}\n      </Text>\n      {onRemove && <Text color={theme.colors.mutedForeground}>{\" ×\"}</Text>}\n    </Box>\n  );\n};\n",
+      "type": "registry:ui"
+    }
+  ],
+  "categories": [
+    "typography"
+  ],
+  "type": "registry:ui"
+}

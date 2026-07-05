@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/heat-map",
+  "title": "Heat Map",
+  "description": "Grid heatmap with color intensity scale",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/heat-map.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface HeatMapProps {\n  data: number[][];\n  rowLabels?: string[];\n  colLabels?: string[];\n  colorScale?: string[];\n  cellWidth?: number;\n  showValues?: boolean;\n}\n\nconst DEFAULT_COLOR_SCALE = [\n  \"#1e3a5f\",\n  \"#1a5276\",\n  \"#1f618d\",\n  \"#2980b9\",\n  \"#5dade2\",\n  \"#f39c12\",\n  \"#e67e22\",\n  \"#e74c3c\",\n  \"#c0392b\",\n];\n\nconst SHADE_CHARS = [\" \", \"░\", \"▒\", \"▓\", \"█\"];\n\nconst getColorForValue = (\n  value: number,\n  min: number,\n  max: number,\n  scale: string[]\n): string => {\n  if (max === min) {\n    return scale[Math.floor(scale.length / 2)] ?? \"#888888\";\n  }\n  const t = (value - min) / (max - min);\n  const idx = Math.min(scale.length - 1, Math.round(t * (scale.length - 1)));\n  return scale[idx] ?? scale[0] ?? \"#888888\";\n};\n\nconst getShadeForValue = (value: number, min: number, max: number): string => {\n  if (max === min) {\n    return SHADE_CHARS[2] ?? \"▒\";\n  }\n  const t = (value - min) / (max - min);\n  const idx = Math.min(\n    SHADE_CHARS.length - 1,\n    Math.round(t * (SHADE_CHARS.length - 1))\n  );\n  return SHADE_CHARS[idx] ?? SHADE_CHARS[0] ?? \" \";\n};\n\nconst padCenter = (str: string, width: number): string => {\n  if (str.length >= width) {\n    return str.slice(0, width);\n  }\n  const total = width - str.length;\n  const left = Math.floor(total / 2);\n  const right = total - left;\n  return \" \".repeat(left) + `${str} `.repeat(right);\n};\n\nconst padStart = (str: string, width: number): string => {\n  if (str.length >= width) {\n    return str.slice(0, width);\n  }\n  return \" \".repeat(width - str.length) + str;\n};\n\nexport const HeatMap = ({\n  data,\n  rowLabels,\n  colLabels,\n  colorScale = DEFAULT_COLOR_SCALE,\n  cellWidth = 5,\n  showValues = false,\n}: HeatMapProps) => {\n  const theme = useTheme();\n\n  if (data.length === 0 || data[0].length === 0) {\n    return <text fg={theme.colors.mutedForeground}>No data</text>;\n  }\n\n  const _numRows = data.length;\n  const numCols = data[0].length;\n\n  const allValues = data.flat();\n  const min = Math.min(...allValues);\n  const max = Math.max(...allValues);\n\n  const rowLabelWidth = rowLabels\n    ? Math.max(...rowLabels.map((l) => l.length)) + 1\n    : 0;\n\n  return (\n    <box flexDirection=\"column\">\n      {colLabels && (\n        <box flexDirection=\"row\">\n          {rowLabelWidth > 0 && <text>{\" \".repeat(rowLabelWidth + 1)}</text>}\n          {Array.from({ length: numCols }, (_, ci) => (\n            <text key={ci} fg={theme.colors.mutedForeground}>\n              {padCenter(colLabels[ci] ?? String(ci), cellWidth)}\n            </text>\n          ))}\n        </box>\n      )}\n\n      {data.map((row, ri) => (\n        <box key={ri} flexDirection=\"row\">\n          {rowLabels && (\n            <text\n              fg={theme.colors.mutedForeground}\n            >{`${padStart(rowLabels[ri] ?? String(ri), rowLabelWidth)} `}</text>\n          )}\n          {row.map((val, ci) => {\n            const cellColor = getColorForValue(val, min, max, colorScale);\n            const shadeChar = getShadeForValue(val, min, max);\n            const cellContent = showValues\n              ? padCenter(String(Math.round(val)), cellWidth)\n              : shadeChar.repeat(cellWidth);\n            return (\n              <text key={ci} fg={cellColor}>\n                {cellContent}\n              </text>\n            );\n          })}\n        </box>\n      ))}\n\n      <box flexDirection=\"row\" gap={1} marginTop={1}>\n        <text fg={theme.colors.mutedForeground}>Low</text>\n        {colorScale.map((c, idx) => (\n          <text key={idx} fg={c}>\n            █\n          </text>\n        ))}\n        <text fg={theme.colors.mutedForeground}>High</text>\n      </box>\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/heat-map.tsx"
+    }
+  ],
+  "categories": [
+    "charts"
+  ],
+  "type": "registry:ui"
+}

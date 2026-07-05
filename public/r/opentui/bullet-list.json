@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/bullet-list",
+  "title": "Bullet List",
+  "description": "Nested structured content with ●/└/□ bullet prefixes",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/bullet-list.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport type { ReactNode } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface BulletListItemProps {\n  label: string;\n  bold?: boolean;\n  color?: string;\n  children?: ReactNode;\n}\n\nexport interface BulletListTreeItemProps {\n  label: string;\n  color?: string;\n}\n\nexport interface BulletListCheckItemProps {\n  label: string;\n  done?: boolean;\n  color?: string;\n}\n\nconst BulletListRoot = ({ children }: { children: ReactNode }) => (\n  <box flexDirection=\"column\">{children}</box>\n);\n\nconst BulletListItem = ({\n  label,\n  bold: boldText = false,\n  color,\n  children,\n}: BulletListItemProps) => {\n  const theme = useTheme();\n  return (\n    <box flexDirection=\"column\">\n      <box flexDirection=\"row\">\n        <text fg={color ?? theme.colors.primary}>{\"● \"}</text>\n        {boldText ? (\n          <text fg={color}>\n            <b>{label}</b>\n          </text>\n        ) : (\n          <text fg={color}>{label}</text>\n        )}\n      </box>\n      {children}\n    </box>\n  );\n};\n\nconst BulletListSub = ({ children }: { children: ReactNode }) => (\n  <box flexDirection=\"column\" paddingLeft={2}>\n    {children}\n  </box>\n);\n\nconst BulletListTreeItem = ({ label, color }: BulletListTreeItemProps) => {\n  const theme = useTheme();\n  return (\n    <box flexDirection=\"row\">\n      <text fg={theme.colors.mutedForeground}>{\"└ \"}</text>\n      <text fg={color}>{label}</text>\n    </box>\n  );\n};\n\nconst BulletListCheckItem = ({\n  label,\n  done = false,\n  color,\n}: BulletListCheckItemProps) => {\n  const theme = useTheme();\n  const icon = done ? \"■\" : \"□\";\n  const resolvedColor =\n    color ?? (done ? theme.colors.success : theme.colors.mutedForeground);\n  return (\n    <box flexDirection=\"row\">\n      <text fg={resolvedColor}>{`${icon} `}</text>\n      <text fg={done ? undefined : color}>{label}</text>\n    </box>\n  );\n};\n\nexport const BulletList = Object.assign(BulletListRoot, {\n  CheckItem: BulletListCheckItem,\n  Item: BulletListItem,\n  Sub: BulletListSub,\n  TreeItem: BulletListTreeItem,\n});\n",
+      "type": "registry:ui",
+      "target": "components/ui/bullet-list.tsx"
+    }
+  ],
+  "categories": [
+    "templates"
+  ],
+  "type": "registry:ui"
+}

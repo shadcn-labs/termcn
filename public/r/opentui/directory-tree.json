@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/directory-tree",
+  "title": "Directory Tree",
+  "description": "Filesystem browser with expand/collapse",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/directory-tree.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { readdirSync, statSync } from \"node:fs\";\nimport { join } from \"node:path\";\n\nimport { useKeyboard } from \"@opentui/react\";\nimport { useState } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface DirectoryTreeProps {\n  rootPath?: string;\n  onSelect?: (path: string) => void;\n  maxDepth?: number;\n  showHidden?: boolean;\n  label?: string;\n}\n\ninterface TreeEntry {\n  path: string;\n  name: string;\n  depth: number;\n  isDir: boolean;\n  isLast: boolean;\n}\n\nconst readEntries = (\n  dir: string,\n  depth: number,\n  maxDepth: number,\n  expanded: Set<string>,\n  showHidden: boolean\n): TreeEntry[] => {\n  const result: TreeEntry[] = [];\n  let entries: string[];\n\n  try {\n    entries = readdirSync(dir).filter((e) =>\n      showHidden ? true : !e.startsWith(\".\")\n    );\n  } catch {\n    return result;\n  }\n\n  entries.sort((a, b) => {\n    try {\n      const aIsDir = statSync(join(dir, a)).isDirectory();\n      const bIsDir = statSync(join(dir, b)).isDirectory();\n      if (aIsDir && !bIsDir) {\n        return -1;\n      }\n      if (!aIsDir && bIsDir) {\n        return 1;\n      }\n    } catch {\n      /* noop */\n    }\n    return a.localeCompare(b);\n  });\n\n  for (let i = 0; i < entries.length; i += 1) {\n    const name = entries[i];\n    const fullPath = join(dir, name);\n    const isLast = i === entries.length - 1;\n    let isDir = false;\n    try {\n      isDir = statSync(fullPath).isDirectory();\n    } catch {\n      /* noop */\n    }\n    result.push({ depth, isDir, isLast, name, path: fullPath });\n    if (isDir && depth < maxDepth && expanded.has(fullPath)) {\n      result.push(\n        ...readEntries(fullPath, depth + 1, maxDepth, expanded, showHidden)\n      );\n    }\n  }\n\n  return result;\n};\n\nexport const DirectoryTree = ({\n  rootPath = process.cwd(),\n  onSelect,\n  maxDepth = 2,\n  showHidden = false,\n  label,\n}: DirectoryTreeProps) => {\n  const theme = useTheme();\n  const [expanded, setExpanded] = useState<Set<string>>(new Set([rootPath]));\n  const [cursor, setCursor] = useState(0);\n\n  const entries = readEntries(rootPath, 0, maxDepth + 1, expanded, showHidden);\n\n  useKeyboard((key) => {\n    if (key.name === \"up\") {\n      setCursor((c) => Math.max(0, c - 1));\n    } else if (key.name === \"down\") {\n      setCursor((c) => Math.min(entries.length - 1, c + 1));\n    } else if (key.name === \"return\" || key.name === \"space\") {\n      const entry = entries[cursor];\n      if (!entry) {\n        return;\n      }\n      if (entry.isDir) {\n        setExpanded((prev) => {\n          const next = new Set(prev);\n          if (next.has(entry.path)) {\n            next.delete(entry.path);\n          } else {\n            next.add(entry.path);\n          }\n          return next;\n        });\n      } else {\n        onSelect?.(entry.path);\n      }\n    }\n  });\n\n  return (\n    <box flexDirection=\"column\">\n      {label && (\n        <text>\n          <b>{label}</b>\n        </text>\n      )}\n      <text fg={theme.colors.primary}>\n        <b>{rootPath}</b>\n      </text>\n      {entries.map((entry, idx) => {\n        const isCursor = idx === cursor;\n        const isExpanded = entry.isDir && expanded.has(entry.path);\n        let icon: string;\n        if (entry.isDir) {\n          icon = isExpanded ? \"▼ \" : \"▶ \";\n        } else {\n          icon = \"· \";\n        }\n        const indent = \"  \".repeat(entry.depth);\n        let entryColor: string;\n        if (isCursor) {\n          entryColor = theme.colors.selectionForeground;\n        } else if (entry.isDir) {\n          entryColor = theme.colors.primary;\n        } else {\n          entryColor = theme.colors.foreground;\n        }\n        const textContent = `${indent}${icon}${entry.name}`;\n        return (\n          <box key={entry.path}>\n            <text\n              fg={entryColor}\n              bg={isCursor ? theme.colors.selection : undefined}\n            >\n              {entry.isDir ? <b>{textContent}</b> : textContent}\n            </text>\n          </box>\n        );\n      })}\n      <text fg={theme.colors.mutedForeground}>\n        ↑↓: navigate · Space/Enter: expand/select\n      </text>\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/directory-tree.tsx"
+    }
+  ],
+  "categories": [
+    "data"
+  ],
+  "type": "registry:ui"
+}

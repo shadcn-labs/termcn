@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-flexoki",
+  "title": "Flexoki",
+  "description": "Flexoki - versatile theme.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/flexoki.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const flexokiTheme: Theme = {\n  border: {\n    color: \"#6f6e69\",\n    focusColor: \"#879a39\",\n    style: \"rounded\",\n  },\n  colors: {\n    accent: \"#8b7ec8\",\n    accentForeground: \"#100f0f\",\n    background: \"#100f0f\",\n    border: \"#6f6e69\",\n    error: \"#d14d41\",\n    errorForeground: \"#100f0f\",\n    focusRing: \"#879a39\",\n    foreground: \"#cecdc3\",\n    info: \"#3aa99f\",\n    infoForeground: \"#100f0f\",\n    muted: \"#0a0a0a\",\n    mutedForeground: \"#6f6e69\",\n    primary: \"#da702c\",\n    primaryForeground: \"#100f0f\",\n    secondary: \"#1a1916\",\n    secondaryForeground: \"#cecdc3\",\n    selection: \"#da702c\",\n    selectionForeground: \"#100f0f\",\n    success: \"#879a39\",\n    successForeground: \"#100f0f\",\n    warning: \"#da702c\",\n    warningForeground: \"#100f0f\",\n  },\n  name: \"flexoki\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/flexoki.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

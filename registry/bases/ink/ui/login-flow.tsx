@@ -2,8 +2,9 @@ import { Box, Text } from "ink";
 import React, { useState } from "react";
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/ink-theme-provider";
 import { useInput } from "@/hooks/use-input";
+import type { BorderStyle } from "@/registry/bases/ink/ui/types";
 
 import { BigText } from "./big-text";
 import type { BigTextFont } from "./big-text";
@@ -20,7 +21,7 @@ export interface LoginFlowProps {
 export interface LoginFlowAnnouncementProps {
   icon?: string;
   iconColor?: string;
-  borderStyle?: "single" | "round" | "double" | "bold";
+  borderStyle?: BorderStyle;
   borderColor?: string;
   children: ReactNode;
 }

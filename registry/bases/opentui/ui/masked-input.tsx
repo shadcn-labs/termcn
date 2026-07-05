@@ -2,7 +2,7 @@
 import { useKeyboard } from "@opentui/react";
 import { useState } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
 
 export interface MaskedInputProps {
   mask: string;
@@ -118,7 +118,7 @@ export const MaskedInput = ({
           <b>{label}</b>
         </text>
       )}
-      <box borderStyle="round" paddingLeft={1} paddingRight={1}>
+      <box borderStyle="rounded" paddingLeft={1} paddingRight={1}>
         {display.length > 0 ? (
           <text fg={theme.colors.foreground}>{display}</text>
         ) : placeholder ? (

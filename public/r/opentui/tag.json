@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/tag",
+  "title": "Tag",
+  "description": "Removable chip/tag",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/tag.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport type { ReactNode } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport type TagVariant = \"default\" | \"outline\";\n\nexport interface TagProps {\n  children: ReactNode;\n  onRemove?: () => void;\n  color?: string;\n  variant?: TagVariant;\n}\n\nexport const Tag = ({\n  children,\n  onRemove,\n  color,\n  variant = \"default\",\n}: TagProps) => {\n  const theme = useTheme();\n  const resolvedColor = color ?? theme.colors.primary;\n  const borderColor =\n    variant === \"outline\" ? theme.colors.mutedForeground : resolvedColor;\n\n  return (\n    <box\n      borderStyle=\"rounded\"\n      paddingLeft={1}\n      paddingRight={1}\n      flexDirection=\"row\"\n    >\n      <text\n        fg={\n          variant === \"outline\" ? theme.colors.mutedForeground : resolvedColor\n        }\n      >\n        {children}\n      </text>\n      {onRemove && <text fg={theme.colors.mutedForeground}>{\" ×\"}</text>}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/tag.tsx"
+    }
+  ],
+  "categories": [
+    "typography"
+  ],
+  "type": "registry:ui"
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/card",
+  "title": "Card",
+  "description": "Card with header, body, and footer slots",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/card.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport type { ReactNode } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\nimport type { BorderStyle } from \"@/components/ui/types\";\n\nexport interface CardProps {\n  title?: string;\n  subtitle?: string;\n  children: ReactNode;\n  footer?: ReactNode;\n  borderColor?: string;\n  width?: number;\n  borderStyle?: BorderStyle;\n  paddingX?: number;\n  paddingY?: number;\n  footerDividerChar?: string;\n}\n\nexport const Card = ({\n  title,\n  subtitle,\n  children,\n  footer,\n  borderColor,\n  width,\n  borderStyle = \"rounded\",\n  paddingX = 1,\n  paddingY = 0,\n  footerDividerChar = \"─\",\n}: CardProps) => {\n  const theme = useTheme();\n  const resolvedBorderColor = borderColor ?? theme.colors.border;\n\n  return (\n    <box\n      flexDirection=\"column\"\n      borderColor={resolvedBorderColor}\n      paddingLeft={paddingX}\n      paddingRight={paddingX}\n      paddingTop={paddingY}\n      paddingBottom={paddingY}\n    >\n      {(title || subtitle) && (\n        <box flexDirection=\"column\" paddingBottom={1}>\n          {title && (\n            <text fg={theme.colors.foreground}>\n              <b>{title}</b>\n            </text>\n          )}\n          {subtitle && (\n            <text fg={theme.colors.mutedForeground}>{subtitle}</text>\n          )}\n        </box>\n      )}\n      <box flexDirection=\"column\">{children}</box>\n      {footer && (\n        <box flexDirection=\"column\" marginTop={1} paddingTop={1}>\n          <text fg={resolvedBorderColor}>{footerDividerChar.repeat(30)}</text>\n          <box marginTop={0}>{footer}</box>\n        </box>\n      )}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/card.tsx"
+    }
+  ],
+  "categories": [
+    "data"
+  ],
+  "type": "registry:ui"
+}

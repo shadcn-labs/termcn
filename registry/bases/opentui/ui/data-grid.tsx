@@ -2,7 +2,8 @@
 import { useKeyboard } from "@opentui/react";
 import { useState, useMemo } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
+import type { BorderStyle } from "@/registry/bases/opentui/ui/types";
 
 export interface DataGridColumn<T = Record<string, unknown>> {
   key: keyof T & string;
@@ -23,7 +24,7 @@ export interface DataGridProps<
   onRowSelect?: (row: T) => void;
   onCellEdit?: (row: T, key: string, value: string) => void;
   borderColor?: string;
-  borderStyle?: "single" | "double" | "round" | "bold";
+  borderStyle?: BorderStyle;
   showRowNumbers?: boolean;
   filterPlaceholder?: string;
 }

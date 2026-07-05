@@ -1,80 +1,28 @@
 import * as React from "react";
 
-import { defaultTheme } from "@/lib/terminal-themes/default";
+import { defaultTheme } from "@/registry/bases/ink/themes/default";
+import type {
+  AutoThemeProviderProps,
+  MotionContextValue,
+  Theme,
+  ThemeContextValue,
+  ThemeProviderProps,
+  UnicodeContextValue,
+} from "@/registry/bases/ink/ui/types";
 
-type BorderStyle =
-  | "single"
-  | "double"
-  | "round"
-  | "bold"
-  | "singleDouble"
-  | "doubleSingle"
-  | "classic";
-
-export interface ColorTokens {
-  primary: string;
-  primaryForeground: string;
-  secondary: string;
-  secondaryForeground: string;
-  accent: string;
-  accentForeground: string;
-  success: string;
-  successForeground: string;
-  warning: string;
-  warningForeground: string;
-  error: string;
-  errorForeground: string;
-  info: string;
-  infoForeground: string;
-  background: string;
-  foreground: string;
-  muted: string;
-  mutedForeground: string;
-  border: string;
-  focusRing: string;
-  selection: string;
-  selectionForeground: string;
-}
-
-export interface SpacingTokens {
-  0: number;
-  1: number;
-  2: number;
-  3: number;
-  4: number;
-  6: number;
-  8: number;
-}
-
-export interface TypographyTokens {
-  bold: boolean;
-  sm: string;
-  base: string;
-  lg: string;
-  xl: string;
-}
-
-export interface BorderTokens {
-  style: BorderStyle;
-  color: string;
-  focusColor: string;
-}
-
-export interface Theme {
-  name: string;
-  colors: ColorTokens;
-  spacing: SpacingTokens;
-  typography: TypographyTokens;
-  border: BorderTokens;
-}
-
-export interface MotionContextValue {
-  reduced: boolean;
-}
-
-export interface UnicodeContextValue {
-  unicode: boolean;
-}
+export type {
+  AutoThemeProviderProps,
+  BorderStyle,
+  BorderTokens,
+  ColorTokens,
+  MotionContextValue,
+  SpacingTokens,
+  Theme,
+  ThemeContextValue,
+  ThemeProviderProps,
+  TypographyTokens,
+  UnicodeContextValue,
+} from "@/registry/bases/ink/ui/types";
 
 const getEnv = (name: string): string | undefined =>
   typeof process !== "undefined" && process.env ? process.env[name] : undefined;
@@ -131,24 +79,12 @@ export const useMotion = (): MotionContextValue =>
 export const useUnicode = (): boolean =>
   React.useContext(UnicodeContext).unicode;
 
-interface ThemeContextValue {
-  setTheme: (theme: Theme) => void;
-  theme: Theme;
-}
-
-const ThemeContext = React.createContext<ThemeContextValue>({
+export const ThemeContext = React.createContext<ThemeContextValue>({
   setTheme: () => {
     /* noop */
   },
   theme: defaultTheme,
 });
-
-export interface ThemeProviderProps {
-  children: React.ReactNode;
-  noUnicode?: boolean;
-  reducedMotion?: boolean;
-  theme?: Theme;
-}
 
 export const detectColorScheme = (): "dark" | "light" => {
   const colorFgBg = getEnv("COLORFGBG");
@@ -170,12 +106,6 @@ export const detectColorScheme = (): "dark" | "light" => {
 
   return "dark";
 };
-
-export interface AutoThemeProviderProps {
-  children: React.ReactNode;
-  darkTheme: Theme;
-  lightTheme: Theme;
-}
 
 export const ThemeProvider = ({
   children,

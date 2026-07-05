@@ -2,7 +2,7 @@ import { Box, Text } from "ink";
 import React, { useMemo } from "react";
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/ink-theme-provider";
 
 export interface KeyValueItem {
   key: string;

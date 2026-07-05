@@ -1,6 +1,6 @@
 /* @jsxImportSource @opentui/react */
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
 
 export interface HelpProps {
   keymap: Record<string, string>;
@@ -31,7 +31,7 @@ export const Help = ({ keymap, title, compact = false }: HelpProps) => {
   return (
     <box
       flexDirection="column"
-      borderStyle="round"
+      borderStyle="rounded"
       borderColor={theme.colors.border}
       paddingLeft={1}
       paddingRight={1}

@@ -4,7 +4,7 @@ import { join, dirname, basename } from "node:path";
 import { Box, Text } from "ink";
 import React, { useState } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/ink-theme-provider";
 import { useFocus } from "@/hooks/use-focus";
 import { useInput } from "@/hooks/use-input";
 

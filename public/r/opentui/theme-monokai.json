@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-monokai",
+  "title": "Monokai",
+  "description": "A classic Monokai-inspired theme for terminal apps.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/monokai.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const monokaiTheme: Theme = {\n  border: {\n    color: \"#75715E\",\n    focusColor: \"#A6E22E\",\n    style: \"rounded\",\n  },\n  colors: {\n    accent: \"#FD971F\",\n    accentForeground: \"#272822\",\n    background: \"#272822\",\n    border: \"#75715E\",\n    error: \"#F92672\",\n    errorForeground: \"#F8F8F2\",\n\n    focusRing: \"#A6E22E\",\n    foreground: \"#F8F8F2\",\n    info: \"#66D9E8\",\n    infoForeground: \"#272822\",\n    muted: \"#3E3D32\",\n    mutedForeground: \"#75715E\",\n    primary: \"#A6E22E\",\n    primaryForeground: \"#272822\",\n\n    secondary: \"#66D9E8\",\n    secondaryForeground: \"#272822\",\n    selection: \"#49483E\",\n    selectionForeground: \"#F8F8F2\",\n    success: \"#A6E22E\",\n\n    successForeground: \"#272822\",\n    warning: \"#E6DB74\",\n    warningForeground: \"#272822\",\n  },\n  name: \"monokai\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/monokai.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-github",
+  "title": "GitHub",
+  "description": "GitHub official dark theme.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/github.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const githubTheme: Theme = {\n  border: {\n    color: \"#30363d\",\n    focusColor: \"#58a6ff\",\n    style: \"rounded\",\n  },\n  colors: {\n    accent: \"#39c5cf\",\n    accentForeground: \"#0d1117\",\n    background: \"#0d1117\",\n    border: \"#30363d\",\n    error: \"#f85149\",\n    errorForeground: \"#0d1117\",\n    focusRing: \"#58a6ff\",\n    foreground: \"#c9d1d9\",\n    info: \"#d29922\",\n    infoForeground: \"#0d1117\",\n    muted: \"#161b22\",\n    mutedForeground: \"#8b949e\",\n    primary: \"#58a6ff\",\n    primaryForeground: \"#0d1117\",\n    secondary: \"#21262d\",\n    secondaryForeground: \"#c9d1d9\",\n    selection: \"#58a6ff\",\n    selectionForeground: \"#0d1117\",\n    success: \"#3fb950\",\n    successForeground: \"#0d1117\",\n    warning: \"#e3b341\",\n    warningForeground: \"#0d1117\",\n  },\n  name: \"github\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/github.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

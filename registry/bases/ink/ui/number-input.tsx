@@ -1,9 +1,10 @@
 import { Box, Text } from "ink";
 import React, { useState } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/ink-theme-provider";
 import { useFocus } from "@/hooks/use-focus";
 import { useInput } from "@/hooks/use-input";
+import type { BorderStyle } from "@/registry/bases/ink/ui/types";
 
 export interface NumberInputProps {
   value?: number;
@@ -16,14 +17,7 @@ export interface NumberInputProps {
   label?: string;
   id?: string;
   format?: (n: number) => string;
-  borderStyle?:
-    | "single"
-    | "double"
-    | "round"
-    | "bold"
-    | "singleDouble"
-    | "doubleSingle"
-    | "classic";
+  borderStyle?: BorderStyle;
   paddingX?: number;
   cursor?: string;
   stepHint?: string;

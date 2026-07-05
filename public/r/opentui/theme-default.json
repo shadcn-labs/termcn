@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-default",
+  "title": "Default",
+  "description": "The default termcn terminal theme.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/default.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const defaultTheme: Theme = {\n  border: {\n    color: \"#4B5563\",\n    focusColor: \"#8B5CF6\",\n    style: \"rounded\",\n  },\n  colors: {\n    accent: \"#8B5CF6\",\n    accentForeground: \"#FFFFFF\",\n    background: \"#000000\",\n    border: \"#4B5563\",\n    error: \"#EF4444\",\n    errorForeground: \"#FFFFFF\",\n\n    focusRing: \"#8B5CF6\",\n    foreground: \"#FFFFFF\",\n    info: \"#3B82F6\",\n    infoForeground: \"#FFFFFF\",\n    muted: \"#374151\",\n    mutedForeground: \"#9CA3AF\",\n    primary: \"#7C3AED\",\n    primaryForeground: \"#FFFFFF\",\n\n    secondary: \"#6B7280\",\n    secondaryForeground: \"#FFFFFF\",\n    selection: \"#7C3AED\",\n    selectionForeground: \"#FFFFFF\",\n    success: \"#10B981\",\n\n    successForeground: \"#FFFFFF\",\n    warning: \"#F59E0B\",\n    warningForeground: \"#000000\",\n  },\n  name: \"default\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/default.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

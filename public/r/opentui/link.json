@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/link",
+  "title": "Link",
+  "description": "OSC 8 clickable hyperlink",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/link.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport type { ReactNode } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nconst OSC = \"\\u001B]\";\nconst SEP = \";\";\nconst BEL = \"\\u0007\";\n\nconst supportsHyperlinks = (): boolean => {\n  const term = process.env[\"TERM_PROGRAM\"] ?? \"\";\n  if (\n    term === \"iTerm.app\" ||\n    term === \"WezTerm\" ||\n    term === \"Hyper\" ||\n    term === \"vscode\"\n  ) {\n    return true;\n  }\n  if (process.env[\"TERM\"]?.startsWith(\"xterm\")) {\n    return true;\n  }\n  return false;\n};\n\nconst wrapWithLink = (text: string, url: string): string =>\n  `${OSC}8${SEP}${SEP}${url}${BEL}${text}${OSC}8${SEP}${SEP}${BEL}`;\n\nexport interface LinkProps {\n  children: ReactNode;\n  href: string;\n  color?: string;\n  showHref?: boolean;\n  fallback?: boolean | ((text: string, url: string) => string);\n}\n\nexport const Link = ({\n  children,\n  href,\n  color,\n  showHref = false,\n  fallback = true,\n}: LinkProps) => {\n  const theme = useTheme();\n  const resolvedColor = color ?? theme.colors.info;\n  const hasSupport = supportsHyperlinks();\n\n  if (hasSupport) {\n    const text = typeof children === \"string\" ? children : String(children);\n\n    return (\n      <box flexDirection=\"row\">\n        <text fg={resolvedColor} underline={true}>\n          {wrapWithLink(text, href)}\n        </text>\n      </box>\n    );\n  }\n\n  return (\n    <box flexDirection=\"row\">\n      <text fg={resolvedColor} underline={true}>\n        {children}\n      </text>\n      {showHref || fallback === true ? (\n        <text fg=\"#666\">{` (${href})`}</text>\n      ) : null}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/link.tsx"
+    }
+  ],
+  "categories": [
+    "typography"
+  ],
+  "type": "registry:ui"
+}

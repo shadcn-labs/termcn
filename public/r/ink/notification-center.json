@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ink/notification-center",
+  "title": "Notification Center",
+  "description": "Persistent queue-based notification panel with useNotifications hook",
+  "dependencies": [
+    "ink"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/ink/theme-provider.json",
+    "https://termcn.dev/r/ink/use-notifications.json"
+  ],
+  "files": [
+    {
+      "path": "registry/ui/notification-center.tsx",
+      "content": "import { Box, Text } from \"ink\";\nimport React, { useEffect } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\nimport { useInput } from \"@/hooks/use-input\";\nimport {\n  useNotificationsProvider,\n  NotificationsContext,\n} from \"@/hooks/use-notifications\";\nimport type { NotificationVariant } from \"@/hooks/use-notifications\";\n\nexport interface NotificationCenterProps {\n  maxVisible?: number;\n  width?: number;\n}\n\nconst variantIcon = (v: NotificationVariant): string => {\n  switch (v) {\n    case \"success\": {\n      return \"✓\";\n    }\n    case \"warning\": {\n      return \"!\";\n    }\n    case \"error\": {\n      return \"✗\";\n    }\n    default: {\n      return \"i\";\n    }\n  }\n};\n\nconst variantColor = (\n  v: NotificationVariant,\n  colors: { success: string; warning: string; error: string; info: string }\n): string => {\n  switch (v) {\n    case \"success\": {\n      return colors.success;\n    }\n    case \"warning\": {\n      return colors.warning;\n    }\n    case \"error\": {\n      return colors.error;\n    }\n    default: {\n      return colors.info;\n    }\n  }\n};\n\nexport const NotificationCenter = ({\n  maxVisible = 5,\n  width = 40,\n}: NotificationCenterProps) => {\n  const ctx = useNotificationsProvider();\n  const theme = useTheme();\n  const { notifications, dismiss, clear } = ctx;\n\n  const visible = notifications.slice(-maxVisible);\n  const unread = notifications.filter((n) => !n.read).length;\n\n  useEffect(() => {\n    for (const n of notifications) {\n      if (!n.persistent) {\n        const dur = n.duration ?? 5000;\n        const elapsed = Date.now() - n.timestamp;\n        const remaining = dur - elapsed;\n        if (remaining <= 0) {\n          dismiss(n.id);\n        } else {\n          const t = setTimeout(() => dismiss(n.id), remaining);\n          return () => clearTimeout(t);\n        }\n      }\n    }\n  }, [notifications, dismiss]);\n\n  useInput((_input, key) => {\n    if (key.escape) {\n      clear();\n    }\n  });\n\n  if (visible.length === 0) {\n    return null;\n  }\n\n  return (\n    <NotificationsContext.Provider value={ctx}>\n      <Box flexDirection=\"column\" width={width}>\n        <Box\n          flexDirection=\"row\"\n          justifyContent=\"space-between\"\n          marginBottom={0}\n        >\n          <Text bold color={theme.colors.primary}>\n            Notifications {unread > 0 ? `[${unread} unread]` : \"\"}\n          </Text>\n          <Text color={theme.colors.mutedForeground} dimColor>\n            Esc: clear\n          </Text>\n        </Box>\n        {visible.map((n) => {\n          const color = variantColor(n.variant, theme.colors);\n          const icon = variantIcon(n.variant);\n          return (\n            <Box\n              key={n.id}\n              flexDirection=\"column\"\n              borderStyle=\"single\"\n              borderColor={color}\n              padding={0}\n              paddingLeft={1}\n              paddingRight={1}\n              marginTop={0}\n              width={width}\n            >\n              <Box flexDirection=\"row\" gap={1}>\n                <Text color={color} bold>\n                  {icon}\n                </Text>\n                <Text\n                  bold\n                  color={\n                    n.read\n                      ? theme.colors.mutedForeground\n                      : theme.colors.foreground\n                  }\n                >\n                  {n.title}\n                </Text>\n              </Box>\n              {n.body && (\n                <Text color={theme.colors.mutedForeground} dimColor>\n                  {n.body}\n                </Text>\n              )}\n            </Box>\n          );\n        })}\n      </Box>\n    </NotificationsContext.Provider>\n  );\n};\n",
+      "type": "registry:ui"
+    },
+    {
+      "path": "registry/ui/notification-badge.tsx",
+      "content": "import { Text } from \"ink\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface NotificationBadgeProps {\n  count: number;\n  color?: string;\n}\n\nexport const NotificationBadge = ({ count, color }: NotificationBadgeProps) => {\n  const theme = useTheme();\n  if (count === 0) {\n    return null;\n  }\n  const resolvedColor = color ?? theme.colors.error;\n  return <Text color={resolvedColor}>[{count}]</Text>;\n};\n",
+      "type": "registry:ui"
+    }
+  ],
+  "categories": [
+    "overlays"
+  ],
+  "type": "registry:block"
+}

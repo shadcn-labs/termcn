@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/bar-chart",
+  "title": "Bar Chart",
+  "description": "Horizontal and vertical bar chart with labels",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/bar-chart.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface BarChartItem {\n  label: string;\n  value: number;\n  color?: string;\n}\n\nexport interface BarChartProps {\n  data: BarChartItem[];\n  direction?: \"horizontal\" | \"vertical\";\n  width?: number;\n  height?: number;\n  showValues?: boolean;\n  title?: string;\n}\n\nconst BAR_CHAR = \"█\";\nconst EMPTY_CHAR = \"░\";\n\nconst pad = (str: string, length: number): string => {\n  if (str.length >= length) {\n    return str.slice(0, length);\n  }\n  return `${str} `.repeat(length - str.length);\n};\n\nconst padStart = (str: string, length: number): string => {\n  if (str.length >= length) {\n    return str.slice(0, length);\n  }\n  return \" \".repeat(length - str.length) + str;\n};\n\nexport const BarChart = ({\n  data,\n  direction = \"horizontal\",\n  width = 30,\n  height = 10,\n  showValues = true,\n  title,\n}: BarChartProps) => {\n  const theme = useTheme();\n\n  if (data.length === 0) {\n    return <text fg={theme.colors.mutedForeground}>No data</text>;\n  }\n\n  const maxValue = Math.max(...data.map((d) => d.value));\n\n  if (direction === \"horizontal\") {\n    const maxLabelLen = Math.max(...data.map((d) => d.label.length));\n    const maxValLen = Math.max(...data.map((d) => String(d.value).length));\n    const barWidth = width - maxLabelLen - maxValLen - 3;\n\n    return (\n      <box flexDirection=\"column\">\n        {title && (\n          <text fg={theme.colors.primary}>\n            <b>{title}</b>\n          </text>\n        )}\n        {data.map((item, idx) => {\n          const filled =\n            maxValue === 0\n              ? 0\n              : Math.round((item.value / maxValue) * Math.max(1, barWidth));\n          const empty = Math.max(0, barWidth - filled);\n          const barStr = BAR_CHAR.repeat(filled) + EMPTY_CHAR.repeat(empty);\n          const resolvedColor = item.color ?? theme.colors.primary;\n          return (\n            <box key={idx} flexDirection=\"row\" gap={1}>\n              <text fg={theme.colors.foreground}>\n                {pad(item.label, maxLabelLen)}\n              </text>\n              <text fg={resolvedColor}>{barStr}</text>\n              {showValues && (\n                <text fg={theme.colors.mutedForeground}>\n                  {padStart(String(item.value), maxValLen)}\n                </text>\n              )}\n            </box>\n          );\n        })}\n      </box>\n    );\n  }\n\n  const barW = Math.max(3, Math.floor(width / data.length));\n  const rows: string[][] = [];\n\n  for (let row = height - 1; row >= 0; row -= 1) {\n    const threshold = (row / (height - 1)) * maxValue;\n    const cells = data.map((item) => {\n      const filled = item.value >= threshold;\n      return filled ? BAR_CHAR.repeat(barW) : \" \".repeat(barW);\n    });\n    rows.push(cells);\n  }\n\n  return (\n    <box flexDirection=\"column\">\n      {title && (\n        <text fg={theme.colors.primary}>\n          <b>{title}</b>\n        </text>\n      )}\n      {rows.map((row, rowIdx) => {\n        const threshold = ((height - 1 - rowIdx) / (height - 1)) * maxValue;\n        return (\n          <box key={rowIdx} flexDirection=\"row\">\n            {row.map((cell, colIdx) => {\n              const item = data[colIdx];\n              const resolvedColor = item.color ?? theme.colors.primary;\n              const isFilled = item.value >= threshold;\n              return (\n                <text\n                  key={colIdx}\n                  fg={isFilled ? resolvedColor : theme.colors.muted}\n                >\n                  {cell}\n                </text>\n              );\n            })}\n          </box>\n        );\n      })}\n      {showValues && (\n        <box flexDirection=\"row\">\n          {data.map((item, idx) => {\n            const resolvedColor = item.color ?? theme.colors.primary;\n            return (\n              <text key={idx} fg={resolvedColor}>\n                {pad(String(item.value), barW)}\n              </text>\n            );\n          })}\n        </box>\n      )}\n      <box flexDirection=\"row\">\n        {data.map((item, idx) => (\n          <text key={idx} fg={theme.colors.mutedForeground}>\n            {pad(item.label, barW)}\n          </text>\n        ))}\n      </box>\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/bar-chart.tsx"
+    }
+  ],
+  "categories": [
+    "charts"
+  ],
+  "type": "registry:ui"
+}

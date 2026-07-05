@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/notification-badge",
+  "title": "Notification Badge",
+  "description": "Notification Badge component for OpenTUI React.",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/notification-badge.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface NotificationBadgeProps {\n  count: number;\n  color?: string;\n}\n\nexport const NotificationBadge = ({ count, color }: NotificationBadgeProps) => {\n  const theme = useTheme();\n  if (count === 0) {\n    return null;\n  }\n  const resolvedColor = color ?? theme.colors.error;\n  return <text fg={resolvedColor}>{`[${count}]`}</text>;\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/notification-badge.tsx"
+    }
+  ],
+  "categories": [
+    "feedback"
+  ],
+  "type": "registry:ui"
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/banner",
+  "title": "Banner",
+  "description": "Full-width announcement banner",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/banner.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useKeyboard } from \"@opentui/react\";\nimport { useState } from \"react\";\nimport type { ReactNode } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport type BannerVariant =\n  | \"info\"\n  | \"warning\"\n  | \"error\"\n  | \"success\"\n  | \"neutral\";\n\nconst ICONS: Record<BannerVariant, string> = {\n  error: \"✗\",\n  info: \"ℹ\",\n  neutral: \"·\",\n  success: \"✓\",\n  warning: \"⚠\",\n};\n\nexport interface BannerProps {\n  children: ReactNode;\n  variant?: BannerVariant;\n  icon?: string;\n  title?: string;\n  dismissible?: boolean;\n  onDismiss?: () => void;\n  color?: string;\n  accentChar?: string;\n  gap?: number;\n}\n\nexport const Banner = ({\n  children,\n  variant = \"info\",\n  icon,\n  title,\n  dismissible = false,\n  onDismiss,\n  color,\n  accentChar = \"┃\",\n  gap = 1,\n}: BannerProps) => {\n  const theme = useTheme();\n  const [dismissed, setDismissed] = useState(false);\n\n  const variantColor =\n    color ??\n    (() => {\n      switch (variant) {\n        case \"success\": {\n          return theme.colors.success;\n        }\n        case \"error\": {\n          return theme.colors.error;\n        }\n        case \"warning\": {\n          return theme.colors.warning;\n        }\n        case \"neutral\": {\n          return theme.colors.muted;\n        }\n        default: {\n          return theme.colors.info;\n        }\n      }\n    })();\n\n  useKeyboard((key) => {\n    if (dismissible && key.name === \"escape\") {\n      setDismissed(true);\n      onDismiss?.();\n    }\n  });\n\n  if (dismissed) {\n    return null;\n  }\n\n  const resolvedIcon = icon ?? ICONS[variant];\n\n  return (\n    <box flexDirection=\"column\">\n      <box flexDirection=\"row\">\n        <text fg={variantColor}>{accentChar}</text>\n        <box flexDirection=\"column\">\n          <box flexDirection=\"row\" gap={1}>\n            <text fg={variantColor}>{resolvedIcon}</text>\n            {title && (\n              <text fg={variantColor}>\n                <b>{`${title}:`}</b>\n              </text>\n            )}\n            <text>{children}</text>\n          </box>\n          {dismissible && <text fg=\"#666\">press Esc to dismiss</text>}\n        </box>\n      </box>\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/banner.tsx"
+    }
+  ],
+  "categories": [
+    "feedback"
+  ],
+  "type": "registry:ui"
+}

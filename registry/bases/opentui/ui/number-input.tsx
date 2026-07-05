@@ -2,7 +2,8 @@
 import { useKeyboard } from "@opentui/react";
 import { useState } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
+import type { BorderStyle } from "@/registry/bases/opentui/ui/types";
 
 export interface NumberInputProps {
   value?: number;
@@ -15,14 +16,7 @@ export interface NumberInputProps {
   label?: string;
   id?: string;
   format?: (n: number) => string;
-  borderStyle?:
-    | "single"
-    | "double"
-    | "round"
-    | "bold"
-    | "singleDouble"
-    | "doubleSingle"
-    | "classic";
+  borderStyle?: BorderStyle;
   paddingX?: number;
   cursor?: string;
   stepHint?: string;
@@ -39,7 +33,7 @@ export const NumberInput = ({
   label,
   id: _id,
   format,
-  borderStyle = "round",
+  borderStyle = "rounded",
   paddingX = 1,
   cursor = "█",
   stepHint,

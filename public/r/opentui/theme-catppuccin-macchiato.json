@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-catppuccin-macchiato",
+  "title": "Catppuccin Macchiato",
+  "description": "Catppuccin Macchiato - deeper pastel tones.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/catppuccin-macchiato.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const catppuccinMacchiatoTheme: Theme = {\n  border: {\n    color: \"#939ab7\",\n    focusColor: \"#c6a0f6\",\n    style: \"rounded\",\n  },\n  colors: {\n    accent: \"#f5bde6\",\n    accentForeground: \"#24273a\",\n    background: \"#24273a\",\n    border: \"#939ab7\",\n    error: \"#ed8796\",\n    errorForeground: \"#24273a\",\n    focusRing: \"#c6a0f6\",\n    foreground: \"#cad3f5\",\n    info: \"#8bd5ca\",\n    infoForeground: \"#24273a\",\n    muted: \"#1b1e2b\",\n    mutedForeground: \"#939ab7\",\n    primary: \"#8aadf4\",\n    primaryForeground: \"#24273a\",\n    secondary: \"#363a4f\",\n    secondaryForeground: \"#cad3f5\",\n    selection: \"#8aadf4\",\n    selectionForeground: \"#24273a\",\n    success: \"#a6da95\",\n    successForeground: \"#24273a\",\n    warning: \"#eed49f\",\n    warningForeground: \"#24273a\",\n  },\n  name: \"catppuccin-macchiato\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/catppuccin-macchiato.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

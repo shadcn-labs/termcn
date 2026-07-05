@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/status-message",
+  "title": "Status Message",
+  "description": "Inline status message with icon and color",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/status-message.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport type { ReactNode } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nimport { Spinner } from \"./spinner\";\n\nexport type StatusVariant =\n  | \"success\"\n  | \"error\"\n  | \"warning\"\n  | \"info\"\n  | \"loading\"\n  | \"pending\";\n\nconst ICONS: Record<Exclude<StatusVariant, \"loading\">, string> = {\n  error: \"✗\",\n  info: \"ℹ\",\n  pending: \"○\",\n  success: \"✓\",\n  warning: \"⚠\",\n};\n\nexport interface StatusMessageProps {\n  variant?: StatusVariant;\n  children: ReactNode;\n  icon?: string;\n}\n\nexport const StatusMessage = ({\n  variant = \"info\",\n  children,\n  icon,\n}: StatusMessageProps) => {\n  const theme = useTheme();\n\n  const variantColor = (() => {\n    switch (variant) {\n      case \"success\": {\n        return theme.colors.success;\n      }\n      case \"error\": {\n        return theme.colors.error;\n      }\n      case \"warning\": {\n        return theme.colors.warning;\n      }\n      case \"loading\": {\n        return theme.colors.primary;\n      }\n      case \"pending\": {\n        return theme.colors.muted;\n      }\n      default: {\n        return theme.colors.info;\n      }\n    }\n  })();\n\n  return (\n    <box gap={1} flexDirection=\"row\">\n      {variant === \"loading\" ? (\n        <Spinner type=\"dots\" color={variantColor} />\n      ) : (\n        <text fg={variantColor}>\n          {icon ?? ICONS[variant as Exclude<StatusVariant, \"loading\">]}\n        </text>\n      )}\n      <text>{children}</text>\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/status-message.tsx"
+    }
+  ],
+  "categories": [
+    "feedback"
+  ],
+  "type": "registry:ui"
+}

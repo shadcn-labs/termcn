@@ -36,11 +36,10 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "**/*.d.ts",
     ".next/types/**/*.ts",
     "scripts/build-registry.mts",
     "next.config.mjs",
     ".next/dev/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "examples/opentui"]
 }

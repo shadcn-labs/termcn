@@ -3,7 +3,8 @@
 import { Box, Text } from "ink";
 import { Component as ReactComponent, Suspense } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme as useInkTheme } from "@/components/ui/ink-theme-provider";
+import { useTheme as useOpenTuiTheme } from "@/components/ui/opentui-theme-provider";
 import { ExamplesIndex } from "@/examples/__index__";
 import { DEFAULT_BASE_NAME } from "@/registry/bases";
 import type { BaseName } from "@/registry/bases";
@@ -15,7 +16,7 @@ const InkPreviewPlaceholder = ({
   componentName: string;
   description: string;
 }) => {
-  const theme = useTheme();
+  const theme = useInkTheme();
 
   return (
     <Box
@@ -41,14 +42,18 @@ const OpenTuiPreviewPlaceholder = ({
 }: {
   componentName: string;
   description: string;
-}) => (
-  <div className="flex min-h-72 items-center justify-center p-6 text-center text-sm text-muted-foreground">
-    <div className="space-y-2">
-      <div className="font-medium text-foreground">{componentName}</div>
-      <div>{description}</div>
-    </div>
-  </div>
-);
+}) => {
+  const theme = useOpenTuiTheme();
+
+  return (
+    <box flexDirection="column" padding={1}>
+      <text fg={theme.colors.primary}>
+        <b>{componentName}</b>
+      </text>
+      <text fg={theme.colors.foreground}>{description}</text>
+    </box>
+  );
+};
 
 const PreviewPlaceholder = ({
   componentName,

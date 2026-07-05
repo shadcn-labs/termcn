@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-material",
+  "title": "Material",
+  "description": "Material Design colors.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/material.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const materialTheme: Theme = {\n  border: {\n    color: \"#546e7a\",\n    focusColor: \"#c792ea\",\n    style: \"rounded\",\n  },\n  colors: {\n    accent: \"#89ddff\",\n    accentForeground: \"#263238\",\n    background: \"#263238\",\n    border: \"#546e7a\",\n    error: \"#f07178\",\n    errorForeground: \"#263238\",\n    focusRing: \"#c792ea\",\n    foreground: \"#eeffff\",\n    info: \"#ffcb6b\",\n    infoForeground: \"#263238\",\n    muted: \"#1a2327\",\n    mutedForeground: \"#546e7a\",\n    primary: \"#82aaff\",\n    primaryForeground: \"#263238\",\n    secondary: \"#37474f\",\n    secondaryForeground: \"#eeffff\",\n    selection: \"#82aaff\",\n    selectionForeground: \"#263238\",\n    success: \"#c3e88d\",\n    successForeground: \"#263238\",\n    warning: \"#ffcb6b\",\n    warningForeground: \"#263238\",\n  },\n  name: \"material\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/material.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

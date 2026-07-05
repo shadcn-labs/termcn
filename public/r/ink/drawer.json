@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ink/drawer",
+  "title": "Drawer",
+  "description": "Slide-in panel from any edge",
+  "dependencies": [
+    "ink"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/ink/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/ui/drawer.tsx",
+      "content": "import { Box, Text } from \"ink\";\nimport type { ReactNode } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\nimport { useInput } from \"@/hooks/use-input\";\n\nexport type DrawerEdge = \"left\" | \"right\" | \"top\" | \"bottom\";\n\nexport interface DrawerProps {\n  isOpen?: boolean;\n  edge?: DrawerEdge;\n  title?: string;\n  children: ReactNode;\n  onClose?: () => void;\n  width?: number;\n  height?: number;\n}\n\nexport const Drawer = ({\n  isOpen = false,\n  edge = \"right\",\n  title,\n  children,\n  onClose,\n  width = 40,\n  height = 10,\n}: DrawerProps) => {\n  const theme = useTheme();\n\n  useInput(\n    (_input, key) => {\n      if (!isOpen) {\n        return;\n      }\n      if (key.escape) {\n        onClose?.();\n      }\n    },\n    { isActive: isOpen }\n  );\n\n  if (!isOpen) {\n    return null;\n  }\n\n  const isHorizontal = edge === \"left\" || edge === \"right\";\n\n  return (\n    <Box\n      flexDirection=\"column\"\n      borderStyle=\"single\"\n      borderColor={theme.colors.border}\n      width={isHorizontal ? width : undefined}\n      height={isHorizontal ? undefined : height}\n      paddingX={1}\n      paddingY={0}\n    >\n      <Box justifyContent=\"space-between\" marginBottom={1}>\n        {title ? (\n          <Text bold color={theme.colors.primary}>\n            {title}\n          </Text>\n        ) : (\n          <Text> </Text>\n        )}\n        <Text color={theme.colors.mutedForeground} dimColor>\n          Esc to close\n        </Text>\n      </Box>\n      <Box flexDirection=\"column\" flexGrow={1}>\n        {children}\n      </Box>\n    </Box>\n  );\n};\n",
+      "type": "registry:ui"
+    }
+  ],
+  "categories": [
+    "overlays"
+  ],
+  "type": "registry:ui"
+}

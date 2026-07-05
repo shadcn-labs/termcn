@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/pie-chart",
+  "title": "Pie Chart",
+  "description": "Unicode block pie chart with legend",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/pie-chart.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface PieChartItem {\n  label: string;\n  value: number;\n  color?: string;\n}\n\nexport interface PieChartProps {\n  data: PieChartItem[];\n  radius?: number;\n  showLegend?: boolean;\n  showPercentages?: boolean;\n}\n\nconst DEFAULT_COLORS = [\n  \"#7c3aed\",\n  \"#2563eb\",\n  \"#16a34a\",\n  \"#d97706\",\n  \"#dc2626\",\n  \"#0891b2\",\n  \"#be185d\",\n  \"#65a30d\",\n];\n\nconst FULL_BLOCK = \"█\";\nconst _HALF_BLOCK = \"▌\";\nconst LEGEND_SQUARE = \"■\";\n\nconst buildPieGrid = (\n  data: PieChartItem[],\n  radius: number\n): {\n  char: string;\n  color: string;\n}[][] => {\n  const total = data.reduce((s, d) => s + d.value, 0);\n  if (total === 0) {\n    return [];\n  }\n\n  const cols = radius * 4;\n  const rows = radius * 2;\n  const cx = cols / 2;\n  const cy = rows / 2;\n\n  const grid: {\n    char: string;\n    color: string;\n  }[][] = Array.from({ length: rows }, () =>\n    Array.from({ length: cols }, () => ({ char: \" \", color: \"\" }))\n  );\n\n  const angles: {\n    color: string;\n    end: number;\n    start: number;\n  }[] = [];\n  let cumulative = 0;\n  for (const item of data) {\n    const slice = (item.value / total) * Math.PI * 2;\n    angles.push({\n      color: item.color ?? \"\",\n      end: cumulative + slice,\n      start: cumulative,\n    });\n    cumulative += slice;\n  }\n\n  for (let row = 0; row < rows; row += 1) {\n    for (let col = 0; col < cols; col += 1) {\n      const dx = (col - cx) / 2;\n      const dy = row - cy;\n      const dist = Math.hypot(dx, dy);\n      if (dist > radius) {\n        continue;\n      }\n      let angle = Math.atan2(dy, dx) + Math.PI / 2;\n      if (angle < 0) {\n        angle += Math.PI * 2;\n      }\n      const seg =\n        angles.find((a) => angle >= a.start && angle < a.end) ?? angles.at(-1);\n      if (seg) {\n        grid[row][col] = { char: FULL_BLOCK, color: seg.color };\n      }\n    }\n  }\n\n  return grid;\n};\n\nexport const PieChart = ({\n  data,\n  radius = 5,\n  showLegend = true,\n  showPercentages = true,\n}: PieChartProps) => {\n  const theme = useTheme();\n\n  if (data.length === 0) {\n    return <text fg={theme.colors.mutedForeground}>No data</text>;\n  }\n\n  const total = data.reduce((s, d) => s + d.value, 0);\n\n  const itemsWithColors = data.map((item, idx) => ({\n    ...item,\n    color:\n      item.color ??\n      DEFAULT_COLORS[idx % DEFAULT_COLORS.length] ??\n      theme.colors.primary,\n  }));\n\n  const grid = buildPieGrid(itemsWithColors, radius);\n\n  return (\n    <box flexDirection=\"row\" gap={2}>\n      <box flexDirection=\"column\">\n        {grid.map((row, rowIdx) => (\n          <box key={rowIdx} flexDirection=\"row\">\n            {row.map((cell, colIdx) =>\n              cell.char === \" \" ? (\n                <text key={colIdx}> </text>\n              ) : (\n                <text key={colIdx} fg={cell.color || theme.colors.primary}>\n                  {cell.char}\n                </text>\n              )\n            )}\n          </box>\n        ))}\n      </box>\n\n      {showLegend && (\n        <box flexDirection=\"column\" justifyContent=\"center\">\n          {itemsWithColors.map((item, idx) => {\n            const pct =\n              total > 0 ? ((item.value / total) * 100).toFixed(1) : \"0.0\";\n            return (\n              <box key={idx} flexDirection=\"row\" gap={1}>\n                <text fg={item.color}>{LEGEND_SQUARE}</text>\n                <text fg={theme.colors.foreground}>{item.label}</text>\n                {showPercentages && (\n                  <text fg={theme.colors.mutedForeground}>{`(${pct}%)`}</text>\n                )}\n              </box>\n            );\n          })}\n        </box>\n      )}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/pie-chart.tsx"
+    }
+  ],
+  "categories": [
+    "charts"
+  ],
+  "type": "registry:ui"
+}

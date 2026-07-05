@@ -2,7 +2,8 @@
 import { useKeyboard } from "@opentui/react";
 import { useState } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
+import type { BorderStyle } from "@/registry/bases/opentui/ui/types";
 
 export interface TextAreaProps {
   value?: string;
@@ -12,14 +13,7 @@ export interface TextAreaProps {
   rows?: number;
   label?: string;
   id?: string;
-  borderStyle?:
-    | "single"
-    | "double"
-    | "round"
-    | "bold"
-    | "singleDouble"
-    | "doubleSingle"
-    | "classic";
+  borderStyle?: BorderStyle;
   paddingX?: number;
   cursor?: string;
 }
@@ -36,7 +30,7 @@ export const TextArea = ({
   rows = 4,
   label,
   id: _id,
-  borderStyle = "round",
+  borderStyle = "rounded",
   paddingX = 1,
   cursor = "█",
 }: TextAreaProps) => {

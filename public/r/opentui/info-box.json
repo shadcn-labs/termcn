@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/info-box",
+  "title": "Info Box",
+  "description": "Bordered info panel with header, key-value rows, and tree-prefix rows",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/info-box.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport type { ReactNode } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\nimport type { BorderStyle } from \"@/components/ui/types\";\n\nexport interface InfoBoxProps {\n  borderStyle?: BorderStyle;\n  borderColor?: string;\n  padding?: [number, number];\n  width?: number | \"full\";\n  children: ReactNode;\n}\n\nexport interface InfoBoxHeaderProps {\n  icon?: string;\n  iconColor?: string;\n  label: string;\n  description?: string;\n  version?: string;\n  versionColor?: string;\n}\n\nexport interface InfoBoxRowProps {\n  label: string;\n  value?: string;\n  valueDetail?: string;\n  valueColor?: string;\n  bold?: boolean;\n  tree?: boolean;\n  color?: string;\n}\n\nconst InfoBoxRoot = ({\n  borderStyle = \"single\",\n  borderColor,\n  padding = [0, 1],\n  width,\n  children,\n}: InfoBoxProps) => {\n  const theme = useTheme();\n  const resolvedBorderColor = borderColor ?? theme.colors.border;\n\n  return (\n    <box\n      borderColor={resolvedBorderColor}\n      flexDirection=\"column\"\n      paddingLeft={padding[1]}\n      paddingRight={padding[1]}\n      paddingTop={padding[0]}\n      paddingBottom={padding[0]}\n      width={width === \"full\" ? undefined : width}\n      flexGrow={width === \"full\" ? 1 : undefined}\n    >\n      {children}\n    </box>\n  );\n};\n\nconst InfoBoxHeader = ({\n  icon,\n  iconColor = \"green\",\n  label,\n  description,\n  version,\n  versionColor = \"cyan\",\n}: InfoBoxHeaderProps) => (\n  <box flexDirection=\"row\" gap={1}>\n    {icon ? <text fg={iconColor}>{icon}</text> : null}\n    <text>\n      <b>{label}</b>\n    </text>\n    {description ? <text fg=\"#666\">{description}</text> : null}\n    {version ? <text fg={versionColor}>{version}</text> : null}\n  </box>\n);\n\nconst InfoBoxRow = ({\n  label,\n  value,\n  valueDetail,\n  valueColor,\n  bold: boldValue = false,\n  tree = false,\n  color,\n}: InfoBoxRowProps) => {\n  const theme = useTheme();\n  const prefix = tree ? \"└ \" : \"\";\n\n  return (\n    <box flexDirection=\"row\">\n      <text\n        fg={color ?? theme.colors.mutedForeground}\n      >{`${prefix}${label}${value ? \":\" : \"\"}`}</text>\n      {value ? (\n        boldValue ? (\n          <text fg={color}>\n            <b>{`  ${value}`}</b>\n          </text>\n        ) : (\n          <text fg={color}>{`  ${value}`}</text>\n        )\n      ) : null}\n      {valueDetail ? (\n        <text fg={valueColor ?? \"cyan\"}>{`  ${valueDetail}`}</text>\n      ) : null}\n    </box>\n  );\n};\n\nconst InfoBoxTreeRow = (props: Omit<InfoBoxRowProps, \"tree\">) => (\n  <InfoBoxRow {...props} tree={true} />\n);\n\nexport const InfoBox = Object.assign(InfoBoxRoot, {\n  Header: InfoBoxHeader,\n  Row: InfoBoxRow,\n  TreeRow: InfoBoxTreeRow,\n});\n",
+      "type": "registry:ui",
+      "target": "components/ui/info-box.tsx"
+    }
+  ],
+  "categories": [
+    "templates"
+  ],
+  "type": "registry:ui"
+}

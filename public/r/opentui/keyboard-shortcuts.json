@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/keyboard-shortcuts",
+  "title": "Keyboard Shortcuts",
+  "description": "Formatted keyboard shortcut reference table",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/keyboard-shortcuts.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\n\nimport type { Key } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface Shortcut {\n  key: string;\n  description: string;\n  category?: string;\n}\n\nexport interface KeyboardShortcutsProps {\n  shortcuts: Shortcut[];\n  columns?: number;\n  title?: string;\n}\n\nconst KeyLabel = ({ label, color }: { label: string; color: string }) => (\n  <box\n    borderStyle=\"single\"\n    borderColor={color}\n    paddingLeft={1}\n    paddingRight={1}\n  >\n    <text fg={color}>\n      <b>{label}</b>\n    </text>\n  </box>\n);\n\nconst ShortcutRow = ({\n  shortcut,\n  keyColor,\n  descColor,\n}: {\n  key?: Key | null;\n  shortcut: Shortcut;\n  keyColor: string;\n  descColor: string;\n}) => (\n  <box gap={1} alignItems=\"center\">\n    <KeyLabel label={shortcut.key} color={keyColor} />\n    <text fg={descColor}>{shortcut.description}</text>\n  </box>\n);\n\nconst ShortcutGrid = ({\n  items,\n  columns,\n  theme,\n}: {\n  items: Shortcut[];\n  columns: number;\n  theme: ReturnType<typeof useTheme>;\n}) => {\n  const rows: Shortcut[][] = [];\n  for (let i = 0; i < items.length; i += columns) {\n    rows.push(items.slice(i, i + columns));\n  }\n\n  return (\n    <box flexDirection=\"column\" gap={0}>\n      {rows.map((row, ri) => (\n        <box key={ri} gap={3}>\n          {row.map((s, ci) => (\n            <ShortcutRow\n              key={ci}\n              shortcut={s}\n              keyColor={theme.colors.primary}\n              descColor={theme.colors.foreground}\n            />\n          ))}\n        </box>\n      ))}\n    </box>\n  );\n};\n\nexport const KeyboardShortcuts = ({\n  shortcuts,\n  columns = 1,\n  title,\n}: KeyboardShortcutsProps) => {\n  const theme = useTheme();\n\n  const hasCategories = shortcuts.some((s) => s.category);\n\n  if (hasCategories) {\n    const grouped: Record<string, Shortcut[]> = {};\n    for (const s of shortcuts) {\n      const cat = s.category ?? \"General\";\n      if (!grouped[cat]) {\n        grouped[cat] = [];\n      }\n      grouped[cat].push(s);\n    }\n\n    return (\n      <box flexDirection=\"column\" gap={1}>\n        {title && (\n          <text fg={theme.colors.primary}>\n            <b>{`⌨ ${title}`}</b>\n          </text>\n        )}\n        {...Object.entries(grouped).map(([category, items]) => (\n          <box key={category} flexDirection=\"column\" gap={0}>\n            <text fg={theme.colors.mutedForeground}>\n              <b>\n                <u>{category}</u>\n              </b>\n            </text>\n            {columns > 1 ? (\n              <ShortcutGrid columns={columns} items={items} theme={theme} />\n            ) : (\n              items.map((s, i) => (\n                <ShortcutRow\n                  key={i}\n                  shortcut={s}\n                  keyColor={theme.colors.primary}\n                  descColor={theme.colors.foreground}\n                />\n              ))\n            )}\n          </box>\n        ))}\n      </box>\n    );\n  }\n\n  return (\n    <box flexDirection=\"column\" gap={1}>\n      {title && (\n        <text fg={theme.colors.primary}>\n          <b>{`⌨ ${title}`}</b>\n        </text>\n      )}\n      {columns > 1 ? (\n        <ShortcutGrid columns={columns} items={shortcuts} theme={theme} />\n      ) : (\n        shortcuts.map((s, i) => (\n          <ShortcutRow\n            key={i}\n            shortcut={s}\n            keyColor={theme.colors.primary}\n            descColor={theme.colors.foreground}\n          />\n        ))\n      )}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/keyboard-shortcuts.tsx"
+    }
+  ],
+  "categories": [
+    "utility"
+  ],
+  "type": "registry:ui"
+}

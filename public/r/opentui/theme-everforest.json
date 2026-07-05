@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-everforest",
+  "title": "Everforest",
+  "description": "Everforest - warm forest theme.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/everforest.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const everforestTheme: Theme = {\n  border: {\n    color: \"#7a8478\",\n    focusColor: \"#d699b6\",\n    style: \"rounded\",\n  },\n  colors: {\n    accent: \"#d699b6\",\n    accentForeground: \"#2d353b\",\n    background: \"#2d353b\",\n    border: \"#7a8478\",\n    error: \"#e67e80\",\n    errorForeground: \"#2d353b\",\n    focusRing: \"#d699b6\",\n    foreground: \"#d3c6aa\",\n    info: \"#83c092\",\n    infoForeground: \"#2d353b\",\n    muted: \"#1f252a\",\n    mutedForeground: \"#7a8478\",\n    primary: \"#a7c080\",\n    primaryForeground: \"#2d353b\",\n    secondary: \"#373e44\",\n    secondaryForeground: \"#d3c6aa\",\n    selection: \"#a7c080\",\n    selectionForeground: \"#2d353b\",\n    success: \"#a7c080\",\n    successForeground: \"#2d353b\",\n    warning: \"#e69875\",\n    warningForeground: \"#2d353b\",\n  },\n  name: \"everforest\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/everforest.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

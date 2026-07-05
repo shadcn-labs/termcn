@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/grid",
+  "title": "Grid",
+  "description": "Rows × columns grid layout",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/grid.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport React from \"react\";\nimport type { ReactNode } from \"react\";\n\nexport interface GridProps {\n  columns: number;\n  gap?: number;\n  children: ReactNode;\n}\n\nexport const Grid = ({ columns, gap = 0, children }: GridProps) => {\n  const items = React.Children.toArray(children);\n  const rows: ReactNode[][] = [];\n\n  for (let i = 0; i < items.length; i += columns) {\n    rows.push(items.slice(i, i + columns));\n  }\n\n  return (\n    <box flexDirection=\"column\">\n      {rows.map((row, rowIdx) => (\n        <box key={rowIdx} flexDirection=\"row\">\n          {row.map((cell, colIdx) => (\n            <box key={colIdx} flexGrow={1}>\n              {cell}\n            </box>\n          ))}\n        </box>\n      ))}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/grid.tsx"
+    }
+  ],
+  "categories": [
+    "layout"
+  ],
+  "type": "registry:ui"
+}

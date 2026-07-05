@@ -1,9 +1,10 @@
 import { Box, Text } from "ink";
 import React, { useState, useMemo, useCallback } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/ink-theme-provider";
 import { useFocus } from "@/hooks/use-focus";
 import { useInput } from "@/hooks/use-input";
+import type { BorderStyle } from "@/registry/bases/ink/ui/types";
 
 export interface SearchInputProps<T = string> {
   options?: T[];
@@ -15,14 +16,7 @@ export interface SearchInputProps<T = string> {
   label?: string;
   maxResults?: number;
   id?: string;
-  borderStyle?:
-    | "single"
-    | "double"
-    | "round"
-    | "bold"
-    | "singleDouble"
-    | "doubleSingle"
-    | "classic";
+  borderStyle?: BorderStyle;
   paddingX?: number;
   cursor?: string;
   searchIcon?: string;

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/stack",
+  "title": "Stack",
+  "description": "Vertical/horizontal stack with gap",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/stack.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport type { ReactNode } from \"react\";\n\nexport interface StackProps {\n  direction?: \"vertical\" | \"horizontal\";\n  gap?: number;\n  children: ReactNode;\n  width?: number | string;\n  height?: number | string;\n  alignItems?: \"flex-start\" | \"center\" | \"flex-end\";\n  justifyContent?:\n    | \"flex-start\"\n    | \"center\"\n    | \"flex-end\"\n    | \"space-between\"\n    | \"space-around\";\n}\n\nexport const Stack = ({\n  direction = \"vertical\",\n  gap = 0,\n  children,\n  width,\n  height,\n  alignItems,\n  justifyContent,\n}: StackProps) => (\n  <box\n    flexDirection={direction === \"vertical\" ? \"column\" : \"row\"}\n    width={width as number}\n    height={height as number}\n  >\n    {children}\n  </box>\n);\n",
+      "type": "registry:ui",
+      "target": "components/ui/stack.tsx"
+    }
+  ],
+  "categories": [
+    "layout"
+  ],
+  "type": "registry:ui"
+}

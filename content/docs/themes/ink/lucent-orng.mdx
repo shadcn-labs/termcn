@@ -1,0 +1,67 @@
+---
+title: "Lucent Orng"
+description: "Warm orange theme with translucent feel."
+---
+
+<ComponentPreview
+  base="ink"
+  name="theme-showcase"
+  theme="lucent-orng"
+  hideCode
+/>
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+```bash
+npx shadcn@latest add @termcn/ink/theme-lucent-orng
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource
+  src="registry/bases/ink/ui/types.ts"
+  title="components/ui/types.ts"
+/>
+
+<ComponentSource
+  src="registry/bases/ink/themes/lucent-orng.ts"
+  title="lib/terminal-themes/lucent-orng.ts"
+/>
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import { ThemeProvider } from "@/components/ui/theme-provider";
+import { lucentOrngTheme } from "@/lib/terminal-themes/lucent-orng";
+import { Badge } from "@/components/ui/badge";
+
+export function Example() {
+  return (
+    <ThemeProvider theme={lucentOrngTheme}>
+      <Badge variant="info">{"Lucent Orng"}</Badge>
+    </ThemeProvider>
+  );
+}
+```

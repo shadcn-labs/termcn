@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/popover",
+  "title": "Popover",
+  "description": "Positioned popover with arbitrary content",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/popover.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useKeyboard } from \"@opentui/react\";\nimport type { ReactNode } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface PopoverProps {\n  trigger: ReactNode;\n  children: ReactNode;\n  isOpen?: boolean;\n  onClose?: () => void;\n  title?: string;\n}\n\nexport const Popover = ({\n  trigger,\n  children,\n  isOpen = false,\n  onClose,\n  title,\n}: PopoverProps) => {\n  const theme = useTheme();\n\n  useKeyboard((key) => {\n    if (!isOpen) {\n      return;\n    }\n    if (key.name === \"escape\") {\n      onClose?.();\n    }\n  });\n\n  if (!isOpen) {\n    return (\n      <box flexDirection=\"column\" alignItems=\"flex-start\">\n        <box>{trigger}</box>\n      </box>\n    );\n  }\n\n  return (\n    <box flexDirection=\"column\" alignItems=\"flex-start\">\n      <box>{trigger}</box>\n      <box\n        flexDirection=\"column\"\n        borderStyle=\"single\"\n        borderColor={theme.colors.border}\n        paddingLeft={1}\n        paddingRight={1}\n        paddingTop={0}\n        paddingBottom={0}\n        marginTop={0}\n      >\n        {title && (\n          <box marginBottom={1}>\n            <text fg={theme.colors.primary}>\n              <b>{title}</b>\n            </text>\n          </box>\n        )}\n        <box flexDirection=\"column\">{children}</box>\n        <box marginTop={1}>\n          <text fg=\"#666\">Press Esc to close</text>\n        </box>\n      </box>\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/popover.tsx"
+    }
+  ],
+  "categories": [
+    "overlays"
+  ],
+  "type": "registry:ui"
+}

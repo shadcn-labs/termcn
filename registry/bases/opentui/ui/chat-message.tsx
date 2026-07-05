@@ -3,7 +3,7 @@ import { useKeyboard } from "@opentui/react";
 import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
 
 export type ChatRole = "user" | "assistant" | "system" | "error";
 

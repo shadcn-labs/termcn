@@ -1,19 +1,13 @@
 /* @jsxImportSource @opentui/react */
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
+import type { BorderStyle } from "@/registry/bases/opentui/ui/types";
 
 export interface CodeProps {
   children: string;
   language?: string;
   inline?: boolean;
-  borderStyle?:
-    | "single"
-    | "double"
-    | "round"
-    | "bold"
-    | "singleDouble"
-    | "doubleSingle"
-    | "classic";
+  borderStyle?: BorderStyle;
   showLineNumbers?: boolean;
   lineNumberSeparator?: string;
   keywordColor?: string;

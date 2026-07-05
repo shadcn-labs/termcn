@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-solarized",
+  "title": "Solarized",
+  "description": "A Solarized theme for terminal components.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/solarized.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const solarizedTheme: Theme = {\n  border: {\n    color: \"#586E75\",\n    focusColor: \"#268BD2\",\n    style: \"rounded\",\n  },\n  colors: {\n    accent: \"#CB4B16\",\n    accentForeground: \"#FDF6E3\",\n    background: \"#002B36\",\n    border: \"#586E75\",\n    error: \"#DC322F\",\n    errorForeground: \"#FDF6E3\",\n\n    focusRing: \"#268BD2\",\n    foreground: \"#839496\",\n    info: \"#2AA198\",\n    infoForeground: \"#FDF6E3\",\n    muted: \"#073642\",\n    mutedForeground: \"#586E75\",\n    primary: \"#268BD2\",\n    primaryForeground: \"#FDF6E3\",\n\n    secondary: \"#2AA198\",\n    secondaryForeground: \"#FDF6E3\",\n    selection: \"#073642\",\n    selectionForeground: \"#93A1A1\",\n    success: \"#859900\",\n\n    successForeground: \"#FDF6E3\",\n    warning: \"#B58900\",\n    warningForeground: \"#FDF6E3\",\n  },\n  name: \"solarized\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/solarized.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

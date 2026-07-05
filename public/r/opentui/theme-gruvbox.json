@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-gruvbox",
+  "title": "Gruvbox",
+  "description": "Gruvbox - retro earth tones.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/gruvbox.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const gruvboxTheme: Theme = {\n  border: {\n    color: \"#928374\",\n    focusColor: \"#fb4934\",\n    style: \"rounded\",\n  },\n  colors: {\n    accent: \"#fb4934\",\n    accentForeground: \"#282828\",\n    background: \"#282828\",\n    border: \"#928374\",\n    error: \"#fb4934\",\n    errorForeground: \"#282828\",\n    focusRing: \"#fb4934\",\n    foreground: \"#ebdbb2\",\n    info: \"#d3869b\",\n    infoForeground: \"#282828\",\n    muted: \"#1d2021\",\n    mutedForeground: \"#928374\",\n    primary: \"#83a598\",\n    primaryForeground: \"#282828\",\n    secondary: \"#32302f\",\n    secondaryForeground: \"#ebdbb2\",\n    selection: \"#83a598\",\n    selectionForeground: \"#282828\",\n    success: \"#b8bb26\",\n    successForeground: \"#282828\",\n    warning: \"#fabd2f\",\n    warningForeground: \"#282828\",\n  },\n  name: \"gruvbox\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/gruvbox.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

@@ -1,0 +1,67 @@
+---
+title: "Tokyo Night"
+description: "Tokyo Night colors for terminal interfaces."
+---
+
+<ComponentPreview
+  base="opentui"
+  name="theme-showcase"
+  theme="tokyo-night"
+  hideCode
+/>
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+```bash
+npx shadcn@latest add @termcn/opentui/theme-tokyo-night
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource
+  src="registry/bases/opentui/ui/types.ts"
+  title="components/ui/types.ts"
+/>
+
+<ComponentSource
+  src="registry/bases/opentui/themes/tokyo-night.ts"
+  title="lib/terminal-themes/tokyo-night.ts"
+/>
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import { ThemeProvider } from "@/components/ui/theme-provider";
+import { tokyoNightTheme } from "@/lib/terminal-themes/tokyo-night";
+import { Badge } from "@/components/ui/badge";
+
+export function Example() {
+  return (
+    <ThemeProvider theme={tokyoNightTheme}>
+      <Badge variant="info">Tokyo Night</Badge>
+    </ThemeProvider>
+  );
+}
+```

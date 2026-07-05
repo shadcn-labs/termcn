@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/wizard",
+  "title": "Wizard",
+  "description": "Multi-step wizard with per-step validation",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/wizard.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useKeyboard } from \"@opentui/react\";\nimport { useState } from \"react\";\nimport type { ReactNode } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface WizardStep {\n  key: string;\n  title: string;\n  content: ReactNode;\n  validate?: () => boolean | string;\n}\n\nexport interface WizardProps {\n  steps: WizardStep[];\n  onComplete?: (completedSteps: string[]) => void;\n  onCancel?: () => void;\n  showProgress?: boolean;\n}\n\nexport const Wizard = ({\n  steps,\n  onComplete,\n  onCancel,\n  showProgress = true,\n}: WizardProps) => {\n  const theme = useTheme();\n  const [currentStep, setCurrentStep] = useState(0);\n  const [validationError, setValidationError] = useState<string | null>(null);\n\n  const isLast = currentStep === steps.length - 1;\n  const isFirst = currentStep === 0;\n\n  useKeyboard((key) => {\n    if (key.name === \"escape\") {\n      onCancel?.();\n      return;\n    }\n\n    const goNext = (key.name === \"tab\" && !key.shift) || key.name === \"right\";\n    const goBack = (key.name === \"tab\" && key.shift) || key.name === \"left\";\n    if (goNext) {\n      const step = steps[currentStep];\n      if (step.validate) {\n        const result = step.validate();\n        if (result !== true) {\n          setValidationError(\n            typeof result === \"string\" ? result : \"Validation failed\"\n          );\n          return;\n        }\n      }\n      setValidationError(null);\n      if (isLast) {\n        onComplete?.(steps.map((s) => s.key));\n      } else {\n        setCurrentStep((i) => i + 1);\n      }\n    } else if (goBack) {\n      setValidationError(null);\n      if (!isFirst) {\n        setCurrentStep((i) => i - 1);\n      }\n    }\n  });\n\n  return (\n    <box flexDirection=\"column\" gap={1}>\n      {showProgress && (\n        <box flexDirection=\"row\" alignItems=\"center\">\n          {steps.map((step, index) => {\n            const isCompleted = index < currentStep;\n            const isCurrent = index === currentStep;\n\n            let icon: string;\n            let iconColor: string;\n            if (isCompleted) {\n              icon = \"●\";\n              iconColor = theme.colors.success;\n            } else if (isCurrent) {\n              icon = \"◉\";\n              iconColor = theme.colors.primary;\n            } else {\n              icon = \"○\";\n              iconColor = theme.colors.mutedForeground;\n            }\n\n            return (\n              <box key={step.key} flexDirection=\"row\" alignItems=\"center\">\n                <text fg={iconColor}>\n                  {isCurrent ? (\n                    <b>{`${icon} ${step.title}`}</b>\n                  ) : (\n                    `${icon} ${step.title}`\n                  )}\n                </text>\n                {index < steps.length - 1 && (\n                  <text fg={theme.colors.mutedForeground}>{\" ─── \"}</text>\n                )}\n              </box>\n            );\n          })}\n        </box>\n      )}\n\n      <box flexDirection=\"column\" gap={1}>\n        {steps[currentStep]?.content}\n      </box>\n\n      {validationError && (\n        <text fg={theme.colors.error}>{`✗ ${validationError}`}</text>\n      )}\n\n      <box flexDirection=\"row\" gap={2}>\n        {!isFirst && <text fg={theme.colors.mutedForeground}>[← Back]</text>}\n        {isLast ? (\n          <text fg={theme.colors.primary}>\n            <b>[Finish]</b>\n          </text>\n        ) : (\n          <text fg={theme.colors.primary}>\n            <b>[Next →]</b>\n          </text>\n        )}\n      </box>\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/wizard.tsx"
+    }
+  ],
+  "categories": [
+    "forms"
+  ],
+  "type": "registry:ui"
+}

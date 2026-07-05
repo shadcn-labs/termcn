@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-zenburn",
+  "title": "Zenburn",
+  "description": "Zenburn - low contrast for long sessions.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/zenburn.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const zenburnTheme: Theme = {\n  border: {\n    color: \"#9f9f9f\",\n    focusColor: \"#f0dfaf\",\n    style: \"rounded\",\n  },\n  colors: {\n    accent: \"#93e0e3\",\n    accentForeground: \"#3f3f3f\",\n    background: \"#3f3f3f\",\n    border: \"#9f9f9f\",\n    error: \"#cc9393\",\n    errorForeground: \"#3f3f3f\",\n    focusRing: \"#f0dfaf\",\n    foreground: \"#dcdccc\",\n    info: \"#dfaf8f\",\n    infoForeground: \"#3f3f3f\",\n    muted: \"#2f2f2f\",\n    mutedForeground: \"#9f9f9f\",\n    primary: \"#8cd0d3\",\n    primaryForeground: \"#3f3f3f\",\n    secondary: \"#4f4f4f\",\n    secondaryForeground: \"#dcdccc\",\n    selection: \"#8cd0d3\",\n    selectionForeground: \"#3f3f3f\",\n    success: \"#7f9f7f\",\n    successForeground: \"#3f3f3f\",\n    warning: \"#f0dfaf\",\n    warningForeground: \"#3f3f3f\",\n  },\n  name: \"zenburn\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/zenburn.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

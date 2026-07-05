@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-vercel",
+  "title": "Vercel",
+  "description": "Vercel brand colors.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/vercel.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const vercelTheme: Theme = {\n  border: {\n    color: \"#454545\",\n    focusColor: \"#f75590\",\n    style: \"rounded\",\n  },\n  colors: {\n    accent: \"#8e4ec6\",\n    accentForeground: \"#000000\",\n    background: \"#000000\",\n    border: \"#454545\",\n    error: \"#e5484d\",\n    errorForeground: \"#000000\",\n    focusRing: \"#f75590\",\n    foreground: \"#ededed\",\n    info: \"#52a8ff\",\n    infoForeground: \"#000000\",\n    muted: \"#0a0a0a\",\n    mutedForeground: \"#878787\",\n    primary: \"#0070f3\",\n    primaryForeground: \"#000000\",\n    secondary: \"#1a1a1a\",\n    secondaryForeground: \"#ededed\",\n    selection: \"#0070f3\",\n    selectionForeground: \"#000000\",\n    success: \"#46a758\",\n    successForeground: \"#000000\",\n    warning: \"#ffb224\",\n    warningForeground: \"#000000\",\n  },\n  name: \"vercel\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/vercel.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

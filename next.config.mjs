@@ -65,10 +65,32 @@ const nextConfig = {
         permanent: true,
         source: `${ROUTES.DOCS_TEMPLATES}/:template((?!ink|opentui)[^/]+)`,
       },
+      {
+        destination: `${ROUTES.DOCS}/themes/ink/:theme`,
+        permanent: true,
+        source: `${ROUTES.DOCS}/themes/:theme((?!ink|opentui)[^/]+)`,
+      },
     ];
+  },
+  rewrites() {
+    return {
+      // Legacy flat registry URLs → canonical nested paths under public/r/{ink,opentui}/.
+      // registry.json stays at /r/registry.json (served as a static file before these run).
+      afterFiles: [
+        {
+          destination: "/r/opentui/:slug.json",
+          source: "/r/opentui-:slug.json",
+        },
+        {
+          destination: "/r/ink/:slug.json",
+          source: "/r/:slug.json",
+        },
+      ],
+    };
   },
   turbopack: {
     resolveAlias: {
+      "@opentui/react": "@gridland/utils",
       "@opentui/react/jsx-dev-runtime": opentuiJsxDevRuntimeTurbo,
       "@opentui/react/jsx-runtime": opentuiJsxRuntimeTurbo,
       ink: "ink-web",

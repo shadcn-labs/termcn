@@ -21,7 +21,7 @@ description: "Image renderer with iTerm2/Kitty protocol and ASCII fallback"
 <TabsContent value="cli">
 
 ```bash
-npx shadcn@latest add @termcn/image
+npx shadcn@latest add @termcn/ink/image
 ```
 
 </TabsContent>
@@ -30,7 +30,29 @@ npx shadcn@latest add @termcn/image
 
 <Steps>
 
+<Step>Install the following dependencies:</Step>
+
+```bash
+npm install ink
+```
+
 <Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource
+  src="registry/bases/ink/ui/types.ts"
+  title="components/ui/types.ts"
+/>
+
+<ComponentSource
+  src="registry/bases/ink/themes/default.ts"
+  title="lib/terminal-themes/default.ts"
+/>
+
+<ComponentSource
+  base="ink"
+  name="theme-provider"
+  title="components/ui/theme-provider.tsx"
+/>
 
 <ComponentSource base="ink" name="image" title="components/ui/image.tsx" />
 

@@ -55,7 +55,7 @@ export class ErrorBoundary extends Component<
       return (
         <box
           flexDirection="column"
-          borderStyle="round"
+          borderStyle="rounded"
           borderColor="red"
           paddingLeft={1}
           paddingRight={1}

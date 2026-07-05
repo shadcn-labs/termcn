@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/email-input",
+  "title": "Email Input",
+  "description": "Email input with validation and domain suggestions",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/email-input.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useKeyboard } from \"@opentui/react\";\nimport { useState } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface EmailInputProps {\n  value?: string;\n  onChange?: (value: string) => void;\n  onSubmit?: (value: string) => void;\n  label?: string;\n  placeholder?: string;\n  autoFocus?: boolean;\n  id?: string;\n  width?: number;\n  suggestions?: string[];\n}\n\nconst isValidEmail = (email: string): boolean => {\n  const atIdx = email.indexOf(\"@\");\n  if (atIdx < 1) {\n    return false;\n  }\n  const domain = email.slice(atIdx + 1);\n  return domain.includes(\".\");\n};\n\nconst getBorderColor = (\n  error: string | null,\n  isFocused: boolean,\n  theme: ReturnType<typeof useTheme>\n): string => {\n  if (error) {\n    return theme.colors.error;\n  }\n  if (isFocused) {\n    return theme.colors.focusRing;\n  }\n  return theme.colors.border;\n};\n\nexport const EmailInput = ({\n  value: controlledValue,\n  onChange,\n  onSubmit,\n  label,\n  placeholder = \"you@example.com\",\n  autoFocus: _autoFocus = false,\n  id: _id,\n  width = 40,\n  suggestions = [\"gmail.com\", \"yahoo.com\", \"hotmail.com\", \"outlook.com\"],\n}: EmailInputProps) => {\n  const [internalValue, setInternalValue] = useState(\"\");\n  const [error, setError] = useState<string | null>(null);\n  const theme = useTheme();\n  const [isFocused] = useState(true);\n\n  const value = controlledValue ?? internalValue;\n\n  const applyChange = (newVal: string) => {\n    if (onChange) {\n      onChange(newVal);\n    } else {\n      setInternalValue(newVal);\n    }\n  };\n\n  const getSuggestion = (val: string): string | null => {\n    const atIdx = val.indexOf(\"@\");\n    if (atIdx === -1) {\n      return null;\n    }\n    const afterAt = val.slice(atIdx + 1);\n    if (afterAt.length === 0) {\n      return null;\n    }\n    const match = suggestions.find(\n      (s) => s.startsWith(afterAt) && s !== afterAt\n    );\n    if (!match) {\n      return null;\n    }\n    return match.slice(afterAt.length);\n  };\n\n  useKeyboard((key) => {\n    if (!isFocused) {\n      return;\n    }\n    if (key.name === \"return\") {\n      if (!isValidEmail(value)) {\n        setError(\"Please enter a valid email address\");\n        return;\n      }\n      setError(null);\n      onSubmit?.(value);\n      return;\n    }\n    if (key.name === \"tab\") {\n      const hint = getSuggestion(value);\n      if (hint) {\n        const newVal = value + hint;\n        applyChange(newVal);\n      }\n      return;\n    }\n    if (key.name === \"backspace\" || key.name === \"delete\") {\n      setError(null);\n      const newVal = value.slice(0, -1);\n      applyChange(newVal);\n      return;\n    }\n    if (key.name === \"escape\" || key.name === \"up\" || key.name === \"down\") {\n      return;\n    }\n    if (key.name.length === 1) {\n      setError(null);\n      const newVal = value + key.name;\n      applyChange(newVal);\n    }\n  });\n\n  const borderColor = getBorderColor(error, isFocused, theme);\n\n  const suggestion = getSuggestion(value);\n\n  return (\n    <box flexDirection=\"column\">\n      {label && (\n        <text>\n          <b>{label}</b>\n        </text>\n      )}\n      <box borderStyle=\"rounded\" paddingLeft={1} paddingRight={1}>\n        <text\n          fg={value ? theme.colors.foreground : theme.colors.mutedForeground}\n        >\n          {value || placeholder}\n        </text>\n        {isFocused && suggestion && <text fg=\"#666\">{suggestion}</text>}\n        {isFocused && <text fg={theme.colors.focusRing}>█</text>}\n      </box>\n      {error && <text fg={theme.colors.error}>{error}</text>}\n      {isFocused && suggestion && (\n        <text fg=\"#666\">\n          {\"Tab to complete: \"}\n          {value}\n          {suggestion}\n        </text>\n      )}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/email-input.tsx"
+    }
+  ],
+  "categories": [
+    "input"
+  ],
+  "type": "registry:ui"
+}

@@ -16,7 +16,7 @@ description: "Arrow-key scrollable stack for long chat threads"
 <TabsContent value="cli">
 
 ```bash
-npx shadcn@latest add @termcn/conversation-history
+npx shadcn@latest add @termcn/ink/conversation-history
 ```
 
 </TabsContent>
@@ -25,7 +25,29 @@ npx shadcn@latest add @termcn/conversation-history
 
 <Steps>
 
+<Step>Install the following dependencies:</Step>
+
+```bash
+npm install ink
+```
+
 <Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource
+  src="registry/bases/ink/ui/types.ts"
+  title="components/ui/types.ts"
+/>
+
+<ComponentSource
+  src="registry/bases/ink/themes/default.ts"
+  title="lib/terminal-themes/default.ts"
+/>
+
+<ComponentSource
+  base="ink"
+  name="theme-provider"
+  title="components/ui/theme-provider.tsx"
+/>
 
 <ComponentSource
   base="ink"

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/error-boundary",
+  "title": "Error Boundary",
+  "description": "React error boundary with graceful terminal display",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/error-boundary.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport React, { Component } from \"react\";\nimport type { ReactNode } from \"react\";\n\nexport interface ErrorBoundaryProps {\n  children: ReactNode;\n  fallback?: ReactNode;\n  onError?: (\n    error: Error,\n    info: {\n      componentStack: string;\n    }\n  ) => void;\n  title?: string;\n}\n\ninterface ErrorBoundaryState {\n  hasError: boolean;\n  error: Error | null;\n  componentStack: string;\n}\n\nexport class ErrorBoundary extends Component<\n  ErrorBoundaryProps,\n  ErrorBoundaryState\n> {\n  constructor(props: ErrorBoundaryProps) {\n    super(props);\n    this.state = { componentStack: \"\", error: null, hasError: false };\n  }\n  static getDerivedStateFromError(error: Error): Partial<ErrorBoundaryState> {\n    return { error, hasError: true };\n  }\n  componentDidCatch(error: Error, info: React.ErrorInfo) {\n    this.setState({ componentStack: info.componentStack ?? \"\" });\n    this.props.onError?.(error, {\n      componentStack: info.componentStack ?? \"\",\n    });\n  }\n  render() {\n    const { hasError, error, componentStack } = this.state;\n    const { children, fallback, title = \"Error\" } = this.props;\n\n    if (hasError) {\n      if (fallback) {\n        return fallback;\n      }\n\n      const message = error?.message ?? \"An unknown error occurred\";\n      const stackLines = componentStack\n        .split(\"\\n\")\n        .map((l) => l.trim())\n        .filter(Boolean)\n        .slice(0, 6);\n      return (\n        <box\n          flexDirection=\"column\"\n          borderStyle=\"rounded\"\n          borderColor=\"red\"\n          paddingLeft={1}\n          paddingRight={1}\n          paddingTop={0}\n          paddingBottom={0}\n          gap={0}\n        >\n          <text fg=\"red\">\n            <b>{`✖ ${title}`}</b>\n          </text>\n          <box marginTop={1}>\n            <text fg=\"white\">\n              <b>{message}</b>\n            </text>\n          </box>\n          {stackLines.length > 0 && (\n            <box flexDirection=\"column\" marginTop={1}>\n              <text fg=\"#666\">Stack trace:</text>\n              {stackLines.map((line, idx) => (\n                <text key={idx} fg=\"#666\">\n                  {line}\n                </text>\n              ))}\n            </box>\n          )}\n          <box marginTop={1}>\n            <text fg=\"#666\">\n              The application encountered an unexpected error.\n            </text>\n          </box>\n        </box>\n      );\n    }\n\n    return children;\n  }\n}\n",
+      "type": "registry:ui",
+      "target": "components/ui/error-boundary.tsx"
+    }
+  ],
+  "categories": [
+    "utility"
+  ],
+  "type": "registry:ui"
+}

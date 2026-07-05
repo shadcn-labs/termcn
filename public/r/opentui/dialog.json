@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/dialog",
+  "title": "Dialog",
+  "description": "Confirmation dialog with OK/Cancel actions",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/dialog.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useKeyboard } from \"@opentui/react\";\nimport { useState } from \"react\";\nimport type { ReactNode } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface DialogProps {\n  title?: string;\n  children: ReactNode;\n  confirmLabel?: string;\n  cancelLabel?: string;\n  onConfirm?: () => void;\n  onCancel?: () => void;\n  variant?: \"default\" | \"danger\";\n  isOpen?: boolean;\n}\n\nexport const Dialog = ({\n  title,\n  children,\n  confirmLabel = \"OK\",\n  cancelLabel = \"Cancel\",\n  onConfirm,\n  onCancel,\n  variant = \"default\",\n  isOpen = false,\n}: DialogProps) => {\n  const theme = useTheme();\n  const [focusedButton, setFocusedButton] = useState<0 | 1>(0);\n\n  useKeyboard((key) => {\n    if (!isOpen) {\n      return;\n    }\n    if (key.name === \"tab\" || key.name === \"left\" || key.name === \"right\") {\n      setFocusedButton((prev) => (prev === 0 ? 1 : 0));\n    } else if (key.name === \"return\") {\n      if (focusedButton === 1) {\n        onConfirm?.();\n      } else {\n        onCancel?.();\n      }\n    } else if (key.name === \"escape\") {\n      onCancel?.();\n    }\n  });\n\n  if (!isOpen) {\n    return null;\n  }\n\n  const confirmColor =\n    variant === \"danger\" ? (theme.colors.error ?? \"red\") : theme.colors.primary;\n\n  return (\n    <box\n      flexDirection=\"column\"\n      borderStyle=\"rounded\"\n      borderColor={\n        variant === \"danger\"\n          ? (theme.colors.error ?? \"red\")\n          : theme.colors.primary\n      }\n      paddingLeft={1}\n      paddingRight={1}\n      paddingTop={0}\n      paddingBottom={0}\n    >\n      {title && (\n        <box marginBottom={1}>\n          <text\n            fg={\n              variant === \"danger\"\n                ? (theme.colors.error ?? \"red\")\n                : theme.colors.primary\n            }\n          >\n            <b>{title}</b>\n          </text>\n        </box>\n      )}\n      <box marginBottom={1} flexDirection=\"column\">\n        {children}\n      </box>\n      <box flexDirection=\"row\" gap={2} justifyContent=\"flex-end\" marginTop={1}>\n        <text\n          fg={\n            focusedButton === 0\n              ? theme.colors.foreground\n              : theme.colors.mutedForeground\n          }\n          inverse={focusedButton === 0}\n        >\n          {focusedButton === 0 ? (\n            <b>{` ${cancelLabel} `}</b>\n          ) : (\n            ` ${cancelLabel} `\n          )}\n        </text>\n        <text\n          fg={focusedButton === 1 ? confirmColor : theme.colors.mutedForeground}\n          inverse={focusedButton === 1}\n        >\n          {focusedButton === 1 ? (\n            <b>{` ${confirmLabel} `}</b>\n          ) : (\n            ` ${confirmLabel} `\n          )}\n        </text>\n      </box>\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/dialog.tsx"
+    }
+  ],
+  "categories": [
+    "overlays"
+  ],
+  "type": "registry:ui"
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/tabs",
+  "title": "Tabs",
+  "description": "Tab bar with left/right arrow and tab-key navigation",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/tabs.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useKeyboard } from \"@opentui/react\";\nimport { useState } from \"react\";\nimport type { ReactNode } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\nimport type { BorderStyle } from \"@/components/ui/types\";\n\nexport interface Tab {\n  key: string;\n  label: string;\n  content: ReactNode;\n}\n\nexport interface TabsProps {\n  tabs: Tab[];\n  defaultTab?: string;\n  activeTab?: string;\n  onTabChange?: (key: string) => void;\n  borderColor?: string;\n  borderStyle?: BorderStyle;\n  separator?: string;\n  tabBarPaddingX?: number;\n  paddingX?: number;\n  paddingY?: number;\n}\n\nexport const Tabs = ({\n  tabs,\n  defaultTab,\n  activeTab: controlledTab,\n  onTabChange,\n  borderColor,\n  borderStyle = \"single\",\n  separator = \" │ \",\n  tabBarPaddingX = 2,\n  paddingX = 1,\n  paddingY = 0,\n}: TabsProps) => {\n  const theme = useTheme();\n  const [internalTab, setInternalTab] = useState(\n    defaultTab ?? tabs[0]?.key ?? \"\"\n  );\n  const activeKey = controlledTab ?? internalTab;\n  const activeIndex = tabs.findIndex((t) => t.key === activeKey);\n\n  const resolvedBorderColor = borderColor ?? theme.colors.border;\n\n  const switchTab = (nextKey: string | undefined) => {\n    if (!nextKey || nextKey === activeKey) {\n      return;\n    }\n    process.stdout.write(\"\\u001B[2J\\u001B[H\");\n    if (onTabChange) {\n      onTabChange(nextKey);\n    } else {\n      setInternalTab(nextKey);\n    }\n  };\n\n  useKeyboard((key) => {\n    if (key.name === \"left\" || (key.shift && key.name === \"tab\")) {\n      switchTab(tabs[Math.max(0, activeIndex - 1)]?.key);\n    } else if (key.name === \"right\" || key.name === \"tab\") {\n      switchTab(tabs[Math.min(tabs.length - 1, activeIndex + 1)]?.key);\n    }\n  });\n\n  const activeTab = tabs.find((t) => t.key === activeKey);\n\n  return (\n    <box flexDirection=\"column\">\n      <box paddingLeft={tabBarPaddingX} paddingRight={tabBarPaddingX} gap={0}>\n        {tabs.map((tab, idx) => {\n          const isActive = tab.key === activeKey;\n          return (\n            <box key={tab.key}>\n              <text\n                fg={\n                  isActive ? theme.colors.primary : theme.colors.mutedForeground\n                }\n              >\n                {isActive ? (\n                  <b>\n                    <u>{tab.label}</u>\n                  </b>\n                ) : (\n                  tab.label\n                )}\n              </text>\n              {idx < tabs.length - 1 && (\n                <text fg={resolvedBorderColor}>{separator}</text>\n              )}\n            </box>\n          );\n        })}\n      </box>\n      <box\n        borderColor={resolvedBorderColor}\n        paddingLeft={paddingX}\n        paddingRight={paddingX}\n        paddingTop={paddingY}\n        paddingBottom={paddingY}\n      >\n        {activeTab?.content}\n      </box>\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/tabs.tsx"
+    }
+  ],
+  "categories": [
+    "navigation"
+  ],
+  "type": "registry:ui"
+}

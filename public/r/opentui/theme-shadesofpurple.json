@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-shadesofpurple",
+  "title": "Shades of Purple",
+  "description": "Shades of Purple - bold purple.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/shadesofpurple.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const shadesofpurpleTheme: Theme = {\n  border: {\n    color: \"#b362ff\",\n    focusColor: \"#c792ff\",\n    style: \"rounded\",\n  },\n  colors: {\n    accent: \"#ff7ac6\",\n    accentForeground: \"#1a102b\",\n    background: \"#1a102b\",\n    border: \"#b362ff\",\n    error: \"#ff7ac6\",\n    errorForeground: \"#1a102b\",\n    focusRing: \"#c792ff\",\n    foreground: \"#f5f0ff\",\n    info: \"#7dd4ff\",\n    infoForeground: \"#1a102b\",\n    muted: \"#100918\",\n    mutedForeground: \"#b362ff\",\n    primary: \"#c792ff\",\n    primaryForeground: \"#1a102b\",\n    secondary: \"#2a2035\",\n    secondaryForeground: \"#f5f0ff\",\n    selection: \"#c792ff\",\n    selectionForeground: \"#1a102b\",\n    success: \"#7be0b0\",\n    successForeground: \"#1a102b\",\n    warning: \"#ffd580\",\n    warningForeground: \"#1a102b\",\n  },\n  name: \"shadesofpurple\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/shadesofpurple.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

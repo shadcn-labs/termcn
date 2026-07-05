@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/definition",
+  "title": "Definition",
+  "description": "Term–description definition list",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/definition.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface DefinitionItem {\n  term: string;\n  description: string;\n}\n\nexport interface DefinitionProps {\n  items: DefinitionItem[];\n  termColor?: string;\n}\n\nexport const Definition = ({ items, termColor }: DefinitionProps) => {\n  const theme = useTheme();\n  const resolvedTermColor = termColor ?? theme.colors.primary;\n\n  return (\n    <box flexDirection=\"column\">\n      {items.map((item, idx) => (\n        <box\n          key={idx}\n          flexDirection=\"column\"\n          marginBottom={idx < items.length - 1 ? 1 : 0}\n        >\n          <text fg={resolvedTermColor}>\n            <b>{item.term}</b>\n          </text>\n          <box paddingLeft={2}>\n            <text fg={theme.colors.foreground}>{item.description}</text>\n          </box>\n        </box>\n      ))}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/definition.tsx"
+    }
+  ],
+  "categories": [
+    "data"
+  ],
+  "type": "registry:ui"
+}

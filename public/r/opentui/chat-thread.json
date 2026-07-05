@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/chat-thread",
+  "title": "Chat Thread",
+  "description": "Scrollable container for stacking ChatMessage components in a conversation thread",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/chat-thread.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport type { ReactNode } from \"react\";\n\nexport interface ChatThreadProps {\n  maxHeight?: number;\n  autoScroll?: boolean;\n  children?: ReactNode;\n}\n\nexport const ChatThread = ({\n  maxHeight,\n  autoScroll = true,\n  children,\n}: ChatThreadProps) => {\n  void autoScroll;\n\n  const containerProps = maxHeight\n    ? { height: maxHeight, overflow: \"hidden\" as const }\n    : {};\n\n  return <box flexDirection=\"column\">{children}</box>;\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/chat-thread.tsx"
+    }
+  ],
+  "categories": [
+    "ai"
+  ],
+  "type": "registry:ui"
+}

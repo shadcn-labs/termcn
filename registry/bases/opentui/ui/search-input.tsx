@@ -2,7 +2,8 @@
 import { useKeyboard } from "@opentui/react";
 import { useState, useMemo, useCallback } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
+import type { BorderStyle } from "@/registry/bases/opentui/ui/types";
 
 export interface SearchInputProps<T = string> {
   options?: T[];
@@ -14,14 +15,7 @@ export interface SearchInputProps<T = string> {
   label?: string;
   maxResults?: number;
   id?: string;
-  borderStyle?:
-    | "single"
-    | "double"
-    | "round"
-    | "bold"
-    | "singleDouble"
-    | "doubleSingle"
-    | "classic";
+  borderStyle?: BorderStyle;
   paddingX?: number;
   cursor?: string;
   searchIcon?: string;
@@ -38,7 +32,7 @@ export const SearchInput = <T = string,>({
   label,
   maxResults = 5,
   id: _id,
-  borderStyle = "round",
+  borderStyle = "rounded",
   paddingX = 1,
   cursor = "█",
   searchIcon = "🔍 ",

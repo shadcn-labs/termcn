@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/theme-high-contrast",
+  "title": "High Contrast",
+  "description": "High contrast themes for dark and light terminal backgrounds.",
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/themes/high-contrast.ts",
+      "content": "import type { Theme } from \"@/components/ui/types\";\n\nexport const highContrastTheme: Theme = {\n  border: {\n    color: \"#FFFFFF\",\n    focusColor: \"#FFFF00\",\n    style: \"heavy\",\n  },\n  colors: {\n    accent: \"#00FFFF\",\n    accentForeground: \"#000000\",\n    background: \"#000000\",\n    border: \"#FFFFFF\",\n    error: \"#FF4444\",\n    errorForeground: \"#FFFFFF\",\n    focusRing: \"#FFFF00\",\n    foreground: \"#FFFFFF\",\n    info: \"#00CCFF\",\n    infoForeground: \"#000000\",\n    muted: \"#1A1A1A\",\n    mutedForeground: \"#CCCCCC\",\n    primary: \"#FFFFFF\",\n    primaryForeground: \"#000000\",\n    secondary: \"#FFFF00\",\n    secondaryForeground: \"#000000\",\n    selection: \"#FFFFFF\",\n    selectionForeground: \"#000000\",\n    success: \"#00FF00\",\n    successForeground: \"#000000\",\n    warning: \"#FFFF00\",\n    warningForeground: \"#000000\",\n  },\n  name: \"high-contrast\",\n  spacing: {\n    0: 0,\n    1: 1,\n    2: 2,\n    3: 3,\n    4: 4,\n    6: 6,\n    8: 8,\n  },\n  typography: {\n    base: \"\",\n    bold: true,\n    lg: \"bold\",\n    sm: \"dim\",\n    xl: \"bold\",\n  },\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-themes/high-contrast.ts"
+    }
+  ],
+  "categories": [
+    "themes"
+  ],
+  "type": "registry:file"
+}

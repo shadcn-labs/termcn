@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ink/form-field",
+  "title": "Form Field",
+  "description": "Form field wrapper with label, hint, and error",
+  "dependencies": [
+    "ink"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/ink/form.json",
+    "https://termcn.dev/r/ink/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/ui/form-field.tsx",
+      "content": "import { Box, Text } from \"ink\";\nimport type { ReactNode } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface FormFieldProps {\n  label: string;\n  children: ReactNode;\n  error?: string;\n  hint?: string;\n  required?: boolean;\n  gap?: number;\n  errorIcon?: string;\n  labelColor?: string;\n}\n\nexport const FormField = ({\n  label,\n  children,\n  error,\n  hint,\n  required,\n  gap = 0,\n  errorIcon = \"✗\",\n  labelColor,\n}: FormFieldProps) => {\n  const theme = useTheme();\n  const resolvedLabelColor = labelColor ?? theme.colors.foreground;\n\n  return (\n    <Box flexDirection=\"column\" gap={gap}>\n      <Box gap={0}>\n        <Text bold color={resolvedLabelColor}>\n          {label}\n        </Text>\n        {required && <Text color={theme.colors.error}> *</Text>}\n      </Box>\n      <Box>{children}</Box>\n      {hint && !error && (\n        <Text color={theme.colors.mutedForeground} dimColor>\n          {hint}\n        </Text>\n      )}\n      {error && (\n        <Text color={theme.colors.error}>\n          {errorIcon} {error}\n        </Text>\n      )}\n    </Box>\n  );\n};\n",
+      "type": "registry:ui"
+    }
+  ],
+  "categories": [
+    "forms"
+  ],
+  "type": "registry:ui"
+}

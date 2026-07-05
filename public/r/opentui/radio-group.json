@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/radio-group",
+  "title": "Radio Group",
+  "description": "Mutually exclusive radio button group",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/radio-group.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useKeyboard } from \"@opentui/react\";\nimport { useState } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface RadioOption<T = string> {\n  value: T;\n  label: string;\n  hint?: string;\n  disabled?: boolean;\n}\n\nexport interface RadioGroupProps<T = string> {\n  options: RadioOption<T>[];\n  value?: T;\n  onChange?: (value: T) => void;\n  name?: string;\n  cursor?: string;\n}\n\nconst getOptionColor = (\n  disabled: boolean | undefined,\n  isHighlighted: boolean,\n  theme: ReturnType<typeof useTheme>\n): string => {\n  if (disabled) {\n    return theme.colors.mutedForeground;\n  }\n  if (isHighlighted) {\n    return theme.colors.primary;\n  }\n  return theme.colors.foreground;\n};\n\nexport const RadioGroup = <T = string,>({\n  options,\n  value: controlledValue,\n  onChange,\n  name: _name,\n  cursor = \"›\",\n}: RadioGroupProps<T>) => {\n  const theme = useTheme();\n  const [activeIndex, setActiveIndex] = useState(() => {\n    if (controlledValue === undefined) {\n      return 0;\n    }\n    const idx = options.findIndex((o) => o.value === controlledValue);\n    return Math.max(idx, 0);\n  });\n  const [internalValue, setInternalValue] = useState<T | undefined>(\n    controlledValue\n  );\n\n  const selected = controlledValue ?? internalValue;\n\n  const select = (idx: number) => {\n    const opt = options[idx];\n    if (!opt || opt.disabled) {\n      return;\n    }\n    if (controlledValue === undefined) {\n      setInternalValue(opt.value);\n    }\n    onChange?.(opt.value);\n  };\n\n  useKeyboard((key) => {\n    if (key.name === \"up\") {\n      setActiveIndex((i) => {\n        let next = i - 1;\n        while (next >= 0 && options[next]?.disabled) {\n          next -= 1;\n        }\n        return next < 0 ? i : next;\n      });\n    } else if (key.name === \"down\") {\n      setActiveIndex((i) => {\n        let next = i + 1;\n        while (next < options.length && options[next]?.disabled) {\n          next += 1;\n        }\n        return next >= options.length ? i : next;\n      });\n    } else if (key.name === \" \" || key.name === \"return\") {\n      select(activeIndex);\n    }\n  });\n\n  return (\n    <box flexDirection=\"column\">\n      {options.map((opt, idx) => {\n        const isActive = idx === activeIndex;\n        const isSelected = selected !== undefined && opt.value === selected;\n        const icon = isSelected ? \"◉\" : \"○\";\n        return (\n          <box key={idx} gap={1}>\n            <text fg={isActive ? theme.colors.primary : undefined}>\n              {isActive ? cursor : \" \"}\n            </text>\n            <text\n              fg={\n                opt.disabled\n                  ? \"#666\"\n                  : getOptionColor(opt.disabled, isSelected, theme)\n              }\n            >\n              {icon}\n            </text>\n            <text\n              fg={\n                opt.disabled\n                  ? \"#666\"\n                  : getOptionColor(opt.disabled, isActive, theme)\n              }\n            >\n              {isActive || isSelected ? <b>{opt.label}</b> : opt.label}\n            </text>\n            {opt.hint && <text fg=\"#666\">{opt.hint}</text>}\n          </box>\n        );\n      })}\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/radio-group.tsx"
+    }
+  ],
+  "categories": [
+    "selection"
+  ],
+  "type": "registry:ui"
+}

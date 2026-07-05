@@ -2,7 +2,7 @@
 import { useKeyboard } from "@opentui/react";
 import { useState, useCallback, useEffect } from "react";
 
-import { useTheme } from "@/components/ui/theme-provider";
+import { useTheme } from "@/components/ui/opentui-theme-provider";
 import { useClipboard } from "@/hooks/use-clipboard";
 
 export interface ClipboardProps {
@@ -46,7 +46,7 @@ export const Clipboard = ({
       {label && <text fg={theme.colors.mutedForeground}>{label}</text>}
       <box gap={2} alignItems="center">
         <box
-          borderStyle="round"
+          borderStyle="rounded"
           borderColor={theme.colors.border}
           paddingLeft={1}
           paddingRight={1}
@@ -54,7 +54,7 @@ export const Clipboard = ({
           <text fg={theme.colors.foreground}>{value}</text>
         </box>
         <box
-          borderStyle="round"
+          borderStyle="rounded"
           borderColor={copied ? theme.colors.success : theme.colors.primary}
           paddingLeft={1}
           paddingRight={1}
