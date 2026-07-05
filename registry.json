@@ -3,9 +3,7 @@
   "homepage": "https://termcn.dev",
   "items": [
     {
-      "categories": [
-        "core"
-      ],
+      "categories": ["core"],
       "description": "Shared terminal theme and provider types.",
       "files": [
         {
@@ -19,12 +17,8 @@
       "type": "registry:file"
     },
     {
-      "categories": [
-        "feedback"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["feedback"],
+      "dependencies": ["ink"],
       "description": "Alert box with success/error/warning/info variants",
       "files": [
         {
@@ -35,17 +29,11 @@
       "name": "ink/alert",
       "title": "Alert",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "templates"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["templates"],
+      "dependencies": ["ink"],
       "description": "Full-screen TUI layout with header, tip bar, full-width input, scrollable content, and hints footer",
       "files": [
         {
@@ -63,12 +51,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "layout"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["layout"],
+      "dependencies": ["ink"],
       "description": "Constrains children to a given aspect ratio",
       "files": [
         {
@@ -81,12 +65,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "typography"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["typography"],
+      "dependencies": ["ink"],
       "description": "Semantic status indicator badge (success/error/warning/info)",
       "files": [
         {
@@ -97,17 +77,11 @@
       "name": "ink/badge",
       "title": "Badge",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "feedback"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["feedback"],
+      "dependencies": ["ink"],
       "description": "Full-width announcement banner",
       "files": [
         {
@@ -118,17 +92,11 @@
       "name": "ink/banner",
       "title": "Banner",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "charts"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["charts"],
+      "dependencies": ["ink"],
       "description": "Horizontal and vertical bar chart with labels",
       "files": [
         {
@@ -139,17 +107,11 @@
       "name": "ink/bar-chart",
       "title": "Bar Chart",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "typography"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["typography"],
+      "dependencies": ["ink"],
       "description": "Figlet-style large ASCII art text",
       "files": [
         {
@@ -160,17 +122,11 @@
       "name": "ink/big-text",
       "title": "Big Text",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "layout"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["layout"],
+      "dependencies": ["ink"],
       "description": "Enhanced flexbox container with theme-aware borders",
       "files": [
         {
@@ -181,17 +137,11 @@
       "name": "ink/box",
       "title": "Box",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "navigation"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["navigation"],
+      "dependencies": ["ink"],
       "description": "Breadcrumb navigation trail",
       "files": [
         {
@@ -200,19 +150,13 @@
         }
       ],
       "name": "ink/breadcrumb",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"],
       "title": "Breadcrumb",
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "templates"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["templates"],
+      "dependencies": ["ink"],
       "description": "Nested structured content with ●/└/□ bullet prefixes",
       "files": [
         {
@@ -223,17 +167,11 @@
       "name": "ink/bullet-list",
       "title": "Bullet List",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "data"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["data"],
+      "dependencies": ["ink"],
       "description": "Card with header, body, and footer slots",
       "files": [
         {
@@ -244,17 +182,11 @@
       "name": "ink/card",
       "title": "Card",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "layout"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["layout"],
+      "dependencies": ["ink"],
       "description": "Centers children horizontally and vertically",
       "files": [
         {
@@ -267,12 +199,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "ai"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["ai"],
+      "dependencies": ["ink"],
       "description": "Chat message bubble with role label, streaming indicator, and collapsible content",
       "files": [
         {
@@ -289,12 +217,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "ai"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["ai"],
+      "dependencies": ["ink"],
       "description": "Scrollable container for stacking ChatMessage components in a conversation thread",
       "files": [
         {
@@ -303,19 +227,13 @@
         }
       ],
       "name": "ink/chat-thread",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/chat-message.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/chat-message.json"],
       "title": "Chat Thread",
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "selection"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["selection"],
+      "dependencies": ["ink"],
       "description": "Checkbox with indeterminate state",
       "files": [
         {
@@ -332,12 +250,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "selection"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["selection"],
+      "dependencies": ["ink"],
       "description": "Checkbox group with min/max selection",
       "files": [
         {
@@ -354,12 +268,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "utility"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["utility"],
+      "dependencies": ["ink"],
       "description": "Copy-to-clipboard button with success feedback",
       "files": [
         {
@@ -376,12 +286,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "utility"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["utility"],
+      "dependencies": ["ink"],
       "description": "Real-time clock display with 12h/24h and date",
       "files": [
         {
@@ -390,19 +296,13 @@
         }
       ],
       "name": "ink/clock",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"],
       "title": "Clock",
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "typography"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["typography"],
+      "dependencies": ["ink"],
       "description": "Syntax-highlighted code block (50+ languages)",
       "files": [
         {
@@ -413,17 +313,11 @@
       "name": "ink/code",
       "title": "Code",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "selection"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["selection"],
+      "dependencies": ["ink"],
       "description": "Color picker with palette, hex, and RGB input",
       "files": [
         {
@@ -440,12 +334,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "layout"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["layout"],
+      "dependencies": ["ink"],
       "description": "Multi-column layout with configurable widths",
       "files": [
         {
@@ -458,13 +348,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "navigation"
-      ],
-      "dependencies": [
-        "ink",
-        "mnemonist"
-      ],
+      "categories": ["navigation"],
+      "dependencies": ["ink", "mnemonist"],
       "description": "VS Code–style command palette with fuzzy search",
       "files": [
         {
@@ -473,19 +358,13 @@
         }
       ],
       "name": "ink/command-palette",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"],
       "title": "Command Palette",
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "forms"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["forms"],
+      "dependencies": ["ink"],
       "description": "Yes/No confirmation prompt",
       "files": [
         {
@@ -502,12 +381,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "ai"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["ai"],
+      "dependencies": ["ink"],
       "description": "Arrow-key scrollable stack for long assistant threads with optional hint",
       "files": [
         {
@@ -524,12 +399,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "data"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["data"],
+      "dependencies": ["ink"],
       "description": "Advanced data grid with sorting, filtering, pagination, and cell editing",
       "files": [
         {
@@ -538,19 +409,13 @@
         }
       ],
       "name": "ink/data-grid",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"],
       "title": "Data Grid",
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "forms"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["forms"],
+      "dependencies": ["ink"],
       "description": "Calendar date picker with keyboard navigation",
       "files": [
         {
@@ -567,12 +432,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "data"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["data"],
+      "dependencies": ["ink"],
       "description": "Term–description definition list",
       "files": [
         {
@@ -583,17 +444,11 @@
       "name": "ink/definition",
       "title": "Definition",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "overlays"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["overlays"],
+      "dependencies": ["ink"],
       "description": "Confirmation dialog with OK/Cancel actions",
       "files": [
         {
@@ -602,19 +457,13 @@
         }
       ],
       "name": "ink/dialog",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"],
       "title": "Dialog",
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "data"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["data"],
+      "dependencies": ["ink"],
       "description": "Unified, split, and inline diff viewer with LCS-based diff algorithm and line numbers",
       "files": [
         {
@@ -625,17 +474,11 @@
       "name": "ink/diff-view",
       "title": "Diff View",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "typography"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["typography"],
+      "dependencies": ["ink"],
       "description": "Box-drawing character numerals",
       "files": [
         {
@@ -646,18 +489,11 @@
       "name": "ink/digits",
       "title": "Digits",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "data"
-      ],
-      "dependencies": [
-        "ink",
-        "glob"
-      ],
+      "categories": ["data"],
+      "dependencies": ["ink", "glob"],
       "description": "Filesystem browser with expand/collapse",
       "files": [
         {
@@ -666,19 +502,13 @@
         }
       ],
       "name": "ink/directory-tree",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"],
       "title": "Directory Tree",
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "layout"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["layout"],
+      "dependencies": ["ink"],
       "description": "Horizontal or vertical divider / rule",
       "files": [
         {
@@ -689,17 +519,11 @@
       "name": "ink/divider",
       "title": "Divider",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "overlays"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["overlays"],
+      "dependencies": ["ink"],
       "description": "Slide-in panel from any edge",
       "files": [
         {
@@ -708,19 +532,13 @@
         }
       ],
       "name": "ink/drawer",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"],
       "title": "Drawer",
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "input"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["input"],
+      "dependencies": ["ink"],
       "description": "Email input with validation and domain suggestions",
       "files": [
         {
@@ -737,12 +555,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "utility"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["utility"],
+      "dependencies": ["ink"],
       "description": "Embedded PTY terminal panel (requires node-pty peer)",
       "files": [
         {
@@ -755,12 +569,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "utility"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["utility"],
+      "dependencies": ["ink"],
       "description": "React error boundary with graceful terminal display",
       "files": [
         {
@@ -773,12 +583,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "ai"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["ai"],
+      "dependencies": ["ink"],
       "description": "Inline error panel with retry, dismiss, and max-retry guard",
       "files": [
         {
@@ -795,12 +601,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "ai"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["ai"],
+      "dependencies": ["ink"],
       "description": "Interactive file-change review list with diff expansion, per-file accept/reject actions, and accept-all shortcut",
       "files": [
         {
@@ -817,13 +619,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "forms"
-      ],
-      "dependencies": [
-        "ink",
-        "glob"
-      ],
+      "categories": ["forms"],
+      "dependencies": ["ink", "glob"],
       "description": "Interactive file browser and picker",
       "files": [
         {
@@ -840,12 +637,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "forms"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["forms"],
+      "dependencies": ["ink"],
       "description": "Form container with validation, Ctrl+S submit, and dirty tracking",
       "files": [
         {
@@ -854,19 +647,13 @@
         }
       ],
       "name": "ink/form",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"],
       "title": "Form",
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "forms"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["forms"],
+      "dependencies": ["ink"],
       "description": "Form field wrapper with label, hint, and error",
       "files": [
         {
@@ -883,12 +670,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "charts"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["charts"],
+      "dependencies": ["ink"],
       "description": "Arc/speedometer gauge meter",
       "files": [
         {
@@ -899,17 +682,11 @@
       "name": "ink/gauge",
       "title": "Gauge",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "data"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["data"],
+      "dependencies": ["ink"],
       "description": "Git status display (branch, staged, modified, ahead/behind)",
       "files": [
         {
@@ -920,17 +697,11 @@
       "name": "ink/git-status",
       "title": "Git Status",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "typography"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["typography"],
+      "dependencies": ["ink"],
       "description": "Color gradient text",
       "files": [
         {
@@ -943,12 +714,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "layout"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["layout"],
+      "dependencies": ["ink"],
       "description": "Rows × columns grid layout",
       "files": [
         {
@@ -961,12 +728,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "typography"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["typography"],
+      "dependencies": ["ink"],
       "description": "h1–h4 styled headings with optional figlet ASCII art",
       "files": [
         {
@@ -977,17 +740,11 @@
       "name": "ink/heading",
       "title": "Heading",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "charts"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["charts"],
+      "dependencies": ["ink"],
       "description": "Grid heatmap with color intensity scale",
       "files": [
         {
@@ -998,17 +755,11 @@
       "name": "ink/heat-map",
       "title": "Heat Map",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "utility"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["utility"],
+      "dependencies": ["ink"],
       "description": "Auto-generated help panel from a keymap",
       "files": [
         {
@@ -1019,17 +770,11 @@
       "name": "ink/help",
       "title": "Help",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "templates"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["templates"],
+      "dependencies": ["ink"],
       "description": "Figlet banner + tagline + aligned Options/Commands help sections",
       "files": [
         {
@@ -1046,12 +791,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "utility"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["utility"],
+      "dependencies": ["ink"],
       "description": "Image renderer with iTerm2/Kitty protocol and ASCII fallback",
       "files": [
         {
@@ -1062,17 +803,11 @@
       "name": "ink/image",
       "title": "Image",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "templates"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["templates"],
+      "dependencies": ["ink"],
       "description": "Bordered info panel with header, key-value rows, and tree-prefix rows",
       "files": [
         {
@@ -1083,17 +818,11 @@
       "name": "ink/info-box",
       "title": "Info Box",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "data"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["data"],
+      "dependencies": ["ink"],
       "description": "Pretty-printed JSON with collapsible nodes",
       "files": [
         {
@@ -1102,19 +831,13 @@
         }
       ],
       "name": "ink/json",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"],
       "title": "JSON",
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "data"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["data"],
+      "dependencies": ["ink"],
       "description": "Aligned key–value pairs",
       "files": [
         {
@@ -1125,17 +848,11 @@
       "name": "ink/key-value",
       "title": "Key Value",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "utility"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["utility"],
+      "dependencies": ["ink"],
       "description": "Formatted keyboard shortcut reference table",
       "files": [
         {
@@ -1146,17 +863,11 @@
       "name": "ink/keyboard-shortcuts",
       "title": "Keyboard Shortcuts",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "charts"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["charts"],
+      "dependencies": ["ink"],
       "description": "ASCII line chart with axes and multi-series support",
       "files": [
         {
@@ -1167,17 +878,11 @@
       "name": "ink/line-chart",
       "title": "Line Chart",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "typography"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["typography"],
+      "dependencies": ["ink"],
       "description": "OSC 8 clickable hyperlink",
       "files": [
         {
@@ -1188,17 +893,11 @@
       "name": "ink/link",
       "title": "Link",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "data"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["data"],
+      "dependencies": ["ink"],
       "description": "Navigable list with optional filtering",
       "files": [
         {
@@ -1207,19 +906,13 @@
         }
       ],
       "name": "ink/list",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"],
       "title": "List",
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "utility"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["utility"],
+      "dependencies": ["ink"],
       "description": "Scrolling log viewer with severity levels and filtering",
       "files": [
         {
@@ -1228,19 +921,13 @@
         }
       ],
       "name": "ink/log",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"],
       "title": "Log",
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "templates"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["templates"],
+      "dependencies": ["ink"],
       "description": "Full-page onboarding/login screen with announcement banner, big ASCII title, description, and numbered select",
       "files": [
         {
@@ -1257,13 +944,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "typography"
-      ],
-      "dependencies": [
-        "ink",
-        "marked"
-      ],
+      "categories": ["typography"],
+      "dependencies": ["ink", "marked"],
       "description": "Full markdown renderer for terminal",
       "files": [
         {
@@ -1274,17 +956,11 @@
       "name": "ink/markdown",
       "title": "Markdown",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "input"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["input"],
+      "dependencies": ["ink"],
       "description": "Masked input for phone, date, credit card formats",
       "files": [
         {
@@ -1301,12 +977,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "navigation"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["navigation"],
+      "dependencies": ["ink"],
       "description": "Dropdown menu with nested submenus",
       "files": [
         {
@@ -1315,19 +987,13 @@
         }
       ],
       "name": "ink/menu",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"],
       "title": "Menu",
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "overlays"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["overlays"],
+      "dependencies": ["ink"],
       "description": "Focus-trapped overlay modal, close with Esc",
       "files": [
         {
@@ -1336,19 +1002,13 @@
         }
       ],
       "name": "ink/modal",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"],
       "title": "Modal",
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "ai"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["ai"],
+      "dependencies": ["ink"],
       "description": "Keyboard-navigable list for selecting an AI model, with optional provider grouping and context-window display",
       "files": [
         {
@@ -1365,12 +1025,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "feedback"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["feedback"],
+      "dependencies": ["ink"],
       "description": "Parallel progress display for package managers, build pipelines, and deploy tools",
       "files": [
         {
@@ -1381,17 +1037,11 @@
       "name": "ink/multi-progress",
       "title": "Multi Progress",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "selection"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["selection"],
+      "dependencies": ["ink"],
       "description": "Multi-select list with checkboxes and select-all",
       "files": [
         {
@@ -1400,19 +1050,13 @@
         }
       ],
       "name": "ink/multi-select",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"],
       "title": "Multi Select",
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "overlays"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["overlays"],
+      "dependencies": ["ink"],
       "description": "Persistent queue-based notification panel with useNotifications hook",
       "files": [
         {
@@ -1433,12 +1077,8 @@
       "type": "registry:block"
     },
     {
-      "categories": [
-        "input"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["input"],
+      "dependencies": ["ink"],
       "description": "Numeric input with increment/decrement and bounds",
       "files": [
         {
@@ -1455,9 +1095,7 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "core"
-      ],
+      "categories": ["core"],
       "description": "Shared terminal theme and provider types.",
       "files": [
         {
@@ -1471,12 +1109,8 @@
       "type": "registry:file"
     },
     {
-      "categories": [
-        "feedback"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["feedback"],
+      "dependencies": ["@opentui/react"],
       "description": "Alert box with success/error/warning/info variants",
       "files": [
         {
@@ -1493,12 +1127,8 @@
       ]
     },
     {
-      "categories": [
-        "templates"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["templates"],
+      "dependencies": ["@opentui/react"],
       "description": "Full-screen TUI layout with header, tip bar, full-width input, scrollable content, and hints footer",
       "files": [
         {
@@ -1515,12 +1145,8 @@
       ]
     },
     {
-      "categories": [
-        "layout"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["layout"],
+      "dependencies": ["@opentui/react"],
       "description": "Constrains children to a given aspect ratio",
       "files": [
         {
@@ -1534,12 +1160,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "typography"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["typography"],
+      "dependencies": ["@opentui/react"],
       "description": "Semantic status indicator badge (success/error/warning/info)",
       "files": [
         {
@@ -1556,12 +1178,8 @@
       ]
     },
     {
-      "categories": [
-        "feedback"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["feedback"],
+      "dependencies": ["@opentui/react"],
       "description": "Full-width announcement banner",
       "files": [
         {
@@ -1578,12 +1196,8 @@
       ]
     },
     {
-      "categories": [
-        "charts"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["charts"],
+      "dependencies": ["@opentui/react"],
       "description": "Horizontal and vertical bar chart with labels",
       "files": [
         {
@@ -1600,12 +1214,8 @@
       ]
     },
     {
-      "categories": [
-        "typography"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["typography"],
+      "dependencies": ["@opentui/react"],
       "description": "Figlet-style large ASCII art text",
       "files": [
         {
@@ -1622,12 +1232,8 @@
       ]
     },
     {
-      "categories": [
-        "layout"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["layout"],
+      "dependencies": ["@opentui/react"],
       "description": "Enhanced flexbox container with theme-aware borders",
       "files": [
         {
@@ -1644,12 +1250,8 @@
       ]
     },
     {
-      "categories": [
-        "navigation"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["navigation"],
+      "dependencies": ["@opentui/react"],
       "description": "Breadcrumb navigation trail",
       "files": [
         {
@@ -1666,12 +1268,8 @@
       ]
     },
     {
-      "categories": [
-        "templates"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["templates"],
+      "dependencies": ["@opentui/react"],
       "description": "Nested structured content with ●/└/□ bullet prefixes",
       "files": [
         {
@@ -1688,12 +1286,8 @@
       ]
     },
     {
-      "categories": [
-        "data"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["data"],
+      "dependencies": ["@opentui/react"],
       "description": "Card with header, body, and footer slots",
       "files": [
         {
@@ -1710,12 +1304,8 @@
       ]
     },
     {
-      "categories": [
-        "layout"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["layout"],
+      "dependencies": ["@opentui/react"],
       "description": "Centers children horizontally and vertically",
       "files": [
         {
@@ -1729,12 +1319,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "ai"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["ai"],
+      "dependencies": ["@opentui/react"],
       "description": "Chat message bubble with role label, streaming indicator, and collapsible content",
       "files": [
         {
@@ -1751,12 +1337,8 @@
       ]
     },
     {
-      "categories": [
-        "ai"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["ai"],
+      "dependencies": ["@opentui/react"],
       "description": "Scrollable container for stacking ChatMessage components in a conversation thread",
       "files": [
         {
@@ -1770,12 +1352,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "selection"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["selection"],
+      "dependencies": ["@opentui/react"],
       "description": "Checkbox with indeterminate state",
       "files": [
         {
@@ -1792,12 +1370,8 @@
       ]
     },
     {
-      "categories": [
-        "selection"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["selection"],
+      "dependencies": ["@opentui/react"],
       "description": "Checkbox group with min/max selection",
       "files": [
         {
@@ -1814,12 +1388,8 @@
       ]
     },
     {
-      "categories": [
-        "utility"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["utility"],
+      "dependencies": ["@opentui/react"],
       "description": "Copy-to-clipboard button with success feedback",
       "files": [
         {
@@ -1837,12 +1407,8 @@
       ]
     },
     {
-      "categories": [
-        "utility"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["utility"],
+      "dependencies": ["@opentui/react"],
       "description": "Real-time clock display with 12h/24h and date",
       "files": [
         {
@@ -1859,12 +1425,8 @@
       ]
     },
     {
-      "categories": [
-        "typography"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["typography"],
+      "dependencies": ["@opentui/react"],
       "description": "Syntax-highlighted code block (50+ languages)",
       "files": [
         {
@@ -1881,12 +1443,8 @@
       ]
     },
     {
-      "categories": [
-        "selection"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["selection"],
+      "dependencies": ["@opentui/react"],
       "description": "Color picker with palette, hex, and RGB input",
       "files": [
         {
@@ -1903,12 +1461,8 @@
       ]
     },
     {
-      "categories": [
-        "layout"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["layout"],
+      "dependencies": ["@opentui/react"],
       "description": "Multi-column layout with configurable widths",
       "files": [
         {
@@ -1922,12 +1476,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "navigation"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["navigation"],
+      "dependencies": ["@opentui/react"],
       "description": "VS Code–style command palette with fuzzy search",
       "files": [
         {
@@ -1944,12 +1494,8 @@
       ]
     },
     {
-      "categories": [
-        "forms"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["forms"],
+      "dependencies": ["@opentui/react"],
       "description": "Yes/No confirmation prompt",
       "files": [
         {
@@ -1966,12 +1512,8 @@
       ]
     },
     {
-      "categories": [
-        "data"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["data"],
+      "dependencies": ["@opentui/react"],
       "description": "Advanced data grid with sorting, filtering, pagination, and cell editing",
       "files": [
         {
@@ -1988,12 +1530,8 @@
       ]
     },
     {
-      "categories": [
-        "forms"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["forms"],
+      "dependencies": ["@opentui/react"],
       "description": "Calendar date picker with keyboard navigation",
       "files": [
         {
@@ -2010,12 +1548,8 @@
       ]
     },
     {
-      "categories": [
-        "data"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["data"],
+      "dependencies": ["@opentui/react"],
       "description": "Term–description definition list",
       "files": [
         {
@@ -2032,12 +1566,8 @@
       ]
     },
     {
-      "categories": [
-        "overlays"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["overlays"],
+      "dependencies": ["@opentui/react"],
       "description": "Confirmation dialog with OK/Cancel actions",
       "files": [
         {
@@ -2054,12 +1584,8 @@
       ]
     },
     {
-      "categories": [
-        "data"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["data"],
+      "dependencies": ["@opentui/react"],
       "description": "Unified, split, and inline diff viewer with LCS-based diff algorithm and line numbers",
       "files": [
         {
@@ -2076,12 +1602,8 @@
       ]
     },
     {
-      "categories": [
-        "typography"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["typography"],
+      "dependencies": ["@opentui/react"],
       "description": "Box-drawing character numerals",
       "files": [
         {
@@ -2098,12 +1620,8 @@
       ]
     },
     {
-      "categories": [
-        "data"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["data"],
+      "dependencies": ["@opentui/react"],
       "description": "Filesystem browser with expand/collapse",
       "files": [
         {
@@ -2120,12 +1638,8 @@
       ]
     },
     {
-      "categories": [
-        "layout"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["layout"],
+      "dependencies": ["@opentui/react"],
       "description": "Horizontal or vertical divider / rule",
       "files": [
         {
@@ -2142,12 +1656,8 @@
       ]
     },
     {
-      "categories": [
-        "overlays"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["overlays"],
+      "dependencies": ["@opentui/react"],
       "description": "Slide-in panel from any edge",
       "files": [
         {
@@ -2164,12 +1674,8 @@
       ]
     },
     {
-      "categories": [
-        "input"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["input"],
+      "dependencies": ["@opentui/react"],
       "description": "Email input with validation and domain suggestions",
       "files": [
         {
@@ -2186,13 +1692,8 @@
       ]
     },
     {
-      "categories": [
-        "utility"
-      ],
-      "dependencies": [
-        "@opentui/react",
-        "strip-ansi"
-      ],
+      "categories": ["utility"],
+      "dependencies": ["@opentui/react", "strip-ansi"],
       "description": "Embedded PTY terminal panel (requires node-pty peer)",
       "files": [
         {
@@ -2206,12 +1707,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "utility"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["utility"],
+      "dependencies": ["@opentui/react"],
       "description": "React error boundary with graceful terminal display",
       "files": [
         {
@@ -2225,12 +1722,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "ai"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["ai"],
+      "dependencies": ["@opentui/react"],
       "description": "Interactive file-change review list with diff expansion, per-file accept/reject actions, and accept-all shortcut",
       "files": [
         {
@@ -2247,12 +1740,8 @@
       ]
     },
     {
-      "categories": [
-        "forms"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["forms"],
+      "dependencies": ["@opentui/react"],
       "description": "Interactive file browser and picker",
       "files": [
         {
@@ -2269,12 +1758,8 @@
       ]
     },
     {
-      "categories": [
-        "forms"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["forms"],
+      "dependencies": ["@opentui/react"],
       "description": "Form container with validation, Ctrl+S submit, and dirty tracking",
       "files": [
         {
@@ -2291,12 +1776,8 @@
       ]
     },
     {
-      "categories": [
-        "forms"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["forms"],
+      "dependencies": ["@opentui/react"],
       "description": "Form field wrapper with label, hint, and error",
       "files": [
         {
@@ -2313,12 +1794,8 @@
       ]
     },
     {
-      "categories": [
-        "charts"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["charts"],
+      "dependencies": ["@opentui/react"],
       "description": "Arc/speedometer gauge meter",
       "files": [
         {
@@ -2335,12 +1812,8 @@
       ]
     },
     {
-      "categories": [
-        "data"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["data"],
+      "dependencies": ["@opentui/react"],
       "description": "Git status display (branch, staged, modified, ahead/behind)",
       "files": [
         {
@@ -2357,12 +1830,8 @@
       ]
     },
     {
-      "categories": [
-        "typography"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["typography"],
+      "dependencies": ["@opentui/react"],
       "description": "Color gradient text",
       "files": [
         {
@@ -2376,12 +1845,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "layout"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["layout"],
+      "dependencies": ["@opentui/react"],
       "description": "Rows × columns grid layout",
       "files": [
         {
@@ -2395,12 +1860,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "typography"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["typography"],
+      "dependencies": ["@opentui/react"],
       "description": "h1–h4 styled headings with optional figlet ASCII art",
       "files": [
         {
@@ -2417,12 +1878,8 @@
       ]
     },
     {
-      "categories": [
-        "charts"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["charts"],
+      "dependencies": ["@opentui/react"],
       "description": "Grid heatmap with color intensity scale",
       "files": [
         {
@@ -2439,12 +1896,8 @@
       ]
     },
     {
-      "categories": [
-        "utility"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["utility"],
+      "dependencies": ["@opentui/react"],
       "description": "Auto-generated help panel from a keymap",
       "files": [
         {
@@ -2461,12 +1914,8 @@
       ]
     },
     {
-      "categories": [
-        "templates"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["templates"],
+      "dependencies": ["@opentui/react"],
       "description": "Figlet banner + tagline + aligned Options/Commands help sections",
       "files": [
         {
@@ -2483,12 +1932,8 @@
       ]
     },
     {
-      "categories": [
-        "utility"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["utility"],
+      "dependencies": ["@opentui/react"],
       "description": "Image renderer with iTerm2/Kitty protocol and ASCII fallback",
       "files": [
         {
@@ -2505,12 +1950,8 @@
       ]
     },
     {
-      "categories": [
-        "templates"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["templates"],
+      "dependencies": ["@opentui/react"],
       "description": "Bordered info panel with header, key-value rows, and tree-prefix rows",
       "files": [
         {
@@ -2527,12 +1968,8 @@
       ]
     },
     {
-      "categories": [
-        "data"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["data"],
+      "dependencies": ["@opentui/react"],
       "description": "Pretty-printed JSON with collapsible nodes",
       "files": [
         {
@@ -2549,12 +1986,8 @@
       ]
     },
     {
-      "categories": [
-        "data"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["data"],
+      "dependencies": ["@opentui/react"],
       "description": "Aligned key–value pairs",
       "files": [
         {
@@ -2571,12 +2004,8 @@
       ]
     },
     {
-      "categories": [
-        "utility"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["utility"],
+      "dependencies": ["@opentui/react"],
       "description": "Formatted keyboard shortcut reference table",
       "files": [
         {
@@ -2593,12 +2022,8 @@
       ]
     },
     {
-      "categories": [
-        "charts"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["charts"],
+      "dependencies": ["@opentui/react"],
       "description": "ASCII line chart with axes and multi-series support",
       "files": [
         {
@@ -2615,12 +2040,8 @@
       ]
     },
     {
-      "categories": [
-        "typography"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["typography"],
+      "dependencies": ["@opentui/react"],
       "description": "OSC 8 clickable hyperlink",
       "files": [
         {
@@ -2637,12 +2058,8 @@
       ]
     },
     {
-      "categories": [
-        "data"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["data"],
+      "dependencies": ["@opentui/react"],
       "description": "Navigable list with optional filtering",
       "files": [
         {
@@ -2659,12 +2076,8 @@
       ]
     },
     {
-      "categories": [
-        "utility"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["utility"],
+      "dependencies": ["@opentui/react"],
       "description": "Scrolling log viewer with severity levels and filtering",
       "files": [
         {
@@ -2681,12 +2094,8 @@
       ]
     },
     {
-      "categories": [
-        "templates"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["templates"],
+      "dependencies": ["@opentui/react"],
       "description": "Full-page onboarding/login screen with announcement banner, big ASCII title, description, and numbered select",
       "files": [
         {
@@ -2703,12 +2112,8 @@
       ]
     },
     {
-      "categories": [
-        "typography"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["typography"],
+      "dependencies": ["@opentui/react"],
       "description": "Full markdown renderer for terminal",
       "files": [
         {
@@ -2725,12 +2130,8 @@
       ]
     },
     {
-      "categories": [
-        "input"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["input"],
+      "dependencies": ["@opentui/react"],
       "description": "Masked input for phone, date, credit card formats",
       "files": [
         {
@@ -2747,12 +2148,8 @@
       ]
     },
     {
-      "categories": [
-        "navigation"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["navigation"],
+      "dependencies": ["@opentui/react"],
       "description": "Dropdown menu with nested submenus",
       "files": [
         {
@@ -2769,12 +2166,8 @@
       ]
     },
     {
-      "categories": [
-        "overlays"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["overlays"],
+      "dependencies": ["@opentui/react"],
       "description": "Focus-trapped overlay modal, close with Esc",
       "files": [
         {
@@ -2791,12 +2184,8 @@
       ]
     },
     {
-      "categories": [
-        "ai"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["ai"],
+      "dependencies": ["@opentui/react"],
       "description": "Keyboard-navigable list for selecting an AI model, with optional provider grouping and context-window display",
       "files": [
         {
@@ -2813,12 +2202,8 @@
       ]
     },
     {
-      "categories": [
-        "feedback"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["feedback"],
+      "dependencies": ["@opentui/react"],
       "description": "Parallel progress display for package managers, build pipelines, and deploy tools",
       "files": [
         {
@@ -2835,12 +2220,8 @@
       ]
     },
     {
-      "categories": [
-        "selection"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["selection"],
+      "dependencies": ["@opentui/react"],
       "description": "Multi-select list with checkboxes and select-all",
       "files": [
         {
@@ -2857,12 +2238,8 @@
       ]
     },
     {
-      "categories": [
-        "feedback"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["feedback"],
+      "dependencies": ["@opentui/react"],
       "description": "Notification Badge component for OpenTUI React.",
       "files": [
         {
@@ -2879,12 +2256,8 @@
       ]
     },
     {
-      "categories": [
-        "overlays"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["overlays"],
+      "dependencies": ["@opentui/react"],
       "description": "Persistent queue-based notification panel with useNotifications hook",
       "files": [
         {
@@ -2902,12 +2275,8 @@
       ]
     },
     {
-      "categories": [
-        "input"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["input"],
+      "dependencies": ["@opentui/react"],
       "description": "Numeric input with increment/decrement and bounds",
       "files": [
         {
@@ -2924,12 +2293,8 @@
       ]
     },
     {
-      "categories": [
-        "navigation"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["navigation"],
+      "dependencies": ["@opentui/react"],
       "description": "Page navigation with prev/next and jump",
       "files": [
         {
@@ -2946,12 +2311,8 @@
       ]
     },
     {
-      "categories": [
-        "utility"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["utility"],
+      "dependencies": ["@opentui/react"],
       "description": "Titled bordered panel",
       "files": [
         {
@@ -2968,12 +2329,8 @@
       ]
     },
     {
-      "categories": [
-        "input"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["input"],
+      "dependencies": ["@opentui/react"],
       "description": "Password input with masked characters and reveal toggle",
       "files": [
         {
@@ -2990,12 +2347,8 @@
       ]
     },
     {
-      "categories": [
-        "input"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["input"],
+      "dependencies": ["@opentui/react"],
       "description": "Filesystem path input with tab autocomplete",
       "files": [
         {
@@ -3012,12 +2365,8 @@
       ]
     },
     {
-      "categories": [
-        "charts"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["charts"],
+      "dependencies": ["@opentui/react"],
       "description": "Unicode block pie chart with legend",
       "files": [
         {
@@ -3034,12 +2383,8 @@
       ]
     },
     {
-      "categories": [
-        "overlays"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["overlays"],
+      "dependencies": ["@opentui/react"],
       "description": "Positioned popover with arbitrary content",
       "files": [
         {
@@ -3056,12 +2401,8 @@
       ]
     },
     {
-      "categories": [
-        "feedback"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["feedback"],
+      "dependencies": ["@opentui/react"],
       "description": "Determinate progress bar with percent and value/total display",
       "files": [
         {
@@ -3078,12 +2419,8 @@
       ]
     },
     {
-      "categories": [
-        "feedback"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["feedback"],
+      "dependencies": ["@opentui/react"],
       "description": "Circular progress indicator using Unicode braille",
       "files": [
         {
@@ -3100,12 +2437,8 @@
       ]
     },
     {
-      "categories": [
-        "utility"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["utility"],
+      "dependencies": ["@opentui/react"],
       "description": "Unicode block QR code generator",
       "files": [
         {
@@ -3122,12 +2455,8 @@
       ]
     },
     {
-      "categories": [
-        "selection"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["selection"],
+      "dependencies": ["@opentui/react"],
       "description": "Mutually exclusive radio button group",
       "files": [
         {
@@ -3144,12 +2473,8 @@
       ]
     },
     {
-      "categories": [
-        "layout"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["layout"],
+      "dependencies": ["@opentui/react"],
       "description": "Scrollable container with scrollbar",
       "files": [
         {
@@ -3166,12 +2491,8 @@
       ]
     },
     {
-      "categories": [
-        "input"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["input"],
+      "dependencies": ["@opentui/react"],
       "description": "Fuzzy search input with autocomplete",
       "files": [
         {
@@ -3188,12 +2509,8 @@
       ]
     },
     {
-      "categories": [
-        "selection"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["selection"],
+      "dependencies": ["@opentui/react"],
       "description": "Single-select dropdown with arrow-key navigation",
       "files": [
         {
@@ -3210,12 +2527,8 @@
       ]
     },
     {
-      "categories": [
-        "templates"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["templates"],
+      "dependencies": ["@opentui/react"],
       "description": "@clack-style step flow with ◇/◆/│ visual language, badge, info steps, and multi-select",
       "files": [
         {
@@ -3232,12 +2545,8 @@
       ]
     },
     {
-      "categories": [
-        "navigation"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["navigation"],
+      "dependencies": ["@opentui/react"],
       "description": "Collapsible navigation sidebar panel",
       "files": [
         {
@@ -3254,12 +2563,8 @@
       ]
     },
     {
-      "categories": [
-        "feedback"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["feedback"],
+      "dependencies": ["@opentui/react"],
       "description": "Shimmer loading placeholder",
       "files": [
         {
@@ -3276,12 +2581,8 @@
       ]
     },
     {
-      "categories": [
-        "layout"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["layout"],
+      "dependencies": ["@opentui/react"],
       "description": "Flexible space between flex children",
       "files": [
         {
@@ -3295,12 +2596,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "charts"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["charts"],
+      "dependencies": ["@opentui/react"],
       "description": "Inline Unicode braille sparkline chart",
       "files": [
         {
@@ -3317,13 +2614,8 @@
       ]
     },
     {
-      "categories": [
-        "feedback"
-      ],
-      "dependencies": [
-        "@opentui/react",
-        "cli-spinners"
-      ],
+      "categories": ["feedback"],
+      "dependencies": ["@opentui/react", "cli-spinners"],
       "description": "Animated spinner with 12+ styles",
       "files": [
         {
@@ -3341,12 +2633,8 @@
       ]
     },
     {
-      "categories": [
-        "templates"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["templates"],
+      "dependencies": ["@opentui/react"],
       "description": "Styled startup banner with big ASCII art title, subtitle, author credit, and status line",
       "files": [
         {
@@ -3363,12 +2651,8 @@
       ]
     },
     {
-      "categories": [
-        "layout"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["layout"],
+      "dependencies": ["@opentui/react"],
       "description": "Vertical/horizontal stack with gap",
       "files": [
         {
@@ -3382,12 +2666,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "feedback"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["feedback"],
+      "dependencies": ["@opentui/react"],
       "description": "Inline status message with icon and color",
       "files": [
         {
@@ -3404,12 +2684,8 @@
       ]
     },
     {
-      "categories": [
-        "utility"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["utility"],
+      "dependencies": ["@opentui/react"],
       "description": "Count-up stopwatch with laps and reset",
       "files": [
         {
@@ -3426,12 +2702,8 @@
       ]
     },
     {
-      "categories": [
-        "ai"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["ai"],
+      "dependencies": ["@opentui/react"],
       "description": "Token-by-token streaming text with blinking cursor and optional typing animation",
       "files": [
         {
@@ -3448,12 +2720,8 @@
       ]
     },
     {
-      "categories": [
-        "navigation"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["navigation"],
+      "dependencies": ["@opentui/react"],
       "description": "Tab bar wired to content panels",
       "files": [
         {
@@ -3470,12 +2738,8 @@
       ]
     },
     {
-      "categories": [
-        "data"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["data"],
+      "dependencies": ["@opentui/react"],
       "description": "Sortable, selectable, paginated data table",
       "files": [
         {
@@ -3492,12 +2756,8 @@
       ]
     },
     {
-      "categories": [
-        "navigation"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["navigation"],
+      "dependencies": ["@opentui/react"],
       "description": "Tab bar with left/right arrow and tab-key navigation",
       "files": [
         {
@@ -3514,12 +2774,8 @@
       ]
     },
     {
-      "categories": [
-        "typography"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["typography"],
+      "dependencies": ["@opentui/react"],
       "description": "Removable chip/tag",
       "files": [
         {
@@ -3536,12 +2792,8 @@
       ]
     },
     {
-      "categories": [
-        "selection"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["selection"],
+      "dependencies": ["@opentui/react"],
       "description": "Add and remove tags inline",
       "files": [
         {
@@ -3558,12 +2810,8 @@
       ]
     },
     {
-      "categories": [
-        "input"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["input"],
+      "dependencies": ["@opentui/react"],
       "description": "Multi-line text editor with word wrap",
       "files": [
         {
@@ -3580,12 +2828,8 @@
       ]
     },
     {
-      "categories": [
-        "input"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["input"],
+      "dependencies": ["@opentui/react"],
       "description": "Single-line text input with placeholder, validation, mask",
       "files": [
         {
@@ -3602,12 +2846,8 @@
       ]
     },
     {
-      "categories": [
-        "core"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["core"],
+      "dependencies": ["@opentui/react"],
       "description": "Terminal theme provider, design tokens, and theme helpers.",
       "files": [
         {
@@ -3625,12 +2865,8 @@
       ]
     },
     {
-      "categories": [
-        "ai"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["ai"],
+      "dependencies": ["@opentui/react"],
       "description": "Collapsible block for displaying extended thinking / reasoning content from an AI model",
       "files": [
         {
@@ -3647,12 +2883,8 @@
       ]
     },
     {
-      "categories": [
-        "forms"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["forms"],
+      "dependencies": ["@opentui/react"],
       "description": "Time picker with hour/minute/second spinners",
       "files": [
         {
@@ -3669,12 +2901,8 @@
       ]
     },
     {
-      "categories": [
-        "utility"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["utility"],
+      "dependencies": ["@opentui/react"],
       "description": "Countdown timer with pause/resume and auto-start",
       "files": [
         {
@@ -3691,12 +2919,8 @@
       ]
     },
     {
-      "categories": [
-        "feedback"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["feedback"],
+      "dependencies": ["@opentui/react"],
       "description": "Auto-dismissing toast notification",
       "files": [
         {
@@ -3713,12 +2937,8 @@
       ]
     },
     {
-      "categories": [
-        "utility"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["utility"],
+      "dependencies": ["@opentui/react"],
       "description": "Toggle/switch component with on/off labels",
       "files": [
         {
@@ -3735,12 +2955,8 @@
       ]
     },
     {
-      "categories": [
-        "ai"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["ai"],
+      "dependencies": ["@opentui/react"],
       "description": "Compact token counter showing prompt and completion usage with optional cost estimate; also exports ContextMeter for visualising context window fill",
       "files": [
         {
@@ -3757,12 +2973,8 @@
       ]
     },
     {
-      "categories": [
-        "ai"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["ai"],
+      "dependencies": ["@opentui/react"],
       "description": "Interactive approval prompt for AI tool calls with risk-level badge, args display, and auto-deny timeout",
       "files": [
         {
@@ -3779,12 +2991,8 @@
       ]
     },
     {
-      "categories": [
-        "ai"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["ai"],
+      "dependencies": ["@opentui/react"],
       "description": "Displays an AI tool invocation with status indicator, args, result, and elapsed time",
       "files": [
         {
@@ -3801,12 +3009,8 @@
       ]
     },
     {
-      "categories": [
-        "overlays"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["overlays"],
+      "dependencies": ["@opentui/react"],
       "description": "Contextual tooltip on focus or hover",
       "files": [
         {
@@ -3823,12 +3027,8 @@
       ]
     },
     {
-      "categories": [
-        "data"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["data"],
+      "dependencies": ["@opentui/react"],
       "description": "Expandable/collapsible tree view",
       "files": [
         {
@@ -3845,12 +3045,8 @@
       ]
     },
     {
-      "categories": [
-        "selection"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["selection"],
+      "dependencies": ["@opentui/react"],
       "description": "Hierarchical tree selection",
       "files": [
         {
@@ -3867,12 +3063,8 @@
       ]
     },
     {
-      "categories": [
-        "templates"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["templates"],
+      "dependencies": ["@opentui/react"],
       "description": "Real-time dashboard with diamond header, progress metrics, burn rate, predictions, and status bar",
       "files": [
         {
@@ -3886,12 +3078,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "data"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["data"],
+      "dependencies": ["@opentui/react"],
       "description": "Virtualized list for 10k+ items",
       "files": [
         {
@@ -3908,12 +3096,8 @@
       ]
     },
     {
-      "categories": [
-        "templates"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["templates"],
+      "dependencies": ["@opentui/react"],
       "description": "Two-panel welcome dashboard with titled border, logo, greeting, and sections",
       "files": [
         {
@@ -3930,12 +3114,8 @@
       ]
     },
     {
-      "categories": [
-        "forms"
-      ],
-      "dependencies": [
-        "@opentui/react"
-      ],
+      "categories": ["forms"],
+      "dependencies": ["@opentui/react"],
       "description": "Multi-step wizard with per-step validation",
       "files": [
         {
@@ -3952,12 +3132,8 @@
       ]
     },
     {
-      "categories": [
-        "navigation"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["navigation"],
+      "dependencies": ["ink"],
       "description": "Page navigation with prev/next and jump",
       "files": [
         {
@@ -3966,19 +3142,13 @@
         }
       ],
       "name": "ink/pagination",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"],
       "title": "Pagination",
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "utility"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["utility"],
+      "dependencies": ["ink"],
       "description": "Titled bordered panel",
       "files": [
         {
@@ -3989,17 +3159,11 @@
       "name": "ink/panel",
       "title": "Panel",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "input"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["input"],
+      "dependencies": ["ink"],
       "description": "Password input with masked characters and reveal toggle",
       "files": [
         {
@@ -4016,13 +3180,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "input"
-      ],
-      "dependencies": [
-        "ink",
-        "glob"
-      ],
+      "categories": ["input"],
+      "dependencies": ["ink", "glob"],
       "description": "Filesystem path input with tab autocomplete",
       "files": [
         {
@@ -4039,12 +3198,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "charts"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["charts"],
+      "dependencies": ["ink"],
       "description": "Unicode block pie chart with legend",
       "files": [
         {
@@ -4055,17 +3210,11 @@
       "name": "ink/pie-chart",
       "title": "Pie Chart",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "overlays"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["overlays"],
+      "dependencies": ["ink"],
       "description": "Positioned popover with arbitrary content",
       "files": [
         {
@@ -4074,19 +3223,13 @@
         }
       ],
       "name": "ink/popover",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"],
       "title": "Popover",
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "feedback"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["feedback"],
+      "dependencies": ["ink"],
       "description": "Determinate progress bar with percent and value/total display",
       "files": [
         {
@@ -4097,17 +3240,11 @@
       "name": "ink/progress-bar",
       "title": "Progress Bar",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "feedback"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["feedback"],
+      "dependencies": ["ink"],
       "description": "Circular progress indicator using Unicode braille",
       "files": [
         {
@@ -4118,17 +3255,11 @@
       "name": "ink/progress-circle",
       "title": "Progress Circle",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "utility"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["utility"],
+      "dependencies": ["ink"],
       "description": "Unicode block QR code generator",
       "files": [
         {
@@ -4139,17 +3270,11 @@
       "name": "ink/qr-code",
       "title": "QR Code",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "selection"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["selection"],
+      "dependencies": ["ink"],
       "description": "Mutually exclusive radio button group",
       "files": [
         {
@@ -4158,19 +3283,13 @@
         }
       ],
       "name": "ink/radio-group",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"],
       "title": "Radio Group",
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "layout"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["layout"],
+      "dependencies": ["ink"],
       "description": "Scrollable container with scrollbar",
       "files": [
         {
@@ -4181,18 +3300,11 @@
       "name": "ink/scroll-view",
       "title": "Scroll View",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "input"
-      ],
-      "dependencies": [
-        "ink",
-        "mnemonist"
-      ],
+      "categories": ["input"],
+      "dependencies": ["ink", "mnemonist"],
       "description": "Fuzzy search input with autocomplete",
       "files": [
         {
@@ -4209,12 +3321,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "selection"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["selection"],
+      "dependencies": ["ink"],
       "description": "Single-select dropdown with arrow-key navigation",
       "files": [
         {
@@ -4223,19 +3331,13 @@
         }
       ],
       "name": "ink/select",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"],
       "title": "Select",
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "templates"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["templates"],
+      "dependencies": ["ink"],
       "description": "@clack-style step flow with ◇/◆/│ visual language, badge, info steps, and multi-select",
       "files": [
         {
@@ -4253,12 +3355,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "navigation"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["navigation"],
+      "dependencies": ["ink"],
       "description": "Collapsible navigation sidebar panel",
       "files": [
         {
@@ -4267,19 +3365,13 @@
         }
       ],
       "name": "ink/sidebar",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"],
       "title": "Sidebar",
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "feedback"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["feedback"],
+      "dependencies": ["ink"],
       "description": "Shimmer loading placeholder",
       "files": [
         {
@@ -4296,12 +3388,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "layout"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["layout"],
+      "dependencies": ["ink"],
       "description": "Flexible space between flex children",
       "files": [
         {
@@ -4314,12 +3402,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "charts"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["charts"],
+      "dependencies": ["ink"],
       "description": "Inline Unicode braille sparkline chart",
       "files": [
         {
@@ -4330,17 +3414,11 @@
       "name": "ink/sparkline",
       "title": "Sparkline",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "feedback"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["feedback"],
+      "dependencies": ["ink"],
       "description": "Animated spinner with 12+ styles",
       "files": [
         {
@@ -4349,19 +3427,13 @@
         }
       ],
       "name": "ink/spinner",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"],
       "title": "Spinner",
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "templates"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["templates"],
+      "dependencies": ["ink"],
       "description": "Styled startup banner with big ASCII art title, subtitle, author credit, and status line",
       "files": [
         {
@@ -4378,12 +3450,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "layout"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["layout"],
+      "dependencies": ["ink"],
       "description": "Vertical/horizontal stack with gap",
       "files": [
         {
@@ -4396,12 +3464,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "feedback"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["feedback"],
+      "dependencies": ["ink"],
       "description": "Inline status message with icon and color",
       "files": [
         {
@@ -4412,17 +3476,11 @@
       "name": "ink/status-message",
       "title": "Status Message",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "utility"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["utility"],
+      "dependencies": ["ink"],
       "description": "Count-up stopwatch with laps and reset",
       "files": [
         {
@@ -4439,12 +3497,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "ai"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["ai"],
+      "dependencies": ["ink"],
       "description": "Token-by-token streaming text with blinking cursor and optional typing animation",
       "files": [
         {
@@ -4455,17 +3509,11 @@
       "name": "ink/streaming-text",
       "title": "Streaming Text",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "navigation"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["navigation"],
+      "dependencies": ["ink"],
       "description": "Tab bar wired to content panels",
       "files": [
         {
@@ -4482,12 +3530,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "data"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["data"],
+      "dependencies": ["ink"],
       "description": "Sortable, selectable, paginated data table",
       "files": [
         {
@@ -4496,19 +3540,13 @@
         }
       ],
       "name": "ink/table",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"],
       "title": "Table",
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "navigation"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["navigation"],
+      "dependencies": ["ink"],
       "description": "Tab bar with left/right arrow and tab-key navigation",
       "files": [
         {
@@ -4517,19 +3555,13 @@
         }
       ],
       "name": "ink/tabs",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"],
       "title": "Tabs",
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "typography"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["typography"],
+      "dependencies": ["ink"],
       "description": "Removable chip/tag",
       "files": [
         {
@@ -4540,17 +3572,11 @@
       "name": "ink/tag",
       "title": "Tag",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "selection"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["selection"],
+      "dependencies": ["ink"],
       "description": "Add and remove tags inline",
       "files": [
         {
@@ -4559,19 +3585,13 @@
         }
       ],
       "name": "ink/tag-input",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"],
       "title": "Tag Input",
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "input"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["input"],
+      "dependencies": ["ink"],
       "description": "Multi-line text editor with word wrap",
       "files": [
         {
@@ -4588,12 +3608,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "input"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["input"],
+      "dependencies": ["ink"],
       "description": "Single-line text input with placeholder, validation, mask",
       "files": [
         {
@@ -4610,9 +3626,7 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "A Catppuccin theme for rich terminal UI previews.",
       "files": [
         {
@@ -4622,16 +3636,12 @@
         }
       ],
       "name": "ink/theme-catppuccin",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "Catppuccin",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "The default termcn terminal theme.",
       "files": [
         {
@@ -4641,16 +3651,12 @@
         }
       ],
       "name": "ink/theme-default",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "Default",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "A purple-heavy Dracula theme for terminal UI components.",
       "files": [
         {
@@ -4660,16 +3666,12 @@
         }
       ],
       "name": "ink/theme-dracula",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "Dracula",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "High contrast themes for dark and light terminal backgrounds.",
       "files": [
         {
@@ -4679,16 +3681,12 @@
         }
       ],
       "name": "ink/theme-high-contrast",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "High Contrast",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "A classic Monokai-inspired theme for terminal apps.",
       "files": [
         {
@@ -4698,16 +3696,12 @@
         }
       ],
       "name": "ink/theme-monokai",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "Monokai",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "A cool Nord palette tuned for terminal contrast.",
       "files": [
         {
@@ -4717,16 +3711,12 @@
         }
       ],
       "name": "ink/theme-nord",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "Nord",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "A One Dark theme for terminal components.",
       "files": [
         {
@@ -4736,16 +3726,12 @@
         }
       ],
       "name": "ink/theme-one-dark",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "One Dark",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "core"
-      ],
+      "categories": ["core"],
       "description": "Terminal theme provider, design tokens, and theme helpers.",
       "files": [
         {
@@ -4763,9 +3749,7 @@
       ]
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "A Solarized theme for terminal components.",
       "files": [
         {
@@ -4775,16 +3759,12 @@
         }
       ],
       "name": "ink/theme-solarized",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "Solarized",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Tokyo Night colors for terminal interfaces.",
       "files": [
         {
@@ -4794,16 +3774,12 @@
         }
       ],
       "name": "ink/theme-tokyo-night",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "Tokyo Night",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "AMOLED - high contrast dark theme with pure black.",
       "files": [
         {
@@ -4813,16 +3789,12 @@
         }
       ],
       "name": "ink/theme-amoled",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "AMOLED",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Aura - soft elegant theme with pastel purple.",
       "files": [
         {
@@ -4832,16 +3804,12 @@
         }
       ],
       "name": "ink/theme-aura",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "Aura",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Ayu - clean modern terminal theme.",
       "files": [
         {
@@ -4851,16 +3819,12 @@
         }
       ],
       "name": "ink/theme-ayu",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "Ayu",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Carbonfox - minimal dark theme.",
       "files": [
         {
@@ -4870,16 +3834,12 @@
         }
       ],
       "name": "ink/theme-carbonfox",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "Carbonfox",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Catppuccin Frappe - soothing pastel.",
       "files": [
         {
@@ -4889,16 +3849,12 @@
         }
       ],
       "name": "ink/theme-catppuccin-frappe",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "Catppuccin Frappe",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Catppuccin Macchiato - deeper pastel tones.",
       "files": [
         {
@@ -4908,16 +3864,12 @@
         }
       ],
       "name": "ink/theme-catppuccin-macchiato",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "Catppuccin Macchiato",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Cobalt2 - vibrant blue and gold.",
       "files": [
         {
@@ -4927,16 +3879,12 @@
         }
       ],
       "name": "ink/theme-cobalt2",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "Cobalt2",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Cursor IDE theme.",
       "files": [
         {
@@ -4946,16 +3894,12 @@
         }
       ],
       "name": "ink/theme-cursor",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "Cursor",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Everforest - warm forest theme.",
       "files": [
         {
@@ -4965,16 +3909,12 @@
         }
       ],
       "name": "ink/theme-everforest",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "Everforest",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Flexoki - versatile theme.",
       "files": [
         {
@@ -4984,16 +3924,12 @@
         }
       ],
       "name": "ink/theme-flexoki",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "Flexoki",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "GitHub official dark theme.",
       "files": [
         {
@@ -5003,16 +3939,12 @@
         }
       ],
       "name": "ink/theme-github",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "GitHub",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Gruvbox - retro earth tones.",
       "files": [
         {
@@ -5022,16 +3954,12 @@
         }
       ],
       "name": "ink/theme-gruvbox",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "Gruvbox",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Kanagawa - Japanese wave theme.",
       "files": [
         {
@@ -5041,16 +3969,12 @@
         }
       ],
       "name": "ink/theme-kanagawa",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "Kanagawa",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Lucent Orng - warm orange theme.",
       "files": [
         {
@@ -5060,16 +3984,12 @@
         }
       ],
       "name": "ink/theme-lucent-orng",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "Lucent Orng",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Material Design colors.",
       "files": [
         {
@@ -5079,16 +3999,12 @@
         }
       ],
       "name": "ink/theme-material",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "Material",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Matrix - green code rain.",
       "files": [
         {
@@ -5098,16 +4014,12 @@
         }
       ],
       "name": "ink/theme-matrix",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "Matrix",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Mercury - clean minimal theme.",
       "files": [
         {
@@ -5117,16 +4029,12 @@
         }
       ],
       "name": "ink/theme-mercury",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "Mercury",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Night Owl - late night coding.",
       "files": [
         {
@@ -5136,16 +4044,12 @@
         }
       ],
       "name": "ink/theme-nightowl",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "Night Owl",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "OC-2 - clean minimal theme.",
       "files": [
         {
@@ -5155,16 +4059,12 @@
         }
       ],
       "name": "ink/theme-oc-2",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "OC-2",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "One Dark Pro - VS Code version.",
       "files": [
         {
@@ -5174,16 +4074,12 @@
         }
       ],
       "name": "ink/theme-onedarkpro",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "One Dark Pro",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "OpenCode official theme.",
       "files": [
         {
@@ -5193,16 +4089,12 @@
         }
       ],
       "name": "ink/theme-opencode",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "OpenCode",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Orng - vibrant orange theme.",
       "files": [
         {
@@ -5212,16 +4104,12 @@
         }
       ],
       "name": "ink/theme-orng",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "Orng",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Osaka Jade - Japanese jade theme.",
       "files": [
         {
@@ -5231,16 +4119,12 @@
         }
       ],
       "name": "ink/theme-osaka-jade",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "Osaka Jade",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Palenight - React Native purple.",
       "files": [
         {
@@ -5250,16 +4134,12 @@
         }
       ],
       "name": "ink/theme-palenight",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "Palenight",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Rose Pine - warm rose tones.",
       "files": [
         {
@@ -5269,16 +4149,12 @@
         }
       ],
       "name": "ink/theme-rosepine",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "Rose Pine",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Shades of Purple - bold purple.",
       "files": [
         {
@@ -5288,16 +4164,12 @@
         }
       ],
       "name": "ink/theme-shadesofpurple",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "Shades of Purple",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Synthwave '84 - retro neon.",
       "files": [
         {
@@ -5307,16 +4179,12 @@
         }
       ],
       "name": "ink/theme-synthwave84",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "Synthwave '84",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Vercel brand colors.",
       "files": [
         {
@@ -5326,16 +4194,12 @@
         }
       ],
       "name": "ink/theme-vercel",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "Vercel",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Vesper - minimal high contrast.",
       "files": [
         {
@@ -5345,16 +4209,12 @@
         }
       ],
       "name": "ink/theme-vesper",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "Vesper",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Zenburn - low contrast for long sessions.",
       "files": [
         {
@@ -5364,19 +4224,13 @@
         }
       ],
       "name": "ink/theme-zenburn",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "Zenburn",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "ai"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["ai"],
+      "dependencies": ["ink"],
       "description": "Collapsible block for displaying extended thinking / reasoning content from an AI model",
       "files": [
         {
@@ -5393,12 +4247,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "forms"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["forms"],
+      "dependencies": ["ink"],
       "description": "Time picker with hour/minute/second spinners",
       "files": [
         {
@@ -5415,12 +4265,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "utility"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["utility"],
+      "dependencies": ["ink"],
       "description": "Countdown timer with pause/resume and auto-start",
       "files": [
         {
@@ -5437,12 +4283,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "feedback"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["feedback"],
+      "dependencies": ["ink"],
       "description": "Auto-dismissing toast notification",
       "files": [
         {
@@ -5459,12 +4301,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "utility"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["utility"],
+      "dependencies": ["ink"],
       "description": "Toggle/switch component with on/off labels",
       "files": [
         {
@@ -5481,12 +4319,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "ai"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["ai"],
+      "dependencies": ["ink"],
       "description": "Compact token counter showing prompt and completion usage with optional cost estimate; also exports ContextMeter for visualising context window fill",
       "files": [
         {
@@ -5497,17 +4331,11 @@
       "name": "ink/token-usage",
       "title": "Token Usage",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "ai"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["ai"],
+      "dependencies": ["ink"],
       "description": "Interactive approval prompt for AI tool calls with risk-level badge, args display, and auto-deny timeout",
       "files": [
         {
@@ -5524,12 +4352,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "ai"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["ai"],
+      "dependencies": ["ink"],
       "description": "Displays an AI tool invocation with status indicator, args, result, and elapsed time",
       "files": [
         {
@@ -5547,12 +4371,8 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "overlays"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["overlays"],
+      "dependencies": ["ink"],
       "description": "Contextual tooltip on focus or hover",
       "files": [
         {
@@ -5563,17 +4383,11 @@
       "name": "ink/tooltip",
       "title": "Tooltip",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "data"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["data"],
+      "dependencies": ["ink"],
       "description": "Expandable/collapsible tree view",
       "files": [
         {
@@ -5582,19 +4396,13 @@
         }
       ],
       "name": "ink/tree",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"],
       "title": "Tree",
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "selection"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["selection"],
+      "dependencies": ["ink"],
       "description": "Hierarchical tree selection",
       "files": [
         {
@@ -5603,19 +4411,13 @@
         }
       ],
       "name": "ink/tree-select",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"],
       "title": "Tree Select",
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "templates"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["templates"],
+      "dependencies": ["ink"],
       "description": "Real-time dashboard with diamond header, progress metrics, burn rate, predictions, and status bar",
       "files": [
         {
@@ -5624,16 +4426,12 @@
         }
       ],
       "name": "ink/usage-monitor",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"],
       "title": "Usage Monitor",
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "core"
-      ],
+      "categories": ["core"],
       "description": "Frame-based animation helper for terminal UI components.",
       "files": [
         {
@@ -5646,9 +4444,7 @@
       "type": "registry:hook"
     },
     {
-      "categories": [
-        "core"
-      ],
+      "categories": ["core"],
       "description": "Clipboard hook with browser and terminal fallbacks.",
       "files": [
         {
@@ -5661,12 +4457,8 @@
       "type": "registry:hook"
     },
     {
-      "categories": [
-        "core"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["core"],
+      "dependencies": ["ink"],
       "description": "Focus helper wrapping Ink's useFocus.",
       "files": [
         {
@@ -5679,12 +4471,8 @@
       "type": "registry:hook"
     },
     {
-      "categories": [
-        "core"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["core"],
+      "dependencies": ["ink"],
       "description": "Keyboard input hook wrapping Ink's useInput.",
       "files": [
         {
@@ -5697,9 +4485,7 @@
       "type": "registry:hook"
     },
     {
-      "categories": [
-        "core"
-      ],
+      "categories": ["core"],
       "description": "React-safe interval helper.",
       "files": [
         {
@@ -5712,9 +4498,7 @@
       "type": "registry:hook"
     },
     {
-      "categories": [
-        "core"
-      ],
+      "categories": ["core"],
       "description": "Notifications state and context helpers.",
       "files": [
         {
@@ -5727,13 +4511,8 @@
       "type": "registry:hook"
     },
     {
-      "categories": [
-        "data"
-      ],
-      "dependencies": [
-        "ink",
-        "mnemonist"
-      ],
+      "categories": ["data"],
+      "dependencies": ["ink", "mnemonist"],
       "description": "Virtualized list for 10k+ items",
       "files": [
         {
@@ -5742,19 +4521,13 @@
         }
       ],
       "name": "ink/virtual-list",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"],
       "title": "Virtual List",
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "templates"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["templates"],
+      "dependencies": ["ink"],
       "description": "Two-panel welcome dashboard with titled border, logo, greeting, and sections",
       "files": [
         {
@@ -5765,17 +4538,11 @@
       "name": "ink/welcome-screen",
       "title": "Welcome Screen",
       "type": "registry:ui",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json"
-      ]
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
     },
     {
-      "categories": [
-        "forms"
-      ],
-      "dependencies": [
-        "ink"
-      ],
+      "categories": ["forms"],
+      "dependencies": ["ink"],
       "description": "Multi-step wizard with per-step validation",
       "files": [
         {
@@ -5792,9 +4559,7 @@
       "type": "registry:ui"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "A Catppuccin theme for rich terminal UI previews.",
       "files": [
         {
@@ -5804,16 +4569,12 @@
         }
       ],
       "name": "opentui/theme-catppuccin",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "Catppuccin",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "The default termcn terminal theme.",
       "files": [
         {
@@ -5823,16 +4584,12 @@
         }
       ],
       "name": "opentui/theme-default",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "Default",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "A purple-heavy Dracula theme for terminal UI components.",
       "files": [
         {
@@ -5842,16 +4599,12 @@
         }
       ],
       "name": "opentui/theme-dracula",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "Dracula",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "High contrast themes for dark and light terminal backgrounds.",
       "files": [
         {
@@ -5861,16 +4614,12 @@
         }
       ],
       "name": "opentui/theme-high-contrast",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "High Contrast",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "A classic Monokai-inspired theme for terminal apps.",
       "files": [
         {
@@ -5880,16 +4629,12 @@
         }
       ],
       "name": "opentui/theme-monokai",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "Monokai",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "A cool Nord palette tuned for terminal contrast.",
       "files": [
         {
@@ -5899,16 +4644,12 @@
         }
       ],
       "name": "opentui/theme-nord",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "Nord",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "A One Dark theme for terminal components.",
       "files": [
         {
@@ -5918,16 +4659,12 @@
         }
       ],
       "name": "opentui/theme-one-dark",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "One Dark",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "A Solarized theme for terminal components.",
       "files": [
         {
@@ -5937,16 +4674,12 @@
         }
       ],
       "name": "opentui/theme-solarized",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "Solarized",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Tokyo Night colors for terminal interfaces.",
       "files": [
         {
@@ -5956,16 +4689,12 @@
         }
       ],
       "name": "opentui/theme-tokyo-night",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "Tokyo Night",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "AMOLED - high contrast dark theme with pure black.",
       "files": [
         {
@@ -5975,16 +4704,12 @@
         }
       ],
       "name": "opentui/theme-amoled",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "AMOLED",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Aura - soft elegant theme with pastel purple.",
       "files": [
         {
@@ -5994,16 +4719,12 @@
         }
       ],
       "name": "opentui/theme-aura",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "Aura",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Ayu - clean modern terminal theme.",
       "files": [
         {
@@ -6013,16 +4734,12 @@
         }
       ],
       "name": "opentui/theme-ayu",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "Ayu",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Carbonfox - minimal dark theme.",
       "files": [
         {
@@ -6032,16 +4749,12 @@
         }
       ],
       "name": "opentui/theme-carbonfox",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "Carbonfox",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Catppuccin Frappe - soothing pastel.",
       "files": [
         {
@@ -6051,16 +4764,12 @@
         }
       ],
       "name": "opentui/theme-catppuccin-frappe",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "Catppuccin Frappe",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Catppuccin Macchiato - deeper pastel tones.",
       "files": [
         {
@@ -6070,16 +4779,12 @@
         }
       ],
       "name": "opentui/theme-catppuccin-macchiato",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "Catppuccin Macchiato",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Cobalt2 - vibrant blue and gold.",
       "files": [
         {
@@ -6089,16 +4794,12 @@
         }
       ],
       "name": "opentui/theme-cobalt2",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "Cobalt2",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Cursor IDE theme.",
       "files": [
         {
@@ -6108,16 +4809,12 @@
         }
       ],
       "name": "opentui/theme-cursor",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "Cursor",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Everforest - warm forest theme.",
       "files": [
         {
@@ -6127,16 +4824,12 @@
         }
       ],
       "name": "opentui/theme-everforest",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "Everforest",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Flexoki - versatile theme.",
       "files": [
         {
@@ -6146,16 +4839,12 @@
         }
       ],
       "name": "opentui/theme-flexoki",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "Flexoki",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "GitHub official dark theme.",
       "files": [
         {
@@ -6165,16 +4854,12 @@
         }
       ],
       "name": "opentui/theme-github",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "GitHub",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Gruvbox - retro earth tones.",
       "files": [
         {
@@ -6184,16 +4869,12 @@
         }
       ],
       "name": "opentui/theme-gruvbox",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "Gruvbox",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Kanagawa - Japanese wave theme.",
       "files": [
         {
@@ -6203,16 +4884,12 @@
         }
       ],
       "name": "opentui/theme-kanagawa",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "Kanagawa",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Lucent Orng - warm orange theme.",
       "files": [
         {
@@ -6222,16 +4899,12 @@
         }
       ],
       "name": "opentui/theme-lucent-orng",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "Lucent Orng",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Material Design colors.",
       "files": [
         {
@@ -6241,16 +4914,12 @@
         }
       ],
       "name": "opentui/theme-material",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "Material",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Matrix - green code rain.",
       "files": [
         {
@@ -6260,16 +4929,12 @@
         }
       ],
       "name": "opentui/theme-matrix",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "Matrix",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Mercury - clean minimal theme.",
       "files": [
         {
@@ -6279,16 +4944,12 @@
         }
       ],
       "name": "opentui/theme-mercury",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "Mercury",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Night Owl - late night coding.",
       "files": [
         {
@@ -6298,16 +4959,12 @@
         }
       ],
       "name": "opentui/theme-nightowl",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "Night Owl",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "OC-2 - clean minimal theme.",
       "files": [
         {
@@ -6317,16 +4974,12 @@
         }
       ],
       "name": "opentui/theme-oc-2",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "OC-2",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "One Dark Pro - VS Code version.",
       "files": [
         {
@@ -6336,16 +4989,12 @@
         }
       ],
       "name": "opentui/theme-onedarkpro",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "One Dark Pro",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "OpenCode official theme.",
       "files": [
         {
@@ -6355,16 +5004,12 @@
         }
       ],
       "name": "opentui/theme-opencode",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "OpenCode",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Orng - vibrant orange theme.",
       "files": [
         {
@@ -6374,16 +5019,12 @@
         }
       ],
       "name": "opentui/theme-orng",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "Orng",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Osaka Jade - Japanese jade theme.",
       "files": [
         {
@@ -6393,16 +5034,12 @@
         }
       ],
       "name": "opentui/theme-osaka-jade",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "Osaka Jade",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Palenight - React Native purple.",
       "files": [
         {
@@ -6412,16 +5049,12 @@
         }
       ],
       "name": "opentui/theme-palenight",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "Palenight",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Rose Pine - warm rose tones.",
       "files": [
         {
@@ -6431,16 +5064,12 @@
         }
       ],
       "name": "opentui/theme-rosepine",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "Rose Pine",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Shades of Purple - bold purple.",
       "files": [
         {
@@ -6450,16 +5079,12 @@
         }
       ],
       "name": "opentui/theme-shadesofpurple",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "Shades of Purple",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Synthwave '84 - retro neon.",
       "files": [
         {
@@ -6469,16 +5094,12 @@
         }
       ],
       "name": "opentui/theme-synthwave84",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "Synthwave '84",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Vercel brand colors.",
       "files": [
         {
@@ -6488,16 +5109,12 @@
         }
       ],
       "name": "opentui/theme-vercel",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "Vercel",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Vesper - minimal high contrast.",
       "files": [
         {
@@ -6507,16 +5124,12 @@
         }
       ],
       "name": "opentui/theme-vesper",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "Vesper",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "Zenburn - low contrast for long sessions.",
       "files": [
         {
@@ -6526,16 +5139,12 @@
         }
       ],
       "name": "opentui/theme-zenburn",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "Zenburn",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "WCAG-friendly light high-contrast theme.",
       "files": [
         {
@@ -6545,16 +5154,12 @@
         }
       ],
       "name": "ink/theme-high-contrast-light",
-      "registryDependencies": [
-        "https://termcn.dev/r/ink/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"],
       "title": "High Contrast Light",
       "type": "registry:file"
     },
     {
-      "categories": [
-        "themes"
-      ],
+      "categories": ["themes"],
       "description": "WCAG-friendly light high-contrast theme.",
       "files": [
         {
@@ -6564,9 +5169,7 @@
         }
       ],
       "name": "opentui/theme-high-contrast-light",
-      "registryDependencies": [
-        "https://termcn.dev/r/opentui/types.json"
-      ],
+      "registryDependencies": ["https://termcn.dev/r/opentui/types.json"],
       "title": "High Contrast Light",
       "type": "registry:file"
     }
