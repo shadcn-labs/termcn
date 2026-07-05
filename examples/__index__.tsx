@@ -1866,4 +1866,1839 @@ export const ExamplesIndex: Record<string, Record<string, any>> = {
       name: "wizard-demo",
     },
   },
+  opentui: {
+    "alert-custom": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/alert-custom");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "alert-custom";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/alert-custom.tsx",
+      name: "alert-custom",
+    },
+    "alert-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/alert-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "alert-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/alert-demo.tsx",
+      name: "alert-demo",
+    },
+    "alert-error": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/alert-error");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "alert-error";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/alert-error.tsx",
+      name: "alert-error",
+    },
+    "alert-no-border": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/alert-no-border");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "alert-no-border";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/alert-no-border.tsx",
+      name: "alert-no-border",
+    },
+    "alert-warning": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/alert-warning");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "alert-warning";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/alert-warning.tsx",
+      name: "alert-warning",
+    },
+    "app-shell-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/app-shell-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "app-shell-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/app-shell-demo.tsx",
+      name: "app-shell-demo",
+    },
+    "aspect-ratio-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/aspect-ratio-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "aspect-ratio-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/aspect-ratio-demo.tsx",
+      name: "aspect-ratio-demo",
+    },
+    "badge-basic": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/badge-basic");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "badge-basic";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/badge-basic.tsx",
+      name: "badge-basic",
+    },
+    "badge-bold": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/badge-bold");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "badge-bold";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/badge-bold.tsx",
+      name: "badge-bold",
+    },
+    "badge-custom-border": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/badge-custom-border");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "badge-custom-border";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/badge-custom-border.tsx",
+      name: "badge-custom-border",
+    },
+    "badge-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/badge-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "badge-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/badge-demo.tsx",
+      name: "badge-demo",
+    },
+    "banner-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/banner-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "banner-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/banner-demo.tsx",
+      name: "banner-demo",
+    },
+    "banner-error": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/banner-error");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "banner-error";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/banner-error.tsx",
+      name: "banner-error",
+    },
+    "banner-success": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/banner-success");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "banner-success";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/banner-success.tsx",
+      name: "banner-success",
+    },
+    "bar-chart-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/bar-chart-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "bar-chart-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/bar-chart-demo.tsx",
+      name: "bar-chart-demo",
+    },
+    "big-text-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/big-text-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "big-text-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/big-text-demo.tsx",
+      name: "big-text-demo",
+    },
+    "big-text-fonts": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/big-text-fonts");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "big-text-fonts";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/big-text-fonts.tsx",
+      name: "big-text-fonts",
+    },
+    "box-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/box-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "box-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/box-demo.tsx",
+      name: "box-demo",
+    },
+    "breadcrumb-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/breadcrumb-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "breadcrumb-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/breadcrumb-demo.tsx",
+      name: "breadcrumb-demo",
+    },
+    "bullet-list-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/bullet-list-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "bullet-list-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/bullet-list-demo.tsx",
+      name: "bullet-list-demo",
+    },
+    "card-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/card-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "card-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/card-demo.tsx",
+      name: "card-demo",
+    },
+    "center-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/center-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "center-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/center-demo.tsx",
+      name: "center-demo",
+    },
+    "chat-message-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/chat-message-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "chat-message-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/chat-message-demo.tsx",
+      name: "chat-message-demo",
+    },
+    "chat-thread-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/chat-thread-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "chat-thread-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/chat-thread-demo.tsx",
+      name: "chat-thread-demo",
+    },
+    "checkbox-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/checkbox-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "checkbox-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/checkbox-demo.tsx",
+      name: "checkbox-demo",
+    },
+    "checkbox-group-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/checkbox-group-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "checkbox-group-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/checkbox-group-demo.tsx",
+      name: "checkbox-group-demo",
+    },
+    "clipboard-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/clipboard-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "clipboard-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/clipboard-demo.tsx",
+      name: "clipboard-demo",
+    },
+    "clock-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/clock-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "clock-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/clock-demo.tsx",
+      name: "clock-demo",
+    },
+    "code-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/code-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "code-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/code-demo.tsx",
+      name: "code-demo",
+    },
+    "code-multiline": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/code-multiline");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "code-multiline";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/code-multiline.tsx",
+      name: "code-multiline",
+    },
+    "color-picker-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/color-picker-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "color-picker-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/color-picker-demo.tsx",
+      name: "color-picker-demo",
+    },
+    "columns-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/columns-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "columns-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/columns-demo.tsx",
+      name: "columns-demo",
+    },
+    "command-palette-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/command-palette-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "command-palette-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/command-palette-demo.tsx",
+      name: "command-palette-demo",
+    },
+    "confirm-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/confirm-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "confirm-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/confirm-demo.tsx",
+      name: "confirm-demo",
+    },
+    "data-grid-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/data-grid-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "data-grid-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/data-grid-demo.tsx",
+      name: "data-grid-demo",
+    },
+    "date-picker-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/date-picker-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "date-picker-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/date-picker-demo.tsx",
+      name: "date-picker-demo",
+    },
+    "definition-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/definition-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "definition-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/definition-demo.tsx",
+      name: "definition-demo",
+    },
+    "dialog-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/dialog-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "dialog-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/dialog-demo.tsx",
+      name: "dialog-demo",
+    },
+    "diff-view-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/diff-view-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "diff-view-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/diff-view-demo.tsx",
+      name: "diff-view-demo",
+    },
+    "digits-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/digits-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "digits-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/digits-demo.tsx",
+      name: "digits-demo",
+    },
+    "directory-tree-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/directory-tree-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "directory-tree-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/directory-tree-demo.tsx",
+      name: "directory-tree-demo",
+    },
+    "divider-custom": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/divider-custom");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "divider-custom";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/divider-custom.tsx",
+      name: "divider-custom",
+    },
+    "divider-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/divider-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "divider-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/divider-demo.tsx",
+      name: "divider-demo",
+    },
+    "drawer-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/drawer-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "drawer-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/drawer-demo.tsx",
+      name: "drawer-demo",
+    },
+    "email-input-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/email-input-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "email-input-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/email-input-demo.tsx",
+      name: "email-input-demo",
+    },
+    "embedded-terminal-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/embedded-terminal-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "embedded-terminal-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/embedded-terminal-demo.tsx",
+      name: "embedded-terminal-demo",
+    },
+    "error-boundary-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/error-boundary-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "error-boundary-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/error-boundary-demo.tsx",
+      name: "error-boundary-demo",
+    },
+    "file-change-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/file-change-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "file-change-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/file-change-demo.tsx",
+      name: "file-change-demo",
+    },
+    "file-picker-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/file-picker-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "file-picker-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/file-picker-demo.tsx",
+      name: "file-picker-demo",
+    },
+    "form-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/form-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "form-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/form-demo.tsx",
+      name: "form-demo",
+    },
+    "form-field-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/form-field-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "form-field-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/form-field-demo.tsx",
+      name: "form-field-demo",
+    },
+    "gauge-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/gauge-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "gauge-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/gauge-demo.tsx",
+      name: "gauge-demo",
+    },
+    "git-status-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/git-status-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "git-status-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/git-status-demo.tsx",
+      name: "git-status-demo",
+    },
+    "gradient-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/gradient-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "gradient-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/gradient-demo.tsx",
+      name: "gradient-demo",
+    },
+    "gradient-presets": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/gradient-presets");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "gradient-presets";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/gradient-presets.tsx",
+      name: "gradient-presets",
+    },
+    "grid-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/grid-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "grid-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/grid-demo.tsx",
+      name: "grid-demo",
+    },
+    "heading-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/heading-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "heading-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/heading-demo.tsx",
+      name: "heading-demo",
+    },
+    "heat-map-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/heat-map-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "heat-map-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/heat-map-demo.tsx",
+      name: "heat-map-demo",
+    },
+    "help-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/help-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "help-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/help-demo.tsx",
+      name: "help-demo",
+    },
+    "help-screen-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/help-screen-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "help-screen-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/help-screen-demo.tsx",
+      name: "help-screen-demo",
+    },
+    "image-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/image-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "image-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/image-demo.tsx",
+      name: "image-demo",
+    },
+    "info-box-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/info-box-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "info-box-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/info-box-demo.tsx",
+      name: "info-box-demo",
+    },
+    "json-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/json-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "json-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/json-demo.tsx",
+      name: "json-demo",
+    },
+    "key-value-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/key-value-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "key-value-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/key-value-demo.tsx",
+      name: "key-value-demo",
+    },
+    "keyboard-shortcuts-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/keyboard-shortcuts-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "keyboard-shortcuts-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/keyboard-shortcuts-demo.tsx",
+      name: "keyboard-shortcuts-demo",
+    },
+    "line-chart-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/line-chart-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "line-chart-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/line-chart-demo.tsx",
+      name: "line-chart-demo",
+    },
+    "link-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/link-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "link-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/link-demo.tsx",
+      name: "link-demo",
+    },
+    "link-show-href": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/link-show-href");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "link-show-href";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/link-show-href.tsx",
+      name: "link-show-href",
+    },
+    "list-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/list-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "list-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/list-demo.tsx",
+      name: "list-demo",
+    },
+    "log-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/log-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "log-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/log-demo.tsx",
+      name: "log-demo",
+    },
+    "login-flow-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/login-flow-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "login-flow-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/login-flow-demo.tsx",
+      name: "login-flow-demo",
+    },
+    "markdown-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/markdown-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "markdown-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/markdown-demo.tsx",
+      name: "markdown-demo",
+    },
+    "markdown-streaming-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/markdown-streaming-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "markdown-streaming-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/markdown-streaming-demo.tsx",
+      name: "markdown-streaming-demo",
+    },
+    "masked-input-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/masked-input-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "masked-input-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/masked-input-demo.tsx",
+      name: "masked-input-demo",
+    },
+    "menu-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/menu-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "menu-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/menu-demo.tsx",
+      name: "menu-demo",
+    },
+    "modal-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/modal-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "modal-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/modal-demo.tsx",
+      name: "modal-demo",
+    },
+    "model-selector-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/model-selector-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "model-selector-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/model-selector-demo.tsx",
+      name: "model-selector-demo",
+    },
+    "multi-progress-compact": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/multi-progress-compact");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "multi-progress-compact";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/multi-progress-compact.tsx",
+      name: "multi-progress-compact",
+    },
+    "multi-progress-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/multi-progress-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "multi-progress-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/multi-progress-demo.tsx",
+      name: "multi-progress-demo",
+    },
+    "multi-select-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/multi-select-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "multi-select-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/multi-select-demo.tsx",
+      name: "multi-select-demo",
+    },
+    "notification-center-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/notification-center-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "notification-center-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/notification-center-demo.tsx",
+      name: "notification-center-demo",
+    },
+    "number-input-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/number-input-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "number-input-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/number-input-demo.tsx",
+      name: "number-input-demo",
+    },
+    "pagination-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/pagination-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "pagination-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/pagination-demo.tsx",
+      name: "pagination-demo",
+    },
+    "panel-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/panel-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "panel-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/panel-demo.tsx",
+      name: "panel-demo",
+    },
+    "password-input-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/password-input-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "password-input-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/password-input-demo.tsx",
+      name: "password-input-demo",
+    },
+    "path-input-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/path-input-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "path-input-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/path-input-demo.tsx",
+      name: "path-input-demo",
+    },
+    "pie-chart-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/pie-chart-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "pie-chart-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/pie-chart-demo.tsx",
+      name: "pie-chart-demo",
+    },
+    "popover-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/popover-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "popover-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/popover-demo.tsx",
+      name: "popover-demo",
+    },
+    "progress-bar-custom": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/progress-bar-custom");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "progress-bar-custom";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/progress-bar-custom.tsx",
+      name: "progress-bar-custom",
+    },
+    "progress-bar-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/progress-bar-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "progress-bar-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/progress-bar-demo.tsx",
+      name: "progress-bar-demo",
+    },
+    "progress-circle-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/progress-circle-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "progress-circle-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/progress-circle-demo.tsx",
+      name: "progress-circle-demo",
+    },
+    "progress-circle-sizes": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/progress-circle-sizes");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "progress-circle-sizes";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/progress-circle-sizes.tsx",
+      name: "progress-circle-sizes",
+    },
+    "qr-code-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/qr-code-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "qr-code-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/qr-code-demo.tsx",
+      name: "qr-code-demo",
+    },
+    "radio-group-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/radio-group-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "radio-group-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/radio-group-demo.tsx",
+      name: "radio-group-demo",
+    },
+    "scroll-view-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/scroll-view-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "scroll-view-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/scroll-view-demo.tsx",
+      name: "scroll-view-demo",
+    },
+    "scroll-view-scrollbar": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/scroll-view-scrollbar");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "scroll-view-scrollbar";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/scroll-view-scrollbar.tsx",
+      name: "scroll-view-scrollbar",
+    },
+    "search-input-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/search-input-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "search-input-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/search-input-demo.tsx",
+      name: "search-input-demo",
+    },
+    "select-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/select-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "select-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/select-demo.tsx",
+      name: "select-demo",
+    },
+    "setup-flow-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/setup-flow-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "setup-flow-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/setup-flow-demo.tsx",
+      name: "setup-flow-demo",
+    },
+    "sidebar-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/sidebar-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "sidebar-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/sidebar-demo.tsx",
+      name: "sidebar-demo",
+    },
+    "skeleton-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/skeleton-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "skeleton-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/skeleton-demo.tsx",
+      name: "skeleton-demo",
+    },
+    "skeleton-static": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/skeleton-static");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "skeleton-static";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/skeleton-static.tsx",
+      name: "skeleton-static",
+    },
+    "spacer-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/spacer-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "spacer-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/spacer-demo.tsx",
+      name: "spacer-demo",
+    },
+    "sparkline-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/sparkline-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "sparkline-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/sparkline-demo.tsx",
+      name: "sparkline-demo",
+    },
+    "spinner-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/spinner-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "spinner-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/spinner-demo.tsx",
+      name: "spinner-demo",
+    },
+    "spinner-styles": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/spinner-styles");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "spinner-styles";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/spinner-styles.tsx",
+      name: "spinner-styles",
+    },
+    "splash-screen-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/splash-screen-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "splash-screen-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/splash-screen-demo.tsx",
+      name: "splash-screen-demo",
+    },
+    "stack-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/stack-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "stack-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/stack-demo.tsx",
+      name: "stack-demo",
+    },
+    "status-message-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/status-message-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "status-message-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/status-message-demo.tsx",
+      name: "status-message-demo",
+    },
+    "status-message-variants": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/status-message-variants");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "status-message-variants";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/status-message-variants.tsx",
+      name: "status-message-variants",
+    },
+    "stopwatch-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/stopwatch-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "stopwatch-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/stopwatch-demo.tsx",
+      name: "stopwatch-demo",
+    },
+    "streaming-text-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/streaming-text-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "streaming-text-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/streaming-text-demo.tsx",
+      name: "streaming-text-demo",
+    },
+    "tabbed-content-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/tabbed-content-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "tabbed-content-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/tabbed-content-demo.tsx",
+      name: "tabbed-content-demo",
+    },
+    "table-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/table-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "table-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/table-demo.tsx",
+      name: "table-demo",
+    },
+    "table-selectable": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/table-selectable");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "table-selectable";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/table-selectable.tsx",
+      name: "table-selectable",
+    },
+    "table-sortable": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/table-sortable");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "table-sortable";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/table-sortable.tsx",
+      name: "table-sortable",
+    },
+    "tabs-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/tabs-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "tabs-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/tabs-demo.tsx",
+      name: "tabs-demo",
+    },
+    "tag-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/tag-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "tag-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/tag-demo.tsx",
+      name: "tag-demo",
+    },
+    "tag-input-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/tag-input-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "tag-input-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/tag-input-demo.tsx",
+      name: "tag-input-demo",
+    },
+    "text-area-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/text-area-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "text-area-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/text-area-demo.tsx",
+      name: "text-area-demo",
+    },
+    "text-input-cursor": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/text-input-cursor");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "text-input-cursor";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/text-input-cursor.tsx",
+      name: "text-input-cursor",
+    },
+    "text-input-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/text-input-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "text-input-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/text-input-demo.tsx",
+      name: "text-input-demo",
+    },
+    "text-input-label": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/text-input-label");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "text-input-label";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/text-input-label.tsx",
+      name: "text-input-label",
+    },
+    "text-input-placeholder": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/text-input-placeholder");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "text-input-placeholder";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/text-input-placeholder.tsx",
+      name: "text-input-placeholder",
+    },
+    "theme-showcase": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/theme-showcase");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "theme-showcase";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/theme-showcase.tsx",
+      name: "theme-showcase",
+    },
+    "thinking-block-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/thinking-block-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "thinking-block-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/thinking-block-demo.tsx",
+      name: "thinking-block-demo",
+    },
+    "time-picker-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/time-picker-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "time-picker-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/time-picker-demo.tsx",
+      name: "time-picker-demo",
+    },
+    "timer-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/timer-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "timer-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/timer-demo.tsx",
+      name: "timer-demo",
+    },
+    "toast-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/toast-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "toast-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/toast-demo.tsx",
+      name: "toast-demo",
+    },
+    "toast-error": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/toast-error");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "toast-error";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/toast-error.tsx",
+      name: "toast-error",
+    },
+    "toggle-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/toggle-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "toggle-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/toggle-demo.tsx",
+      name: "toggle-demo",
+    },
+    "token-usage-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/token-usage-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "token-usage-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/token-usage-demo.tsx",
+      name: "token-usage-demo",
+    },
+    "tool-approval-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/tool-approval-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "tool-approval-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/tool-approval-demo.tsx",
+      name: "tool-approval-demo",
+    },
+    "tool-call-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/tool-call-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "tool-call-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/tool-call-demo.tsx",
+      name: "tool-call-demo",
+    },
+    "tooltip-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/tooltip-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "tooltip-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/tooltip-demo.tsx",
+      name: "tooltip-demo",
+    },
+    "tree-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/tree-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "tree-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/tree-demo.tsx",
+      name: "tree-demo",
+    },
+    "tree-select-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/tree-select-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "tree-select-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/tree-select-demo.tsx",
+      name: "tree-select-demo",
+    },
+    "usage-monitor-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/usage-monitor-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "usage-monitor-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/usage-monitor-demo.tsx",
+      name: "usage-monitor-demo",
+    },
+    "virtual-list-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/virtual-list-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "virtual-list-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/virtual-list-demo.tsx",
+      name: "virtual-list-demo",
+    },
+    "welcome-screen-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/welcome-screen-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "welcome-screen-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/welcome-screen-demo.tsx",
+      name: "welcome-screen-demo",
+    },
+    "wizard-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/wizard-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "wizard-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/wizard-demo.tsx",
+      name: "wizard-demo",
+    },
+  },
 };
