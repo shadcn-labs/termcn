@@ -13,6 +13,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ROUTES } from "@/constants/routes";
+import { TOP_LEVEL_SECTIONS } from "@/constants/site";
 import { useFeedback } from "@/hooks/use-feedback";
 import {
   EXCLUDED_SECTIONS,
@@ -152,6 +153,18 @@ export const MobileNav = ({
                   onOpenChange={setOpen}
                 >
                   {item.label}
+                </MobileLink>
+              ))}
+            </div>
+          </div>
+          <div className="flex flex-col gap-4">
+            <div className="text-sm font-medium text-muted-foreground">
+              Sections
+            </div>
+            <div className="flex flex-col gap-3">
+              {TOP_LEVEL_SECTIONS.map(({ name, href }) => (
+                <MobileLink key={name} href={href} onOpenChange={setOpen}>
+                  {name}
                 </MobileLink>
               ))}
             </div>
