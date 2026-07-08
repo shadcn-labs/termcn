@@ -51,6 +51,7 @@ const OpenTuiPreview = ({
       <TUI
         style={{
           height: "100%",
+          padding: 10,
           width: "100%",
         }}
         backgroundColor={baseTheme.colors.background}
