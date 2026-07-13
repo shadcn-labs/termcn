@@ -19,6 +19,7 @@ import {
   EXCLUDED_SECTIONS,
   isComponentsFolder,
   isTemplatesFolder,
+  isThemesFolder,
   PAGES_NEW,
 } from "@/lib/docs";
 import {
@@ -148,7 +149,7 @@ export const DocsSidebar = ({
             ));
           }
 
-          if (isTemplatesFolder(item)) {
+          if (isTemplatesFolder(item) || isThemesFolder(item)) {
             return [
               <SidebarPageGroup
                 key={item.$id}

@@ -38,6 +38,7 @@ import {
   EXCLUDED_SECTIONS,
   isComponentsFolder,
   isTemplatesFolder,
+  isThemesFolder,
 } from "@/lib/docs";
 import { trackEvent } from "@/lib/events";
 import {
@@ -225,7 +226,7 @@ export const CommandMenu = ({
             });
           }
         }
-      } else if (isTemplatesFolder(item)) {
+      } else if (isTemplatesFolder(item) || isThemesFolder(item)) {
         const pages = getFolderPages(item, currentBase).map((p) => ({
           name: typeof p.name === "string" ? p.name : String(p.name),
           url: p.url,

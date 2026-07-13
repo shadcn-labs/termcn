@@ -19,6 +19,7 @@ import {
   EXCLUDED_SECTIONS,
   isComponentsFolder,
   isTemplatesFolder,
+  isThemesFolder,
 } from "@/lib/docs";
 import {
   getCategoryFolders,
@@ -188,7 +189,7 @@ export const MobileNav = ({
               ));
             }
 
-            if (isTemplatesFolder(item)) {
+            if (isTemplatesFolder(item) || isThemesFolder(item)) {
               return (
                 <MobileNavGroup
                   key={item.$id}

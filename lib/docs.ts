@@ -17,6 +17,9 @@ export const isComponentsFolder = (folder: PageTreeFolder) =>
 export const isTemplatesFolder = (folder: PageTreeFolder) =>
   folder.$id === "templates" || folder.name === "Templates";
 
+export const isThemesFolder = (folder: PageTreeFolder) =>
+  folder.$id === "themes" || folder.name === "Themes";
+
 const TITLE_OVERRIDES: Record<string, string> = {
   json: "JSON",
   "qr-code": "QR Code",
