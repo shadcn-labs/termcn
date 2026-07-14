@@ -1,0 +1,117 @@
+---
+title: "Dither Line Chart"
+description: "Dithered multi-series line charts with solid or dashed strokes, markers, axes, and terminal interaction"
+---
+
+<ComponentPreview base="ink" name="dither-line-chart-demo" hideCode />
+
+## Installation
+
+<CodeTabs>
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+```bash
+npx shadcn@latest add @termcn/ink/dither-line-chart
+```
+
+</TabsContent>
+<TabsContent value="manual">
+<Steps>
+<Step>Install Ink:</Step>
+
+```bash
+npm install ink
+```
+
+<Step>Copy the shared utilities, renderer, surface, and component:</Step>
+
+<ComponentSource
+  src="registry/bases/ink/lib/dither-chart-utils.ts"
+  title="lib/dither-chart-utils.ts"
+/>
+<ComponentSource
+  src="registry/bases/ink/lib/dither-line-chart-utils.ts"
+  title="lib/dither-line-chart-utils.ts"
+/>
+<ComponentSource
+  src="registry/bases/ink/ui/dither-chart.tsx"
+  title="components/ui/dither-chart.tsx"
+/>
+<ComponentSource
+  base="ink"
+  name="dither-line-chart"
+  title="components/ui/dither-line-chart.tsx"
+/>
+
+<Step>Install the theme provider and update import paths for your project.</Step>
+</Steps>
+</TabsContent>
+</CodeTabs>
+
+## Usage
+
+```tsx
+import {
+  ActiveDot,
+  Dot,
+  Grid,
+  Line,
+  LineChart,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "@/components/ui/dither-line-chart";
+import type { ChartConfig } from "@/components/ui/dither-line-chart";
+```
+
+```tsx
+const data = [
+  { month: "Jan", latency: 24 },
+  { month: "Feb", latency: 31 },
+  { month: "Mar", latency: 27 },
+];
+
+const config = {
+  latency: { color: "purple", label: "Latency" },
+} satisfies ChartConfig;
+
+<LineChart config={config} data={data} markerIndex={1} width={56}>
+  <Grid horizontal />
+  <XAxis dataKey="month" />
+  <YAxis tickCount={4} />
+  <Line dataKey="latency" strokeVariant="solid">
+    <Dot variant="colored-border" />
+    <ActiveDot variant="filled" />
+  </Line>
+  <Tooltip labelKey="month" />
+</LineChart>;
+```
+
+## Examples
+
+### Stroke and marker variants
+
+Use `strokeVariant` for solid or dashed lines. `Dot` and `ActiveDot` control regular and inspected markers independently.
+
+<ComponentPreview base="ink" name="dither-line-chart-variants" rows={10} />
+
+## API Reference
+
+| Prop               | Type                                                | Default  |
+| ------------------ | --------------------------------------------------- | -------- |
+| `data`             | `TData[]`                                           | required |
+| `config`           | `ChartConfig`                                       | required |
+| `width`            | `number`                                            | `56`     |
+| `height`           | `number`                                            | `12`     |
+| `bloom`            | `"off" \| "low" \| "high" \| "aura" \| BloomConfig` | `"off"`  |
+| `markerIndex`      | `number \| null`                                    | `null`   |
+| `interactive`      | `boolean`                                           | `true`   |
+| `noColor`          | `boolean`                                           | `false`  |
+| `screenReaderMode` | `boolean`                                           | `false`  |
+
+Keyboard controls match the area chart: arrows or H/J/K/L navigate, Enter
+selects a series, Escape clears, and R replays enabled motion.

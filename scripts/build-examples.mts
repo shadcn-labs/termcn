@@ -74,13 +74,13 @@ export const ExamplesIndex: Record<string, Record<string, any>> = {`;
 
       index += `
     "${name}": {
-      name: "${name}",
-      filePath: "${filePath}",
       component: React.lazy(async () => {
         const mod = await import("${importPath}")
         const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || "${name}"
         return { default: mod.default || mod[exportName] }
       }),
+      filePath: "${filePath}",
+      name: "${name}",
     },`;
     }
 

@@ -8,6 +8,10 @@ const outputDir = path.join(root, "public", "r");
 
 const syncTargets = [
   {
+    from: path.join(root, "registry", "bases", "ink", "lib"),
+    to: "lib",
+  },
+  {
     from: path.join(root, "registry", "bases", "ink", "ui"),
     providerImport: "ink-theme-provider",
     to: "ui",
@@ -20,6 +24,10 @@ const syncTargets = [
     from: path.join(root, "registry", "bases", "ink", "themes"),
     providerImport: "ink-theme-provider",
     to: "themes",
+  },
+  {
+    from: path.join(root, "registry", "bases", "opentui", "lib"),
+    to: path.join("opentui", "lib"),
   },
   {
     from: path.join(root, "registry", "bases", "opentui", "themes"),
@@ -38,6 +46,8 @@ const transformPublishedImports = (
   providerImport: "ink-theme-provider" | "opentui-theme-provider"
 ) =>
   content
+    .replaceAll("@/registry/bases/ink/lib/", "@/lib/")
+    .replaceAll("@/registry/bases/opentui/lib/", "@/lib/")
     .replaceAll("@/registry/bases/ink/ui/types", "@/components/ui/types")
     .replaceAll("@/registry/bases/opentui/ui/types", "@/components/ui/types")
     .replaceAll("@/registry/bases/ink/themes/", "@/lib/terminal-themes/")

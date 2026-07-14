@@ -531,6 +531,186 @@
       "type": "registry:ui"
     },
     {
+      "categories": ["data"],
+      "dependencies": ["ink"],
+      "description": "Dithered area charts with layered fills, dots, axes, stacking, bloom, and keyboard interaction",
+      "files": [
+        {
+          "path": "registry/lib/dither-chart-utils.ts",
+          "target": "lib/dither-chart-utils.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/lib/dither-area-chart-utils.ts",
+          "target": "lib/dither-area-chart-utils.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/ui/dither-chart.tsx",
+          "target": "components/ui/dither-chart.tsx",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/ui/dither-area-chart.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "ink/dither-area-chart",
+      "title": "Dither Area Chart",
+      "type": "registry:ui",
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+    },
+    {
+      "categories": ["data"],
+      "dependencies": ["ink"],
+      "description": "Dithered grouped, stacked, and percent bar charts with terminal-native textures and interaction",
+      "files": [
+        {
+          "path": "registry/lib/dither-chart-utils.ts",
+          "target": "lib/dither-chart-utils.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/lib/dither-bar-chart-utils.ts",
+          "target": "lib/dither-bar-chart-utils.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/ui/dither-chart.tsx",
+          "target": "components/ui/dither-chart.tsx",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/ui/dither-bar-chart.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "ink/dither-bar-chart",
+      "title": "Dither Bar Chart",
+      "type": "registry:ui",
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+    },
+    {
+      "categories": ["data"],
+      "dependencies": ["ink"],
+      "description": "Dithered multi-series line charts with solid or dashed strokes, markers, axes, and terminal interaction",
+      "files": [
+        {
+          "path": "registry/lib/dither-chart-utils.ts",
+          "target": "lib/dither-chart-utils.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/lib/dither-line-chart-utils.ts",
+          "target": "lib/dither-line-chart-utils.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/ui/dither-chart.tsx",
+          "target": "components/ui/dither-chart.tsx",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/ui/dither-line-chart.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "ink/dither-line-chart",
+      "title": "Dither Line Chart",
+      "type": "registry:ui",
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+    },
+    {
+      "categories": ["data"],
+      "dependencies": ["ink"],
+      "description": "Dithered pie and donut charts with textured slices, legends, tooltips, and keyboard inspection",
+      "files": [
+        {
+          "path": "registry/lib/dither-chart-utils.ts",
+          "target": "lib/dither-chart-utils.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/lib/dither-pie-chart-utils.ts",
+          "target": "lib/dither-pie-chart-utils.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/ui/dither-chart.tsx",
+          "target": "components/ui/dither-chart.tsx",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/ui/dither-pie-chart.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "ink/dither-pie-chart",
+      "title": "Dither Pie Chart",
+      "type": "registry:ui",
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+    },
+    {
+      "categories": ["data"],
+      "dependencies": ["ink"],
+      "description": "Dithered radar charts for comparing multiple series across terminal-friendly radial axes",
+      "files": [
+        {
+          "path": "registry/lib/dither-chart-utils.ts",
+          "target": "lib/dither-chart-utils.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/lib/dither-radar-chart-utils.ts",
+          "target": "lib/dither-radar-chart-utils.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/ui/dither-chart.tsx",
+          "target": "components/ui/dither-chart.tsx",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/ui/dither-radar-chart.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "ink/dither-radar-chart",
+      "title": "Dither Radar Chart",
+      "type": "registry:ui",
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+    },
+    {
+      "categories": ["data"],
+      "dependencies": ["ink"],
+      "description": "Compact dithered sparklines for terminal dashboards, summaries, and inline metrics",
+      "files": [
+        {
+          "path": "registry/lib/dither-chart-utils.ts",
+          "target": "lib/dither-chart-utils.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/lib/dither-sparkline-utils.ts",
+          "target": "lib/dither-sparkline-utils.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/ui/dither-chart.tsx",
+          "target": "components/ui/dither-chart.tsx",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/ui/dither-sparkline.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "ink/dither-sparkline",
+      "title": "Dither Sparkline",
+      "type": "registry:ui",
+      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+    },
+    {
       "categories": ["layout"],
       "dependencies": ["ink"],
       "description": "Horizontal or vertical divider / rule",
@@ -1686,6 +1866,204 @@
       ],
       "name": "opentui/directory-tree",
       "title": "Directory Tree",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui/theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["data"],
+      "dependencies": ["@opentui/react"],
+      "description": "Dithered area charts with layered fills, dots, axes, stacking, bloom, and keyboard interaction",
+      "files": [
+        {
+          "path": "registry/opentui/lib/dither-chart-utils.ts",
+          "target": "lib/dither-chart-utils.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/opentui/lib/dither-area-chart-utils.ts",
+          "target": "lib/dither-area-chart-utils.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/opentui/ui/dither-chart.tsx",
+          "target": "components/ui/dither-chart.tsx",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/opentui/ui/dither-area-chart.tsx",
+          "target": "components/ui/dither-area-chart.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui/dither-area-chart",
+      "title": "Dither Area Chart",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui/theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["data"],
+      "dependencies": ["@opentui/react"],
+      "description": "Dithered grouped, stacked, and percent bar charts with terminal-native textures and interaction",
+      "files": [
+        {
+          "path": "registry/opentui/lib/dither-chart-utils.ts",
+          "target": "lib/dither-chart-utils.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/opentui/lib/dither-bar-chart-utils.ts",
+          "target": "lib/dither-bar-chart-utils.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/opentui/ui/dither-chart.tsx",
+          "target": "components/ui/dither-chart.tsx",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/opentui/ui/dither-bar-chart.tsx",
+          "target": "components/ui/dither-bar-chart.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui/dither-bar-chart",
+      "title": "Dither Bar Chart",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui/theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["data"],
+      "dependencies": ["@opentui/react"],
+      "description": "Dithered multi-series line charts with solid or dashed strokes, markers, axes, and terminal interaction",
+      "files": [
+        {
+          "path": "registry/opentui/lib/dither-chart-utils.ts",
+          "target": "lib/dither-chart-utils.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/opentui/lib/dither-line-chart-utils.ts",
+          "target": "lib/dither-line-chart-utils.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/opentui/ui/dither-chart.tsx",
+          "target": "components/ui/dither-chart.tsx",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/opentui/ui/dither-line-chart.tsx",
+          "target": "components/ui/dither-line-chart.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui/dither-line-chart",
+      "title": "Dither Line Chart",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui/theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["data"],
+      "dependencies": ["@opentui/react"],
+      "description": "Dithered pie and donut charts with textured slices, legends, tooltips, and keyboard inspection",
+      "files": [
+        {
+          "path": "registry/opentui/lib/dither-chart-utils.ts",
+          "target": "lib/dither-chart-utils.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/opentui/lib/dither-pie-chart-utils.ts",
+          "target": "lib/dither-pie-chart-utils.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/opentui/ui/dither-chart.tsx",
+          "target": "components/ui/dither-chart.tsx",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/opentui/ui/dither-pie-chart.tsx",
+          "target": "components/ui/dither-pie-chart.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui/dither-pie-chart",
+      "title": "Dither Pie Chart",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui/theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["data"],
+      "dependencies": ["@opentui/react"],
+      "description": "Dithered radar charts for comparing multiple series across terminal-friendly radial axes",
+      "files": [
+        {
+          "path": "registry/opentui/lib/dither-chart-utils.ts",
+          "target": "lib/dither-chart-utils.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/opentui/lib/dither-radar-chart-utils.ts",
+          "target": "lib/dither-radar-chart-utils.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/opentui/ui/dither-chart.tsx",
+          "target": "components/ui/dither-chart.tsx",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/opentui/ui/dither-radar-chart.tsx",
+          "target": "components/ui/dither-radar-chart.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui/dither-radar-chart",
+      "title": "Dither Radar Chart",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui/theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["data"],
+      "dependencies": ["@opentui/react"],
+      "description": "Compact dithered sparklines for terminal dashboards, summaries, and inline metrics",
+      "files": [
+        {
+          "path": "registry/opentui/lib/dither-chart-utils.ts",
+          "target": "lib/dither-chart-utils.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/opentui/lib/dither-sparkline-utils.ts",
+          "target": "lib/dither-sparkline-utils.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/opentui/ui/dither-chart.tsx",
+          "target": "components/ui/dither-chart.tsx",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/opentui/ui/dither-sparkline.tsx",
+          "target": "components/ui/dither-sparkline.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui/dither-sparkline",
+      "title": "Dither Sparkline",
       "type": "registry:ui",
       "registryDependencies": [
         "https://termcn.dev/r/opentui/theme-provider.json"

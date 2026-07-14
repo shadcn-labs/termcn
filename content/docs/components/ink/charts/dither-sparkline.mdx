@@ -1,0 +1,94 @@
+---
+title: "Dither Sparkline"
+description: "Compact dithered sparklines for terminal dashboards, summaries, and inline metrics"
+---
+
+<ComponentPreview base="ink" name="dither-sparkline-demo" hideCode />
+
+## Installation
+
+<CodeTabs>
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+```bash
+npx shadcn@latest add @termcn/ink/dither-sparkline
+```
+
+</TabsContent>
+<TabsContent value="manual">
+<Steps>
+<Step>Install Ink:</Step>
+
+```bash
+npm install ink
+```
+
+<Step>Copy the shared utilities, renderer, surface, and component:</Step>
+
+<ComponentSource
+  src="registry/bases/ink/lib/dither-chart-utils.ts"
+  title="lib/dither-chart-utils.ts"
+/>
+<ComponentSource
+  src="registry/bases/ink/lib/dither-sparkline-utils.ts"
+  title="lib/dither-sparkline-utils.ts"
+/>
+<ComponentSource
+  src="registry/bases/ink/ui/dither-chart.tsx"
+  title="components/ui/dither-chart.tsx"
+/>
+<ComponentSource
+  base="ink"
+  name="dither-sparkline"
+  title="components/ui/dither-sparkline.tsx"
+/>
+
+<Step>Install the theme provider and update import paths for your project.</Step>
+</Steps>
+</TabsContent>
+</CodeTabs>
+
+## Usage
+
+```tsx
+import { Sparkline } from "@/components/ui/dither-sparkline";
+```
+
+```tsx
+<Sparkline
+  color="blue"
+  data={[18, 26, 23, 41, 37, 52, 49, 63]}
+  height={4}
+  markerIndex={5}
+  title="Requests"
+  variant="gradient"
+  width={28}
+/>
+```
+
+## Examples
+
+### Fill and marker variants
+
+Sparklines support every dither fill. Add `markerIndex` to highlight a specific sample without enabling interaction.
+
+<ComponentPreview base="ink" name="dither-sparkline-variants" rows={13} />
+
+## API Reference
+
+| Prop               | Type                                                | Default      |
+| ------------------ | --------------------------------------------------- | ------------ |
+| `data`             | `number[]`                                          | required     |
+| `color`            | `string`                                            | required     |
+| `width`            | `number`                                            | `24`         |
+| `height`           | `number`                                            | `4`          |
+| `variant`          | `"gradient" \| "dotted" \| "hatched" \| "solid"`    | `"gradient"` |
+| `markerIndex`      | `number \| null`                                    | `null`       |
+| `animate`          | `boolean`                                           | `false`      |
+| `bloom`            | `"off" \| "low" \| "high" \| "aura" \| BloomConfig` | `"off"`      |
+| `noColor`          | `boolean`                                           | `false`      |
+| `screenReaderMode` | `boolean`                                           | `false`      |

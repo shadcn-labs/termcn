@@ -1,6 +1,12 @@
 {
   "pages": [
     "bar-chart",
+    "dither-area-chart",
+    "dither-bar-chart",
+    "dither-line-chart",
+    "dither-pie-chart",
+    "dither-radar-chart",
+    "dither-sparkline",
     "gauge",
     "heat-map",
     "line-chart",

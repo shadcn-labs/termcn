@@ -1,0 +1,117 @@
+---
+title: "Dither Pie Chart"
+description: "Dithered pie and donut charts with textured slices, legends, tooltips, and keyboard inspection"
+---
+
+<ComponentPreview base="opentui" name="dither-pie-chart-demo" hideCode />
+
+## Installation
+
+<CodeTabs>
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+```bash
+npx shadcn@latest add @termcn/opentui/dither-pie-chart
+```
+
+</TabsContent>
+<TabsContent value="manual">
+<Steps>
+<Step>Install OpenTUI React:</Step>
+
+```bash
+npm install @opentui/react
+```
+
+<Step>Copy the shared utilities, renderer, surface, and component:</Step>
+
+<ComponentSource
+  src="registry/bases/opentui/lib/dither-chart-utils.ts"
+  title="lib/dither-chart-utils.ts"
+/>
+<ComponentSource
+  src="registry/bases/opentui/lib/dither-pie-chart-utils.ts"
+  title="lib/dither-pie-chart-utils.ts"
+/>
+<ComponentSource
+  src="registry/bases/opentui/ui/dither-chart.tsx"
+  title="components/ui/dither-chart.tsx"
+/>
+<ComponentSource
+  base="opentui"
+  name="dither-pie-chart"
+  title="components/ui/dither-pie-chart.tsx"
+/>
+
+<Step>Install the theme provider and update import paths for your project.</Step>
+</Steps>
+</TabsContent>
+</CodeTabs>
+
+## Usage
+
+```tsx
+import {
+  Legend,
+  Pie,
+  PieChart,
+  Tooltip,
+} from "@/components/ui/dither-pie-chart";
+import type { ChartConfig } from "@/components/ui/dither-pie-chart";
+```
+
+```tsx
+const data = [
+  { channel: "direct", value: 42 },
+  { channel: "search", value: 31 },
+  { channel: "social", value: 17 },
+];
+
+const config = {
+  direct: { color: "blue", label: "Direct" },
+  search: { color: "green", label: "Search" },
+  social: { color: "pink", label: "Social" },
+} satisfies ChartConfig;
+
+<PieChart
+  config={config}
+  data={data}
+  dataKey="value"
+  innerRadius={0.42}
+  nameKey="channel"
+  width={46}
+>
+  <Pie variant="gradient" />
+  <Legend align="left" />
+  <Tooltip />
+</PieChart>;
+```
+
+## Examples
+
+### Textures and donut shapes
+
+All four fill variants work for pies and donuts. Set `innerRadius` between `0` and `0.92` to open the center.
+
+<ComponentPreview base="opentui" name="dither-pie-chart-variants" rows={23} />
+
+## API Reference
+
+| Prop               | Type                        | Default  |
+| ------------------ | --------------------------- | -------- |
+| `data`             | `TData[]`                   | required |
+| `config`           | `ChartConfig`               | required |
+| `dataKey`          | `string`                    | required |
+| `nameKey`          | `string`                    | required |
+| `innerRadius`      | `number` from `0` to `0.92` | `0`      |
+| `width`            | `number`                    | `56`     |
+| `height`           | `number`                    | `12`     |
+| `markerIndex`      | `number \| null`            | `null`   |
+| `noColor`          | `boolean`                   | `false`  |
+| `screenReaderMode` | `boolean`                   | `false`  |
+
+Use left/right to inspect slices and up/down to focus legend entries.
