@@ -37,6 +37,7 @@ import { useMutationObserver } from "@/hooks/use-mutation-observer";
 import { usePackageManager } from "@/hooks/use-package-manager";
 import {
   EXCLUDED_SECTIONS,
+  getChartRegistryItemName,
   isChartsFolder,
   isComponentsFolder,
   isDitherChartUrl,
@@ -305,11 +306,14 @@ export const CommandMenu = ({
         );
         return;
       }
-      if (
-        parsed.kind === "component" ||
-        parsed.kind === "chart" ||
-        parsed.kind === "template"
-      ) {
+      if (parsed.kind === "chart") {
+        const base = parsed.base === "opentui" ? "opentui" : "ink";
+        setCopyPayload(
+          `${packageManager} dlx shadcn@latest add ${SITE.REGISTRY}/${base}/${getChartRegistryItemName(parsed.slug)}`
+        );
+        return;
+      }
+      if (parsed.kind === "component" || parsed.kind === "template") {
         const base = parsed.base === "opentui" ? "opentui" : "ink";
         setCopyPayload(
           `${packageManager} dlx shadcn@latest add ${SITE.REGISTRY}/${base}/${parsed.slug}`

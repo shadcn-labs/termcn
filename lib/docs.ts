@@ -51,6 +51,20 @@ export const getDocsSidebarPanel = (
 export const isDitherChartUrl = (url: string) =>
   url.split("/").at(-1)?.startsWith("dither-") ?? false;
 
+const CHART_REGISTRY_ITEM_BY_SLUG: Record<string, string> = {
+  bar: "bar-chart",
+  "dither-area": "dither-area-chart",
+  "dither-bar": "dither-bar-chart",
+  "dither-line": "dither-line-chart",
+  "dither-pie": "dither-pie-chart",
+  "dither-radar": "dither-radar-chart",
+  line: "line-chart",
+  pie: "pie-chart",
+};
+
+export const getChartRegistryItemName = (slug: string) =>
+  CHART_REGISTRY_ITEM_BY_SLUG[slug] ?? slug;
+
 const TITLE_OVERRIDES: Record<string, string> = {
   json: "JSON",
   "qr-code": "QR Code",

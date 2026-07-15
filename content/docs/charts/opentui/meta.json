@@ -1,16 +1,16 @@
 {
   "pages": [
-    "bar-chart",
-    "dither-area-chart",
-    "dither-bar-chart",
-    "dither-line-chart",
-    "dither-pie-chart",
-    "dither-radar-chart",
+    "bar",
+    "dither-area",
+    "dither-bar",
+    "dither-line",
+    "dither-pie",
+    "dither-radar",
     "dither-sparkline",
     "gauge",
     "heat-map",
-    "line-chart",
-    "pie-chart",
+    "line",
+    "pie",
     "sparkline"
   ],
   "title": "OpenTUI"

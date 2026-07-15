@@ -2,7 +2,11 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-import { getDocsSidebarPanel, isDitherChartUrl } from "../lib/docs.ts";
+import {
+  getChartRegistryItemName,
+  getDocsSidebarPanel,
+  isDitherChartUrl,
+} from "../lib/docs.ts";
 import { renderDitherAreaChart as renderInkArea } from "../registry/bases/ink/lib/dither-area-chart-utils.ts";
 import { renderDitherBarChart as renderInkBar } from "../registry/bases/ink/lib/dither-bar-chart-utils.ts";
 import type {
@@ -111,11 +115,14 @@ test("docs navigation isolates components, templates, and chart catalogs", () =>
     getDocsSidebarPanel("/docs/templates/opentui/app-shell"),
     "templates"
   );
-  assert.equal(getDocsSidebarPanel("/docs/charts/ink/bar-chart"), "charts");
+  assert.equal(getDocsSidebarPanel("/docs/charts/ink/bar"), "charts");
   assert.equal(getDocsSidebarPanel("/docs"), null);
   assert.equal(getDocsSidebarPanel("/docs/components-old"), null);
-  assert.equal(isDitherChartUrl("/docs/charts/ink/dither-area-chart"), true);
+  assert.equal(isDitherChartUrl("/docs/charts/ink/dither-area"), true);
   assert.equal(isDitherChartUrl("/docs/charts/ink/area-chart"), false);
+  assert.equal(getChartRegistryItemName("bar"), "bar-chart");
+  assert.equal(getChartRegistryItemName("dither-area"), "dither-area-chart");
+  assert.equal(getChartRegistryItemName("sparkline"), "sparkline");
 });
 
 test("Ink and OpenTUI use byte-for-byte equivalent cell geometry", () => {
@@ -230,17 +237,11 @@ test("chart previews reserve stable rows and scroll OpenTUI overflow", async () 
         "utf-8"
       ),
       readFile(
-        new URL(
-          "../content/docs/charts/ink/dither-area-chart.mdx",
-          import.meta.url
-        ),
+        new URL("../content/docs/charts/ink/dither-area.mdx", import.meta.url),
         "utf-8"
       ),
       readFile(
-        new URL(
-          "../content/docs/charts/ink/dither-pie-chart.mdx",
-          import.meta.url
-        ),
+        new URL("../content/docs/charts/ink/dither-pie.mdx", import.meta.url),
         "utf-8"
       ),
     ]);

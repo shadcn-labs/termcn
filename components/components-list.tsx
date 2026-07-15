@@ -1,6 +1,11 @@
 import Link from "next/link";
 
-import { isComponentsFolder } from "@/lib/docs";
+import { ROUTES } from "@/constants/routes";
+import {
+  isChartsFolder,
+  isComponentsFolder,
+  isDitherChartUrl,
+} from "@/lib/docs";
 import type { PageTreeFolder, PageTreePage } from "@/lib/page-tree";
 import { getCategoryFolders, getFolderPages } from "@/lib/page-tree";
 import { source } from "@/lib/source";
@@ -67,6 +72,49 @@ const CategoryGrid = ({
   </div>
 );
 
+const ChartsGrid = ({
+  base,
+  className,
+  pages,
+}: {
+  base: string;
+  className?: string;
+  pages: PageTreePage[];
+}) => {
+  const chartPages = pages.filter(
+    (page) => page.url !== `${ROUTES.DOCS_CHARTS}/${base}`
+  );
+  const groups = [
+    {
+      name: "Charts",
+      pages: chartPages.filter((page) => !isDitherChartUrl(page.url)),
+    },
+    {
+      name: "Dither",
+      pages: chartPages.filter((page) => isDitherChartUrl(page.url)),
+    },
+  ];
+
+  return (
+    <div className={cn("flex flex-col gap-10", className)}>
+      {groups.map((group) => {
+        if (group.pages.length === 0) {
+          return null;
+        }
+
+        return (
+          <div key={group.name}>
+            <h2 className="font-heading mb-4 text-xl font-medium tracking-tight">
+              {group.name}
+            </h2>
+            <ComponentGrid pages={group.pages} />
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
 export const ComponentsList = ({
   folderName = "Components",
   category,
@@ -86,6 +134,9 @@ export const ComponentsList = ({
   if (!isComponentsFolder(folder)) {
     const pages = getFolderPages(folder, base);
     if (pages.length > 0) {
+      if (isChartsFolder(folder)) {
+        return <ChartsGrid base={base} className={className} pages={pages} />;
+      }
       return <ComponentGrid className={className} pages={pages} />;
     }
     const allPages = getFolderPages(folder);
