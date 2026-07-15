@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
+import { getDocsSidebarPanel, isDitherChartUrl } from "../lib/docs.ts";
 import { renderDitherAreaChart as renderInkArea } from "../registry/bases/ink/lib/dither-area-chart-utils.ts";
 import { renderDitherBarChart as renderInkBar } from "../registry/bases/ink/lib/dither-bar-chart-utils.ts";
 import type {
@@ -100,6 +101,22 @@ const textOf = (input: DitherRenderInput): string =>
   renderInk(input)
     .frame.map((row) => row.map((cell) => cell.char).join(""))
     .join("\n");
+
+test("docs navigation isolates components, templates, and chart catalogs", () => {
+  assert.equal(
+    getDocsSidebarPanel("/docs/components/ink/layout/box"),
+    "components"
+  );
+  assert.equal(
+    getDocsSidebarPanel("/docs/templates/opentui/app-shell"),
+    "templates"
+  );
+  assert.equal(getDocsSidebarPanel("/docs/charts/ink/bar-chart"), "charts");
+  assert.equal(getDocsSidebarPanel("/docs"), null);
+  assert.equal(getDocsSidebarPanel("/docs/components-old"), null);
+  assert.equal(isDitherChartUrl("/docs/charts/ink/dither-area-chart"), true);
+  assert.equal(isDitherChartUrl("/docs/charts/ink/area-chart"), false);
+});
 
 test("Ink and OpenTUI use byte-for-byte equivalent cell geometry", () => {
   const cases: DitherRenderInput[] = [
@@ -214,14 +231,14 @@ test("chart previews reserve stable rows and scroll OpenTUI overflow", async () 
       ),
       readFile(
         new URL(
-          "../content/docs/components/ink/charts/dither-area-chart.mdx",
+          "../content/docs/charts/ink/dither-area-chart.mdx",
           import.meta.url
         ),
         "utf-8"
       ),
       readFile(
         new URL(
-          "../content/docs/components/ink/charts/dither-pie-chart.mdx",
+          "../content/docs/charts/ink/dither-pie-chart.mdx",
           import.meta.url
         ),
         "utf-8"

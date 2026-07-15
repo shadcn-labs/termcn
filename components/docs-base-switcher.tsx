@@ -4,12 +4,13 @@ import { cn } from "@/lib/utils";
 import { BASE_NAMES, BASES, getBase } from "@/registry/bases";
 import type { BaseName } from "@/registry/bases";
 
-type DocsBaseSwitcherSection = "components" | "templates" | "themes";
+type DocsBaseSwitcherSection = "components" | "templates" | "themes" | "charts";
 
 const DOCS_BASE_SWITCHER_SECTIONS = new Set<DocsBaseSwitcherSection>([
   "components",
   "templates",
   "themes",
+  "charts",
 ]);
 
 const isDocsBaseSwitcherSection = (
@@ -38,7 +39,7 @@ export const getDocsBaseSwitcherProps = (
     return null;
   }
 
-  if (section === "templates" || section === "themes") {
+  if (section === "templates" || section === "themes" || section === "charts") {
     return { base, section, slug: rest[0] };
   }
 
