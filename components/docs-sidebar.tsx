@@ -165,7 +165,7 @@ const ChartsSidebarPanel = ({
 
   return (
     <>
-      <SidebarPageGroup label="Charts" pages={charts} pathname={pathname} />
+      <SidebarPageGroup label="Basic" pages={charts} pathname={pathname} />
       <SidebarPageGroup label="Dither" pages={dither} pathname={pathname} />
     </>
   );

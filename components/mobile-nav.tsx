@@ -162,7 +162,7 @@ const ChartsMobilePanel = ({
 
   return (
     <>
-      <MobileNavGroup label="Charts" pages={charts} setOpen={setOpen} />
+      <MobileNavGroup label="Basic" pages={charts} setOpen={setOpen} />
       <MobileNavGroup label="Dither" pages={dither} setOpen={setOpen} />
     </>
   );
