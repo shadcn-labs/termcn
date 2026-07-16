@@ -1,0 +1,18 @@
+---
+title: 16 July 2026 - Dither Charts for Ink and OpenTUI
+description: Added six terminal-native dither chart families for Ink and OpenTUI, with composable primitives, interaction, motion, and accessible fallbacks.
+date: 2026-07-16
+---
+
+We shipped Dither Charts for both Ink and OpenTUI: a terminal-native visualization system that uses density, texture, and color to make data legible in character cells.
+
+The release includes composable [area](/docs/charts/ink/dither-area), [bar](/docs/charts/ink/dither-bar), [line](/docs/charts/ink/dither-line), [pie and donut](/docs/charts/ink/dither-pie), [radar](/docs/charts/ink/dither-radar), and [sparkline](/docs/charts/ink/dither-sparkline) components. Every chart family is also available through the corresponding [OpenTUI collection](/docs/charts/opentui/dither-area).
+
+Charts support axes, grids, dots, legends, tooltips, grouped and stacked data, percent layouts, bloom effects, animated entrances, and keyboard-driven inspection and selection. They also include no-color, ASCII, reduced-motion, and screen-reader-friendly output paths for less capable or nonvisual terminal environments.
+
+Install a chart directly from either registry namespace:
+
+```bash
+npx shadcn@latest add @termcn/ink/dither-area-chart
+npx shadcn@latest add @termcn/opentui/dither-area-chart
+```

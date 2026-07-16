@@ -1,4 +1,10 @@
 {
   "title": "Changelog",
-  "pages": ["", "2026-04-16-more-themes", "2026-05-26-opentui-support"]
+  "pages": [
+    "",
+    "2026-04-05-initial-release",
+    "2026-05-04-more-themes",
+    "2026-05-26-opentui-support",
+    "2026-07-16-dither-charts"
+  ]
 }
