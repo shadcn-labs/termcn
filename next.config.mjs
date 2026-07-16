@@ -58,7 +58,7 @@ const nextConfig = {
       {
         destination: `${ROUTES.DOCS_COMPONENTS}/ink/:category/:component`,
         permanent: true,
-        source: `${ROUTES.DOCS_COMPONENTS}/:category((?!ink|opentui)[^/]+)/:component`,
+        source: `${ROUTES.DOCS_COMPONENTS}/:category((?!ink|opentui|charts)[^/]+)/:component`,
       },
       {
         destination: `${ROUTES.DOCS_TEMPLATES}/ink/:template`,
@@ -69,6 +69,16 @@ const nextConfig = {
         destination: `${ROUTES.DOCS}/themes/ink/:theme`,
         permanent: true,
         source: `${ROUTES.DOCS}/themes/:theme((?!ink|opentui)[^/]+)`,
+      },
+      {
+        destination: `${ROUTES.DOCS_CHARTS}/:base`,
+        permanent: true,
+        source: `${ROUTES.DOCS_COMPONENTS}/:base(ink|opentui)/charts`,
+      },
+      {
+        destination: `${ROUTES.DOCS_CHARTS}/:base/:chart`,
+        permanent: true,
+        source: `${ROUTES.DOCS_COMPONENTS}/:base(ink|opentui)/charts/:chart`,
       },
     ];
   },

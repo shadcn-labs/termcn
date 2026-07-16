@@ -45,7 +45,7 @@ const OpenTuiPreview = ({
 
   return (
     <div
-      className="bg-card overflow-hidden"
+      className="bg-card overflow-auto overscroll-contain"
       style={{ height: `${height}px`, ...style }}
     >
       <TUI
@@ -55,8 +55,11 @@ const OpenTuiPreview = ({
           width: "100%",
         }}
         backgroundColor={baseTheme.colors.background}
+        fallbackRows={rows}
       >
-        <ThemeProvider theme={baseTheme}>{children}</ThemeProvider>
+        <scrollbox flexGrow={1} scrollX scrollY>
+          <ThemeProvider theme={baseTheme}>{children}</ThemeProvider>
+        </scrollbox>
       </TUI>
     </div>
   );

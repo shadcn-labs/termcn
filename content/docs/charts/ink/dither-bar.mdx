@@ -1,0 +1,122 @@
+---
+title: "Dither Bar Chart"
+description: "Dithered grouped, stacked, and percent bar charts with terminal-native textures and interaction"
+---
+
+<ComponentPreview base="ink" name="dither-bar-chart-demo" hideCode />
+
+## Installation
+
+<CodeTabs>
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+```bash
+npx shadcn@latest add @termcn/ink/dither-bar-chart
+```
+
+</TabsContent>
+<TabsContent value="manual">
+<Steps>
+<Step>Install the following dependencies:</Step>
+
+```bash
+npm install ink
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource
+  src="registry/bases/ink/lib/dither-chart-utils.ts"
+  title="lib/dither-chart-utils.ts"
+/>
+<ComponentSource
+  src="registry/bases/ink/lib/dither-bar-chart-utils.ts"
+  title="lib/dither-bar-chart-utils.ts"
+/>
+<ComponentSource
+  src="registry/bases/ink/ui/dither-chart.tsx"
+  title="components/ui/dither-chart.tsx"
+/>
+<ComponentSource
+  base="ink"
+  name="dither-bar-chart"
+  title="components/ui/dither-bar-chart.tsx"
+/>
+
+<Step>Update the import paths to match your project setup.</Step>
+</Steps>
+</TabsContent>
+</CodeTabs>
+
+## Usage
+
+```tsx
+import {
+  Bar,
+  BarChart,
+  Grid,
+  Legend,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "@/components/ui/dither-bar-chart";
+import type { ChartConfig } from "@/components/ui/dither-bar-chart";
+```
+
+```tsx
+const data = [
+  { month: "Jan", direct: 34, search: 18 },
+  { month: "Feb", direct: 47, search: 24 },
+  { month: "Mar", direct: 42, search: 29 },
+];
+
+const config = {
+  direct: { color: "green", label: "Direct" },
+  search: { color: "purple", label: "Search" },
+} satisfies ChartConfig;
+
+<BarChart config={config} data={data} stackType="stacked" width={56}>
+  <Grid horizontal />
+  <XAxis dataKey="month" />
+  <YAxis tickCount={4} />
+  <Bar dataKey="direct" variant="gradient" />
+  <Bar dataKey="search" variant="hatched" />
+  <Legend align="left" />
+  <Tooltip labelKey="month" />
+</BarChart>;
+```
+
+## Examples
+
+### Bar textures
+
+Set `variant` on a `Bar` to render gradient, dotted, hatched, or solid cells.
+
+<ComponentPreview base="ink" name="dither-bar-chart-variants" rows={17} />
+
+### Stacking modes
+
+Switch between cumulative stacks and normalized percent stacks with `stackType`.
+
+<ComponentPreview base="ink" name="dither-bar-chart-stacking" rows={10} />
+
+## API Reference
+
+| Prop               | Type                                                | Default     |
+| ------------------ | --------------------------------------------------- | ----------- |
+| `data`             | `TData[]`                                           | required    |
+| `config`           | `ChartConfig`                                       | required    |
+| `width`            | `number`                                            | `56`        |
+| `height`           | `number`                                            | `12`        |
+| `stackType`        | `"default" \| "stacked" \| "percent"`               | `"default"` |
+| `bloom`            | `"off" \| "low" \| "high" \| "aura" \| BloomConfig` | `"off"`     |
+| `interactive`      | `boolean`                                           | `true`      |
+| `noColor`          | `boolean`                                           | `false`     |
+| `screenReaderMode` | `boolean`                                           | `false`     |
+
+Arrow keys or H/J/K/L navigate chart state; Enter selects clickable series and
+Escape clears the active point.

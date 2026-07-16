@@ -28,6 +28,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
+import { ROUTES } from "@/constants/routes";
 import { SITE } from "@/constants/site";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { useFeedback } from "@/hooks/use-feedback";
@@ -36,7 +37,10 @@ import { useMutationObserver } from "@/hooks/use-mutation-observer";
 import { usePackageManager } from "@/hooks/use-package-manager";
 import {
   EXCLUDED_SECTIONS,
+  getChartRegistryItemName,
+  isChartsFolder,
   isComponentsFolder,
+  isDitherChartUrl,
   isTemplatesFolder,
   isThemesFolder,
 } from "@/lib/docs";
@@ -54,6 +58,7 @@ import { Kbd } from "./ui/kbd";
 type DocUrlKind =
   | { base?: string; kind: "theme"; slug: string }
   | { base?: string; kind: "component"; slug: string }
+  | { base?: string; kind: "chart"; slug: string }
   | { base?: string; kind: "template"; slug: string }
   | { kind: "page" };
 
@@ -79,6 +84,14 @@ const parseDocPageUrl = (url: string): DocUrlKind => {
     return {
       base: parts[componentsIdx + 1],
       kind: "component",
+      slug: parts.at(-1) ?? "",
+    };
+  }
+  const chartsIdx = parts.indexOf("charts");
+  if (chartsIdx !== -1 && parts[chartsIdx + 1]) {
+    return {
+      base: parts[chartsIdx + 1],
+      kind: "chart",
       slug: parts.at(-1) ?? "",
     };
   }
@@ -121,7 +134,7 @@ const DocPageLeadingIcon = ({ parsed }: { parsed: DocUrlKind }) => {
       />
     );
   }
-  if (parsed.kind === "component") {
+  if (parsed.kind === "component" || parsed.kind === "chart") {
     return <CircleDashedIcon />;
   }
   if (parsed.kind === "template") {
@@ -226,6 +239,30 @@ export const CommandMenu = ({
             });
           }
         }
+      } else if (isChartsFolder(item)) {
+        const chartPages = getFolderPages(item, currentBase).filter(
+          (page) => page.url !== `${ROUTES.DOCS_CHARTS}/${currentBase}`
+        );
+        const pageGroups = [
+          {
+            label: "Charts",
+            pages: chartPages.filter((page) => !isDitherChartUrl(page.url)),
+          },
+          {
+            label: "Dither",
+            pages: chartPages.filter((page) => isDitherChartUrl(page.url)),
+          },
+        ];
+
+        for (const group of pageGroups) {
+          const pages = group.pages.map((page) => ({
+            name: typeof page.name === "string" ? page.name : String(page.name),
+            url: page.url,
+          }));
+          if (pages.length > 0) {
+            groups.push({ label: group.label, pages });
+          }
+        }
       } else if (isTemplatesFolder(item) || isThemesFolder(item)) {
         const pages = getFolderPages(item, currentBase).map((p) => ({
           name: typeof p.name === "string" ? p.name : String(p.name),
@@ -266,6 +303,13 @@ export const CommandMenu = ({
             : "ink";
         setCopyPayload(
           `${packageManager} dlx shadcn@latest add ${SITE.REGISTRY}/${base}/theme-${parsed.slug}`
+        );
+        return;
+      }
+      if (parsed.kind === "chart") {
+        const base = parsed.base === "opentui" ? "opentui" : "ink";
+        setCopyPayload(
+          `${packageManager} dlx shadcn@latest add ${SITE.REGISTRY}/${base}/${getChartRegistryItemName(parsed.slug)}`
         );
         return;
       }

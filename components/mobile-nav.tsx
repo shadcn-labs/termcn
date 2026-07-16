@@ -17,7 +17,11 @@ import { TOP_LEVEL_SECTIONS } from "@/constants/site";
 import { useFeedback } from "@/hooks/use-feedback";
 import {
   EXCLUDED_SECTIONS,
+  getDocsSidebarPanel,
+  isCatalogFolder,
+  isChartsFolder,
   isComponentsFolder,
+  isDitherChartUrl,
   isTemplatesFolder,
   isThemesFolder,
 } from "@/lib/docs";
@@ -26,6 +30,7 @@ import {
   getCurrentBase,
   getFolderPages,
 } from "@/lib/page-tree";
+import type { PageTreeFolder } from "@/lib/page-tree";
 import { cn } from "@/lib/utils";
 
 const MobileLink = ({
@@ -86,6 +91,83 @@ const MobileNavGroup = ({
   );
 };
 
+interface MobilePanelProps {
+  currentBase: string;
+  setOpen: (open: boolean) => void;
+  tree: PageTreeRoot;
+}
+
+const findTopLevelFolder = (
+  tree: PageTreeRoot,
+  predicate: (folder: PageTreeFolder) => boolean
+) =>
+  tree.children.find(
+    (item): item is PageTreeFolder => item.type === "folder" && predicate(item)
+  );
+
+const ComponentsMobilePanel = ({
+  currentBase,
+  setOpen,
+  tree,
+}: MobilePanelProps) => {
+  const folder = findTopLevelFolder(tree, isComponentsFolder);
+  if (!folder) {
+    return null;
+  }
+
+  return getCategoryFolders(folder, currentBase).map((category) => (
+    <MobileNavGroup
+      key={category.$id}
+      label={category.name}
+      pages={getFolderPages(category)}
+      setOpen={setOpen}
+    />
+  ));
+};
+
+const TemplatesMobilePanel = ({
+  currentBase,
+  setOpen,
+  tree,
+}: MobilePanelProps) => {
+  const folder = findTopLevelFolder(tree, isTemplatesFolder);
+  if (!folder) {
+    return null;
+  }
+
+  return (
+    <MobileNavGroup
+      label="Templates"
+      pages={getFolderPages(folder, currentBase)}
+      setOpen={setOpen}
+    />
+  );
+};
+
+const ChartsMobilePanel = ({
+  currentBase,
+  setOpen,
+  tree,
+}: MobilePanelProps) => {
+  const folder = findTopLevelFolder(tree, isChartsFolder);
+  if (!folder) {
+    return null;
+  }
+
+  const pages = getFolderPages(folder, currentBase).filter(
+    (page) => page.url !== `${ROUTES.DOCS_CHARTS}/${currentBase}`
+  );
+  const charts = pages.filter((page) => !isDitherChartUrl(page.url));
+  const dither = pages.filter((page) => isDitherChartUrl(page.url));
+
+  return (
+    <>
+      <MobileNavGroup label="Basic" pages={charts} setOpen={setOpen} />
+      <MobileNavGroup label="Dither" pages={dither} setOpen={setOpen} />
+    </>
+  );
+};
+
 export const MobileNav = ({
   items,
   tree,
@@ -98,6 +180,21 @@ export const MobileNav = ({
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const currentBase = getCurrentBase(pathname);
+  const panel = getDocsSidebarPanel(pathname);
+
+  const renderCatalogPanel = () => {
+    const panelProps = { currentBase, setOpen, tree };
+    if (panel === "components") {
+      return <ComponentsMobilePanel {...panelProps} />;
+    }
+    if (panel === "templates") {
+      return <TemplatesMobilePanel {...panelProps} />;
+    }
+    if (panel === "charts") {
+      return <ChartsMobilePanel {...panelProps} />;
+    }
+    return null;
+  };
 
   return (
     <Popover sounds open={open} onOpenChange={setOpen}>
@@ -170,45 +267,31 @@ export const MobileNav = ({
               ))}
             </div>
           </div>
-          {tree.children.map((item) => {
-            if (item.type !== "folder") {
-              return null;
-            }
-            if (EXCLUDED_SECTIONS.has(item.$id ?? "")) {
-              return null;
-            }
+          {panel
+            ? renderCatalogPanel()
+            : tree.children.map((item) => {
+                if (item.type !== "folder") {
+                  return null;
+                }
+                if (EXCLUDED_SECTIONS.has(item.$id ?? "")) {
+                  return null;
+                }
+                if (isCatalogFolder(item)) {
+                  return null;
+                }
 
-            if (isComponentsFolder(item)) {
-              return getCategoryFolders(item, currentBase).map((category) => (
-                <MobileNavGroup
-                  key={category.$id}
-                  label={category.name}
-                  pages={getFolderPages(category)}
-                  setOpen={setOpen}
-                />
-              ));
-            }
-
-            if (isTemplatesFolder(item) || isThemesFolder(item)) {
-              return (
-                <MobileNavGroup
-                  key={item.$id}
-                  label={item.name}
-                  pages={getFolderPages(item, currentBase)}
-                  setOpen={setOpen}
-                />
-              );
-            }
-
-            return (
-              <MobileNavGroup
-                key={item.$id}
-                label={item.name}
-                pages={getFolderPages(item)}
-                setOpen={setOpen}
-              />
-            );
-          })}
+                return (
+                  <MobileNavGroup
+                    key={item.$id}
+                    label={item.name}
+                    pages={getFolderPages(
+                      item,
+                      isThemesFolder(item) ? currentBase : undefined
+                    )}
+                    setOpen={setOpen}
+                  />
+                );
+              })}
         </div>
       </PopoverContent>
     </Popover>

@@ -1,0 +1,111 @@
+---
+title: "Dither Radar Chart"
+description: "Dithered radar charts for comparing multiple series across terminal-friendly radial axes"
+---
+
+<ComponentPreview base="ink" name="dither-radar-chart-demo" hideCode />
+
+## Installation
+
+<CodeTabs>
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+```bash
+npx shadcn@latest add @termcn/ink/dither-radar-chart
+```
+
+</TabsContent>
+<TabsContent value="manual">
+<Steps>
+<Step>Install the following dependencies:</Step>
+
+```bash
+npm install ink
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource
+  src="registry/bases/ink/lib/dither-chart-utils.ts"
+  title="lib/dither-chart-utils.ts"
+/>
+<ComponentSource
+  src="registry/bases/ink/lib/dither-radar-chart-utils.ts"
+  title="lib/dither-radar-chart-utils.ts"
+/>
+<ComponentSource
+  src="registry/bases/ink/ui/dither-chart.tsx"
+  title="components/ui/dither-chart.tsx"
+/>
+<ComponentSource
+  base="ink"
+  name="dither-radar-chart"
+  title="components/ui/dither-radar-chart.tsx"
+/>
+
+<Step>Update the import paths to match your project setup.</Step>
+</Steps>
+</TabsContent>
+</CodeTabs>
+
+## Usage
+
+```tsx
+import {
+  Legend,
+  Radar,
+  RadarChart,
+  Tooltip,
+} from "@/components/ui/dither-radar-chart";
+import type { ChartConfig } from "@/components/ui/dither-radar-chart";
+```
+
+```tsx
+const data = [
+  { metric: "Speed", desktop: 82, mobile: 68 },
+  { metric: "Quality", desktop: 74, mobile: 79 },
+  { metric: "Reach", desktop: 66, mobile: 88 },
+  { metric: "Trust", desktop: 91, mobile: 72 },
+];
+
+const config = {
+  desktop: { color: "blue", label: "Desktop" },
+  mobile: { color: "pink", label: "Mobile" },
+} satisfies ChartConfig;
+
+<RadarChart config={config} data={data} nameKey="metric" width={52}>
+  <Radar dataKey="desktop" variant="gradient" />
+  <Radar dataKey="mobile" variant="dotted" />
+  <Legend align="left" />
+  <Tooltip labelKey="metric" />
+</RadarChart>;
+```
+
+## Examples
+
+### Fill variants
+
+Choose gradient, dotted, hatched, or solid polygon fills independently for each radar series.
+
+<ComponentPreview base="ink" name="dither-radar-chart-variants" rows={27} />
+
+## API Reference
+
+| Prop               | Type                                                | Default  |
+| ------------------ | --------------------------------------------------- | -------- |
+| `data`             | `TData[]`                                           | required |
+| `config`           | `ChartConfig`                                       | required |
+| `nameKey`          | `string`                                            | required |
+| `width`            | `number`                                            | `56`     |
+| `height`           | `number`                                            | `12`     |
+| `bloom`            | `"off" \| "low" \| "high" \| "aura" \| BloomConfig` | `"off"`  |
+| `markerIndex`      | `number \| null`                                    | `null`   |
+| `noColor`          | `boolean`                                           | `false`  |
+| `screenReaderMode` | `boolean`                                           | `false`  |
+
+The standard chart keyboard controls inspect axes, focus series, and replay
+enabled entrance motion.

@@ -49,6 +49,18 @@ interface OpenTUITextProps {
   underline?: boolean;
 }
 
+interface OpenTUISpanProps {
+  bg?: string;
+  children?: ReactNode;
+  fg?: string;
+  key?: React.Key;
+}
+
+interface OpenTUIScrollBoxProps extends OpenTUIBoxProps {
+  scrollX?: boolean;
+  scrollY?: boolean;
+}
+
 declare module "@opentui/react/jsx-runtime" {
   export function jsx(
     type: unknown,
@@ -86,7 +98,7 @@ declare module "@opentui/react/jsx-runtime" {
       markdown: Record<string, unknown>;
       scrollbox: Record<string, unknown>;
       select: Record<string, unknown>;
-      span: { children?: ReactNode };
+      span: OpenTUISpanProps;
       strong: { children?: ReactNode };
       "tab-select": Record<string, unknown>;
       textarea: Record<string, unknown>;
@@ -123,7 +135,7 @@ declare module "@opentui/react/jsx-dev-runtime" {
       markdown: Record<string, unknown>;
       scrollbox: Record<string, unknown>;
       select: Record<string, unknown>;
-      span: { children?: ReactNode };
+      span: OpenTUISpanProps;
       strong: { children?: ReactNode };
       "tab-select": Record<string, unknown>;
       textarea: Record<string, unknown>;
@@ -140,6 +152,7 @@ declare module "react/jsx-runtime" {
       box: OpenTUIBoxProps;
       dim: { children?: ReactNode };
       i: { children?: ReactNode };
+      scrollbox: OpenTUIScrollBoxProps;
       text: OpenTUITextProps;
       u: { children?: ReactNode };
     }
@@ -153,6 +166,7 @@ declare module "react/jsx-dev-runtime" {
       box: OpenTUIBoxProps;
       dim: { children?: ReactNode };
       i: { children?: ReactNode };
+      scrollbox: OpenTUIScrollBoxProps;
       text: OpenTUITextProps;
       u: { children?: ReactNode };
     }

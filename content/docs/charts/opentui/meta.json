@@ -1,0 +1,17 @@
+{
+  "pages": [
+    "bar",
+    "dither-area",
+    "dither-bar",
+    "dither-line",
+    "dither-pie",
+    "dither-radar",
+    "dither-sparkline",
+    "gauge",
+    "heat-map",
+    "line",
+    "pie",
+    "sparkline"
+  ],
+  "title": "OpenTUI"
+}

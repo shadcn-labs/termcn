@@ -17,7 +17,11 @@ import { ROUTES } from "@/constants/routes";
 import { TOP_LEVEL_SECTIONS } from "@/constants/site";
 import {
   EXCLUDED_SECTIONS,
+  getDocsSidebarPanel,
+  isCatalogFolder,
+  isChartsFolder,
   isComponentsFolder,
+  isDitherChartUrl,
   isTemplatesFolder,
   isThemesFolder,
   PAGES_NEW,
@@ -27,6 +31,7 @@ import {
   getCurrentBase,
   getFolderPages,
 } from "@/lib/page-tree";
+import type { PageTreeFolder } from "@/lib/page-tree";
 import type { source } from "@/lib/source";
 
 const SidebarMenuItemLink = ({
@@ -89,6 +94,83 @@ const SidebarPageGroup = ({
   );
 };
 
+interface SidebarPanelProps {
+  currentBase: string;
+  pathname: string;
+  tree: typeof source.pageTree;
+}
+
+const findTopLevelFolder = (
+  tree: typeof source.pageTree,
+  predicate: (folder: PageTreeFolder) => boolean
+) =>
+  tree.children.find(
+    (item): item is PageTreeFolder => item.type === "folder" && predicate(item)
+  );
+
+const ComponentsSidebarPanel = ({
+  currentBase,
+  pathname,
+  tree,
+}: SidebarPanelProps) => {
+  const folder = findTopLevelFolder(tree, isComponentsFolder);
+  if (!folder) {
+    return null;
+  }
+
+  return getCategoryFolders(folder, currentBase).map((category) => (
+    <SidebarPageGroup
+      key={category.$id}
+      label={category.name}
+      pages={getFolderPages(category)}
+      pathname={pathname}
+    />
+  ));
+};
+
+const TemplatesSidebarPanel = ({
+  currentBase,
+  pathname,
+  tree,
+}: SidebarPanelProps) => {
+  const folder = findTopLevelFolder(tree, isTemplatesFolder);
+  if (!folder) {
+    return null;
+  }
+
+  return (
+    <SidebarPageGroup
+      label="Templates"
+      pages={getFolderPages(folder, currentBase)}
+      pathname={pathname}
+    />
+  );
+};
+
+const ChartsSidebarPanel = ({
+  currentBase,
+  pathname,
+  tree,
+}: SidebarPanelProps) => {
+  const folder = findTopLevelFolder(tree, isChartsFolder);
+  if (!folder) {
+    return null;
+  }
+
+  const pages = getFolderPages(folder, currentBase).filter(
+    (page) => page.url !== `${ROUTES.DOCS_CHARTS}/${currentBase}`
+  );
+  const charts = pages.filter((page) => !isDitherChartUrl(page.url));
+  const dither = pages.filter((page) => isDitherChartUrl(page.url));
+
+  return (
+    <>
+      <SidebarPageGroup label="Basic" pages={charts} pathname={pathname} />
+      <SidebarPageGroup label="Dither" pages={dither} pathname={pathname} />
+    </>
+  );
+};
+
 export const DocsSidebar = ({
   tree,
   ...props
@@ -97,6 +179,21 @@ export const DocsSidebar = ({
 }) => {
   const pathname = usePathname();
   const currentBase = getCurrentBase(pathname);
+  const panel = getDocsSidebarPanel(pathname);
+
+  const renderCatalogPanel = () => {
+    const panelProps = { currentBase, pathname, tree };
+    if (panel === "components") {
+      return <ComponentsSidebarPanel {...panelProps} />;
+    }
+    if (panel === "templates") {
+      return <TemplatesSidebarPanel {...panelProps} />;
+    }
+    if (panel === "charts") {
+      return <ChartsSidebarPanel {...panelProps} />;
+    }
+    return null;
+  };
 
   return (
     <Sidebar
@@ -130,45 +227,31 @@ export const DocsSidebar = ({
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-        {tree.children.map((item) => {
-          if (item.type !== "folder") {
-            return null;
-          }
-          if (EXCLUDED_SECTIONS.has(item.$id ?? "")) {
-            return null;
-          }
+        {panel
+          ? renderCatalogPanel()
+          : tree.children.map((item) => {
+              if (item.type !== "folder") {
+                return null;
+              }
+              if (EXCLUDED_SECTIONS.has(item.$id ?? "")) {
+                return null;
+              }
+              if (isCatalogFolder(item)) {
+                return null;
+              }
 
-          if (isComponentsFolder(item)) {
-            return getCategoryFolders(item, currentBase).map((category) => (
-              <SidebarPageGroup
-                key={category.$id}
-                label={category.name}
-                pages={getFolderPages(category)}
-                pathname={pathname}
-              />
-            ));
-          }
-
-          if (isTemplatesFolder(item) || isThemesFolder(item)) {
-            return [
-              <SidebarPageGroup
-                key={item.$id}
-                label={item.name}
-                pages={getFolderPages(item, currentBase)}
-                pathname={pathname}
-              />,
-            ];
-          }
-
-          return (
-            <SidebarPageGroup
-              key={item.$id}
-              label={item.name}
-              pages={getFolderPages(item)}
-              pathname={pathname}
-            />
-          );
-        })}
+              return (
+                <SidebarPageGroup
+                  key={item.$id}
+                  label={item.name}
+                  pages={getFolderPages(
+                    item,
+                    isThemesFolder(item) ? currentBase : undefined
+                  )}
+                  pathname={pathname}
+                />
+              );
+            })}
         <div className="sticky -bottom-1 z-10 h-16 shrink-0 bg-linear-to-t from-background via-background/80 to-background/50 blur-xs" />
       </SidebarContent>
     </Sidebar>

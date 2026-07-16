@@ -9,6 +9,7 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "registry:build": "pnpm examples:build && node ./scripts/build-registry.mts",
+    "test:dither": "node --experimental-strip-types --import ./tests/register-typescript-resolver.mjs --test tests/dither-chart-core.test.mts",
     "postinstall": "fumadocs-mdx",
     "check": "ultracite check",
     "fix": "ultracite fix",

@@ -552,6 +552,188 @@ export const ExamplesIndex: Record<string, Record<string, any>> = {
       filePath: "examples/ink/directory-tree-demo.tsx",
       name: "directory-tree-demo",
     },
+    "dither-area-chart-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./ink/dither-area-chart-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "dither-area-chart-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/ink/dither-area-chart-demo.tsx",
+      name: "dither-area-chart-demo",
+    },
+    "dither-area-chart-stacking": {
+      component: React.lazy(async () => {
+        const mod = await import("./ink/dither-area-chart-stacking");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "dither-area-chart-stacking";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/ink/dither-area-chart-stacking.tsx",
+      name: "dither-area-chart-stacking",
+    },
+    "dither-area-chart-variants": {
+      component: React.lazy(async () => {
+        const mod = await import("./ink/dither-area-chart-variants");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "dither-area-chart-variants";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/ink/dither-area-chart-variants.tsx",
+      name: "dither-area-chart-variants",
+    },
+    "dither-bar-chart-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./ink/dither-bar-chart-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "dither-bar-chart-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/ink/dither-bar-chart-demo.tsx",
+      name: "dither-bar-chart-demo",
+    },
+    "dither-bar-chart-stacking": {
+      component: React.lazy(async () => {
+        const mod = await import("./ink/dither-bar-chart-stacking");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "dither-bar-chart-stacking";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/ink/dither-bar-chart-stacking.tsx",
+      name: "dither-bar-chart-stacking",
+    },
+    "dither-bar-chart-variants": {
+      component: React.lazy(async () => {
+        const mod = await import("./ink/dither-bar-chart-variants");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "dither-bar-chart-variants";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/ink/dither-bar-chart-variants.tsx",
+      name: "dither-bar-chart-variants",
+    },
+    "dither-line-chart-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./ink/dither-line-chart-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "dither-line-chart-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/ink/dither-line-chart-demo.tsx",
+      name: "dither-line-chart-demo",
+    },
+    "dither-line-chart-variants": {
+      component: React.lazy(async () => {
+        const mod = await import("./ink/dither-line-chart-variants");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "dither-line-chart-variants";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/ink/dither-line-chart-variants.tsx",
+      name: "dither-line-chart-variants",
+    },
+    "dither-pie-chart-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./ink/dither-pie-chart-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "dither-pie-chart-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/ink/dither-pie-chart-demo.tsx",
+      name: "dither-pie-chart-demo",
+    },
+    "dither-pie-chart-variants": {
+      component: React.lazy(async () => {
+        const mod = await import("./ink/dither-pie-chart-variants");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "dither-pie-chart-variants";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/ink/dither-pie-chart-variants.tsx",
+      name: "dither-pie-chart-variants",
+    },
+    "dither-radar-chart-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./ink/dither-radar-chart-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "dither-radar-chart-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/ink/dither-radar-chart-demo.tsx",
+      name: "dither-radar-chart-demo",
+    },
+    "dither-radar-chart-variants": {
+      component: React.lazy(async () => {
+        const mod = await import("./ink/dither-radar-chart-variants");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "dither-radar-chart-variants";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/ink/dither-radar-chart-variants.tsx",
+      name: "dither-radar-chart-variants",
+    },
+    "dither-sparkline-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./ink/dither-sparkline-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "dither-sparkline-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/ink/dither-sparkline-demo.tsx",
+      name: "dither-sparkline-demo",
+    },
+    "dither-sparkline-variants": {
+      component: React.lazy(async () => {
+        const mod = await import("./ink/dither-sparkline-variants");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "dither-sparkline-variants";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/ink/dither-sparkline-variants.tsx",
+      name: "dither-sparkline-variants",
+    },
     "divider-custom": {
       component: React.lazy(async () => {
         const mod = await import("./ink/divider-custom");
@@ -2399,6 +2581,188 @@ export const ExamplesIndex: Record<string, Record<string, any>> = {
       }),
       filePath: "examples/opentui/directory-tree-demo.tsx",
       name: "directory-tree-demo",
+    },
+    "dither-area-chart-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/dither-area-chart-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "dither-area-chart-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/dither-area-chart-demo.tsx",
+      name: "dither-area-chart-demo",
+    },
+    "dither-area-chart-stacking": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/dither-area-chart-stacking");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "dither-area-chart-stacking";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/dither-area-chart-stacking.tsx",
+      name: "dither-area-chart-stacking",
+    },
+    "dither-area-chart-variants": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/dither-area-chart-variants");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "dither-area-chart-variants";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/dither-area-chart-variants.tsx",
+      name: "dither-area-chart-variants",
+    },
+    "dither-bar-chart-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/dither-bar-chart-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "dither-bar-chart-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/dither-bar-chart-demo.tsx",
+      name: "dither-bar-chart-demo",
+    },
+    "dither-bar-chart-stacking": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/dither-bar-chart-stacking");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "dither-bar-chart-stacking";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/dither-bar-chart-stacking.tsx",
+      name: "dither-bar-chart-stacking",
+    },
+    "dither-bar-chart-variants": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/dither-bar-chart-variants");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "dither-bar-chart-variants";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/dither-bar-chart-variants.tsx",
+      name: "dither-bar-chart-variants",
+    },
+    "dither-line-chart-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/dither-line-chart-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "dither-line-chart-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/dither-line-chart-demo.tsx",
+      name: "dither-line-chart-demo",
+    },
+    "dither-line-chart-variants": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/dither-line-chart-variants");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "dither-line-chart-variants";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/dither-line-chart-variants.tsx",
+      name: "dither-line-chart-variants",
+    },
+    "dither-pie-chart-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/dither-pie-chart-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "dither-pie-chart-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/dither-pie-chart-demo.tsx",
+      name: "dither-pie-chart-demo",
+    },
+    "dither-pie-chart-variants": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/dither-pie-chart-variants");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "dither-pie-chart-variants";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/dither-pie-chart-variants.tsx",
+      name: "dither-pie-chart-variants",
+    },
+    "dither-radar-chart-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/dither-radar-chart-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "dither-radar-chart-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/dither-radar-chart-demo.tsx",
+      name: "dither-radar-chart-demo",
+    },
+    "dither-radar-chart-variants": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/dither-radar-chart-variants");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "dither-radar-chart-variants";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/dither-radar-chart-variants.tsx",
+      name: "dither-radar-chart-variants",
+    },
+    "dither-sparkline-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/dither-sparkline-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "dither-sparkline-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/dither-sparkline-demo.tsx",
+      name: "dither-sparkline-demo",
+    },
+    "dither-sparkline-variants": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/dither-sparkline-variants");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "dither-sparkline-variants";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/dither-sparkline-variants.tsx",
+      name: "dither-sparkline-variants",
     },
     "divider-custom": {
       component: React.lazy(async () => {

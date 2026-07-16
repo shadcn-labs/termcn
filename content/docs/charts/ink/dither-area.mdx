@@ -1,0 +1,123 @@
+---
+title: "Dither Area Chart"
+description: "Composable dithered area charts with layered fills, dots, axes, stacking, bloom, and keyboard interaction"
+---
+
+<ComponentPreview base="ink" name="dither-area-chart-demo" rows={22} hideCode />
+
+## Installation
+
+<CodeTabs>
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+```bash
+npx shadcn@latest add @termcn/ink/dither-area-chart
+```
+
+</TabsContent>
+<TabsContent value="manual">
+<Steps>
+<Step>Install the following dependencies:</Step>
+
+```bash
+npm install ink
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource
+  src="registry/bases/ink/lib/dither-chart-utils.ts"
+  title="lib/dither-chart-utils.ts"
+/>
+<ComponentSource
+  src="registry/bases/ink/lib/dither-area-chart-utils.ts"
+  title="lib/dither-area-chart-utils.ts"
+/>
+<ComponentSource
+  src="registry/bases/ink/ui/dither-chart.tsx"
+  title="components/ui/dither-chart.tsx"
+/>
+<ComponentSource
+  base="ink"
+  name="dither-area-chart"
+  title="components/ui/dither-area-chart.tsx"
+/>
+
+<Step>Update the import paths to match your project setup.</Step>
+</Steps>
+</TabsContent>
+</CodeTabs>
+
+## Usage
+
+```tsx
+import {
+  Area,
+  AreaChart,
+  Grid,
+  Legend,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "@/components/ui/dither-area-chart";
+import type { ChartConfig } from "@/components/ui/dither-area-chart";
+```
+
+```tsx
+const data = [
+  { month: "Jan", desktop: 38, mobile: 22 },
+  { month: "Feb", desktop: 52, mobile: 31 },
+  { month: "Mar", desktop: 47, mobile: 35 },
+];
+
+const config = {
+  desktop: { color: "blue", label: "Desktop" },
+  mobile: { color: "pink", label: "Mobile" },
+} satisfies ChartConfig;
+
+<AreaChart config={config} data={data} height={12} width={56}>
+  <Grid horizontal />
+  <XAxis dataKey="month" />
+  <YAxis tickCount={4} />
+  <Area dataKey="desktop" variant="gradient" />
+  <Area dataKey="mobile" variant="dotted" />
+  <Legend align="left" />
+  <Tooltip labelKey="month" />
+</AreaChart>;
+```
+
+## Examples
+
+### Fill variants
+
+Set `variant` on each `Area` to choose a gradient, dotted, hatched, or solid fill.
+
+<ComponentPreview base="ink" name="dither-area-chart-variants" rows={17} />
+
+### Stacking modes
+
+Use `stackType="stacked"` for cumulative values or `stackType="percent"` for normalized proportions.
+
+<ComponentPreview base="ink" name="dither-area-chart-stacking" rows={10} />
+
+## API Reference
+
+| Prop               | Type                                                | Default     |
+| ------------------ | --------------------------------------------------- | ----------- |
+| `data`             | `TData[]`                                           | required    |
+| `config`           | `ChartConfig`                                       | required    |
+| `width`            | `number`                                            | `56`        |
+| `height`           | `number`                                            | `12`        |
+| `stackType`        | `"default" \| "stacked" \| "percent"`               | `"default"` |
+| `bloom`            | `"off" \| "low" \| "high" \| "aura" \| BloomConfig` | `"off"`     |
+| `markerIndex`      | `number \| null`                                    | `null`      |
+| `interactive`      | `boolean`                                           | `true`      |
+| `noColor`          | `boolean`                                           | `false`     |
+| `screenReaderMode` | `boolean`                                           | `false`     |
+
+Use left/right to inspect points, up/down to focus a series, Enter to select,
+Escape to clear, and R to replay animation. H/J/K/L are supported too.

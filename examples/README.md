@@ -32,6 +32,8 @@ examples
 - `ComponentPreview` resolves the example for the active docs framework route.
 - `/docs/components/ink/...` loads `examples/ink/*.tsx`.
 - `/docs/components/opentui/...` loads `examples/opentui/*.tsx`.
+- `/docs/charts/ink/...` loads `examples/ink/*.tsx`.
+- `/docs/charts/opentui/...` loads `examples/opentui/*.tsx`.
 - Keep example files directly inside the framework folder, not nested deeper.
 - Both default exports and named exports are supported.
 - Root-level files like `theme-showcase.tsx` are helper modules, not preview entries.

@@ -22,24 +22,26 @@ const InkPreview = createDynamicTerminal<InkPreviewProps>(
 export interface TerminalPreviewProps {
   base: BaseName;
   name: string;
+  rows?: number;
   theme?: keyof typeof terminalThemeMap;
 }
 
 export const TerminalPreview = ({
   base,
   name,
+  rows,
   theme,
 }: TerminalPreviewProps) => {
   if (base !== DEFAULT_BASE_NAME) {
     return (
-      <OpenTuiPreview theme={theme}>
+      <OpenTuiPreview rows={rows} theme={theme}>
         <ExamplePreview base={base} name={name} />
       </OpenTuiPreview>
     );
   }
 
   return (
-    <InkPreview theme={theme}>
+    <InkPreview rows={rows} theme={theme}>
       <ExamplePreview base={base} name={name} />
     </InkPreview>
   );

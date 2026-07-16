@@ -12,6 +12,7 @@ export const ComponentPreview = ({
   title = "Terminal",
   className,
   hideCode = false,
+  rows,
   theme,
 }: Omit<TerminalPreviewProps, "base"> & {
   base?: TerminalPreviewProps["base"];
@@ -25,7 +26,7 @@ export const ComponentPreview = ({
       title={title}
       trailing={<TerminalTheme />}
     >
-      <TerminalPreview base={base} name={name} theme={theme} />
+      <TerminalPreview base={base} name={name} rows={rows} theme={theme} />
     </MacWindow>
     {!hideCode && <ComponentSource base={base} name={name} />}
   </>

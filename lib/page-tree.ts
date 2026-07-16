@@ -71,7 +71,7 @@ export const getFolderPages = (
 
 export const getCurrentBase = (pathname: string): string => {
   const baseScopedMatch = pathname.match(
-    /\/docs\/(?:components|templates)\/([^/]+)\//
+    /\/docs\/(?:components|templates|charts)\/([^/]+)(?:\/|$)/
   );
   if (baseScopedMatch) {
     return baseScopedMatch[1];
