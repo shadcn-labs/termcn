@@ -70,6 +70,16 @@ const nextConfig = {
         permanent: true,
         source: `${ROUTES.DOCS}/themes/:theme((?!ink|opentui)[^/]+)`,
       },
+      {
+        destination: `${ROUTES.DOCS_CHARTS}/:base`,
+        permanent: true,
+        source: `${ROUTES.DOCS_COMPONENTS}/:base(ink|opentui)/charts`,
+      },
+      {
+        destination: `${ROUTES.DOCS_CHARTS}/:base/:chart`,
+        permanent: true,
+        source: `${ROUTES.DOCS_COMPONENTS}/:base(ink|opentui)/charts/:chart`,
+      },
     ];
   },
   rewrites() {
@@ -84,37 +94,6 @@ const nextConfig = {
         {
           destination: "/r/ink/:slug.json",
           source: "/r/:slug.json",
-        },
-      ],
-      // Keep concise chart doc URLs canonical while old chart routes continue to resolve.
-      beforeFiles: [
-        {
-          destination: `${ROUTES.DOCS_CHARTS}/:base/:chart`,
-          source: `${ROUTES.DOCS_CHARTS}/:base(ink|opentui)/:chart([^/]+)-chart`,
-        },
-        {
-          destination: `${ROUTES.DOCS_CHARTS}/:base`,
-          source: `${ROUTES.DOCS_COMPONENTS}/:base(ink|opentui)/charts`,
-        },
-        {
-          destination: `${ROUTES.DOCS_CHARTS}/:base/:chart`,
-          source: `${ROUTES.DOCS_COMPONENTS}/:base(ink|opentui)/charts/:chart([^/]+)-chart`,
-        },
-        {
-          destination: `${ROUTES.DOCS_CHARTS}/:base/:chart`,
-          source: `${ROUTES.DOCS_COMPONENTS}/:base(ink|opentui)/charts/:chart`,
-        },
-        {
-          destination: `${ROUTES.DOCS_CHARTS}/ink`,
-          source: `${ROUTES.DOCS_COMPONENTS}/charts`,
-        },
-        {
-          destination: `${ROUTES.DOCS_CHARTS}/ink/:chart`,
-          source: `${ROUTES.DOCS_COMPONENTS}/charts/:chart([^/]+)-chart`,
-        },
-        {
-          destination: `${ROUTES.DOCS_CHARTS}/ink/:chart`,
-          source: `${ROUTES.DOCS_COMPONENTS}/charts/:chart`,
         },
       ],
     };
