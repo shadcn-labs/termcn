@@ -77,4 +77,18 @@ export const homeContentRoute = `${ROUTES.LLMS_MD}/content.md`;
 export const docsContentRoute = `${ROUTES.LLMS_MD}${ROUTES.DOCS}`;
 export const docsImageRoute = `${ROUTES.OG}${ROUTES.DOCS}`;
 
-export const PAGES_NEW: string[] = [ROUTES.DOCS_CHANGELOG];
+export const PAGES_NEW: string[] = [
+  ROUTES.DOCS_CHANGELOG,
+  `${ROUTES.DOCS_CHARTS}/ink/dither-area`,
+  `${ROUTES.DOCS_CHARTS}/ink/dither-bar`,
+  `${ROUTES.DOCS_CHARTS}/ink/dither-line`,
+  `${ROUTES.DOCS_CHARTS}/ink/dither-pie`,
+  `${ROUTES.DOCS_CHARTS}/ink/dither-radar`,
+  `${ROUTES.DOCS_CHARTS}/ink/dither-sparkline`,
+  `${ROUTES.DOCS_CHARTS}/opentui/dither-area`,
+  `${ROUTES.DOCS_CHARTS}/opentui/dither-bar`,
+  `${ROUTES.DOCS_CHARTS}/opentui/dither-line`,
+  `${ROUTES.DOCS_CHARTS}/opentui/dither-pie`,
+  `${ROUTES.DOCS_CHARTS}/opentui/dither-radar`,
+  `${ROUTES.DOCS_CHARTS}/opentui/dither-sparkline`,
+];
