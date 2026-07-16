@@ -86,7 +86,7 @@ const ChartsGrid = ({
   );
   const groups = [
     {
-      name: "Charts",
+      name: "Basic",
       pages: chartPages.filter((page) => !isDitherChartUrl(page.url)),
     },
     {
