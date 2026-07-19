@@ -1,0 +1,44 @@
+---
+title: "Composition and focus"
+description: "Compose standalone Termcn controls without renderer-wide input conflicts."
+---
+
+Ink's `useInput` subscription is renderer-wide. Every active subscriber receives the same key, so a pass-through hook cannot prevent two mounted controls from responding together. Termcn components use `useInteraction` to combine Ink focus registration with a focused input subscription.
+
+## Standalone controls
+
+Each interactive component accepts `id`, `autoFocus`, `isActive`, and `disabled`. It is one native tab stop and processes input only while focused. `Tab` and `Shift+Tab` belong to Ink traversal; composite controls use arrows, Home, End, PageUp, and PageDown internally.
+
+```tsx
+<Box flexDirection="column">
+  <TextInput id="project" autoFocus aria-label="Project name" />
+  <Select id="runtime" aria-label="Runtime" options={runtimes} />
+</Box>
+```
+
+Set `autoFocus` on the intended initial control rather than relying on mount order. Disabled and inactive controls never process input and are skipped by traversal.
+
+## Modal focus scopes
+
+Dialog, Modal, Drawer, and interactive Popover use `FocusScope`. The scope suspends native global traversal, registers descendants in render order, owns Tab/Shift+Tab and Escape, supports nesting, and restores the previously focused Termcn control when it closes.
+
+```tsx
+<FocusScope
+  active={open}
+  initialFocusId="delete-cancel"
+  returnFocusId="delete-trigger"
+  onEscapeKey={() => setOpen(false)}
+>
+  <Confirm id="delete-cancel" message="Delete project?" />
+</FocusScope>
+```
+
+Only the topmost nested scope handles input. Multiple simultaneously active non-nested modal scopes are ambiguous and produce a development warning.
+
+## Global shortcuts
+
+Atomic components never claim application-global keys such as `q`. If a template needs a global shortcut, make it opt-in and bind it to an explicit `isActive` application state. Keep submission and exit behavior in callbacks; copied templates must not silently call `useApp().exit()` on behalf of their parent.
+
+## No provider requirement
+
+The interaction registry item coordinates scopes per Ink stdout instance. It does not require `TermcnProvider` and does not create a global event bus. Theme, Unicode, and motion contexts also have usable defaults; mount `ThemeProvider` only to customize them.

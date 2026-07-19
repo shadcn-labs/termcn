@@ -3,9 +3,9 @@
 import { Box, Text } from "ink";
 import { Component as ReactComponent, Suspense } from "react";
 
-import { useTheme as useInkTheme } from "@/components/ui/ink-theme-provider";
 import { useTheme as useOpenTuiTheme } from "@/components/ui/opentui-theme-provider";
 import { ExamplesIndex } from "@/examples/__index__";
+import { useTheme as useInkTheme } from "@/hooks/use-theme";
 import { DEFAULT_BASE_NAME } from "@/registry/bases";
 import type { BaseName } from "@/registry/bases";
 

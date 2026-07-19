@@ -1,16 +1,19 @@
-import { Box, Text } from "ink";
+import { useIsScreenReaderEnabled, Box, Text } from "ink";
 import React from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
-import { useInput } from "@/hooks/use-input";
+import { isActivationKey, useInteraction } from "@/hooks/use-interaction";
+import type { InteractionProps } from "@/hooks/use-interaction";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import { resolveBorderStyle } from "@/registry/bases/ink/lib/accessibility";
 
-export interface ErrorRetryProps {
+export interface ErrorRetryProps extends InteractionProps {
   error: Error | string;
   onRetry?: () => void;
   onDismiss?: () => void;
   retryCount?: number;
   maxRetries?: number;
-  isActive?: boolean;
+  "aria-label"?: string;
 }
 
 export function ErrorRetry({
@@ -20,33 +23,48 @@ export function ErrorRetry({
   retryCount = 0,
   maxRetries = 3,
   isActive = true,
+  id,
+  autoFocus,
+  disabled,
+  "aria-label": ariaLabel,
 }: ErrorRetryProps) {
+  const unicode = useUnicode();
   const theme = useTheme();
+  const isScreenReaderEnabled = useIsScreenReaderEnabled();
   const message = typeof error === "string" ? error : error.message;
   const maxReached = retryCount >= maxRetries;
 
-  useInput(
+  const { isFocused } = useInteraction(
     (input, key) => {
-      if (!maxReached && (key.return || input === "r")) {
+      if (!maxReached && (isActivationKey(input, key) || input === "r")) {
         onRetry?.();
       } else if (key.escape) {
         onDismiss?.();
       }
     },
-    { isActive }
+    { autoFocus, disabled, id, isActive }
   );
 
   return (
     <Box
       flexDirection="column"
-      borderStyle="round"
+      borderStyle={resolveBorderStyle(
+        isScreenReaderEnabled ? undefined : "round",
+        unicode
+      )}
       borderColor={theme.colors.error ?? "red"}
       paddingX={1}
       paddingY={0}
+      aria-role="button"
+      aria-label={
+        ariaLabel ??
+        `Error: ${message}. ${maxReached ? "Maximum retries reached." : `Retry ${retryCount} of ${maxRetries}. Press Enter to retry or Escape to dismiss.`}`
+      }
+      aria-state={{ disabled: disabled || undefined }}
     >
       <Box gap={1}>
-        <Text color={theme.colors.error ?? "red"} bold>
-          ✗
+        <Text aria-hidden color={theme.colors.error ?? "red"} bold>
+          {unicode ? "✗" : "x"}
         </Text>
         <Text>{message}</Text>
       </Box>
@@ -62,10 +80,13 @@ export function ErrorRetry({
           Max retries reached
         </Text>
       ) : (
-        <Text dimColor color={theme.colors.mutedForeground}>
-          Enter / r — retry · Esc — dismiss
+        <Text aria-hidden dimColor color={theme.colors.mutedForeground}>
+          {unicode
+            ? "Enter / r — retry · Esc — dismiss"
+            : "Enter / r - retry | Esc - dismiss"}
         </Text>
       )}
+      {isFocused && <Text aria-hidden>[focused]</Text>}
     </Box>
   );
 }

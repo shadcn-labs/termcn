@@ -1,13 +1,20 @@
 import { Box, Text } from "ink";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
 import { useAnimation } from "@/hooks/use-animation";
-import { useInput } from "@/hooks/use-input";
+import { isActivationKey, useInteraction } from "@/hooks/use-interaction";
+import type { InteractionProps } from "@/hooks/use-interaction";
+import { useInterval } from "@/hooks/use-interval";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import {
+  resolveStatusSymbol,
+  resolveTerminalSymbol,
+} from "@/registry/bases/ink/lib/accessibility";
 
 export type ToolCallStatus = "pending" | "running" | "success" | "error";
 
-export interface ToolCallProps {
+export interface ToolCallProps extends InteractionProps {
   name: string;
   args?: Record<string, unknown>;
   status: ToolCallStatus;
@@ -15,6 +22,7 @@ export interface ToolCallProps {
   duration?: number;
   collapsible?: boolean;
   defaultCollapsed?: boolean;
+  "aria-label"?: string;
 }
 
 export const ToolCall = ({
@@ -25,46 +33,76 @@ export const ToolCall = ({
   duration,
   collapsible = true,
   defaultCollapsed = true,
+  id,
+  autoFocus,
+  isActive = true,
+  disabled,
+  "aria-label": ariaLabel,
 }: ToolCallProps) => {
   const theme = useTheme();
+  const unicode = useUnicode();
   const [collapsed, setCollapsed] = useState(defaultCollapsed);
   const [elapsed, setElapsed] = useState(0);
   const startRef = useRef(Date.now());
-  const frame = useAnimation(12);
+  const frame = useAnimation({
+    intervalMs: 83,
+    isActive: isActive && status === "running",
+  });
 
-  const spinnerFrames = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"];
-  const spinnerIcon = spinnerFrames[frame % spinnerFrames.length] ?? "⠋";
+  const spinnerFrames = unicode
+    ? ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]
+    : ["-", "\\", "|", "/"];
+  const spinnerIcon = spinnerFrames[frame % spinnerFrames.length] ?? "-";
 
   useEffect(() => {
-    if (status !== "running") {
-      return;
+    if (status === "running") {
+      startRef.current = Date.now();
+      setElapsed(0);
     }
-    startRef.current = Date.now();
-    const id = setInterval(() => {
-      setElapsed(Date.now() - startRef.current);
-    }, 100);
-    return () => clearInterval(id);
   }, [status]);
 
-  useInput((input, key) => {
-    if (collapsible && (key.return || input === " ")) {
-      setCollapsed((c) => !c);
-    }
+  useInterval(() => setElapsed(Date.now() - startRef.current), 100, {
+    isActive: isActive && status === "running",
   });
+
+  const { isFocused } = useInteraction(
+    (input, key) => {
+      if (collapsible && isActivationKey(input, key)) {
+        setCollapsed((c) => !c);
+      }
+    },
+    { autoFocus, disabled, id, isActive: isActive && collapsible }
+  );
 
   const statusIcon = () => {
     switch (status) {
       case "pending": {
-        return <Text dimColor>○</Text>;
+        return (
+          <Text aria-hidden dimColor>
+            {resolveStatusSymbol(unicode, "pending")}
+          </Text>
+        );
       }
       case "running": {
-        return <Text color={theme.colors.primary}>{spinnerIcon}</Text>;
+        return (
+          <Text aria-hidden color={theme.colors.primary}>
+            {spinnerIcon}
+          </Text>
+        );
       }
       case "success": {
-        return <Text color={theme.colors.success ?? "green"}>✓</Text>;
+        return (
+          <Text aria-hidden color={theme.colors.success ?? "green"}>
+            {resolveStatusSymbol(unicode, "success")}
+          </Text>
+        );
       }
       case "error": {
-        return <Text color={theme.colors.error ?? "red"}>✗</Text>;
+        return (
+          <Text aria-hidden color={theme.colors.error ?? "red"}>
+            {resolveStatusSymbol(unicode, "error")}
+          </Text>
+        );
       }
       default: {
         break;
@@ -91,8 +129,25 @@ export const ToolCall = ({
   }
 
   return (
-    <Box flexDirection="column">
+    <Box
+      flexDirection="column"
+      aria-role={collapsible ? "button" : "listitem"}
+      aria-state={{
+        busy: status === "running",
+        disabled: disabled || undefined,
+        expanded: collapsible ? !collapsed : undefined,
+      }}
+    >
+      <Text
+        aria-label={
+          ariaLabel ??
+          `Tool call ${name}: ${status}${durationText ? `, ${durationText}` : ""}`
+        }
+      >
+        {""}
+      </Text>
       <Box gap={1}>
+        {isFocused && collapsible && <Text aria-hidden>[</Text>}
         {statusIcon()}
         <Text color={nameColor} bold={status !== "pending"}>
           {name}
@@ -103,10 +158,13 @@ export const ToolCall = ({
           </Text>
         )}
         {collapsible && (
-          <Text dimColor color={theme.colors.mutedForeground}>
-            {collapsed ? "▶" : "▼"}
+          <Text aria-hidden dimColor color={theme.colors.mutedForeground}>
+            {collapsed
+              ? resolveTerminalSymbol(unicode, "▶", ">")
+              : resolveTerminalSymbol(unicode, "▼", "v")}
           </Text>
         )}
+        {isFocused && collapsible && <Text aria-hidden>]</Text>}
       </Box>
 
       {!collapsed && (

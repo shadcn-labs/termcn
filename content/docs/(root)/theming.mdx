@@ -3,7 +3,7 @@ title: Theming
 description: Terminal themes, ThemeProvider, and custom palettes for Ink and OpenTUI apps.
 ---
 
-**Theming** in termcn means wrapping your Ink or OpenTUI tree with **`ThemeProvider`** and choosing a **terminal theme** (tokens for colors, borders, and spacing). Theme packages install into `lib/terminal-themes/` and pull in the matching provider registry item when needed.
+**Theming** in termcn means choosing a **terminal theme** (tokens for colors, borders, and spacing) and mounting **`ThemeProvider`** only when an application needs to override the defaults. Ink theme-aware components work without a provider; their standalone hooks install into `hooks/`. Theme packages install into `lib/terminal-themes/`.
 
 ## Preview
 
@@ -13,7 +13,7 @@ Use the terminal chrome theme picker to preview palettes in the browser docs she
 
 ## ThemeProvider
 
-Install the provider (required for registry UI components that call `useTheme`):
+Install the provider when you want to customize the active theme or capability contexts:
 
 For Ink:
 
@@ -42,6 +42,16 @@ export function Example() {
   );
 }
 ```
+
+Ink components receive `use-theme`, `use-unicode`, and `use-motion` transitively as `registry:hook` items when needed. Import the hooks directly from the configured shadcn hooks alias:
+
+```tsx
+import { useTheme, useThemeUpdater } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import { useMotion } from "@/hooks/use-motion";
+```
+
+Each hook has a usable default context, so these imports do not require a mounted provider. OpenTUI retains its existing provider contract.
 
 ### Custom themes
 

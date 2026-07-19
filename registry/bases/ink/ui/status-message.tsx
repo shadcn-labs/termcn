@@ -1,7 +1,9 @@
 import { Box, Text } from "ink";
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import { resolveStatusSymbol } from "@/registry/bases/ink/lib/accessibility";
 
 import { Spinner } from "./spinner";
 
@@ -13,26 +15,21 @@ export type StatusVariant =
   | "loading"
   | "pending";
 
-const ICONS: Record<Exclude<StatusVariant, "loading">, string> = {
-  error: "✗",
-  info: "ℹ",
-  pending: "○",
-  success: "✓",
-  warning: "⚠",
-};
-
 export interface StatusMessageProps {
   variant?: StatusVariant;
   children: ReactNode;
   icon?: string;
+  "aria-label"?: string;
 }
 
 export const StatusMessage = ({
   variant = "info",
   children,
   icon,
+  "aria-label": ariaLabel,
 }: StatusMessageProps) => {
   const theme = useTheme();
+  const unicode = useUnicode();
 
   const variantColor = (() => {
     switch (variant) {
@@ -59,11 +56,16 @@ export const StatusMessage = ({
 
   return (
     <Box gap={1} flexDirection="row">
+      <Text aria-label={ariaLabel ?? `${variant} status`}>{""}</Text>
       {variant === "loading" ? (
-        <Spinner type="dots" color={variantColor} />
+        <Spinner type="dots" color={variantColor} aria-label="Loading" />
       ) : (
-        <Text color={variantColor}>
-          {icon ?? ICONS[variant as Exclude<StatusVariant, "loading">]}
+        <Text aria-hidden color={variantColor}>
+          {icon ??
+            resolveStatusSymbol(
+              unicode,
+              variant as Exclude<StatusVariant, "loading">
+            )}
         </Text>
       )}
       <Text>{children}</Text>

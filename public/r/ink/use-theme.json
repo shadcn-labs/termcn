@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ink/use-theme",
+  "title": "Use Theme",
+  "description": "Provider-optional terminal theme context and hooks.",
+  "registryDependencies": [
+    "https://termcn.dev/r/ink/theme-default.json",
+    "https://termcn.dev/r/ink/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/hooks/use-theme.ts",
+      "content": "import * as React from \"react\";\n\nimport { defaultTheme } from \"@/lib/terminal-themes/default\";\nimport type { Theme, ThemeContextValue } from \"@/components/ui/types\";\n\nexport const ThemeContext = React.createContext<ThemeContextValue>({\n  setTheme: () => {\n    // The default context keeps useTheme provider-optional.\n  },\n  theme: defaultTheme,\n});\n\nexport const useTheme = (): Theme => React.useContext(ThemeContext).theme;\n\nexport const useThemeUpdater = (): ((theme: Theme) => void) =>\n  React.useContext(ThemeContext).setTheme;\n",
+      "type": "registry:hook"
+    }
+  ],
+  "categories": [
+    "core"
+  ],
+  "type": "registry:hook"
+}

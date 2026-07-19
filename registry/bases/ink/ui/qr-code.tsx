@@ -1,13 +1,18 @@
 import { Box, Text } from "ink";
+import React from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import type { VisualAccessibilityProps } from "@/registry/bases/ink/lib/accessibility";
 
-export interface QRCodeProps {
+interface QRCodeBaseProps {
   value: string;
   size?: "sm" | "md" | "lg";
   color?: string;
   label?: string;
 }
+
+export type QRCodeProps = QRCodeBaseProps & VisualAccessibilityProps;
 
 const GF_EXP = new Uint8Array(512);
 const GF_LOG = new Uint8Array(256);
@@ -458,8 +463,16 @@ const generateQR = (text: string): Matrix => {
 
 const QUIET_ZONE = 2;
 
-export const QRCode = ({ value, size = "md", color, label }: QRCodeProps) => {
+export const QRCode = ({
+  value,
+  size = "md",
+  color,
+  label,
+  alt,
+  "aria-hidden": ariaHidden,
+}: QRCodeProps) => {
   const theme = useTheme();
+  const unicode = useUnicode();
   const resolvedColor = color ?? theme.colors.foreground;
 
   let matrix: Matrix;
@@ -467,7 +480,12 @@ export const QRCode = ({ value, size = "md", color, label }: QRCodeProps) => {
     matrix = generateQR(value);
   } catch {
     return (
-      <Box flexDirection="column" gap={0}>
+      <Box
+        flexDirection="column"
+        gap={0}
+        aria-hidden={ariaHidden}
+        aria-label={ariaHidden ? undefined : `QR code: ${alt}`}
+      >
         <Text color="red">QR Error: value too long or unsupported</Text>
         {label && <Text color={theme.colors.mutedForeground}>{label}</Text>}
       </Box>
@@ -489,8 +507,10 @@ export const QRCode = ({ value, size = "md", color, label }: QRCodeProps) => {
   }
 
   const scale = size === "lg" ? 2 : 1;
+  const darkCell = unicode ? "█" : "##";
+  const lightCell = unicode ? " " : "  ";
 
-  if (size === "sm") {
+  if (size === "sm" && unicode) {
     const lines: React.ReactElement[] = [];
     for (let r = 0; r < totalSize; r += 2) {
       const chars: string[] = [];
@@ -514,7 +534,12 @@ export const QRCode = ({ value, size = "md", color, label }: QRCodeProps) => {
       );
     }
     return (
-      <Box flexDirection="column" gap={0}>
+      <Box
+        flexDirection="column"
+        gap={0}
+        aria-hidden={ariaHidden}
+        aria-label={ariaHidden ? undefined : `QR code: ${alt}`}
+      >
         {lines}
         {label && <Text color={theme.colors.mutedForeground}>{label}</Text>}
       </Box>
@@ -526,7 +551,7 @@ export const QRCode = ({ value, size = "md", color, label }: QRCodeProps) => {
     const chars: string[] = [];
     for (let c = 0; c < totalSize; c += 1) {
       const on = qzMatrix[r][c] ?? false;
-      chars.push((on ? "█" : " ").repeat(scale));
+      chars.push((on ? darkCell : lightCell).repeat(scale));
     }
     for (let s = 0; s < scale; s += 1) {
       lines.push(
@@ -538,7 +563,12 @@ export const QRCode = ({ value, size = "md", color, label }: QRCodeProps) => {
   }
 
   return (
-    <Box flexDirection="column" gap={0}>
+    <Box
+      flexDirection="column"
+      gap={0}
+      aria-hidden={ariaHidden}
+      aria-label={ariaHidden ? undefined : `QR code: ${alt}`}
+    >
       {lines}
       {label && <Text color={theme.colors.mutedForeground}>{label}</Text>}
     </Box>

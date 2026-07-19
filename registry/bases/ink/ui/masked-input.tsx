@@ -1,13 +1,19 @@
 import { Box, Text } from "ink";
 import React, { useState } from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
-import { useFocus } from "@/hooks/use-focus";
-import { useInput } from "@/hooks/use-input";
+import { useInteraction } from "@/hooks/use-interaction";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import {
+  resolveBorderStyle,
+  resolveTerminalSymbol,
+} from "@/registry/bases/ink/lib/accessibility";
 
 export interface MaskedInputProps {
   mask: string;
   value?: string;
+  defaultValue?: string;
+  onValueChange?: (value: string) => void;
   onChange?: (value: string) => void;
   onSubmit?: (value: string) => void;
   label?: string;
@@ -15,6 +21,11 @@ export interface MaskedInputProps {
   autoFocus?: boolean;
   id?: string;
   width?: number;
+  isActive?: boolean;
+  disabled?: boolean;
+  readOnly?: boolean;
+  required?: boolean;
+  "aria-label"?: string;
 }
 
 /**
@@ -68,6 +79,8 @@ const maxDigits = (mask: string): number =>
 export const MaskedInput = ({
   mask,
   value: controlledValue,
+  defaultValue = "",
+  onValueChange,
   onChange,
   onSubmit,
   label,
@@ -75,47 +88,55 @@ export const MaskedInput = ({
   autoFocus = false,
   id,
   width = 40,
+  isActive = true,
+  disabled = false,
+  readOnly = false,
+  required = false,
+  "aria-label": ariaLabel,
 }: MaskedInputProps) => {
-  const [internalValue, setInternalValue] = useState("");
+  const unicode = useUnicode();
+  const cursor = resolveTerminalSymbol(unicode, "█", "|");
+  const [internalValue, setInternalValue] = useState(defaultValue);
   const theme = useTheme();
-  const { isFocused } = useFocus({ autoFocus, id });
 
   const raw = controlledValue ?? internalValue;
   const max = maxDigits(mask);
-
-  useInput((input, key) => {
-    if (!isFocused) {
-      return;
+  const applyChange = (nextValue: string) => {
+    const changeHandler = onValueChange ?? onChange;
+    if (changeHandler) {
+      changeHandler(nextValue);
+    } else {
+      setInternalValue(nextValue);
     }
+  };
 
-    if (key.return) {
-      onSubmit?.(raw);
-      return;
-    }
-
-    if (key.backspace || key.delete) {
-      const newVal = raw.slice(0, -1);
-      if (onChange) {
-        onChange(newVal);
-      } else {
-        setInternalValue(newVal);
+  const { isFocused } = useInteraction(
+    (input, key) => {
+      if (key.return) {
+        onSubmit?.(raw);
+        return;
       }
-      return;
-    }
 
-    if (key.escape || key.upArrow || key.downArrow || key.tab) {
-      return;
-    }
-
-    if (/^\d$/.test(input) && raw.length < max) {
-      const newVal = raw + input;
-      if (onChange) {
-        onChange(newVal);
-      } else {
-        setInternalValue(newVal);
+      if (readOnly) {
+        return;
       }
-    }
-  });
+
+      if (key.backspace) {
+        applyChange(raw.slice(0, -1));
+        return;
+      }
+
+      if (key.escape || key.upArrow || key.downArrow || key.tab) {
+        return;
+      }
+
+      const insertedDigits = input.replaceAll(/\D/g, "");
+      if (insertedDigits && raw.length < max) {
+        applyChange((raw + insertedDigits).slice(0, max));
+      }
+    },
+    { autoFocus, disabled, id, isActive }
+  );
 
   const display = raw.length > 0 ? applyMask(raw, mask) : "";
   const borderColor = isFocused ? theme.colors.focusRing : theme.colors.border;
@@ -123,28 +144,39 @@ export const MaskedInput = ({
   const remainingMask = mask.slice(display.length);
 
   const displayPlaceholder = placeholder ? (
-    <Text color={theme.colors.mutedForeground}>{placeholder}</Text>
+    <Text aria-hidden color={theme.colors.mutedForeground}>
+      {placeholder}
+    </Text>
   ) : null;
 
   return (
     <Box flexDirection="column">
       {label && <Text bold>{label}</Text>}
       <Box
-        borderStyle="round"
+        aria-label={
+          ariaLabel ?? `${label ?? "Masked input"}: ${display || "empty"}`
+        }
+        aria-role="textbox"
+        aria-state={{ disabled, readonly: readOnly, required }}
+        borderStyle={resolveBorderStyle("round", unicode)}
         borderColor={borderColor}
         width={width}
         paddingX={1}
       >
         {display.length > 0 ? (
-          <Text color={theme.colors.foreground}>{display}</Text>
+          <Text aria-hidden color={theme.colors.foreground}>
+            {display}
+          </Text>
         ) : (
           displayPlaceholder
         )}
         {isFocused && display.length < mask.length && (
-          <Text color={theme.colors.focusRing}>█</Text>
+          <Text aria-hidden color={theme.colors.focusRing}>
+            {cursor}
+          </Text>
         )}
         {display.length > 0 && display.length < mask.length && (
-          <Text color={theme.colors.mutedForeground} dimColor>
+          <Text aria-hidden color={theme.colors.mutedForeground} dimColor>
             {remainingMask}
           </Text>
         )}

@@ -1,6 +1,8 @@
 import { Box, Text } from "ink";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import { resolveBorderStyle } from "@/registry/bases/ink/lib/accessibility";
 import type { BorderStyle } from "@/registry/bases/ink/ui/types";
 
 export type BadgeVariant =
@@ -19,6 +21,7 @@ export interface BadgeProps {
   bordered?: boolean;
   borderStyle?: BorderStyle;
   paddingX?: number;
+  "aria-label"?: string;
 }
 
 export const Badge = ({
@@ -29,7 +32,9 @@ export const Badge = ({
   bordered = true,
   borderStyle = "round",
   paddingX = 1,
+  "aria-label": ariaLabel,
 }: BadgeProps) => {
+  const unicode = useUnicode();
   const theme = useTheme();
 
   const variantColor =
@@ -59,7 +64,11 @@ export const Badge = ({
 
   if (!bordered) {
     return (
-      <Text color={variantColor} bold={bold}>
+      <Text
+        aria-label={ariaLabel ?? `${variant}: ${children}`}
+        color={variantColor}
+        bold={bold}
+      >
         {children}
       </Text>
     );
@@ -67,9 +76,10 @@ export const Badge = ({
 
   return (
     <Box
-      borderStyle={borderStyle}
+      borderStyle={resolveBorderStyle(borderStyle, unicode)}
       borderColor={variantColor}
       paddingX={paddingX}
+      aria-label={ariaLabel ?? `${variant}: ${children}`}
     >
       <Text color={variantColor} bold={bold}>
         {children}

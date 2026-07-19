@@ -44,9 +44,13 @@ npm install ink
 />
 
 <ComponentSource
-  base="ink"
-  name="theme-provider"
-  title="components/ui/theme-provider.tsx"
+  src="registry/bases/ink/hooks/use-theme.ts"
+  title="hooks/use-theme.ts"
+/>
+
+<ComponentSource
+  src="registry/bases/ink/hooks/use-unicode.ts"
+  title="hooks/use-unicode.ts"
 />
 
 <ComponentSource base="ink" name="code" title="components/ui/code.tsx" />
@@ -95,3 +99,35 @@ import { Code } from "@/components/ui/code";
 | `commentColor`        | `string`                                                                                     | -          |
 | `operatorColor`       | `string`                                                                                     | -          |
 | `plainColor`          | `string`                                                                                     | -          |
+
+{/* ink-v1-contract */}
+
+## Keyboard
+
+This component does not register a keyboard handler or create a focus target.
+
+## Focus and composition
+
+This component is presentation-only. It does not subscribe to input, claim global shortcuts, or alter Ink's focus order.
+
+Set `autoFocus` only on the intended initial control. Application-global shortcuts such as `q` belong to the application template and require an explicit active boundary.
+
+## V1 public contract
+
+Presentation components continue to forward their relevant Ink `Box` or `Text` props. Interactive components also accept `id`, `autoFocus`, `isActive`, `disabled`, and `aria-label` where applicable.
+
+## Accessibility
+
+Termcn targets Ink 6.8 terminal accessibility and predictable terminal screen-reader output. This is not a claim of browser ARIA behavior or general WCAG conformance. Semantic roles and supported states are owned by the component; use `aria-label` to provide a contextual name.
+
+## Screen reader behavior
+
+Decorative borders, focus glyphs, cursor frames, and redundant hints are omitted. Labels and semantic state remain in the linear output. Ink has no browser-style live-region API, so dynamic announcements are intentionally batched to meaningful state changes.
+
+## Motion and Unicode
+
+`NO_MOTION=1`, `CI=true`, and screen-reader mode stop component animation handles. `NO_UNICODE=1` selects the component's ASCII-safe defaults where it owns the glyph; caller-supplied icons, borders, and render functions remain the caller's responsibility.
+
+## Known Ink limitations
+
+Ink 6.8 does not expose DOM semantics or roles such as `dialog`, `alert`, `heading`, `link`, `tree`, `row`, and `cell`. Termcn uses the closest supported role plus explicit textual output. Reusable text controls cannot discover absolute terminal coordinates in Ink 6.8; pass `cursorOrigin` when IME cursor positioning is required.

@@ -1,3 +1,4 @@
+import { useStdout } from "ink";
 import * as React from "react";
 
 const clipboardWrite = (text: string) => {
@@ -6,20 +7,26 @@ const clipboardWrite = (text: string) => {
 };
 
 export const useClipboard = () => {
-  const write = React.useCallback(async (text: string) => {
-    if (
-      typeof navigator !== "undefined" &&
-      navigator.clipboard &&
-      typeof navigator.clipboard.writeText === "function"
-    ) {
-      await navigator.clipboard.writeText(text);
-      return;
-    }
+  const { stdout } = useStdout();
+  const write = React.useCallback(
+    async (text: string) => {
+      if (
+        typeof navigator !== "undefined" &&
+        navigator.clipboard &&
+        typeof navigator.clipboard.writeText === "function"
+      ) {
+        await navigator.clipboard.writeText(text);
+        return;
+      }
 
-    if (typeof process !== "undefined" && process.stdout?.write) {
-      process.stdout.write(clipboardWrite(text));
-    }
-  }, []);
+      if (stdout.isTTY) {
+        stdout.write(clipboardWrite(text));
+        return;
+      }
+      throw new Error("Clipboard is unavailable when output is not a TTY");
+    },
+    [stdout]
+  );
 
   return { write };
 };

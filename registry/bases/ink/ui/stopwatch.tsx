@@ -1,14 +1,17 @@
 import { Box, Text } from "ink";
 import React, { useState, useCallback, useRef } from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
-import { useInput } from "@/hooks/use-input";
+import { useInteraction } from "@/hooks/use-interaction";
+import type { InteractionProps } from "@/hooks/use-interaction";
 import { useInterval } from "@/hooks/use-interval";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
 
-export interface StopwatchProps {
+export interface StopwatchProps extends InteractionProps {
   autoStart?: boolean;
   color?: string;
   showLaps?: boolean;
+  "aria-label"?: string;
 }
 
 const pad = (n: number, len = 2) => String(n).padStart(len, "0");
@@ -52,8 +55,14 @@ export const Stopwatch = ({
   autoStart = false,
   color,
   showLaps = true,
+  id,
+  autoFocus,
+  isActive = true,
+  disabled,
+  "aria-label": ariaLabel,
 }: StopwatchProps) => {
   const theme = useTheme();
+  const unicode = useUnicode();
   const resolvedColor = color ?? theme.colors.primary;
 
   const [running, setRunning] = useState(autoStart);
@@ -70,38 +79,53 @@ export const Stopwatch = ({
     setElapsed(elapsedRef.current);
   }, []);
 
-  useInterval(tick, running ? 50 : null);
+  useInterval(tick, running ? 50 : null, { isActive });
 
-  useInput((input) => {
-    if (input === " ") {
-      if (!running) {
-        lastTickRef.current = Date.now();
+  const { isFocused } = useInteraction(
+    (input) => {
+      if (input === " ") {
+        if (!running) {
+          lastTickRef.current = Date.now();
+        }
+        setRunning((r) => !r);
+      } else if (input === "l" && running) {
+        setLaps((prev) => [...prev, elapsedRef.current]);
+      } else if (input === "r") {
+        setRunning(false);
+        setElapsed(0);
+        elapsedRef.current = 0;
+        setLaps([]);
       }
-      setRunning((r) => !r);
-    } else if (input === "l" && running) {
-      setLaps((prev) => [...prev, elapsedRef.current]);
-    } else if (input === "r") {
-      setRunning(false);
-      setElapsed(0);
-      elapsedRef.current = 0;
-      setLaps([]);
-    }
-  });
+    },
+    { autoFocus, disabled, id, isActive }
+  );
 
   const status = getStatus(running, elapsed);
   const statusColor = getStatusColor(running, elapsed, resolvedColor, theme);
 
   return (
-    <Box flexDirection="column" gap={0}>
+    <Box
+      flexDirection="column"
+      gap={0}
+      aria-role="timer"
+      aria-label={
+        ariaLabel ??
+        `Stopwatch: ${formatElapsed(elapsed)}. ${status}. ${laps.length} laps.`
+      }
+      aria-state={{ busy: running, disabled: disabled || undefined }}
+    >
       <Box gap={2} alignItems="center">
         <Text color={resolvedColor} bold>
           {formatElapsed(elapsed)}
         </Text>
         <Text color={statusColor}>[{status}]</Text>
       </Box>
-      <Text color={theme.colors.mutedForeground} dimColor>
-        space start/stop · l lap · r reset
+      <Text aria-hidden color={theme.colors.mutedForeground} dimColor>
+        {unicode
+          ? "space start/stop · l lap · r reset"
+          : "space start/stop - l lap - r reset"}
       </Text>
+      {isFocused && <Text aria-hidden>Focused</Text>}
       {showLaps && laps.length > 0 && (
         <Box flexDirection="column" marginTop={1}>
           <Text color={theme.colors.mutedForeground} bold>

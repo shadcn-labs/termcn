@@ -1,6 +1,8 @@
 import { Box, Text } from "ink";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import { resolveBorderStyle } from "@/registry/bases/ink/lib/accessibility";
 
 export interface DividerProps {
   variant?: "single" | "double" | "bold";
@@ -13,6 +15,8 @@ export interface DividerProps {
   padding?: number;
   height?: number;
   width?: number | "auto";
+  "aria-label"?: string;
+  "aria-hidden"?: boolean;
 }
 
 const DIVIDER_CHARS: Record<NonNullable<DividerProps["variant"]>, string> = {
@@ -32,15 +36,22 @@ export const Divider = ({
   padding = 0,
   height = 1,
   width = "auto",
+  "aria-label": ariaLabel,
+  "aria-hidden": ariaHidden = !label,
 }: DividerProps) => {
+  const unicode = useUnicode();
   const theme = useTheme();
   const resolvedColor = color ?? theme.colors.border;
-  const vChar = dividerChar ?? DIVIDER_CHARS[variant];
+  const vChar = dividerChar ?? (unicode ? DIVIDER_CHARS[variant] : "|");
 
   if (orientation === "vertical") {
     const lines = Array.from({ length: height }, (_, i) => i);
     return (
-      <Box flexDirection="column">
+      <Box
+        flexDirection="column"
+        aria-label={ariaHidden ? undefined : (ariaLabel ?? label)}
+        aria-hidden={ariaHidden}
+      >
         {lines.map((i) => (
           <Text key={i} color={resolvedColor}>
             {vChar}
@@ -56,11 +67,16 @@ export const Divider = ({
   if (label) {
     const resolvedLabelColor = labelColor ?? resolvedColor;
     return (
-      <Box flexDirection="row" width={width === "auto" ? undefined : width}>
+      <Box
+        flexDirection="row"
+        width={width === "auto" ? undefined : width}
+        aria-label={ariaHidden ? undefined : (ariaLabel ?? label)}
+        aria-hidden={ariaHidden}
+      >
         {padding > 0 && <Text>{paddingStr}</Text>}
         <Box
           flexGrow={1}
-          borderStyle="single"
+          borderStyle={resolveBorderStyle("single", unicode)}
           borderColor={resolvedColor}
           borderBottom={false}
           borderLeft={false}
@@ -74,7 +90,7 @@ export const Divider = ({
         </Text>
         <Box
           flexGrow={1}
-          borderStyle="single"
+          borderStyle={resolveBorderStyle("single", unicode)}
           borderColor={resolvedColor}
           borderBottom={false}
           borderLeft={false}
@@ -87,11 +103,16 @@ export const Divider = ({
   }
 
   return (
-    <Box flexDirection="row" width={width === "auto" ? undefined : width}>
+    <Box
+      flexDirection="row"
+      width={width === "auto" ? undefined : width}
+      aria-label={ariaHidden ? undefined : ariaLabel}
+      aria-hidden={ariaHidden}
+    >
       {padding > 0 && <Text>{paddingStr}</Text>}
       <Box
         flexGrow={1}
-        borderStyle="single"
+        borderStyle={resolveBorderStyle("single", unicode)}
         borderColor={resolvedColor}
         borderBottom={false}
         borderLeft={false}

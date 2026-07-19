@@ -1,19 +1,23 @@
 import { Box, Text } from "ink";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
-import { useInput } from "@/hooks/use-input";
+import { useAnimation } from "@/hooks/use-animation";
+import { isActivationKey, useInteraction } from "@/hooks/use-interaction";
+import type { InteractionProps } from "@/hooks/use-interaction";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
 
 export type ChatRole = "user" | "assistant" | "system" | "error";
 
-export interface ChatMessageProps {
+export interface ChatMessageProps extends InteractionProps {
   sender: ChatRole;
   name?: string;
   timestamp?: Date;
   streaming?: boolean;
   collapsed?: boolean;
   children?: ReactNode;
+  "aria-label"?: string;
 }
 
 const formatTime = (date: Date): string =>
@@ -33,24 +37,28 @@ export const ChatMessage = ({
   streaming = false,
   collapsed: initialCollapsed = false,
   children,
+  id,
+  autoFocus,
+  isActive = true,
+  disabled,
+  "aria-label": ariaLabel,
 }: ChatMessageProps) => {
   const theme = useTheme();
+  const unicode = useUnicode();
   const [isCollapsed, setIsCollapsed] = useState(initialCollapsed);
-  const [dotFrame, setDotFrame] = useState(0);
-
-  useEffect(() => {
-    if (!streaming) {
-      return;
-    }
-    const id = setInterval(() => setDotFrame((f) => (f + 1) % 4), 400);
-    return () => clearInterval(id);
-  }, [streaming]);
-
-  useInput((input, key) => {
-    if (initialCollapsed && (key.return || input === " ")) {
-      setIsCollapsed((c) => !c);
-    }
+  const dotFrame = useAnimation({
+    intervalMs: 400,
+    isActive: isActive && streaming,
   });
+
+  const { isFocused } = useInteraction(
+    (input, key) => {
+      if (initialCollapsed && isActivationKey(input, key)) {
+        setIsCollapsed((c) => !c);
+      }
+    },
+    { autoFocus, disabled, id, isActive: isActive && initialCollapsed }
+  );
 
   const roleColor: Record<ChatRole, string> = {
     assistant: theme.colors.success ?? "green",
@@ -68,7 +76,8 @@ export const ChatMessage = ({
 
   const color = roleColor[sender];
 
-  const dots = ["", "●", "●●", "●●●"][dotFrame] ?? "";
+  const dot = unicode ? "●" : ".";
+  const dots = dot.repeat(dotFrame);
 
   const childrenText = typeof children === "string" ? children : "";
   const firstLine = childrenText.split("\n")[0] ?? "";
@@ -80,7 +89,7 @@ export const ChatMessage = ({
           {children ? (
             wrapPlainChildren(children)
           ) : (
-            <Text color={color} dimColor>
+            <Text aria-hidden color={color} dimColor>
               {dots}
             </Text>
           )}
@@ -101,8 +110,26 @@ export const ChatMessage = ({
   };
 
   return (
-    <Box flexDirection="column" marginBottom={1}>
+    <Box
+      flexDirection="column"
+      marginBottom={1}
+      aria-role="listitem"
+      aria-state={{
+        busy: streaming,
+        disabled: disabled || undefined,
+        expanded: initialCollapsed ? !isCollapsed : undefined,
+      }}
+    >
+      <Text
+        aria-label={
+          ariaLabel ??
+          `${sender === "error" ? "Error" : "Message"} from ${name ?? roleLabel[sender]}${streaming ? ", streaming" : ""}`
+        }
+      >
+        {""}
+      </Text>
       <Box gap={1}>
+        {isFocused && initialCollapsed && <Text aria-hidden>[</Text>}
         <Text color={color} bold>
           {name ?? roleLabel[sender]}
         </Text>
@@ -112,10 +139,11 @@ export const ChatMessage = ({
           </Text>
         )}
         {isCollapsed && !streaming && (
-          <Text dimColor color={theme.colors.mutedForeground}>
+          <Text aria-hidden dimColor color={theme.colors.mutedForeground}>
             [expand]
           </Text>
         )}
+        {isFocused && initialCollapsed && <Text aria-hidden>]</Text>}
       </Box>
 
       {renderContent()}

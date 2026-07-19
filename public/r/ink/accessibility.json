@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ink/accessibility",
+  "title": "Accessibility",
+  "description": "Pure accessibility contracts, summaries, and terminal fallback helpers for Ink components.",
+  "dependencies": [
+    "ink"
+  ],
+  "files": [
+    {
+      "path": "registry/lib/accessibility.ts",
+      "content": "import type { BoxProps } from \"ink\";\n\nexport type VisualAccessibilityProps =\n  | { \"aria-hidden\": true; alt?: never }\n  | { \"aria-hidden\"?: false; alt: string };\n\nexport interface AccessibleSeriesPoint {\n  label?: string;\n  value: number;\n}\n\nexport const resolveBorderStyle = (\n  borderStyle: BoxProps[\"borderStyle\"],\n  unicode: boolean\n): BoxProps[\"borderStyle\"] =>\n  unicode || borderStyle === undefined ? borderStyle : \"classic\";\n\nexport const resolveTerminalSymbol = (\n  unicode: boolean,\n  unicodeSymbol: string,\n  asciiSymbol: string\n): string => (unicode ? unicodeSymbol : asciiSymbol);\n\nexport type TerminalStatus =\n  | \"error\"\n  | \"info\"\n  | \"neutral\"\n  | \"pending\"\n  | \"success\"\n  | \"warning\";\n\nconst unicodeStatusSymbols: Record<TerminalStatus, string> = {\n  error: \"✗\",\n  info: \"ℹ\",\n  neutral: \"·\",\n  pending: \"○\",\n  success: \"✓\",\n  warning: \"⚠\",\n};\n\nconst asciiStatusSymbols: Record<TerminalStatus, string> = {\n  error: \"x\",\n  info: \"i\",\n  neutral: \"-\",\n  pending: \"o\",\n  success: \"v\",\n  warning: \"!\",\n};\n\nexport const resolveStatusSymbol = (\n  unicode: boolean,\n  status: TerminalStatus\n): string =>\n  unicode ? unicodeStatusSymbols[status] : asciiStatusSymbols[status];\n\nconst asciiComponentCharacters: Readonly<Record<string, string>> = {\n  \"·\": \"-\",\n  \"•\": \"*\",\n  \"…\": \"...\",\n  \"←\": \"<-\",\n  \"↑\": \"^\",\n  \"→\": \"->\",\n  \"↓\": \"v\",\n  \"↔\": \"<->\",\n  \"─\": \"-\",\n  \"━\": \"-\",\n  \"│\": \"|\",\n  \"┃\": \"|\",\n  \"┌\": \"+\",\n  \"┐\": \"+\",\n  \"└\": \"+\",\n  \"┘\": \"+\",\n  \"├\": \"+\",\n  \"┤\": \"+\",\n  \"┬\": \"+\",\n  \"┴\": \"+\",\n  \"┼\": \"+\",\n  \"═\": \"=\",\n  \"║\": \"|\",\n  \"╔\": \"+\",\n  \"╗\": \"+\",\n  \"╚\": \"+\",\n  \"╝\": \"+\",\n  \"╠\": \"+\",\n  \"╣\": \"+\",\n  \"╦\": \"+\",\n  \"╩\": \"+\",\n  \"╬\": \"+\",\n  \"╭\": \"+\",\n  \"╮\": \"+\",\n  \"╯\": \"+\",\n  \"╰\": \"+\",\n  \"╱\": \"/\",\n  \"╲\": \"\\\\\",\n  \"▀\": \"#\",\n  \"▄\": \"#\",\n  \"█\": \"#\",\n  \"░\": \".\",\n  \"▒\": \"+\",\n  \"▓\": \"#\",\n  \"■\": \"#\",\n  \"□\": \"[ ]\",\n  \"▪\": \"*\",\n  \"◉\": \"*\",\n  \"○\": \"o\",\n  \"●\": \"o\",\n};\n\n/** Convert only component-generated visual output; never pass consumer text. */\nexport const toAsciiComponentText = (value: string): string =>\n  Array.from(\n    value,\n    (character) => asciiComponentCharacters[character] ?? character\n  ).join(\"\");\n\nexport const summarizeSeries = (\n  label: string,\n  points: readonly AccessibleSeriesPoint[],\n  maximumPoints = 5\n): string => {\n  if (points.length === 0) {\n    return `${label}: no data`;\n  }\n\n  const values = points.map(({ value }) => value);\n  const minimum = Math.min(...values);\n  const maximum = Math.max(...values);\n  const current = values.at(-1) ?? 0;\n  const first = values[0] ?? current;\n  let trend = \"flat\";\n  if (current > first) {\n    trend = \"increasing\";\n  } else if (current < first) {\n    trend = \"decreasing\";\n  }\n  const samples = points\n    .slice(0, Math.max(0, maximumPoints))\n    .map((point, index) => `${point.label ?? index + 1}: ${point.value}`)\n    .join(\", \");\n  const omitted = Math.max(0, points.length - maximumPoints);\n\n  return `${label}. Current ${current}. Range ${minimum} to ${maximum}. Trend ${trend}.${\n    samples\n      ? ` Values: ${samples}${omitted > 0 ? `, and ${omitted} more` : \"\"}.`\n      : \"\"\n  }`;\n};\n",
+      "type": "registry:file",
+      "target": "lib/accessibility.ts"
+    }
+  ],
+  "categories": [
+    "core"
+  ],
+  "type": "registry:file"
+}

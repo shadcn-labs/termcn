@@ -1,7 +1,10 @@
-import { Text } from "ink";
-import React, { useState, useEffect, useRef } from "react";
+import { useIsScreenReaderEnabled, Text } from "ink";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
+import { useMotion } from "@/hooks/use-motion";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import { splitGraphemes } from "@/registry/bases/ink/lib/terminal-text";
 
 export interface StreamingTextProps {
   text?: string;
@@ -11,6 +14,8 @@ export interface StreamingTextProps {
   speed?: number;
   onComplete?: (fullText: string) => void;
   cursorColor?: string;
+  isActive?: boolean;
+  "aria-label"?: string;
 }
 
 export const StreamingText = ({
@@ -21,27 +26,38 @@ export const StreamingText = ({
   speed = 30,
   onComplete,
   cursorColor,
+  isActive = true,
+  "aria-label": ariaLabel,
 }: StreamingTextProps) => {
   const theme = useTheme();
+  const unicode = useUnicode();
+  const { reduced } = useMotion();
+  const isScreenReaderEnabled = useIsScreenReaderEnabled();
   const [internalText, setInternalText] = useState("");
   const [isStreaming, setIsStreaming] = useState(false);
   const [cursorVisible, setCursorVisible] = useState(true);
   const [animatedIndex, setAnimatedIndex] = useState(0);
   const onCompleteRef = useRef(onComplete);
+  const controlledGraphemes = useMemo(
+    () => splitGraphemes(controlledText ?? ""),
+    [controlledText]
+  );
+  const motionActive = isActive && !reduced && !isScreenReaderEnabled;
 
   useEffect(() => {
     onCompleteRef.current = onComplete;
   }, [onComplete]);
 
   useEffect(() => {
-    if (!cursor) {
+    if (!cursor || !isStreaming || !motionActive) {
+      setCursorVisible(true);
       return;
     }
     const id = setInterval(() => {
       setCursorVisible((v) => !v);
     }, 530);
     return () => clearInterval(id);
-  }, [cursor]);
+  }, [cursor, isStreaming, motionActive]);
 
   useEffect(() => {
     if (!stream) {
@@ -59,12 +75,15 @@ export const StreamingText = ({
             break;
           }
           full += chunk;
-          setInternalText(full);
+          if (!isScreenReaderEnabled || full.length % 64 < chunk.length) {
+            setInternalText(full);
+          }
         }
       } catch {
         /* noop */
       }
       if (!cancelled) {
+        setInternalText(full);
         setIsStreaming(false);
         onCompleteRef.current?.(full);
       }
@@ -73,10 +92,11 @@ export const StreamingText = ({
     return () => {
       cancelled = true;
     };
-  }, [stream]);
+  }, [isScreenReaderEnabled, stream]);
 
   useEffect(() => {
-    if (!animate || !controlledText || stream) {
+    if (!animate || !controlledText || stream || !motionActive) {
+      setAnimatedIndex(controlledGraphemes.length);
       return;
     }
     setAnimatedIndex(0);
@@ -85,20 +105,27 @@ export const StreamingText = ({
     const id = setInterval(() => {
       idx += 1;
       setAnimatedIndex(idx);
-      if (idx >= controlledText.length) {
+      if (idx >= controlledGraphemes.length) {
         clearInterval(id);
         setIsStreaming(false);
         onCompleteRef.current?.(controlledText);
       }
     }, speed);
     return () => clearInterval(id);
-  }, [controlledText, animate, speed, stream]);
+  }, [
+    animate,
+    controlledGraphemes.length,
+    controlledText,
+    motionActive,
+    speed,
+    stream,
+  ]);
 
   let displayText: string;
   if (stream) {
     displayText = internalText;
-  } else if (animate && controlledText) {
-    displayText = controlledText.slice(0, animatedIndex);
+  } else if (animate && controlledText && motionActive) {
+    displayText = controlledGraphemes.slice(0, animatedIndex).join("");
   } else {
     displayText = controlledText ?? "";
   }
@@ -107,9 +134,13 @@ export const StreamingText = ({
   const resolvedCursorColor = cursorColor ?? theme.colors.primary;
 
   return (
-    <Text>
+    <Text aria-label={ariaLabel ? `${ariaLabel}: ${displayText}` : undefined}>
       {displayText}
-      {showCursor && <Text color={resolvedCursorColor}>▌</Text>}
+      {showCursor && (
+        <Text aria-hidden color={resolvedCursorColor}>
+          {unicode ? "▌" : "|"}
+        </Text>
+      )}
     </Text>
   );
 };

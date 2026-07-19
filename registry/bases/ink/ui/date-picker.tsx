@@ -1,12 +1,15 @@
 import { Box, Text } from "ink";
 import React, { useState } from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
-import { useFocus } from "@/hooks/use-focus";
-import { useInput } from "@/hooks/use-input";
+import { useInteraction } from "@/hooks/use-interaction";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import { resolveBorderStyle } from "@/registry/bases/ink/lib/accessibility";
 
 export interface DatePickerProps {
   value?: Date;
+  defaultValue?: Date;
+  onValueChange?: (date: Date) => void;
   onChange?: (date: Date) => void;
   onSubmit?: (date: Date) => void;
   label?: string;
@@ -14,6 +17,10 @@ export interface DatePickerProps {
   maxDate?: Date;
   autoFocus?: boolean;
   id?: string;
+  isActive?: boolean;
+  disabled?: boolean;
+  required?: boolean;
+  "aria-label"?: string;
 }
 
 const MONTHS = [
@@ -53,6 +60,8 @@ const getNextField = (
 
 export const DatePicker = ({
   value: controlledValue,
+  defaultValue,
+  onValueChange,
   onChange,
   onSubmit,
   label,
@@ -60,12 +69,16 @@ export const DatePicker = ({
   maxDate,
   autoFocus = false,
   id,
+  isActive = true,
+  disabled = false,
+  required = false,
+  "aria-label": ariaLabel,
 }: DatePickerProps) => {
+  const unicode = useUnicode();
   const theme = useTheme();
-  const { isFocused } = useFocus({ autoFocus, id });
 
   const now = new Date();
-  const initial = controlledValue ?? now;
+  const initial = controlledValue ?? defaultValue ?? now;
 
   const [month, setMonth] = useState(initial.getMonth());
   const [day, setDay] = useState(initial.getDate());
@@ -80,87 +93,103 @@ export const DatePicker = ({
     if (maxDate && date > maxDate) {
       return;
     }
-    onChange?.(date);
+    (onValueChange ?? onChange)?.(date);
   };
 
-  useInput((input, key) => {
-    if (!isFocused) {
-      return;
-    }
-
-    if (key.tab) {
-      setField((f) => getNextField(f));
-      return;
-    }
-
-    if (key.return) {
-      const date = buildDate(month, day, year);
-      onSubmit?.(date);
-      return;
-    }
-
-    if (key.upArrow) {
-      if (field === "month") {
-        const newMonth = (month + 1) % 12;
-        const maxDay = daysInMonth(newMonth, year);
-        const newDay = clamp(day, 1, maxDay);
-        setMonth(newMonth);
-        setDay(newDay);
-        notify(newMonth, newDay, year);
-      } else if (field === "day") {
-        const maxDay = daysInMonth(month, year);
-        const newDay = day >= maxDay ? 1 : day + 1;
-        setDay(newDay);
-        notify(month, newDay, year);
-      } else {
-        const newYear = year + 1;
-        const maxDay = daysInMonth(month, newYear);
-        const newDay = clamp(day, 1, maxDay);
-        setYear(newYear);
-        setDay(newDay);
-        notify(month, newDay, newYear);
+  const { isFocused } = useInteraction(
+    (input, key) => {
+      if (key.leftArrow || key.rightArrow) {
+        setField((currentField) => {
+          if (key.rightArrow) {
+            return getNextField(currentField);
+          }
+          return currentField === "month"
+            ? "year"
+            : currentField === "day"
+              ? "month"
+              : "day";
+        });
+        return;
       }
-    } else if (key.downArrow) {
-      if (field === "month") {
-        const newMonth = month === 0 ? 11 : month - 1;
-        const maxDay = daysInMonth(newMonth, year);
-        const newDay = clamp(day, 1, maxDay);
-        setMonth(newMonth);
-        setDay(newDay);
-        notify(newMonth, newDay, year);
-      } else if (field === "day") {
-        const maxDay = daysInMonth(month, year);
-        const newDay = day <= 1 ? maxDay : day - 1;
-        setDay(newDay);
-        notify(month, newDay, year);
-      } else {
-        const newYear = year - 1;
-        const maxDay = daysInMonth(month, newYear);
-        const newDay = clamp(day, 1, maxDay);
-        setYear(newYear);
-        setDay(newDay);
-        notify(month, newDay, newYear);
+
+      if (key.return) {
+        const date = buildDate(month, day, year);
+        onSubmit?.(date);
+        return;
       }
-    }
-  });
+
+      if (key.upArrow) {
+        if (field === "month") {
+          const newMonth = (month + 1) % 12;
+          const maxDay = daysInMonth(newMonth, year);
+          const newDay = clamp(day, 1, maxDay);
+          setMonth(newMonth);
+          setDay(newDay);
+          notify(newMonth, newDay, year);
+        } else if (field === "day") {
+          const maxDay = daysInMonth(month, year);
+          const newDay = day >= maxDay ? 1 : day + 1;
+          setDay(newDay);
+          notify(month, newDay, year);
+        } else {
+          const newYear = year + 1;
+          const maxDay = daysInMonth(month, newYear);
+          const newDay = clamp(day, 1, maxDay);
+          setYear(newYear);
+          setDay(newDay);
+          notify(month, newDay, newYear);
+        }
+      } else if (key.downArrow) {
+        if (field === "month") {
+          const newMonth = month === 0 ? 11 : month - 1;
+          const maxDay = daysInMonth(newMonth, year);
+          const newDay = clamp(day, 1, maxDay);
+          setMonth(newMonth);
+          setDay(newDay);
+          notify(newMonth, newDay, year);
+        } else if (field === "day") {
+          const maxDay = daysInMonth(month, year);
+          const newDay = day <= 1 ? maxDay : day - 1;
+          setDay(newDay);
+          notify(month, newDay, year);
+        } else {
+          const newYear = year - 1;
+          const maxDay = daysInMonth(month, newYear);
+          const newDay = clamp(day, 1, maxDay);
+          setYear(newYear);
+          setDay(newDay);
+          notify(month, newDay, newYear);
+        }
+      }
+    },
+    { autoFocus, disabled, id, isActive }
+  );
 
   const fieldColor = (f: typeof field): string =>
     field === f && isFocused ? theme.colors.primary : theme.colors.foreground;
 
   const fieldBg = (f: typeof field): string | undefined =>
     field === f && isFocused ? theme.colors.selection : undefined;
+  const incrementIcon = unicode ? "▲" : "^";
+  const decrementIcon = unicode ? "▼" : "v";
 
   return (
     <Box flexDirection="column">
       {label && <Text bold>{label}</Text>}
       <Box
+        aria-label={
+          ariaLabel ??
+          `${label ?? "Date"}: ${MONTHS[month]} ${day}, ${year}. Editing ${field}`
+        }
+        aria-role="textbox"
+        aria-state={{ disabled, required }}
         gap={1}
-        borderStyle="round"
+        borderStyle={resolveBorderStyle("round", unicode)}
         borderColor={isFocused ? theme.colors.focusRing : theme.colors.border}
         paddingX={1}
       >
-        <Box flexDirection="column" alignItems="center">
-          <Text color={fieldColor("month")}>▲</Text>
+        <Box aria-hidden flexDirection="column" alignItems="center">
+          <Text color={fieldColor("month")}>{incrementIcon}</Text>
           <Text
             color={fieldColor("month")}
             backgroundColor={fieldBg("month")}
@@ -168,13 +197,15 @@ export const DatePicker = ({
           >
             {(MONTHS[month] ?? "").slice(0, 3)}
           </Text>
-          <Text color={fieldColor("month")}>▼</Text>
+          <Text color={fieldColor("month")}>{decrementIcon}</Text>
         </Box>
 
-        <Text color={theme.colors.border}>/</Text>
+        <Text aria-hidden color={theme.colors.border}>
+          /
+        </Text>
 
-        <Box flexDirection="column" alignItems="center">
-          <Text color={fieldColor("day")}>▲</Text>
+        <Box aria-hidden flexDirection="column" alignItems="center">
+          <Text color={fieldColor("day")}>{incrementIcon}</Text>
           <Text
             color={fieldColor("day")}
             backgroundColor={fieldBg("day")}
@@ -182,13 +213,15 @@ export const DatePicker = ({
           >
             {String(day).padStart(2, "0")}
           </Text>
-          <Text color={fieldColor("day")}>▼</Text>
+          <Text color={fieldColor("day")}>{decrementIcon}</Text>
         </Box>
 
-        <Text color={theme.colors.border}>/</Text>
+        <Text aria-hidden color={theme.colors.border}>
+          /
+        </Text>
 
-        <Box flexDirection="column" alignItems="center">
-          <Text color={fieldColor("year")}>▲</Text>
+        <Box aria-hidden flexDirection="column" alignItems="center">
+          <Text color={fieldColor("year")}>{incrementIcon}</Text>
           <Text
             color={fieldColor("year")}
             backgroundColor={fieldBg("year")}
@@ -196,12 +229,14 @@ export const DatePicker = ({
           >
             {year}
           </Text>
-          <Text color={fieldColor("year")}>▼</Text>
+          <Text color={fieldColor("year")}>{decrementIcon}</Text>
         </Box>
       </Box>
       {isFocused && (
-        <Text color={theme.colors.mutedForeground} dimColor>
-          ↑↓: change · Tab: next field · Enter: confirm
+        <Text aria-hidden color={theme.colors.mutedForeground} dimColor>
+          {unicode
+            ? "↑↓: change · ←→: field · Enter: confirm"
+            : "up/down: change - left/right: field - Enter: confirm"}
         </Text>
       )}
     </Box>

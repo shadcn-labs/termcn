@@ -1,7 +1,9 @@
 import { Box, Text } from "ink";
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import { resolveTerminalSymbol } from "@/registry/bases/ink/lib/accessibility";
 
 export interface BulletListItemProps {
   label: string;
@@ -22,7 +24,9 @@ export interface BulletListCheckItemProps {
 }
 
 const BulletListRoot = ({ children }: { children: ReactNode }) => (
-  <Box flexDirection="column">{children}</Box>
+  <Box flexDirection="column" aria-role="list">
+    {children}
+  </Box>
 );
 
 const BulletListItem = ({
@@ -32,10 +36,14 @@ const BulletListItem = ({
   children,
 }: BulletListItemProps) => {
   const theme = useTheme();
+  const unicode = useUnicode();
   return (
-    <Box flexDirection="column">
+    <Box flexDirection="column" aria-role="listitem">
+      <Text aria-label={label}>{""}</Text>
       <Box flexDirection="row">
-        <Text color={color ?? theme.colors.primary}>{"● "}</Text>
+        <Text aria-hidden color={color ?? theme.colors.primary}>
+          {resolveTerminalSymbol(unicode, "● ", "* ")}
+        </Text>
         <Text bold={boldText} color={color}>
           {label}
         </Text>
@@ -53,9 +61,12 @@ const BulletListSub = ({ children }: { children: ReactNode }) => (
 
 const BulletListTreeItem = ({ label, color }: BulletListTreeItemProps) => {
   const theme = useTheme();
+  const unicode = useUnicode();
   return (
-    <Box flexDirection="row">
-      <Text color={theme.colors.mutedForeground}>{"└ "}</Text>
+    <Box flexDirection="row" aria-role="listitem" aria-label={label}>
+      <Text aria-hidden color={theme.colors.mutedForeground}>
+        {resolveTerminalSymbol(unicode, "└ ", "`- ")}
+      </Text>
       <Text color={color}>{label}</Text>
     </Box>
   );
@@ -67,12 +78,20 @@ const BulletListCheckItem = ({
   color,
 }: BulletListCheckItemProps) => {
   const theme = useTheme();
-  const icon = done ? "■" : "□";
+  const unicode = useUnicode();
+  const icon = done
+    ? resolveTerminalSymbol(unicode, "■", "[x]")
+    : resolveTerminalSymbol(unicode, "□", "[ ]");
   const resolvedColor =
     color ?? (done ? theme.colors.success : theme.colors.mutedForeground);
   return (
-    <Box flexDirection="row">
-      <Text color={resolvedColor}>{`${icon} `}</Text>
+    <Box
+      flexDirection="row"
+      aria-role="listitem"
+      aria-label={`${label}, ${done ? "completed" : "not completed"}`}
+      aria-state={{ checked: done }}
+    >
+      <Text aria-hidden color={resolvedColor}>{`${icon} `}</Text>
       <Text color={done ? undefined : color}>{label}</Text>
     </Box>
   );

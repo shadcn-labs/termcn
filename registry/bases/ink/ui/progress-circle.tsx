@@ -1,6 +1,8 @@
 import { Box, Text } from "ink";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import { resolveTerminalSymbol } from "@/registry/bases/ink/lib/accessibility";
 
 export type ProgressCircleSize = "sm" | "md" | "lg";
 
@@ -10,6 +12,7 @@ export interface ProgressCircleProps {
   color?: string;
   label?: string;
   showPercent?: boolean;
+  "aria-label"?: string;
 }
 
 const BRAILLE_CHARS = ["○", "◔", "◑", "◕", "●", "◉", "⬤", "●"];
@@ -31,15 +34,28 @@ export const ProgressCircle = ({
   color,
   label,
   showPercent = false,
+  "aria-label": ariaLabel,
 }: ProgressCircleProps) => {
   const theme = useTheme();
+  const unicode = useUnicode();
   const clamped = Math.max(0, Math.min(100, value));
   const resolvedColor = color ?? theme.colors.primary;
 
   if (size === "sm") {
-    const char = getSmChar(clamped);
+    let char = clamped > 0 ? "#" : "o";
+    if (unicode) {
+      char = getSmChar(clamped);
+    }
     return (
-      <Box flexDirection="column" alignItems="flex-start">
+      <Box
+        flexDirection="column"
+        alignItems="flex-start"
+        aria-role="progressbar"
+        aria-label={
+          ariaLabel ?? `${label ?? "Progress"}: ${Math.round(clamped)}%`
+        }
+        aria-state={{ busy: clamped < 100 }}
+      >
         <Box flexDirection="row" gap={1}>
           <Text color={resolvedColor}>{char}</Text>
           {showPercent && (
@@ -55,13 +71,23 @@ export const ProgressCircle = ({
 
   if (size === "md") {
     return (
-      <Box flexDirection="column" alignItems="flex-start">
+      <Box
+        flexDirection="column"
+        alignItems="flex-start"
+        aria-role="progressbar"
+        aria-label={ariaLabel ?? `${label ?? "Progress"}: ${percentLabel}`}
+        aria-state={{ busy: clamped < 100 }}
+      >
         <Box flexDirection="row">
-          <Text color={resolvedColor}>⟨</Text>
+          <Text color={resolvedColor}>
+            {resolveTerminalSymbol(unicode, "⟨", "[")}
+          </Text>
           <Text color={resolvedColor} bold>
             {percentLabel}
           </Text>
-          <Text color={resolvedColor}>⟩</Text>
+          <Text color={resolvedColor}>
+            {resolveTerminalSymbol(unicode, "⟩", "]")}
+          </Text>
         </Box>
         {label && <Text color={theme.colors.muted}>{label}</Text>}
       </Box>
@@ -69,14 +95,21 @@ export const ProgressCircle = ({
   }
 
   const fillLevel = clamped / 100;
-  const topArc = " ▄█▄";
-  const midLeft = "█";
-  const midRight = "█";
-  const midInner = fillLevel >= 0.5 ? "███" : "   ";
-  const botArc = " ▀█▀";
+  const topArc = resolveTerminalSymbol(unicode, " ▄█▄", "+---+");
+  const midLeft = resolveTerminalSymbol(unicode, "█", "|");
+  const midRight = resolveTerminalSymbol(unicode, "█", "|");
+  const midInner =
+    fillLevel >= 0.5 ? resolveTerminalSymbol(unicode, "███", "###") : "   ";
+  const botArc = resolveTerminalSymbol(unicode, " ▀█▀", "+---+");
 
   return (
-    <Box flexDirection="column" alignItems="flex-start">
+    <Box
+      flexDirection="column"
+      alignItems="flex-start"
+      aria-role="progressbar"
+      aria-label={ariaLabel ?? `${label ?? "Progress"}: ${percentLabel}`}
+      aria-state={{ busy: clamped < 100 }}
+    >
       <Text color={resolvedColor}>{topArc}</Text>
       <Box flexDirection="row">
         <Text color={resolvedColor}>{midLeft}</Text>

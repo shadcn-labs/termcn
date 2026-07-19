@@ -1,11 +1,11 @@
-import { Box, Text, useInput } from "ink";
+import { useIsScreenReaderEnabled, Box, Text } from "ink";
 import * as React from "react";
 
-import {
-  useMotion,
-  useTheme,
-  useUnicode,
-} from "@/components/ui/ink-theme-provider";
+import { useInteraction } from "@/hooks/use-interaction";
+import { useMotion } from "@/hooks/use-motion";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import { resolveBorderStyle } from "@/registry/bases/ink/lib/accessibility";
 import {
   colorFor,
   easeInOutCubic,
@@ -285,9 +285,14 @@ const parseParts = (children: React.ReactNode): ParsedParts => {
 };
 
 export interface TerminalChartOptions {
+  "aria-label"?: string;
+  accessibleSummary?: string;
+  autoFocus?: boolean;
   className?: string;
+  disabled?: boolean;
   emptyMessage?: string;
   height?: number;
+  id?: string;
   isActive?: boolean;
   noColor?: boolean;
   reducedMotion?: boolean;
@@ -463,9 +468,15 @@ export const DitherChart = ({
   unicode,
   width = 56,
   kind,
+  id,
+  autoFocus,
+  disabled,
+  accessibleSummary,
+  "aria-label": ariaLabel,
 }: DitherChartProps) => {
   const theme = useTheme();
   const motion = useMotion();
+  const isInkScreenReaderEnabled = useIsScreenReaderEnabled();
   const unicodeContext = useUnicode();
   const parts = React.useMemo(() => parseParts(children), [children]);
   const names = React.useMemo(
@@ -488,7 +499,10 @@ export const DitherChart = ({
   const selectable =
     (parts.legend?.isClickable ?? false) ||
     parts.series.some((series) => series.isClickable);
-  const reduced = reducedMotion ?? motion.reduced;
+  const effectiveScreenReaderMode =
+    screenReaderMode || isInkScreenReaderEnabled;
+  const reduced =
+    reducedMotion ?? (motion.reduced || effectiveScreenReaderMode || !isActive);
   const useUnicodeGlyphs = unicode ?? unicodeContext;
   const progress = useEntrance({
     animate,
@@ -542,7 +556,7 @@ export const DitherChart = ({
     selected,
   ]);
 
-  useInput(
+  useInteraction(
     (input, key) => {
       if (key.leftArrow || input === "h") {
         moveHover(-1);
@@ -562,7 +576,7 @@ export const DitherChart = ({
         setLocalReplay((value) => value + 1);
       }
     },
-    { isActive: interactive && isActive }
+    { autoFocus, disabled, id, isActive: interactive && isActive }
   );
 
   const rendered = React.useMemo(
@@ -644,11 +658,19 @@ export const DitherChart = ({
     tooltipNames = pieName ? [pieName] : [];
   }
 
-  if (screenReaderMode) {
+  if (effectiveScreenReaderMode) {
     return (
-      <Box flexDirection="column">
-        {title && <Text bold>{title}</Text>}
-        {data.map((row, index) => {
+      <Box flexDirection="column" aria-role="list">
+        <Text
+          aria-label={
+            ariaLabel ??
+            accessibleSummary ??
+            `${title ?? `${kind} chart`}. ${data.length} data points.`
+          }
+        >
+          {""}
+        </Text>
+        {data.slice(0, 12).map((row, index) => {
           const heading =
             kind === "pie"
               ? String(row[nameKey ?? "name"] ?? index)
@@ -664,9 +686,14 @@ export const DitherChart = ({
                   )
                   .join(", ");
           return (
-            <Text key={`${heading}-${index}`}>{`${heading}: ${values}`}</Text>
+            <Box key={`${heading}-${index}`} aria-role="listitem">
+              <Text>{`${heading}: ${values}`}</Text>
+            </Box>
           );
         })}
+        {data.length > 12 && (
+          <Text>{`${data.length - 12} additional data points omitted.`}</Text>
+        )}
       </Box>
     );
   }
@@ -725,9 +752,10 @@ export const DitherChart = ({
       {parts.tooltip && tooltipRow && tooltipIndex !== null && (
         <Box
           borderColor={noColor ? undefined : theme.colors.border}
-          borderStyle={
-            parts.tooltip.variant === "frosted-glass" ? "round" : "single"
-          }
+          borderStyle={resolveBorderStyle(
+            parts.tooltip.variant === "frosted-glass" ? "round" : "single",
+            useUnicodeGlyphs
+          )}
           flexDirection="column"
           paddingX={1}
         >
@@ -753,7 +781,9 @@ export const DitherChart = ({
       )}
       {showControls && interactive && (
         <Text color={noColor ? undefined : theme.colors.mutedForeground}>
-          {"←/→ inspect  ↑/↓ series  enter select  esc clear  r replay"}
+          {useUnicodeGlyphs
+            ? "←/→ inspect  ↑/↓ series  enter select  esc clear  r replay"
+            : "left/right inspect  up/down series  enter select  esc clear  r replay"}
         </Text>
       )}
     </Box>

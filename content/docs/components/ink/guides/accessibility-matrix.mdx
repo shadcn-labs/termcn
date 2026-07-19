@@ -1,0 +1,23 @@
+---
+title: "Accessibility matrix"
+description: "Semantic, focus, screen-reader, and visual-alternative coverage by Termcn Ink family."
+---
+
+| Family            | Components                                                                                       | Ink output                                                        | Screen-reader contract                                                   |
+| ----------------- | ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| Boolean controls  | Checkbox, Toggle                                                                                 | `checkbox`; checked and disabled                                  | Label plus checked/disabled state; non-color focus marker                |
+| Radio             | Radio Group                                                                                      | `radiogroup` / `radio`                                            | Group label and checked/disabled options                                 |
+| Selection         | Select, Multi Select, Checkbox Group, Tree Select, File Picker, Color Picker                     | `listbox` / `option`                                              | Selected, disabled, multiselectable, and bounded options                 |
+| Text              | Text Input, Text Area, Password, Email, Masked, Number, Search, Path, Tag Input, App Shell Input | `textbox` or `combobox`                                           | Required/readonly/disabled/multiline; secrets become character counts    |
+| Navigation        | Tabs, Tabbed Content, Menu, Pagination, Breadcrumb, Sidebar                                      | `tablist`, `tab`, `menu`, `menuitem`, `toolbar`, or labelled list | One tab stop per composite; selection and expanded state                 |
+| Overlays          | Dialog, Modal, Drawer, Popover                                                                   | Labelled text plus supported button/toolbar roles                 | Surface type/title, contained focus, topmost Escape, restoration         |
+| Data              | Table, Data Grid, List, Virtual List, Tree, Directory Tree, JSON, Log                            | `table`, `list`, `listitem`, `listbox`, `option`                  | Linear rows include headers; trees include depth/expanded state          |
+| Progress and time | Progress Bar, Progress Circle, Multi Progress, Gauge, Spinner, Skeleton, Clock, Timer, Stopwatch | `progressbar` or `timer`                                          | Current value/status; animation frames omitted                           |
+| Charts            | Bar, Line, Pie, Heat Map, Sparkline, Dither charts                                               | Labelled textual summary                                          | Title, range/current/trend where available, bounded data points          |
+| Visual media      | Image, QR Code, Big Text, Gradient, Digits                                                       | Plain accessible text                                             | Required `alt`, decorative declaration, or underlying string             |
+| AI and feedback   | Chat, Streaming Text, Thinking, Tool Call, Tool Approval, File Change, Toast, Alert, Banner      | Supported list/button/progress roles plus explicit status text    | Meaningful transitions, severity words, no repeated cursor/spinner noise |
+| Static layout     | Box, Stack, Grid, Columns, Center, Spacer, Divider, Card, Panel                                  | Forwarded Ink layout/accessibility props                          | No input subscription; decorative separators may be hidden               |
+
+All published Ink registry graphs are checked for undeclared imports, dependency cycles, source-only paths, legacy input/focus dependencies, and missing generated items. Interaction tests cover focus ownership, disabled controls, Tab traversal, modal scope traversal/Escape, and Kitty release behavior. Screen-reader tests render through Ink with `INK_SCREEN_READER=true` and assert semantic output without plot or animation glyphs.
+
+Consumer-provided children, labels, key handlers, custom glyphs, and Ink render configuration remain the consumer's responsibility.

@@ -1,12 +1,14 @@
 import { Box, Text } from "ink";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
 
 export interface TokenUsageProps {
   prompt: number;
   completion: number;
   model?: string;
   showCost?: boolean;
+  "aria-label"?: string;
 }
 
 const MODEL_PRICING: Record<string, { input: number; output: number }> = {
@@ -54,14 +56,22 @@ export const TokenUsage = ({
   completion,
   model,
   showCost = false,
+  "aria-label": ariaLabel,
 }: TokenUsageProps) => {
   const theme = useTheme();
+  const unicode = useUnicode();
   const cost = showCost ? estimateCost(prompt, completion, model) : null;
 
   return (
-    <Box gap={0}>
+    <Box
+      gap={0}
+      aria-label={
+        ariaLabel ??
+        `Token usage: ${prompt} input, ${completion} output${model ? `, model ${model}` : ""}${cost === null ? "" : `, estimated cost $${cost.toFixed(4)}`}.`
+      }
+    >
       <Text dimColor color={theme.colors.mutedForeground}>
-        ⟨{" "}
+        {unicode ? "⟨ " : "< "}
       </Text>
       <Text color={theme.colors.primary}>{formatTokens(prompt)}</Text>
       <Text dimColor color={theme.colors.mutedForeground}>
@@ -78,18 +88,18 @@ export const TokenUsage = ({
       {model && (
         <Text dimColor color={theme.colors.mutedForeground}>
           {" "}
-          · {model}
+          {unicode ? "·" : "-"} {model}
         </Text>
       )}
       {cost !== null && (
         <Text dimColor color={theme.colors.mutedForeground}>
           {" "}
-          · ${cost.toFixed(4)}
+          {unicode ? "·" : "-"} ${cost.toFixed(4)}
         </Text>
       )}
       <Text dimColor color={theme.colors.mutedForeground}>
         {" "}
-        ⟩
+        {unicode ? "⟩" : ">"}
       </Text>
     </Box>
   );
@@ -103,6 +113,7 @@ export interface ContextMeterProps {
   warnAt?: number;
   criticalAt?: number;
   width?: number;
+  "aria-label"?: string;
 }
 
 export const ContextMeter = ({
@@ -113,9 +124,14 @@ export const ContextMeter = ({
   warnAt = 75,
   criticalAt = 90,
   width = 20,
+  "aria-label": ariaLabel,
 }: ContextMeterProps) => {
   const theme = useTheme();
-  const percent = Math.min(100, Math.round((used / limit) * 100));
+  const unicode = useUnicode();
+  const percent =
+    limit <= 0
+      ? 0
+      : Math.min(100, Math.max(0, Math.round((used / limit) * 100)));
   const filled = Math.round((percent / 100) * width);
   const empty = width - filled;
 
@@ -128,10 +144,19 @@ export const ContextMeter = ({
     barColor = theme.colors.success ?? "green";
   }
 
-  const bar = "█".repeat(filled) + "░".repeat(empty);
+  const bar =
+    (unicode ? "█" : "#").repeat(filled) + (unicode ? "░" : ".").repeat(empty);
 
   return (
-    <Box gap={1}>
+    <Box
+      gap={1}
+      aria-role="progressbar"
+      aria-label={
+        ariaLabel ??
+        `${label ?? "Context usage"}: ${percent}%, ${used} of ${limit} tokens.`
+      }
+      aria-state={{ busy: percent < 100 }}
+    >
       {label && (
         <Text dimColor color={theme.colors.mutedForeground}>
           {label}

@@ -1,6 +1,7 @@
-import { Box, Text } from "ink";
+import { useIsScreenReaderEnabled, Box, Text } from "ink";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
 
 export type DiffMode = "unified" | "split" | "inline";
 
@@ -12,6 +13,8 @@ export interface DiffViewProps {
   mode?: DiffMode;
   context?: number;
   showLineNumbers?: boolean;
+  accessibleSummary?: string;
+  "aria-label"?: string;
 }
 
 interface DiffOp {
@@ -125,6 +128,7 @@ const buildHunks = (ops: DiffOp[], context: number): Hunk[] => {
 
 interface ViewProps {
   hunks: Hunk[];
+  separator: string;
   showLineNumbers: boolean;
   theme: ReturnType<typeof useTheme>;
 }
@@ -199,7 +203,7 @@ const UnifiedView = ({ hunks, showLineNumbers, theme }: ViewProps) => {
   return <Box flexDirection="column">{rows}</Box>;
 };
 
-const SplitView = ({ hunks, showLineNumbers, theme }: ViewProps) => {
+const SplitView = ({ hunks, separator, showLineNumbers, theme }: ViewProps) => {
   const rows: React.ReactNode[] = [];
 
   for (const hunk of hunks) {
@@ -237,7 +241,7 @@ const SplitView = ({ hunks, showLineNumbers, theme }: ViewProps) => {
               </Text>
             )}
             <Text dimColor>{op.line}</Text>
-            <Text> │ </Text>
+            <Text> {separator} </Text>
             {showLineNumbers && (
               <Text dimColor color={theme.colors.mutedForeground}>
                 {String(currentNl ?? "").padStart(4)}
@@ -255,7 +259,7 @@ const SplitView = ({ hunks, showLineNumbers, theme }: ViewProps) => {
               </Text>
             )}
             <Text color="red">-{op.line}</Text>
-            <Text> │ </Text>
+            <Text> {separator} </Text>
             <Text> </Text>
           </Box>
         );
@@ -263,7 +267,7 @@ const SplitView = ({ hunks, showLineNumbers, theme }: ViewProps) => {
         rows.push(
           <Box key={key} gap={2}>
             <Text> </Text>
-            <Text> │ </Text>
+            <Text> {separator} </Text>
             {showLineNumbers && (
               <Text dimColor color={theme.colors.mutedForeground}>
                 {String(currentNl ?? "").padStart(4)}
@@ -351,14 +355,35 @@ export const DiffView = ({
   mode = "unified",
   context = 3,
   showLineNumbers = false,
+  accessibleSummary,
+  "aria-label": ariaLabel,
 }: DiffViewProps) => {
   const theme = useTheme();
+  const unicode = useUnicode();
+  const isScreenReaderEnabled = useIsScreenReaderEnabled();
 
   const oldLines = oldText.split("\n");
   const newLines = newText.split("\n");
   const ops = computeDiff(oldLines, newLines);
   const hunks = buildHunks(ops, context);
   const hasChanges = ops.some((op) => op.type !== "equal");
+  const changes = (() => {
+    let oldLine = 1;
+    let newLine = 1;
+    return ops.flatMap((operation) => {
+      const currentOldLine = operation.type === "insert" ? undefined : oldLine;
+      const currentNewLine = operation.type === "delete" ? undefined : newLine;
+      if (operation.type !== "insert") {
+        oldLine += 1;
+      }
+      if (operation.type !== "delete") {
+        newLine += 1;
+      }
+      return operation.type === "equal"
+        ? []
+        : [{ ...operation, newLine: currentNewLine, oldLine: currentOldLine }];
+    });
+  })();
 
   if (!hasChanges) {
     return (
@@ -375,11 +400,43 @@ export const DiffView = ({
     );
   }
 
+  if (isScreenReaderEnabled) {
+    return (
+      <Box flexDirection="column" aria-role="list">
+        <Text
+          aria-label={
+            ariaLabel ??
+            accessibleSummary ??
+            `Diff for ${filename ?? "text"}. ${changes.length} changed lines.`
+          }
+        >
+          {""}
+        </Text>
+        {changes.slice(0, 200).map((change, index) => (
+          <Box
+            key={`${change.type}-${change.oldLine ?? "x"}-${change.newLine ?? "x"}-${index}`}
+            aria-role="listitem"
+          >
+            <Text>
+              {change.type === "insert"
+                ? `Added at new line ${change.newLine}: ${change.line}`
+                : `Removed at old line ${change.oldLine}: ${change.line}`}
+            </Text>
+          </Box>
+        ))}
+        {changes.length > 200 && (
+          <Text>{`${changes.length - 200} additional changed lines omitted.`}</Text>
+        )}
+      </Box>
+    );
+  }
+
   let content: React.ReactNode;
   if (mode === "split") {
     content = (
       <SplitView
         hunks={hunks}
+        separator={unicode ? "│" : "|"}
         showLineNumbers={showLineNumbers}
         theme={theme}
       />
@@ -392,6 +449,7 @@ export const DiffView = ({
     content = (
       <UnifiedView
         hunks={hunks}
+        separator={unicode ? "│" : "|"}
         showLineNumbers={showLineNumbers}
         theme={theme}
       />
@@ -399,7 +457,7 @@ export const DiffView = ({
   }
 
   return (
-    <Box flexDirection="column">
+    <Box flexDirection="column" aria-label={ariaLabel ?? accessibleSummary}>
       {filename && (
         <Text bold color={theme.colors.foreground}>
           --- {filename}

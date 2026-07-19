@@ -1,6 +1,7 @@
 import { Box, Text } from "ink";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
 
 export interface PieChartItem {
   label: string;
@@ -13,6 +14,9 @@ export interface PieChartProps {
   radius?: number;
   showLegend?: boolean;
   showPercentages?: boolean;
+  title?: string;
+  accessibleSummary?: string;
+  "aria-label"?: string;
 }
 
 const DEFAULT_COLORS = [
@@ -26,10 +30,6 @@ const DEFAULT_COLORS = [
   "#65a30d",
 ];
 
-const FULL_BLOCK = "█";
-const _HALF_BLOCK = "▌";
-const LEGEND_SQUARE = "■";
-
 /**
  * Approximate a pie chart using a 2D character grid.
  * Each cell is tested to see which segment it belongs to,
@@ -37,7 +37,8 @@ const LEGEND_SQUARE = "■";
  */
 const buildPieGrid = (
   data: PieChartItem[],
-  radius: number
+  radius: number,
+  fillCharacter: string
 ): { char: string; color: string }[][] => {
   const total = data.reduce((s, d) => s + d.value, 0);
   if (total === 0) {
@@ -84,7 +85,7 @@ const buildPieGrid = (
       const seg =
         angles.find((a) => angle >= a.start && angle < a.end) ?? angles.at(-1);
       if (seg) {
-        grid[row][col] = { char: FULL_BLOCK, color: seg.color };
+        grid[row][col] = { char: fillCharacter, color: seg.color };
       }
     }
   }
@@ -97,8 +98,14 @@ export const PieChart = ({
   radius = 5,
   showLegend = true,
   showPercentages = true,
+  title,
+  accessibleSummary,
+  "aria-label": ariaLabel,
 }: PieChartProps) => {
   const theme = useTheme();
+  const unicode = useUnicode();
+  const fillCharacter = unicode ? "█" : "#";
+  const legendCharacter = unicode ? "■" : "#";
 
   if (data.length === 0) {
     return <Text color={theme.colors.mutedForeground}>No data</Text>;
@@ -114,10 +121,24 @@ export const PieChart = ({
       theme.colors.primary,
   }));
 
-  const grid = buildPieGrid(itemsWithColors, radius);
+  const grid = buildPieGrid(itemsWithColors, radius, fillCharacter);
 
   return (
-    <Box flexDirection="row" gap={2}>
+    <Box
+      flexDirection="row"
+      gap={2}
+      aria-label={
+        ariaLabel ??
+        accessibleSummary ??
+        `${title ?? "Pie chart"}. Total ${total}. ${data
+          .slice(0, 12)
+          .map(
+            (item) =>
+              `${item.label}: ${item.value}${total > 0 ? ` (${((item.value / total) * 100).toFixed(1)}%)` : ""}`
+          )
+          .join(", ")}${data.length > 12 ? `, ${data.length - 12} more` : ""}.`
+      }
+    >
       <Box flexDirection="column">
         {grid.map((row, rowIdx) => (
           <Box key={rowIdx} flexDirection="row">
@@ -141,7 +162,7 @@ export const PieChart = ({
               total > 0 ? ((item.value / total) * 100).toFixed(1) : "0.0";
             return (
               <Box key={idx} flexDirection="row" gap={1}>
-                <Text color={item.color}>{LEGEND_SQUARE}</Text>
+                <Text color={item.color}>{legendCharacter}</Text>
                 <Text color={theme.colors.foreground}>{item.label}</Text>
                 {showPercentages && (
                   <Text color={theme.colors.mutedForeground}>({pct}%)</Text>

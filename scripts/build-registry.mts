@@ -18,6 +18,7 @@ const syncTargets = [
   },
   {
     from: path.join(root, "registry", "bases", "ink", "hooks"),
+    providerImport: "ink-theme-provider",
     to: "hooks",
   },
   {
@@ -119,6 +120,46 @@ const runShadcnBuild = (cwd: string) => {
   }
 };
 
+interface RegistryFile {
+  path: string;
+  target?: string;
+}
+
+interface RegistryItem {
+  files?: RegistryFile[];
+  name: string;
+}
+
+const restorePublishedTargets = async () => {
+  const sourceRegistry = JSON.parse(
+    await fs.readFile(path.join(root, "registry.json"), "utf-8")
+  ) as { items: RegistryItem[] };
+
+  for (const sourceItem of sourceRegistry.items) {
+    if (!sourceItem.name.startsWith("ink/")) {
+      continue;
+    }
+
+    const targets = new Map(
+      (sourceItem.files ?? [])
+        .filter((file) => file.target)
+        .map((file) => [file.path, file.target as string])
+    );
+    if (targets.size === 0) {
+      continue;
+    }
+
+    const itemPath = path.join(outputDir, `${sourceItem.name}.json`);
+    const publishedItem = JSON.parse(
+      await fs.readFile(itemPath, "utf-8")
+    ) as RegistryItem;
+    for (const file of publishedItem.files ?? []) {
+      file.target = targets.get(file.path);
+    }
+    await fs.writeFile(itemPath, `${JSON.stringify(publishedItem, null, 2)}\n`);
+  }
+};
+
 const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "termcn-registry-"));
 
 try {
@@ -145,6 +186,7 @@ try {
     ensureDir(path.join(outputDir, "opentui")),
   ]);
   runShadcnBuild(tempRoot);
+  await restorePublishedTargets();
 } finally {
   await fs.rm(tempRoot, { force: true, recursive: true });
 }

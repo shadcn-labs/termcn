@@ -1,6 +1,9 @@
-import { Box, Text } from "ink";
-import { useEffect, useMemo, useState } from "react";
+import { useIsScreenReaderEnabled, Box, Text } from "ink";
+import { useEffect, useMemo, useRef, useState } from "react";
 import stripAnsi from "strip-ansi";
+
+import { useUnicode } from "@/hooks/use-unicode";
+import { resolveBorderStyle } from "@/registry/bases/ink/lib/accessibility";
 
 interface IPty {
   kill: () => void;
@@ -23,6 +26,8 @@ export interface EmbeddedTerminalProps {
   width?: number;
   height?: number;
   onExit?: (code: number) => void;
+  isActive?: boolean;
+  "aria-label"?: string;
 }
 
 /**
@@ -36,11 +41,19 @@ export const EmbeddedTerminal = ({
   width = 80,
   height = 24,
   onExit,
+  isActive = true,
+  "aria-label": ariaLabel,
 }: EmbeddedTerminalProps) => {
+  const unicode = useUnicode();
+  const isScreenReaderEnabled = useIsScreenReaderEnabled();
   const [raw, setRaw] = useState("");
   const [err, setErr] = useState<string | null>(null);
+  const pendingOutput = useRef("");
 
   useEffect(() => {
+    if (!isActive) {
+      return;
+    }
     let p: IPty | null = null;
     let cancelled = false;
 
@@ -61,7 +74,17 @@ export const EmbeddedTerminal = ({
         });
         p = pty;
         pty.onData((d: string) => {
-          setRaw((prev) => (prev + d).slice(-500_000));
+          if (isScreenReaderEnabled) {
+            pendingOutput.current += d;
+            if (!d.includes("\n") && pendingOutput.current.length < 256) {
+              return;
+            }
+            const update = pendingOutput.current;
+            pendingOutput.current = "";
+            setRaw((previous) => (previous + update).slice(-500_000));
+          } else {
+            setRaw((previous) => (previous + d).slice(-500_000));
+          }
         });
         pty.onExit((e: { exitCode: number }) => {
           onExit?.(e.exitCode);
@@ -79,7 +102,16 @@ export const EmbeddedTerminal = ({
         p.kill();
       }
     };
-  }, [command, args, cwd, width, height, onExit]);
+  }, [
+    args,
+    command,
+    cwd,
+    height,
+    isActive,
+    isScreenReaderEnabled,
+    onExit,
+    width,
+  ]);
 
   const lines = useMemo(
     () => stripAnsi(raw).split("\n").slice(-height),
@@ -89,14 +121,25 @@ export const EmbeddedTerminal = ({
   return (
     <Box
       flexDirection="column"
-      borderStyle="round"
+      borderStyle={resolveBorderStyle(
+        isScreenReaderEnabled ? undefined : "round",
+        unicode
+      )}
       borderColor="cyan"
       width={width}
+      aria-role="list"
     >
+      <Text aria-label={ariaLabel ?? `Embedded terminal running ${command}`}>
+        {""}
+      </Text>
       {err ? (
         <Text color="red">{err}</Text>
       ) : (
-        lines.map((line, i) => <Text key={i}>{line}</Text>)
+        lines.map((line, i) => (
+          <Box key={i} aria-role="listitem">
+            <Text>{line}</Text>
+          </Box>
+        ))
       )}
     </Box>
   );

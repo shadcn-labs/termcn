@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ink/terminal-text",
+  "title": "Terminal Text",
+  "description": "Grapheme-safe terminal width, cursor, truncation, and padding helpers.",
+  "dependencies": [
+    "string-width@8.2.0"
+  ],
+  "files": [
+    {
+      "path": "registry/lib/terminal-text.ts",
+      "content": "import stringWidth from \"string-width\";\n\nconst segmenter = new Intl.Segmenter(undefined, { granularity: \"grapheme\" });\n\nexport const splitGraphemes = (value: string): string[] =>\n  Array.from(segmenter.segment(value), ({ segment }) => segment);\n\nexport const graphemeLength = (value: string): number =>\n  splitGraphemes(value).length;\n\nexport const sliceGraphemes = (\n  value: string,\n  start?: number,\n  end?: number\n): string => splitGraphemes(value).slice(start, end).join(\"\");\n\nexport const insertAtGrapheme = (\n  value: string,\n  index: number,\n  insertedValue: string\n): string => {\n  const graphemes = splitGraphemes(value);\n  const safeIndex = Math.max(0, Math.min(index, graphemes.length));\n  graphemes.splice(safeIndex, 0, ...splitGraphemes(insertedValue));\n  return graphemes.join(\"\");\n};\n\nexport const removeGraphemeBefore = (\n  value: string,\n  index: number\n): { value: string; cursor: number } => {\n  const graphemes = splitGraphemes(value);\n  const safeIndex = Math.max(0, Math.min(index, graphemes.length));\n\n  if (safeIndex === 0) {\n    return { cursor: 0, value };\n  }\n\n  graphemes.splice(safeIndex - 1, 1);\n  return { cursor: safeIndex - 1, value: graphemes.join(\"\") };\n};\n\nexport const removeGraphemeAt = (\n  value: string,\n  index: number\n): { value: string; cursor: number } => {\n  const graphemes = splitGraphemes(value);\n  const safeIndex = Math.max(0, Math.min(index, graphemes.length));\n\n  if (safeIndex >= graphemes.length) {\n    return { cursor: safeIndex, value };\n  }\n\n  graphemes.splice(safeIndex, 1);\n  return { cursor: safeIndex, value: graphemes.join(\"\") };\n};\n\nexport const terminalWidth = (value: string): number => stringWidth(value);\n\nexport const cursorCellOffset = (value: string, cursor: number): number =>\n  stringWidth(sliceGraphemes(value, 0, cursor));\n\nexport const truncateToTerminalWidth = (\n  value: string,\n  maximumWidth: number,\n  ellipsis = \"…\"\n): string => {\n  if (maximumWidth <= 0) {\n    return \"\";\n  }\n\n  if (stringWidth(value) <= maximumWidth) {\n    return value;\n  }\n\n  const ellipsisWidth = stringWidth(ellipsis);\n  if (ellipsisWidth >= maximumWidth) {\n    return ellipsisWidth === maximumWidth ? ellipsis : \"\";\n  }\n\n  const allowedWidth = maximumWidth - ellipsisWidth;\n  let width = 0;\n  const output: string[] = [];\n\n  for (const grapheme of splitGraphemes(value)) {\n    const nextWidth = stringWidth(grapheme);\n    if (width + nextWidth > allowedWidth) {\n      break;\n    }\n\n    output.push(grapheme);\n    width += nextWidth;\n  }\n\n  return `${output.join(\"\")}${ellipsis}`;\n};\n\nexport const padToTerminalWidth = (\n  value: string,\n  width: number,\n  alignment: \"left\" | \"right\" = \"left\"\n): string => {\n  const padding = \" \".repeat(Math.max(0, width - stringWidth(value)));\n  return alignment === \"right\" ? `${padding}${value}` : `${value}${padding}`;\n};\n",
+      "type": "registry:file",
+      "target": "lib/terminal-text.ts"
+    }
+  ],
+  "categories": [
+    "core"
+  ],
+  "type": "registry:file"
+}

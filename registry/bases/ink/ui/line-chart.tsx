@@ -1,6 +1,11 @@
 import { Box, Text } from "ink";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import {
+  resolveTerminalSymbol,
+  summarizeSeries,
+} from "@/registry/bases/ink/lib/accessibility";
 
 export type LineChartDataPoint = number | { label?: string; value: number };
 
@@ -11,6 +16,8 @@ export interface LineChartProps {
   title?: string;
   color?: string;
   showAxes?: boolean;
+  accessibleSummary?: string;
+  "aria-label"?: string;
 }
 
 const getValue = (d: LineChartDataPoint): number =>
@@ -49,9 +56,19 @@ export const LineChart = ({
   title,
   color,
   showAxes = true,
+  accessibleSummary,
+  "aria-label": ariaLabel,
 }: LineChartProps) => {
   const theme = useTheme();
+  const unicode = useUnicode();
   const resolvedColor = color ?? theme.colors.primary;
+  const plotChar = resolveTerminalSymbol(unicode, PLOT_CHAR, "*");
+  const connectUp = resolveTerminalSymbol(unicode, CONNECT_UP, "/");
+  const connectDown = resolveTerminalSymbol(unicode, CONNECT_DOWN, "\\");
+  const axisVertical = resolveTerminalSymbol(unicode, AXIS_V, "|");
+  const axisHorizontal = resolveTerminalSymbol(unicode, AXIS_H, "-");
+  const axisCorner = resolveTerminalSymbol(unicode, AXIS_CORNER, "+");
+  const axisTickVertical = resolveTerminalSymbol(unicode, AXIS_TICK_V, "+");
 
   if (data.length === 0) {
     return <Text color={theme.colors.mutedForeground}>No data</Text>;
@@ -60,6 +77,16 @@ export const LineChart = ({
   const values = data.map(getValue);
   const minVal = Math.min(...values);
   const maxVal = Math.max(...values);
+  const chartSummary =
+    accessibleSummary ??
+    summarizeSeries(
+      title ?? "Line chart",
+      data.map((point, index) => ({
+        label: getLabel(point) || `Point ${index + 1}`,
+        value: getValue(point),
+      })),
+      12
+    );
 
   const yAxisWidth = showAxes ? String(Math.round(maxVal)).length + 2 : 0;
   const chartWidth = Math.max(4, width - yAxisWidth);
@@ -81,27 +108,27 @@ export const LineChart = ({
 
   for (let col = 0; col < chartWidth; col += 1) {
     const row = normalizedRows[col];
-    grid[row][col] = PLOT_CHAR;
+    grid[row][col] = plotChar;
 
     if (col < chartWidth - 1) {
       const nextRow = normalizedRows[col + 1] ?? row;
       if (nextRow < row) {
         let r = row - 1;
         while (r > nextRow) {
-          grid[r][col] = AXIS_V;
+          grid[r][col] = axisVertical;
           r -= 1;
         }
         if (grid[nextRow][col] === " ") {
-          grid[nextRow][col] = CONNECT_UP;
+          grid[nextRow][col] = connectUp;
         }
       } else {
         let r = row + 1;
         while (r < nextRow) {
-          grid[r][col] = AXIS_V;
+          grid[r][col] = axisVertical;
           r += 1;
         }
         if (grid[nextRow][col] === " ") {
-          grid[nextRow][col] = CONNECT_DOWN;
+          grid[nextRow][col] = connectDown;
         }
       }
     }
@@ -117,7 +144,7 @@ export const LineChart = ({
   });
 
   return (
-    <Box flexDirection="column">
+    <Box flexDirection="column" aria-label={ariaLabel ?? chartSummary}>
       {title && (
         <Text bold color={theme.colors.primary}>
           {title}
@@ -128,11 +155,11 @@ export const LineChart = ({
           {showAxes && (
             <Text color={theme.colors.mutedForeground}>
               {String(yLabels[rowIdx] ?? "").padStart(yAxisWidth - 1)}
-              {AXIS_TICK_V}
+              {axisTickVertical}
             </Text>
           )}
           {row.map((cell, colIdx) => {
-            const isPlot = cell === PLOT_CHAR;
+            const isPlot = cell === plotChar;
             return (
               <Text
                 key={colIdx}
@@ -148,8 +175,8 @@ export const LineChart = ({
         <Box flexDirection="row">
           <Text color={theme.colors.mutedForeground}>
             {" ".repeat(yAxisWidth - 1)}
-            {AXIS_CORNER}
-            {AXIS_H.repeat(chartWidth)}
+            {axisCorner}
+            {axisHorizontal.repeat(chartWidth)}
           </Text>
         </Box>
       )}

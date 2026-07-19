@@ -1,13 +1,19 @@
 import { Box, Text } from "ink";
 import React, { useState } from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
-import { useFocus } from "@/hooks/use-focus";
-import { useInput } from "@/hooks/use-input";
+import { useInteraction } from "@/hooks/use-interaction";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import {
+  resolveBorderStyle,
+  resolveTerminalSymbol,
+} from "@/registry/bases/ink/lib/accessibility";
 import type { BorderStyle } from "@/registry/bases/ink/ui/types";
 
 export interface NumberInputProps {
   value?: number;
+  defaultValue?: number;
+  onValueChange?: (value: number) => void;
   onChange?: (value: number) => void;
   onSubmit?: (value: number) => void;
   min?: number;
@@ -21,10 +27,18 @@ export interface NumberInputProps {
   paddingX?: number;
   cursor?: string;
   stepHint?: string;
+  autoFocus?: boolean;
+  isActive?: boolean;
+  disabled?: boolean;
+  readOnly?: boolean;
+  required?: boolean;
+  "aria-label"?: string;
 }
 
 export const NumberInput = ({
   value: controlledValue,
+  defaultValue,
+  onValueChange,
   onChange,
   onSubmit,
   min,
@@ -36,13 +50,24 @@ export const NumberInput = ({
   format,
   borderStyle = "round",
   paddingX = 1,
-  cursor = "█",
+  cursor,
   stepHint,
+  autoFocus = false,
+  isActive = true,
+  disabled = false,
+  readOnly = false,
+  required = false,
+  "aria-label": ariaLabel,
 }: NumberInputProps) => {
-  const [internalValue, setInternalValue] = useState<number | undefined>();
-  const [buffer, setBuffer] = useState<string>("");
+  const unicode = useUnicode();
+  const resolvedCursor = cursor ?? resolveTerminalSymbol(unicode, "█", "|");
+  const [internalValue, setInternalValue] = useState<number | undefined>(
+    defaultValue
+  );
+  const [buffer, setBuffer] = useState<string>(
+    defaultValue === undefined ? "" : String(defaultValue)
+  );
   const theme = useTheme();
-  const { isFocused } = useFocus({ id });
 
   const value = controlledValue ?? internalValue;
 
@@ -58,8 +83,9 @@ export const NumberInput = ({
   };
 
   const applyValue = (clamped: number) => {
-    if (onChange) {
-      onChange(clamped);
+    const changeHandler = onValueChange ?? onChange;
+    if (changeHandler) {
+      changeHandler(clamped);
     } else {
       setInternalValue(clamped);
     }
@@ -71,65 +97,63 @@ export const NumberInput = ({
     setBuffer(String(clamped));
   };
 
-  useInput((input, key) => {
-    if (!isFocused) {
-      return;
-    }
-
-    if (key.upArrow) {
-      const current = value ?? 0;
-      commitValue(current + step);
-      return;
-    }
-
-    if (key.downArrow) {
-      const current = value ?? 0;
-      commitValue(current - step);
-      return;
-    }
-
-    if (key.return) {
-      const parsed = buffer === "" ? value : Number.parseFloat(buffer);
-      if (parsed !== undefined && !Number.isNaN(parsed)) {
-        const clamped = clamp(parsed);
-        onSubmit?.(clamped);
-      }
-      return;
-    }
-
-    if (key.backspace || key.delete) {
-      const newBuffer = buffer.slice(0, -1);
-      setBuffer(newBuffer);
-      if (newBuffer === "" || newBuffer === "-") {
+  const { isFocused } = useInteraction(
+    (input, key) => {
+      if (readOnly && !key.return) {
         return;
       }
-      const parsed = Number.parseFloat(newBuffer);
-      if (!Number.isNaN(parsed)) {
-        applyValue(clamp(parsed));
-      }
-      return;
-    }
-
-    if (key.escape || key.tab) {
-      return;
-    }
-
-    if (input && /^[\d.-]$/.test(input)) {
-      if (input === "-" && buffer.length > 0) {
-        return;
-      }
-      if (input === "." && buffer.includes(".")) {
+      if (key.upArrow) {
+        const current = value ?? 0;
+        commitValue(current + step);
         return;
       }
 
-      const newBuffer = buffer + input;
-      setBuffer(newBuffer);
-      const parsed = Number.parseFloat(newBuffer);
-      if (!Number.isNaN(parsed)) {
-        applyValue(clamp(parsed));
+      if (key.downArrow) {
+        const current = value ?? 0;
+        commitValue(current - step);
+        return;
       }
-    }
-  });
+
+      if (key.return) {
+        const parsed = buffer === "" ? value : Number.parseFloat(buffer);
+        if (parsed !== undefined && !Number.isNaN(parsed)) {
+          const clamped = clamp(parsed);
+          onSubmit?.(clamped);
+        }
+        return;
+      }
+
+      if (key.backspace) {
+        const newBuffer = buffer.slice(0, -1);
+        setBuffer(newBuffer);
+        if (newBuffer === "" || newBuffer === "-") {
+          return;
+        }
+        const parsed = Number.parseFloat(newBuffer);
+        if (!Number.isNaN(parsed)) {
+          applyValue(clamp(parsed));
+        }
+        return;
+      }
+
+      if (key.escape || key.tab) {
+        return;
+      }
+
+      if (input && !(key.ctrl || key.meta)) {
+        const newBuffer = buffer + input;
+        if (!/^-?\d*\.?\d*$/.test(newBuffer)) {
+          return;
+        }
+        setBuffer(newBuffer);
+        const parsed = Number.parseFloat(newBuffer);
+        if (!Number.isNaN(parsed)) {
+          applyValue(clamp(parsed));
+        }
+      }
+    },
+    { autoFocus, disabled, id, isActive }
+  );
 
   const borderColor = isFocused ? theme.colors.focusRing : theme.colors.border;
 
@@ -140,14 +164,29 @@ export const NumberInput = ({
     displayValue = format ? format(value) : String(value);
   }
 
-  const resolvedStepHint = stepHint ?? `↑ +${step}  ↓ -${step}`;
+  const resolvedStepHint =
+    stepHint ??
+    resolveTerminalSymbol(
+      unicode,
+      `↑ +${step}  ↓ -${step}`,
+      `up +${step}  down -${step}`
+    );
 
   return (
     <Box flexDirection="column">
       {label && <Text bold>{label}</Text>}
       <Box flexDirection="row" alignItems="center" gap={1}>
+        <Text aria-hidden>{isFocused ? ">" : " "}</Text>
         <Box
-          borderStyle={borderStyle}
+          aria-label={
+            ariaLabel ??
+            `${label ?? "Number input"}: ${displayValue || "empty"}${
+              min === undefined ? "" : `. Minimum ${min}`
+            }${max === undefined ? "" : `. Maximum ${max}`}`
+          }
+          aria-role="textbox"
+          aria-state={{ disabled, readonly: readOnly, required }}
+          borderStyle={resolveBorderStyle(borderStyle, unicode)}
           borderColor={borderColor}
           paddingX={paddingX}
         >
@@ -160,10 +199,16 @@ export const NumberInput = ({
           >
             {displayValue || placeholder}
           </Text>
-          {isFocused && <Text color={theme.colors.focusRing}>{cursor}</Text>}
+          {isFocused && (
+            <Text aria-hidden color={theme.colors.focusRing}>
+              {resolvedCursor}
+            </Text>
+          )}
         </Box>
         {isFocused && (
-          <Text color={theme.colors.mutedForeground}>{resolvedStepHint}</Text>
+          <Text aria-hidden color={theme.colors.mutedForeground}>
+            {resolvedStepHint}
+          </Text>
         )}
       </Box>
     </Box>

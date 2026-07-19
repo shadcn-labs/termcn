@@ -1,0 +1,10 @@
+{
+  "title": "Guides",
+  "pages": [
+    "accessible-apps",
+    "composition-and-focus",
+    "accessibility-matrix",
+    "migration-v1",
+    "ink-6-8-and-upcoming"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ink/use-unicode",
+  "title": "Use Unicode",
+  "description": "Provider-optional Unicode capability context and hook.",
+  "registryDependencies": [
+    "https://termcn.dev/r/ink/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/hooks/use-unicode.ts",
+      "content": "import * as React from \"react\";\n\nimport type { UnicodeContextValue } from \"@/components/ui/types\";\n\nconst getEnv = (name: string): string | undefined =>\n  typeof process !== \"undefined\" && process.env ? process.env[name] : undefined;\n\nconst detectUnicodeSupport = (): boolean => {\n  if (typeof window !== \"undefined\") {\n    return true;\n  }\n\n  if (getEnv(\"NO_UNICODE\") === \"1\" || getEnv(\"NO_UNICODE\") === \"true\") {\n    return false;\n  }\n\n  const platform =\n    typeof process !== \"undefined\" && process.platform\n      ? process.platform\n      : \"browser\";\n\n  if (getEnv(\"WSL_DISTRO_NAME\")) {\n    return true;\n  }\n  if (getEnv(\"WT_SESSION\")) {\n    return true;\n  }\n  if (getEnv(\"TERM_PROGRAM\") === \"vscode\") {\n    return true;\n  }\n  if (getEnv(\"MSYSTEM\")) {\n    return false;\n  }\n  if (platform === \"darwin\" || platform === \"linux\") {\n    return true;\n  }\n\n  return true;\n};\n\nexport const isNoUnicode = (): boolean => !detectUnicodeSupport();\n\nexport const UnicodeContext = React.createContext<UnicodeContextValue>({\n  unicode: !isNoUnicode(),\n});\n\nexport const useUnicode = (): boolean =>\n  React.useContext(UnicodeContext).unicode;\n",
+      "type": "registry:hook"
+    }
+  ],
+  "categories": [
+    "core"
+  ],
+  "type": "registry:hook"
+}

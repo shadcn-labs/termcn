@@ -17,6 +17,95 @@
       "type": "registry:file"
     },
     {
+      "categories": ["core"],
+      "dependencies": ["ink"],
+      "description": "Pure accessibility contracts, summaries, and terminal fallback helpers for Ink components.",
+      "files": [
+        {
+          "path": "registry/lib/accessibility.ts",
+          "target": "lib/accessibility.ts",
+          "type": "registry:file"
+        }
+      ],
+      "name": "ink/accessibility",
+      "title": "Accessibility",
+      "type": "registry:file"
+    },
+    {
+      "categories": ["core"],
+      "dependencies": ["ink"],
+      "description": "Focus-gated Ink input handling and modal focus scopes.",
+      "files": [
+        {
+          "path": "registry/hooks/use-interaction.tsx",
+          "type": "registry:hook"
+        }
+      ],
+      "name": "ink/interaction",
+      "title": "Interaction",
+      "type": "registry:hook"
+    },
+    {
+      "categories": ["core"],
+      "description": "Provider-optional reduced-motion context and hook.",
+      "files": [
+        {
+          "path": "registry/hooks/use-motion.ts",
+          "type": "registry:hook"
+        }
+      ],
+      "name": "ink/use-motion",
+      "title": "Use Motion",
+      "type": "registry:hook",
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"]
+    },
+    {
+      "categories": ["core"],
+      "description": "Provider-optional terminal theme context and hooks.",
+      "files": [
+        {
+          "path": "registry/hooks/use-theme.ts",
+          "type": "registry:hook"
+        }
+      ],
+      "name": "ink/use-theme",
+      "title": "Use Theme",
+      "type": "registry:hook",
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/theme-default.json",
+        "https://termcn.dev/r/ink/types.json"
+      ]
+    },
+    {
+      "categories": ["core"],
+      "description": "Provider-optional Unicode capability context and hook.",
+      "files": [
+        {
+          "path": "registry/hooks/use-unicode.ts",
+          "type": "registry:hook"
+        }
+      ],
+      "name": "ink/use-unicode",
+      "title": "Use Unicode",
+      "type": "registry:hook",
+      "registryDependencies": ["https://termcn.dev/r/ink/types.json"]
+    },
+    {
+      "categories": ["core"],
+      "dependencies": ["string-width@8.2.0"],
+      "description": "Grapheme-safe terminal width, cursor, truncation, and padding helpers.",
+      "files": [
+        {
+          "path": "registry/lib/terminal-text.ts",
+          "target": "lib/terminal-text.ts",
+          "type": "registry:file"
+        }
+      ],
+      "name": "ink/terminal-text",
+      "title": "Terminal Text",
+      "type": "registry:file"
+    },
+    {
       "categories": ["feedback"],
       "dependencies": ["ink"],
       "description": "Alert box with success/error/warning/info variants",
@@ -29,7 +118,12 @@
       "name": "ink/alert",
       "title": "Alert",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/types.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ]
     },
     {
       "categories": ["templates"],
@@ -43,10 +137,12 @@
       ],
       "name": "ink/app-shell",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/info-box.json",
-        "https://termcn.dev/r/ink/bullet-list.json",
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-text.json",
+        "https://termcn.dev/r/ink/types.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "App Shell",
       "type": "registry:ui"
@@ -67,7 +163,6 @@
     },
     {
       "categories": ["typography"],
-      "dependencies": ["ink"],
       "description": "Semantic status indicator badge (success/error/warning/info)",
       "files": [
         {
@@ -78,7 +173,13 @@
       "name": "ink/badge",
       "title": "Badge",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/types.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ],
+      "dependencies": ["ink"]
     },
     {
       "categories": ["feedback"],
@@ -93,11 +194,15 @@
       "name": "ink/banner",
       "title": "Banner",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ]
     },
     {
       "categories": ["charts"],
-      "dependencies": ["ink"],
       "description": "Horizontal and vertical bar chart with labels",
       "files": [
         {
@@ -108,11 +213,16 @@
       "name": "ink/bar-chart",
       "title": "Bar Chart",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/terminal-text.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ],
+      "dependencies": ["ink"]
     },
     {
       "categories": ["typography"],
-      "dependencies": ["ink"],
       "description": "Figlet-style large ASCII art text",
       "files": [
         {
@@ -123,7 +233,12 @@
       "name": "ink/big-text",
       "title": "Big Text",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ],
+      "dependencies": ["ink"]
     },
     {
       "categories": ["layout"],
@@ -138,11 +253,14 @@
       "name": "ink/box",
       "title": "Box",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ]
     },
     {
       "categories": ["navigation"],
-      "dependencies": ["ink"],
       "description": "Breadcrumb navigation trail",
       "files": [
         {
@@ -152,15 +270,17 @@
       ],
       "name": "ink/breadcrumb",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Breadcrumb",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["templates"],
-      "dependencies": ["ink"],
       "description": "Nested structured content with ●/└/□ bullet prefixes",
       "files": [
         {
@@ -171,7 +291,12 @@
       "name": "ink/bullet-list",
       "title": "Bullet List",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ],
+      "dependencies": ["ink"]
     },
     {
       "categories": ["data"],
@@ -186,7 +311,12 @@
       "name": "ink/card",
       "title": "Card",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/types.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ]
     },
     {
       "categories": ["layout"],
@@ -204,7 +334,6 @@
     },
     {
       "categories": ["ai"],
-      "dependencies": ["ink"],
       "description": "Chat message bubble with role label, streaming indicator, and collapsible content",
       "files": [
         {
@@ -214,11 +343,14 @@
       ],
       "name": "ink/chat-message",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-animation.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Chat Message",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["ai"],
@@ -231,13 +363,11 @@
         }
       ],
       "name": "ink/chat-thread",
-      "registryDependencies": ["https://termcn.dev/r/ink/chat-message.json"],
       "title": "Chat Thread",
       "type": "registry:ui"
     },
     {
       "categories": ["selection"],
-      "dependencies": ["ink"],
       "description": "Checkbox with indeterminate state",
       "files": [
         {
@@ -247,16 +377,17 @@
       ],
       "name": "ink/checkbox",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/use-focus.json",
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Checkbox",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["selection"],
-      "dependencies": ["ink"],
       "description": "Checkbox group with min/max selection",
       "files": [
         {
@@ -266,16 +397,17 @@
       ],
       "name": "ink/checkbox-group",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/checkbox.json",
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Checkbox Group",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["utility"],
-      "dependencies": ["ink"],
       "description": "Copy-to-clipboard button with success feedback",
       "files": [
         {
@@ -285,16 +417,18 @@
       ],
       "name": "ink/clipboard",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
         "https://termcn.dev/r/ink/use-clipboard.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Clipboard",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["utility"],
-      "dependencies": ["ink"],
       "description": "Real-time clock display with 12h/24h and date",
       "files": [
         {
@@ -304,11 +438,14 @@
       ],
       "name": "ink/clock",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-interval.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/use-interval.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Clock",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["typography"],
@@ -323,11 +460,15 @@
       "name": "ink/code",
       "title": "Code",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/types.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ]
     },
     {
       "categories": ["selection"],
-      "dependencies": ["ink"],
       "description": "Color picker with palette, hex, and RGB input",
       "files": [
         {
@@ -337,12 +478,14 @@
       ],
       "name": "ink/color-picker",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/use-focus.json",
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Color Picker",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["layout"],
@@ -360,7 +503,7 @@
     },
     {
       "categories": ["navigation"],
-      "dependencies": ["ink", "mnemonist"],
+      "dependencies": ["ink"],
       "description": "VS Code–style command palette with fuzzy search",
       "files": [
         {
@@ -370,15 +513,17 @@
       ],
       "name": "ink/command-palette",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-text.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Command Palette",
       "type": "registry:ui"
     },
     {
       "categories": ["forms"],
-      "dependencies": ["ink"],
       "description": "Yes/No confirmation prompt",
       "files": [
         {
@@ -388,15 +533,17 @@
       ],
       "name": "ink/confirm",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Confirm",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["ai"],
-      "dependencies": ["ink"],
       "description": "Arrow-key scrollable stack for long assistant threads with optional hint",
       "files": [
         {
@@ -406,15 +553,16 @@
       ],
       "name": "ink/conversation-history",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Conversation History",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["data"],
-      "dependencies": ["ink"],
       "description": "Advanced data grid with sorting, filtering, pagination, and cell editing",
       "files": [
         {
@@ -424,15 +572,19 @@
       ],
       "name": "ink/data-grid",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-text.json",
+        "https://termcn.dev/r/ink/types.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Data Grid",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["forms"],
-      "dependencies": ["ink"],
       "description": "Calendar date picker with keyboard navigation",
       "files": [
         {
@@ -442,16 +594,17 @@
       ],
       "name": "ink/date-picker",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/use-focus.json",
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Date Picker",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["data"],
-      "dependencies": ["ink"],
       "description": "Term–description definition list",
       "files": [
         {
@@ -462,11 +615,11 @@
       "name": "ink/definition",
       "title": "Definition",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": ["https://termcn.dev/r/ink/use-theme.json"],
+      "dependencies": ["ink"]
     },
     {
       "categories": ["overlays"],
-      "dependencies": ["ink"],
       "description": "Confirmation dialog with OK/Cancel actions",
       "files": [
         {
@@ -476,11 +629,14 @@
       ],
       "name": "ink/dialog",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Dialog",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["data"],
@@ -495,11 +651,13 @@
       "name": "ink/diff-view",
       "title": "Diff View",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ]
     },
     {
       "categories": ["typography"],
-      "dependencies": ["ink"],
       "description": "Box-drawing character numerals",
       "files": [
         {
@@ -510,11 +668,15 @@
       "name": "ink/digits",
       "title": "Digits",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ],
+      "dependencies": ["ink"]
     },
     {
       "categories": ["data"],
-      "dependencies": ["ink", "glob"],
       "description": "Filesystem browser with expand/collapse",
       "files": [
         {
@@ -524,11 +686,14 @@
       ],
       "name": "ink/directory-tree",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Directory Tree",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["data"],
@@ -558,7 +723,13 @@
       "name": "ink/dither-area-chart",
       "title": "Dither Area Chart",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-motion.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ]
     },
     {
       "categories": ["data"],
@@ -588,7 +759,13 @@
       "name": "ink/dither-bar-chart",
       "title": "Dither Bar Chart",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-motion.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ]
     },
     {
       "categories": ["data"],
@@ -618,7 +795,13 @@
       "name": "ink/dither-line-chart",
       "title": "Dither Line Chart",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-motion.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ]
     },
     {
       "categories": ["data"],
@@ -648,7 +831,13 @@
       "name": "ink/dither-pie-chart",
       "title": "Dither Pie Chart",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-motion.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ]
     },
     {
       "categories": ["data"],
@@ -678,7 +867,13 @@
       "name": "ink/dither-radar-chart",
       "title": "Dither Radar Chart",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-motion.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ]
     },
     {
       "categories": ["data"],
@@ -708,11 +903,16 @@
       "name": "ink/dither-sparkline",
       "title": "Dither Sparkline",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-motion.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ]
     },
     {
       "categories": ["layout"],
-      "dependencies": ["ink"],
       "description": "Horizontal or vertical divider / rule",
       "files": [
         {
@@ -723,11 +923,15 @@
       "name": "ink/divider",
       "title": "Divider",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ],
+      "dependencies": ["ink"]
     },
     {
       "categories": ["overlays"],
-      "dependencies": ["ink"],
       "description": "Slide-in panel from any edge",
       "files": [
         {
@@ -737,15 +941,17 @@
       ],
       "name": "ink/drawer",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Drawer",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["input"],
-      "dependencies": ["ink"],
       "description": "Email input with validation and domain suggestions",
       "files": [
         {
@@ -755,16 +961,19 @@
       ],
       "name": "ink/email-input",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/use-focus.json",
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-text.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Email Input",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["utility"],
-      "dependencies": ["ink"],
+      "dependencies": ["ink", "strip-ansi"],
       "description": "Embedded PTY terminal panel (requires node-pty peer)",
       "files": [
         {
@@ -774,11 +983,14 @@
       ],
       "name": "ink/embedded-terminal",
       "title": "Embedded Terminal",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ]
     },
     {
       "categories": ["utility"],
-      "dependencies": ["ink"],
       "description": "React error boundary with graceful terminal display",
       "files": [
         {
@@ -788,7 +1000,12 @@
       ],
       "name": "ink/error-boundary",
       "title": "Error Boundary",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ],
+      "dependencies": ["ink"]
     },
     {
       "categories": ["ai"],
@@ -802,15 +1019,16 @@
       ],
       "name": "ink/error-retry",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Error Retry",
       "type": "registry:ui"
     },
     {
       "categories": ["ai"],
-      "dependencies": ["ink"],
       "description": "Interactive file-change review list with diff expansion, per-file accept/reject actions, and accept-all shortcut",
       "files": [
         {
@@ -820,15 +1038,18 @@
       ],
       "name": "ink/file-change",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/diff-view.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "File Change",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["forms"],
-      "dependencies": ["ink", "glob"],
       "description": "Interactive file browser and picker",
       "files": [
         {
@@ -838,12 +1059,14 @@
       ],
       "name": "ink/file-picker",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/use-focus.json",
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "File Picker",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["forms"],
@@ -857,15 +1080,14 @@
       ],
       "name": "ink/form",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-theme.json"
       ],
       "title": "Form",
       "type": "registry:ui"
     },
     {
       "categories": ["forms"],
-      "dependencies": ["ink"],
       "description": "Form field wrapper with label, hint, and error",
       "files": [
         {
@@ -875,15 +1097,16 @@
       ],
       "name": "ink/form-field",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/form.json",
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Form Field",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["charts"],
-      "dependencies": ["ink"],
       "description": "Arc/speedometer gauge meter",
       "files": [
         {
@@ -894,11 +1117,15 @@
       "name": "ink/gauge",
       "title": "Gauge",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ],
+      "dependencies": ["ink"]
     },
     {
       "categories": ["data"],
-      "dependencies": ["ink"],
       "description": "Git status display (branch, staged, modified, ahead/behind)",
       "files": [
         {
@@ -909,11 +1136,14 @@
       "name": "ink/git-status",
       "title": "Git Status",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ],
+      "dependencies": ["ink"]
     },
     {
       "categories": ["typography"],
-      "dependencies": ["ink"],
       "description": "Color gradient text",
       "files": [
         {
@@ -923,7 +1153,9 @@
       ],
       "name": "ink/gradient",
       "title": "Gradient",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "registryDependencies": ["https://termcn.dev/r/ink/terminal-text.json"],
+      "dependencies": ["ink"]
     },
     {
       "categories": ["layout"],
@@ -941,7 +1173,6 @@
     },
     {
       "categories": ["typography"],
-      "dependencies": ["ink"],
       "description": "h1–h4 styled headings with optional figlet ASCII art",
       "files": [
         {
@@ -952,11 +1183,15 @@
       "name": "ink/heading",
       "title": "Heading",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ],
+      "dependencies": ["ink"]
     },
     {
       "categories": ["charts"],
-      "dependencies": ["ink"],
       "description": "Grid heatmap with color intensity scale",
       "files": [
         {
@@ -967,11 +1202,15 @@
       "name": "ink/heat-map",
       "title": "Heat Map",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/terminal-text.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ],
+      "dependencies": ["ink"]
     },
     {
       "categories": ["utility"],
-      "dependencies": ["ink"],
       "description": "Auto-generated help panel from a keymap",
       "files": [
         {
@@ -982,11 +1221,15 @@
       "name": "ink/help",
       "title": "Help",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ],
+      "dependencies": ["ink"]
     },
     {
       "categories": ["templates"],
-      "dependencies": ["ink"],
       "description": "Figlet banner + tagline + aligned Options/Commands help sections",
       "files": [
         {
@@ -997,10 +1240,12 @@
       "name": "ink/help-screen",
       "registryDependencies": [
         "https://termcn.dev/r/ink/big-text.json",
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/terminal-text.json",
+        "https://termcn.dev/r/ink/use-theme.json"
       ],
       "title": "Help Screen",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["utility"],
@@ -1015,11 +1260,14 @@
       "name": "ink/image",
       "title": "Image",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ]
     },
     {
       "categories": ["templates"],
-      "dependencies": ["ink"],
       "description": "Bordered info panel with header, key-value rows, and tree-prefix rows",
       "files": [
         {
@@ -1030,11 +1278,16 @@
       "name": "ink/info-box",
       "title": "Info Box",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/types.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ],
+      "dependencies": ["ink"]
     },
     {
       "categories": ["data"],
-      "dependencies": ["ink"],
       "description": "Pretty-printed JSON with collapsible nodes",
       "files": [
         {
@@ -1044,15 +1297,15 @@
       ],
       "name": "ink/json",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-theme.json"
       ],
       "title": "JSON",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["data"],
-      "dependencies": ["ink"],
       "description": "Aligned key–value pairs",
       "files": [
         {
@@ -1063,11 +1316,14 @@
       "name": "ink/key-value",
       "title": "Key Value",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/terminal-text.json",
+        "https://termcn.dev/r/ink/use-theme.json"
+      ],
+      "dependencies": ["ink"]
     },
     {
       "categories": ["utility"],
-      "dependencies": ["ink"],
       "description": "Formatted keyboard shortcut reference table",
       "files": [
         {
@@ -1078,11 +1334,15 @@
       "name": "ink/keyboard-shortcuts",
       "title": "Keyboard Shortcuts",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ],
+      "dependencies": ["ink"]
     },
     {
       "categories": ["charts"],
-      "dependencies": ["ink"],
       "description": "ASCII line chart with axes and multi-series support",
       "files": [
         {
@@ -1093,7 +1353,12 @@
       "name": "ink/line-chart",
       "title": "Line Chart",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ],
+      "dependencies": ["ink"]
     },
     {
       "categories": ["typography"],
@@ -1108,11 +1373,13 @@
       "name": "ink/link",
       "title": "Link",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-theme.json"
+      ]
     },
     {
       "categories": ["data"],
-      "dependencies": ["ink"],
       "description": "Navigable list with optional filtering",
       "files": [
         {
@@ -1122,15 +1389,18 @@
       ],
       "name": "ink/list",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-text.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "List",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["utility"],
-      "dependencies": ["ink"],
       "description": "Scrolling log viewer with severity levels and filtering",
       "files": [
         {
@@ -1140,15 +1410,16 @@
       ],
       "name": "ink/log",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Log",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["templates"],
-      "dependencies": ["ink"],
       "description": "Full-page onboarding/login screen with announcement banner, big ASCII title, description, and numbered select",
       "files": [
         {
@@ -1158,16 +1429,19 @@
       ],
       "name": "ink/login-flow",
       "registryDependencies": [
+        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/big-text.json",
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/types.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Login Flow",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["typography"],
-      "dependencies": ["ink", "marked"],
       "description": "Full markdown renderer for terminal",
       "files": [
         {
@@ -1178,11 +1452,15 @@
       "name": "ink/markdown",
       "title": "Markdown",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/use-animation.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ],
+      "dependencies": ["ink"]
     },
     {
       "categories": ["input"],
-      "dependencies": ["ink"],
       "description": "Masked input for phone, date, credit card formats",
       "files": [
         {
@@ -1192,16 +1470,17 @@
       ],
       "name": "ink/masked-input",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/use-focus.json",
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Masked Input",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["navigation"],
-      "dependencies": ["ink"],
       "description": "Dropdown menu with nested submenus",
       "files": [
         {
@@ -1211,15 +1490,17 @@
       ],
       "name": "ink/menu",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Menu",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["overlays"],
-      "dependencies": ["ink"],
       "description": "Focus-trapped overlay modal, close with Esc",
       "files": [
         {
@@ -1229,15 +1510,18 @@
       ],
       "name": "ink/modal",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/types.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Modal",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["ai"],
-      "dependencies": ["ink"],
       "description": "Keyboard-navigable list for selecting an AI model, with optional provider grouping and context-window display",
       "files": [
         {
@@ -1247,15 +1531,17 @@
       ],
       "name": "ink/model-selector",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Model Selector",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["feedback"],
-      "dependencies": ["ink"],
       "description": "Parallel progress display for package managers, build pipelines, and deploy tools",
       "files": [
         {
@@ -1266,11 +1552,15 @@
       "name": "ink/multi-progress",
       "title": "Multi Progress",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/terminal-text.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ],
+      "dependencies": ["ink"]
     },
     {
       "categories": ["selection"],
-      "dependencies": ["ink"],
       "description": "Multi-select list with checkboxes and select-all",
       "files": [
         {
@@ -1280,11 +1570,14 @@
       ],
       "name": "ink/multi-select",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Multi Select",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["overlays"],
@@ -1302,16 +1595,17 @@
       ],
       "name": "ink/notification-center",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
         "https://termcn.dev/r/ink/use-notifications.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Notification Center",
       "type": "registry:block"
     },
     {
       "categories": ["input"],
-      "dependencies": ["ink"],
       "description": "Numeric input with increment/decrement and bounds",
       "files": [
         {
@@ -1321,12 +1615,15 @@
       ],
       "name": "ink/number-input",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/use-focus.json",
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/types.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Number Input",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["core"],
@@ -3565,7 +3862,6 @@
     },
     {
       "categories": ["navigation"],
-      "dependencies": ["ink"],
       "description": "Page navigation with prev/next and jump",
       "files": [
         {
@@ -3575,11 +3871,14 @@
       ],
       "name": "ink/pagination",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Pagination",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["utility"],
@@ -3594,7 +3893,12 @@
       "name": "ink/panel",
       "title": "Panel",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/types.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ]
     },
     {
       "categories": ["input"],
@@ -3608,16 +3912,18 @@
       ],
       "name": "ink/password-input",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/use-focus.json",
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-text.json",
+        "https://termcn.dev/r/ink/types.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Password Input",
       "type": "registry:ui"
     },
     {
       "categories": ["input"],
-      "dependencies": ["ink", "glob"],
       "description": "Filesystem path input with tab autocomplete",
       "files": [
         {
@@ -3627,16 +3933,18 @@
       ],
       "name": "ink/path-input",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/use-focus.json",
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-text.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Path Input",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["charts"],
-      "dependencies": ["ink"],
       "description": "Unicode block pie chart with legend",
       "files": [
         {
@@ -3647,11 +3955,14 @@
       "name": "ink/pie-chart",
       "title": "Pie Chart",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ],
+      "dependencies": ["ink"]
     },
     {
       "categories": ["overlays"],
-      "dependencies": ["ink"],
       "description": "Positioned popover with arbitrary content",
       "files": [
         {
@@ -3661,15 +3972,17 @@
       ],
       "name": "ink/popover",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Popover",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["feedback"],
-      "dependencies": ["ink"],
       "description": "Determinate progress bar with percent and value/total display",
       "files": [
         {
@@ -3680,11 +3993,15 @@
       "name": "ink/progress-bar",
       "title": "Progress Bar",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ],
+      "dependencies": ["ink"]
     },
     {
       "categories": ["feedback"],
-      "dependencies": ["ink"],
       "description": "Circular progress indicator using Unicode braille",
       "files": [
         {
@@ -3695,11 +4012,15 @@
       "name": "ink/progress-circle",
       "title": "Progress Circle",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ],
+      "dependencies": ["ink"]
     },
     {
       "categories": ["utility"],
-      "dependencies": ["ink"],
       "description": "Unicode block QR code generator",
       "files": [
         {
@@ -3710,11 +4031,15 @@
       "name": "ink/qr-code",
       "title": "QR Code",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ],
+      "dependencies": ["ink"]
     },
     {
       "categories": ["selection"],
-      "dependencies": ["ink"],
       "description": "Mutually exclusive radio button group",
       "files": [
         {
@@ -3724,15 +4049,17 @@
       ],
       "name": "ink/radio-group",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Radio Group",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["layout"],
-      "dependencies": ["ink"],
       "description": "Scrollable container with scrollbar",
       "files": [
         {
@@ -3744,13 +4071,14 @@
       "title": "Scroll View",
       "type": "registry:ui",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
-      ]
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ],
+      "dependencies": ["ink"]
     },
     {
       "categories": ["input"],
-      "dependencies": ["ink", "mnemonist"],
       "description": "Fuzzy search input with autocomplete",
       "files": [
         {
@@ -3760,16 +4088,19 @@
       ],
       "name": "ink/search-input",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/use-focus.json",
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-text.json",
+        "https://termcn.dev/r/ink/types.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Search Input",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["selection"],
-      "dependencies": ["ink"],
       "description": "Single-select dropdown with arrow-key navigation",
       "files": [
         {
@@ -3779,15 +4110,17 @@
       ],
       "name": "ink/select",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Select",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["templates"],
-      "dependencies": ["ink"],
       "description": "@clack-style step flow with ◇/◆/│ visual language, badge, info steps, and multi-select",
       "files": [
         {
@@ -3798,12 +4131,14 @@
       "name": "ink/setup-flow",
       "registryDependencies": [
         "https://termcn.dev/r/ink/big-text.json",
+        "https://termcn.dev/r/ink/interaction.json",
         "https://termcn.dev/r/ink/use-animation.json",
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Setup Flow",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["navigation"],
@@ -3817,15 +4152,16 @@
       ],
       "name": "ink/sidebar",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Sidebar",
       "type": "registry:ui"
     },
     {
       "categories": ["feedback"],
-      "dependencies": ["ink"],
       "description": "Shimmer loading placeholder",
       "files": [
         {
@@ -3835,11 +4171,13 @@
       ],
       "name": "ink/skeleton",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-animation.json"
+        "https://termcn.dev/r/ink/use-animation.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Skeleton",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["layout"],
@@ -3857,7 +4195,6 @@
     },
     {
       "categories": ["charts"],
-      "dependencies": ["ink"],
       "description": "Inline Unicode braille sparkline chart",
       "files": [
         {
@@ -3868,11 +4205,16 @@
       "name": "ink/sparkline",
       "title": "Sparkline",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ],
+      "dependencies": ["ink"]
     },
     {
       "categories": ["feedback"],
-      "dependencies": ["ink"],
+      "dependencies": ["cli-spinners", "ink"],
       "description": "Animated spinner with 12+ styles",
       "files": [
         {
@@ -3882,15 +4224,15 @@
       ],
       "name": "ink/spinner",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-animation.json"
+        "https://termcn.dev/r/ink/use-animation.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Spinner",
       "type": "registry:ui"
     },
     {
       "categories": ["templates"],
-      "dependencies": ["ink"],
       "description": "Styled startup banner with big ASCII art title, subtitle, author credit, and status line",
       "files": [
         {
@@ -3901,10 +4243,12 @@
       "name": "ink/splash-screen",
       "registryDependencies": [
         "https://termcn.dev/r/ink/big-text.json",
-        "https://termcn.dev/r/ink/theme-provider.json"
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Splash Screen",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["layout"],
@@ -3922,7 +4266,6 @@
     },
     {
       "categories": ["feedback"],
-      "dependencies": ["ink"],
       "description": "Inline status message with icon and color",
       "files": [
         {
@@ -3933,11 +4276,16 @@
       "name": "ink/status-message",
       "title": "Status Message",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/spinner.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ],
+      "dependencies": ["ink"]
     },
     {
       "categories": ["utility"],
-      "dependencies": ["ink"],
       "description": "Count-up stopwatch with laps and reset",
       "files": [
         {
@@ -3947,12 +4295,14 @@
       ],
       "name": "ink/stopwatch",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/use-input.json",
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-interval.json"
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-interval.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Stopwatch",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["ai"],
@@ -3967,11 +4317,15 @@
       "name": "ink/streaming-text",
       "title": "Streaming Text",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/terminal-text.json",
+        "https://termcn.dev/r/ink/use-motion.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ]
     },
     {
       "categories": ["navigation"],
-      "dependencies": ["ink"],
       "description": "Tab bar wired to content panels",
       "files": [
         {
@@ -3981,16 +4335,17 @@
       ],
       "name": "ink/tabbed-content",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/tabs.json",
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Tabbed Content",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["data"],
-      "dependencies": ["ink"],
       "description": "Sortable, selectable, paginated data table",
       "files": [
         {
@@ -4000,15 +4355,17 @@
       ],
       "name": "ink/table",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-text.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Table",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["navigation"],
-      "dependencies": ["ink"],
       "description": "Tab bar with left/right arrow and tab-key navigation",
       "files": [
         {
@@ -4018,15 +4375,18 @@
       ],
       "name": "ink/tabs",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/types.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Tabs",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["typography"],
-      "dependencies": ["ink"],
       "description": "Removable chip/tag",
       "files": [
         {
@@ -4037,11 +4397,16 @@
       "name": "ink/tag",
       "title": "Tag",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ],
+      "dependencies": ["ink"]
     },
     {
       "categories": ["selection"],
-      "dependencies": ["ink"],
       "description": "Add and remove tags inline",
       "files": [
         {
@@ -4051,11 +4416,15 @@
       ],
       "name": "ink/tag-input",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-text.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Tag Input",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["input"],
@@ -4069,9 +4438,12 @@
       ],
       "name": "ink/text-area",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/use-focus.json",
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-text.json",
+        "https://termcn.dev/r/ink/types.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Text Area",
       "type": "registry:ui"
@@ -4088,9 +4460,12 @@
       ],
       "name": "ink/text-input",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/use-focus.json",
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-text.json",
+        "https://termcn.dev/r/ink/types.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Text Input",
       "type": "registry:ui"
@@ -4214,8 +4589,11 @@
       "title": "Theme Provider",
       "type": "registry:ui",
       "registryDependencies": [
+        "https://termcn.dev/r/ink/theme-default.json",
         "https://termcn.dev/r/ink/types.json",
-        "https://termcn.dev/r/ink/theme-default.json"
+        "https://termcn.dev/r/ink/use-motion.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ]
     },
     {
@@ -4710,15 +5088,16 @@
       ],
       "name": "ink/thinking-block",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Thinking Block",
       "type": "registry:ui"
     },
     {
       "categories": ["forms"],
-      "dependencies": ["ink"],
       "description": "Time picker with hour/minute/second spinners",
       "files": [
         {
@@ -4728,16 +5107,17 @@
       ],
       "name": "ink/time-picker",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/use-focus.json",
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Time Picker",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["utility"],
-      "dependencies": ["ink"],
       "description": "Countdown timer with pause/resume and auto-start",
       "files": [
         {
@@ -4747,12 +5127,14 @@
       ],
       "name": "ink/timer",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/use-input.json",
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-interval.json"
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-interval.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Timer",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["feedback"],
@@ -4766,15 +5148,16 @@
       ],
       "name": "ink/toast",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-interval.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/use-interval.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Toast",
       "type": "registry:ui"
     },
     {
       "categories": ["utility"],
-      "dependencies": ["ink"],
       "description": "Toggle/switch component with on/off labels",
       "files": [
         {
@@ -4784,16 +5167,18 @@
       ],
       "name": "ink/toggle",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/use-focus.json",
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/types.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Toggle",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["ai"],
-      "dependencies": ["ink"],
       "description": "Compact token counter showing prompt and completion usage with optional cost estimate; also exports ContextMeter for visualising context window fill",
       "files": [
         {
@@ -4804,7 +5189,11 @@
       "name": "ink/token-usage",
       "title": "Token Usage",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ],
+      "dependencies": ["ink"]
     },
     {
       "categories": ["ai"],
@@ -4818,15 +5207,17 @@
       ],
       "name": "ink/tool-approval",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-interval.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Tool Approval",
       "type": "registry:ui"
     },
     {
       "categories": ["ai"],
-      "dependencies": ["ink"],
       "description": "Displays an AI tool invocation with status indicator, args, result, and elapsed time",
       "files": [
         {
@@ -4836,12 +5227,16 @@
       ],
       "name": "ink/tool-call",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
         "https://termcn.dev/r/ink/use-animation.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/use-interval.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Tool Call",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["overlays"],
@@ -4856,11 +5251,15 @@
       "name": "ink/tooltip",
       "title": "Tooltip",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/types.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ]
     },
     {
       "categories": ["data"],
-      "dependencies": ["ink"],
       "description": "Expandable/collapsible tree view",
       "files": [
         {
@@ -4870,15 +5269,17 @@
       ],
       "name": "ink/tree",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Tree",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["selection"],
-      "dependencies": ["ink"],
       "description": "Hierarchical tree selection",
       "files": [
         {
@@ -4888,15 +5289,17 @@
       ],
       "name": "ink/tree-select",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Tree Select",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["templates"],
-      "dependencies": ["ink"],
       "description": "Real-time dashboard with diamond header, progress metrics, burn rate, predictions, and status bar",
       "files": [
         {
@@ -4906,14 +5309,16 @@
       ],
       "name": "ink/usage-monitor",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-interval.json"
+        "https://termcn.dev/r/ink/use-interval.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Usage Monitor",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["core"],
+      "dependencies": ["ink"],
       "description": "Frame-based animation helper for terminal UI components.",
       "files": [
         {
@@ -4923,7 +5328,8 @@
       ],
       "name": "ink/use-animation",
       "title": "Use Animation",
-      "type": "registry:hook"
+      "type": "registry:hook",
+      "registryDependencies": ["https://termcn.dev/r/ink/use-motion.json"]
     },
     {
       "categories": ["core"],
@@ -4936,7 +5342,8 @@
       ],
       "name": "ink/use-clipboard",
       "title": "Use Clipboard",
-      "type": "registry:hook"
+      "type": "registry:hook",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["core"],
@@ -4977,7 +5384,9 @@
       ],
       "name": "ink/use-interval",
       "title": "Use Interval",
-      "type": "registry:hook"
+      "type": "registry:hook",
+      "registryDependencies": ["https://termcn.dev/r/ink/use-motion.json"],
+      "dependencies": ["ink"]
     },
     {
       "categories": ["core"],
@@ -4994,7 +5403,6 @@
     },
     {
       "categories": ["data"],
-      "dependencies": ["ink", "mnemonist"],
       "description": "Virtualized list for 10k+ items",
       "files": [
         {
@@ -5004,15 +5412,16 @@
       ],
       "name": "ink/virtual-list",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Virtual List",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["templates"],
-      "dependencies": ["ink"],
       "description": "Two-panel welcome dashboard with titled border, logo, greeting, and sections",
       "files": [
         {
@@ -5023,11 +5432,16 @@
       "name": "ink/welcome-screen",
       "title": "Welcome Screen",
       "type": "registry:ui",
-      "registryDependencies": ["https://termcn.dev/r/ink/theme-provider.json"]
+      "registryDependencies": [
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/types.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
+      ],
+      "dependencies": ["ink"]
     },
     {
       "categories": ["forms"],
-      "dependencies": ["ink"],
       "description": "Multi-step wizard with per-step validation",
       "files": [
         {
@@ -5037,11 +5451,14 @@
       ],
       "name": "ink/wizard",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/theme-provider.json",
-        "https://termcn.dev/r/ink/use-input.json"
+        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/use-theme.json",
+        "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Wizard",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "dependencies": ["ink"]
     },
     {
       "categories": ["themes"],

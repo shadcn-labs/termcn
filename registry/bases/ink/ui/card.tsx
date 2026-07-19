@@ -1,10 +1,16 @@
-import { Box, Text } from "ink";
+import { useIsScreenReaderEnabled, Box, Text } from "ink";
+import type { BoxProps } from "ink";
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import { resolveBorderStyle } from "@/registry/bases/ink/lib/accessibility";
 import type { BorderStyle } from "@/registry/bases/ink/ui/types";
 
-export interface CardProps {
+export interface CardProps extends Omit<
+  BoxProps,
+  "children" | "title" | "width"
+> {
   title?: string;
   subtitle?: string;
   children: ReactNode;
@@ -15,6 +21,7 @@ export interface CardProps {
   paddingX?: number;
   paddingY?: number;
   footerDividerChar?: string;
+  "aria-label"?: string;
 }
 
 export const Card = ({
@@ -27,20 +34,30 @@ export const Card = ({
   borderStyle = "round",
   paddingX = 1,
   paddingY = 0,
-  footerDividerChar = "─",
+  footerDividerChar,
+  "aria-label": ariaLabel,
+  ...props
 }: CardProps) => {
+  const unicode = useUnicode();
   const theme = useTheme();
+  const isScreenReaderEnabled = useIsScreenReaderEnabled();
   const resolvedBorderColor = borderColor ?? theme.colors.border;
+  const resolvedFooterDividerChar = footerDividerChar ?? (unicode ? "─" : "-");
 
   return (
     <Box
+      {...props}
       flexDirection="column"
-      borderStyle={borderStyle}
+      borderStyle={resolveBorderStyle(
+        isScreenReaderEnabled ? undefined : borderStyle,
+        unicode
+      )}
       borderColor={resolvedBorderColor}
       width={width}
       paddingX={paddingX}
       paddingY={paddingY}
     >
+      {ariaLabel && <Text aria-label={ariaLabel}>{""}</Text>}
       {(title || subtitle) && (
         <Box flexDirection="column" paddingBottom={1}>
           {title && (
@@ -58,8 +75,8 @@ export const Card = ({
       <Box flexDirection="column">{children}</Box>
       {footer && (
         <Box flexDirection="column" marginTop={1} paddingTop={1}>
-          <Text color={resolvedBorderColor}>
-            {footerDividerChar.repeat(30)}
+          <Text aria-hidden color={resolvedBorderColor}>
+            {resolvedFooterDividerChar.repeat(30)}
           </Text>
           <Box marginTop={0}>{footer}</Box>
         </Box>

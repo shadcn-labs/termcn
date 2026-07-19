@@ -2,7 +2,11 @@ import { Box, Text } from "ink";
 import type { ReactNode } from "react";
 import React from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
+import { useTheme } from "@/hooks/use-theme";
+import {
+  padToTerminalWidth,
+  terminalWidth,
+} from "@/registry/bases/ink/lib/terminal-text";
 
 import { BigText } from "./big-text";
 import type { BigTextFont } from "./big-text";
@@ -43,7 +47,7 @@ const computeFlagWidth = (children: ReactNode): number => {
             ? (row.props as Record<string, unknown>)
             : null;
           if (rowProps && rowProps["flag"]) {
-            max = Math.max(max, String(rowProps["flag"]).length);
+            max = Math.max(max, terminalWidth(String(rowProps["flag"])));
           }
         }
       );
@@ -82,7 +86,12 @@ const HelpScreenRoot = ({
   });
 
   return (
-    <Box flexDirection="column" paddingLeft={2}>
+    <Box flexDirection="column" paddingLeft={2} aria-role="list">
+      <Text
+        aria-label={`Help: ${title}${tagline ? `. ${tagline}` : ""}${usage ? `. Usage: ${usage}` : ""}`}
+      >
+        {""}
+      </Text>
       <Box marginBottom={1}>
         <BigText font={font} color={resolvedColor}>
           {title}
@@ -138,7 +147,8 @@ const HelpScreenSection = ({
   });
 
   return (
-    <Box flexDirection="column" marginBottom={1}>
+    <Box flexDirection="column" marginBottom={1} aria-role="listitem">
+      <Text aria-label={`Section: ${label}`}>{""}</Text>
       <Text bold color={labelColor ?? theme.colors.foreground}>
         {label}
       </Text>
@@ -156,10 +166,14 @@ const HelpScreenRow = ({
   _columnGap = 4,
 }: HelpScreenRowProps & { _flagWidth?: number; _columnGap?: number }) => {
   const theme = useTheme();
-  const paddedFlag = flag.padEnd(_flagWidth + _columnGap);
+  const paddedFlag = padToTerminalWidth(flag, _flagWidth + _columnGap);
 
   return (
-    <Box flexDirection="row" paddingLeft={2}>
+    <Box
+      flexDirection="row"
+      paddingLeft={2}
+      aria-label={`${flag}: ${description}`}
+    >
       <Text color={flagColor ?? theme.colors.mutedForeground}>
         {paddedFlag}
       </Text>

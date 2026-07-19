@@ -1,0 +1,17 @@
+---
+title: "Ink 6.8 and upcoming APIs"
+description: "Stable features used now and master-only Ink features intentionally deferred."
+---
+
+Termcn is pinned to `ink@6.8.0`. Production registry items use only stable APIs: native accessibility props, `useIsScreenReaderEnabled`, focus hooks, the complete `Key` type, `useCursor`, `Static`, `Spacer`, `Newline`, `Transform`, `measureElement`, and `renderToString`.
+
+The following APIs may appear in Ink's master README but are not part of the v1 production baseline:
+
+- `usePaste`, which can replace bulk-input inference without changing component props.
+- `useWindowSize`, which can replace manual stdout dimension subscriptions.
+- `useBoxMetrics`, which can discover cursor origins and measurements automatically.
+- Ink's built-in `useAnimation`, which can replace Termcn's local pooled animation hook.
+- `interactive` and alternate-screen rendering for explicitly full-screen templates.
+- `waitUntilRenderFlush` for more precise asynchronous render tests.
+
+These features require a separate Ink upgrade PR with a version bump and regression matrix. Termcn does not pin master or silently ship unreleased APIs.

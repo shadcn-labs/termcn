@@ -2,10 +2,12 @@ import { Box, Text } from "ink";
 import React, { useMemo, useState } from "react";
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
-import { useInput } from "@/hooks/use-input";
+import { useInteraction } from "@/hooks/use-interaction";
+import type { InteractionProps } from "@/hooks/use-interaction";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
 
-export interface ScrollViewProps {
+export interface ScrollViewProps extends InteractionProps {
   height: number;
   children: ReactNode;
   contentHeight?: number;
@@ -14,6 +16,7 @@ export interface ScrollViewProps {
   thumbColor?: string;
   trackChar?: string;
   thumbChar?: string;
+  "aria-label"?: string;
 }
 
 export const ScrollView = ({
@@ -23,10 +26,18 @@ export const ScrollView = ({
   showScrollbar = true,
   scrollbarColor,
   thumbColor,
-  trackChar = "│",
-  thumbChar = "█",
+  trackChar,
+  thumbChar,
+  id,
+  autoFocus,
+  isActive,
+  disabled,
+  "aria-label": ariaLabel = "Scrollable content",
 }: ScrollViewProps) => {
   const theme = useTheme();
+  const unicode = useUnicode();
+  const resolvedTrackChar = trackChar ?? (unicode ? "│" : "|");
+  const resolvedThumbChar = thumbChar ?? (unicode ? "█" : "#");
   const [scrollTop, setScrollTop] = useState(0);
 
   const resolvedTrackColor = scrollbarColor ?? theme.colors.mutedForeground;
@@ -36,23 +47,26 @@ export const ScrollView = ({
 
   const clampedScroll = Math.min(scrollTop, maxScroll);
 
-  useInput((_input, key) => {
-    if (key.upArrow) {
-      setScrollTop((s) => Math.max(0, s - 1));
-    } else if (key.downArrow) {
-      setScrollTop((s) => Math.min(maxScroll > 0 ? maxScroll : s + 1, s + 1));
-    } else if (key.pageUp) {
-      setScrollTop((s) => Math.max(0, s - height));
-    } else if (key.pageDown) {
-      setScrollTop((s) =>
-        maxScroll > 0 ? Math.min(maxScroll, s + height) : s + height
-      );
-    } else if (key.home) {
-      setScrollTop(0);
-    } else if (key.end && maxScroll > 0) {
-      setScrollTop(maxScroll);
-    }
-  });
+  const { isFocused } = useInteraction(
+    (_input, key) => {
+      if (key.upArrow) {
+        setScrollTop((s) => Math.max(0, s - 1));
+      } else if (key.downArrow) {
+        setScrollTop((s) => Math.min(maxScroll > 0 ? maxScroll : s + 1, s + 1));
+      } else if (key.pageUp) {
+        setScrollTop((s) => Math.max(0, s - height));
+      } else if (key.pageDown) {
+        setScrollTop((s) =>
+          maxScroll > 0 ? Math.min(maxScroll, s + height) : s + height
+        );
+      } else if (key.home) {
+        setScrollTop(0);
+      } else if (key.end && maxScroll > 0) {
+        setScrollTop(maxScroll);
+      }
+    },
+    { autoFocus, disabled, id, isActive }
+  );
 
   const thumbSize = useMemo(() => {
     if (contentHeight <= height) {
@@ -72,13 +86,27 @@ export const ScrollView = ({
     () =>
       Array.from({ length: height }, (_, i) => {
         const isThumb = i >= thumbPosition && i < thumbPosition + thumbSize;
-        return { char: isThumb ? thumbChar : trackChar, isThumb };
+        return {
+          char: isThumb ? resolvedThumbChar : resolvedTrackChar,
+          isThumb,
+        };
       }),
-    [height, thumbPosition, thumbSize, thumbChar, trackChar]
+    [height, resolvedThumbChar, resolvedTrackChar, thumbPosition, thumbSize]
   );
 
   return (
-    <Box flexDirection="row" height={height} overflow="hidden">
+    <Box
+      flexDirection="row"
+      height={height}
+      overflow="hidden"
+      aria-role="list"
+      aria-state={{ disabled: disabled || undefined }}
+    >
+      <Text
+        aria-label={`${ariaLabel}. Line ${clampedScroll + 1} of ${Math.max(height, contentHeight)}.${isFocused ? " Focused." : ""}`}
+      >
+        {""}
+      </Text>
       <Box
         flexGrow={1}
         flexDirection="column"
@@ -87,7 +115,7 @@ export const ScrollView = ({
         {children}
       </Box>
       {showScrollbar && (
-        <Box width={1} flexDirection="column">
+        <Box aria-hidden width={1} flexDirection="column">
           {scrollbar.map((seg, i) => (
             <Text
               key={i}

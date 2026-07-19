@@ -1,8 +1,17 @@
 import { Box, Text } from "ink";
-import React, { useState, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
-import { useInput } from "@/hooks/use-input";
+import { useInteraction } from "@/hooks/use-interaction";
+import type { InteractionProps } from "@/hooks/use-interaction";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import { resolveBorderStyle } from "@/registry/bases/ink/lib/accessibility";
+import {
+  padToTerminalWidth,
+  removeGraphemeBefore,
+  terminalWidth,
+  truncateToTerminalWidth,
+} from "@/registry/bases/ink/lib/terminal-text";
 import type { BorderStyle } from "@/registry/bases/ink/ui/types";
 
 export interface DataGridColumn<T = Record<string, unknown>> {
@@ -17,7 +26,7 @@ export interface DataGridColumn<T = Record<string, unknown>> {
 
 export interface DataGridProps<
   T extends Record<string, unknown> = Record<string, unknown>,
-> {
+> extends InteractionProps {
   data: T[];
   columns: DataGridColumn<T>[];
   pageSize?: number;
@@ -27,6 +36,8 @@ export interface DataGridProps<
   borderStyle?: BorderStyle;
   showRowNumbers?: boolean;
   filterPlaceholder?: string;
+  "aria-label"?: string;
+  getRowKey?: (row: T, index: number) => React.Key;
 }
 
 const pad = (
@@ -34,19 +45,16 @@ const pad = (
   width: number,
   align: "left" | "right" | "center" = "left"
 ): string => {
-  const s = String(str);
-  if (s.length >= width) {
-    return s.slice(0, width);
-  }
-  const diff = width - s.length;
+  const s = truncateToTerminalWidth(String(str), width);
+  const diff = Math.max(0, width - terminalWidth(s));
   if (align === "right") {
     return " ".repeat(diff) + s;
   }
   if (align === "center") {
     const left = Math.floor(diff / 2);
-    return " ".repeat(left) + `${s} `.repeat(diff - left);
+    return " ".repeat(left) + s + " ".repeat(diff - left);
   }
-  return `${s} `.repeat(diff);
+  return padToTerminalWidth(s, width);
 };
 
 export const DataGrid = <
@@ -59,7 +67,15 @@ export const DataGrid = <
   borderColor,
   borderStyle = "single",
   showRowNumbers = false,
+  filterPlaceholder = "Type to filter",
+  id,
+  autoFocus,
+  isActive,
+  disabled,
+  "aria-label": ariaLabel = "Data grid",
+  getRowKey,
 }: DataGridProps<T>) => {
+  const unicode = useUnicode();
   const theme = useTheme();
   const [selectedRow, setSelectedRow] = useState(0);
   const [page, setPage] = useState(0);
@@ -76,9 +92,10 @@ export const DataGrid = <
         if (col.width) {
           return col.width;
         }
-        const headerLen = col.header.length;
+        const headerLen = terminalWidth(col.header);
         const dataLen = Math.max(
-          ...data.map((row) => String(row[col.key] ?? "").length)
+          0,
+          ...data.map((row) => terminalWidth(String(row[col.key] ?? "")))
         );
         return Math.max(headerLen, dataLen, 6);
       }),
@@ -114,42 +131,59 @@ export const DataGrid = <
   const totalPages = Math.max(1, Math.ceil(sorted.length / pageSize));
   const pageData = sorted.slice(page * pageSize, (page + 1) * pageSize);
 
-  useInput((input, key) => {
-    if (filterMode) {
-      if (key.escape) {
-        setFilterMode(false);
-      } else if (key.return) {
-        setFilterMode(false);
-      } else if (key.backspace || key.delete) {
-        setFilter((f) => f.slice(0, -1));
-      } else if (input && !key.ctrl && !key.meta) {
-        setFilter((f) => f + input);
+  const { isFocused } = useInteraction(
+    (input, key) => {
+      if (filterMode) {
+        if (key.escape) {
+          setFilterMode(false);
+        } else if (key.return) {
+          setFilterMode(false);
+        } else if (key.backspace || key.delete) {
+          setFilter(
+            (f) => removeGraphemeBefore(f, Number.POSITIVE_INFINITY).value
+          );
+        } else if (input && !key.ctrl && !key.meta) {
+          setFilter((f) => f + input);
+        }
+        return;
       }
-      return;
-    }
 
-    if (key.upArrow) {
-      setSelectedRow((r) => Math.max(0, r - 1));
-    } else if (key.downArrow) {
-      setSelectedRow((r) => Math.min(pageData.length - 1, r + 1));
-    } else if (key.return || input === " ") {
-      if (pageData[selectedRow]) {
-        onRowSelect?.(pageData[selectedRow]);
+      if (key.upArrow) {
+        setSelectedRow((r) => Math.max(0, r - 1));
+      } else if (key.downArrow) {
+        setSelectedRow((r) => Math.min(pageData.length - 1, r + 1));
+      } else if (key.home) {
+        setSelectedRow(0);
+      } else if (key.end) {
+        setSelectedRow(Math.max(0, pageData.length - 1));
+      } else if (key.return || input === " ") {
+        if (pageData[selectedRow]) {
+          onRowSelect?.(pageData[selectedRow]);
+        }
+      } else if (key.pageDown || input === "n") {
+        setPage((p) => Math.min(totalPages - 1, p + 1));
+        setSelectedRow(0);
+      } else if (key.pageUp || input === "p") {
+        setPage((p) => Math.max(0, p - 1));
+        setSelectedRow(0);
+      } else if (input === "/") {
+        setFilterMode(true);
+      } else if (input === "s" && sortKey === null) {
+        setSortKey(columns[0]?.key ?? null);
       }
-    } else if (key.pageDown || input === "n") {
-      setPage((p) => Math.min(totalPages - 1, p + 1));
-      setSelectedRow(0);
-    } else if (key.pageUp || input === "p") {
-      setPage((p) => Math.max(0, p - 1));
-      setSelectedRow(0);
-    } else if (input === "/") {
-      setFilterMode(true);
-    } else if (input === "s" && sortKey === null) {
-      setSortKey(columns[0]?.key ?? null);
-    }
-  });
+    },
+    { autoFocus, disabled, id, isActive }
+  );
 
-  const colSep = " │ ";
+  useEffect(() => {
+    setSelectedRow((row) => Math.min(row, Math.max(0, pageData.length - 1)));
+  }, [pageData.length]);
+
+  useEffect(() => {
+    setPage((current) => Math.min(current, totalPages - 1));
+  }, [totalPages]);
+
+  const colSep = unicode ? " │ " : " | ";
 
   const renderRow = (row: T, rowIdx: number, isSelected: boolean) => {
     const cells = columns.map((col, ci) => {
@@ -164,7 +198,7 @@ export const DataGrid = <
       : "";
 
     return (
-      <Box key={rowIdx} flexDirection="row">
+      <Box flexDirection="row">
         {rowNumStr && <Text dimColor>{rowNumStr}</Text>}
         <Text
           backgroundColor={isSelected ? theme.colors.primary : undefined}
@@ -178,7 +212,8 @@ export const DataGrid = <
 
   const headerCells = columns.map((col, ci) => {
     const isSorted = sortKey === col.key;
-    const sortArrow = sortDir === "asc" ? " ↑" : " ↓";
+    const sortArrow =
+      sortDir === "asc" ? (unicode ? " ↑" : " up") : unicode ? " ↓" : " down";
     const indicator = isSorted ? sortArrow : "";
     return pad(col.header + indicator, colWidths[ci], col.align);
   });
@@ -186,17 +221,44 @@ export const DataGrid = <
   const rowNumHeader = showRowNumbers ? "    " : "";
 
   return (
-    <Box flexDirection="column">
+    <Box
+      flexDirection="column"
+      aria-role="table"
+      aria-state={{ disabled: disabled || undefined }}
+    >
+      <Text
+        aria-label={`${ariaLabel}. Page ${page + 1} of ${totalPages}. ${sorted.length} rows.`}
+      >
+        {""}
+      </Text>
+      {isFocused && pageData[selectedRow] && (
+        <Text
+          aria-label={`Selected row ${page * pageSize + selectedRow + 1}: ${columns
+            .map(
+              (column) =>
+                `${column.header}: ${String(pageData[selectedRow]?.[column.key] ?? "")}`
+            )
+            .join(", ")}`}
+        >
+          {""}
+        </Text>
+      )}
       {(filterMode || filter) && (
         <Box flexDirection="row" marginBottom={1}>
           <Text color={theme.colors.primary}>{"Filter: "}</Text>
           <Text>{filter}</Text>
-          {filterMode && <Text color={theme.colors.focusRing}>█</Text>}
+          {filterMode && (
+            <Text aria-hidden color={theme.colors.focusRing}>
+              {unicode ? "█" : "|"}
+            </Text>
+          )}
+          {!filter && <Text aria-label={filterPlaceholder}>{""}</Text>}
         </Box>
       )}
 
       <Box
-        borderStyle={borderStyle}
+        aria-hidden
+        borderStyle={resolveBorderStyle(borderStyle, unicode)}
         borderColor={resolvedBorderColor}
         flexDirection="column"
       >
@@ -207,12 +269,12 @@ export const DataGrid = <
           </Text>
         </Box>
         <Text color={resolvedBorderColor}>
-          {"─".repeat(headerCells.join(colSep).length + 2)}
+          {(unicode ? "─" : "-").repeat(headerCells.join(colSep).length + 2)}
         </Text>
 
         {pageData.length > 0 ? (
           pageData.map((row, i) => (
-            <Box key={i} paddingX={1}>
+            <Box key={getRowKey?.(row, i) ?? i} paddingX={1}>
               {renderRow(row, i, i === selectedRow)}
             </Box>
           ))
@@ -223,11 +285,28 @@ export const DataGrid = <
         )}
       </Box>
 
+      {pageData.map((row, rowIdx) => (
+        <Text
+          key={`accessible-${String(getRowKey?.(row, rowIdx) ?? rowIdx)}`}
+          aria-label={`Row ${page * pageSize + rowIdx + 1}: ${columns
+            .map(
+              (column) => `${column.header}: ${String(row[column.key] ?? "")}`
+            )
+            .join(", ")}`}
+        >
+          {""}
+        </Text>
+      ))}
+
       <Box flexDirection="row" gap={2} marginTop={1}>
         <Text dimColor>
           {`Page ${page + 1}/${totalPages} (${sorted.length} rows)`}
         </Text>
-        <Text dimColor>↑↓ navigate n/p page / filter Enter select</Text>
+        <Text aria-hidden dimColor>
+          {unicode
+            ? "↑↓ navigate PgUp/PgDn page / filter Enter select"
+            : "up/down navigate PgUp/PgDn page / filter Enter select"}
+        </Text>
       </Box>
     </Box>
   );

@@ -1,4 +1,4 @@
-import { Box, Text } from "ink";
+import { useFocusManager, Box, Text } from "ink";
 import {
   useState,
   useCallback,
@@ -8,8 +8,9 @@ import {
 } from "react";
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
-import { useInput } from "@/hooks/use-input";
+import { useInteraction } from "@/hooks/use-interaction";
+import type { InteractionProps } from "@/hooks/use-interaction";
+import { useTheme } from "@/hooks/use-theme";
 
 interface FormContextValue {
   values: Record<string, unknown>;
@@ -42,11 +43,13 @@ export interface FormField {
   validate?: (value: unknown) => string | null;
 }
 
-export interface FormProps {
+export interface FormProps extends InteractionProps {
   onSubmit?: (values: Record<string, unknown>) => void;
   initialValues?: Record<string, unknown>;
   fields?: FormField[];
   children: ReactNode;
+  onCancel?: () => void;
+  "aria-label"?: string;
 }
 
 export const Form = ({
@@ -56,8 +59,15 @@ export const Form = ({
   },
   fields = [],
   children,
+  onCancel,
+  id,
+  autoFocus,
+  isActive,
+  disabled,
+  "aria-label": ariaLabel = "Form",
 }: FormProps) => {
   const theme = useTheme();
+  const { focus } = useFocusManager();
   const [values, setValues] = useState<Record<string, unknown>>(initialValues);
   const [errors, setErrors] = useState<Record<string, string>>({
     /* noop */
@@ -73,24 +83,33 @@ export const Form = ({
     setErrors((e) => ({ ...e, [name]: error }));
   }, []);
 
-  useInput((input, key) => {
-    if (key.ctrl && input === "s") {
-      const newErrors: Record<string, string> = {
-        /* noop */
-      };
-      for (const field of fields) {
-        const err = field.validate ? field.validate(values[field.name]) : null;
-        if (err) {
-          newErrors[field.name] = err;
-        }
+  const validateAndSubmit = useCallback(() => {
+    const newErrors: Record<string, string> = {};
+    for (const field of fields) {
+      const error = field.validate?.(values[field.name]);
+      if (error) {
+        newErrors[field.name] = error;
       }
-      if (Object.keys(newErrors).length > 0) {
-        setErrors(newErrors);
-        return;
-      }
-      onSubmit?.(values);
     }
-  });
+    setErrors(newErrors);
+    const firstInvalidField = fields.find((field) => newErrors[field.name]);
+    if (firstInvalidField) {
+      focus(firstInvalidField.name);
+      return;
+    }
+    onSubmit?.(values);
+  }, [fields, focus, onSubmit, values]);
+
+  const { isFocused } = useInteraction(
+    (input, key) => {
+      if (key.ctrl && input === "s") {
+        validateAndSubmit();
+      } else if (key.escape) {
+        onCancel?.();
+      }
+    },
+    { autoFocus, disabled, id, isActive }
+  );
 
   const contextValue = useMemo(
     () => ({ errors, isDirty, setFieldError, setFieldValue, values }),
@@ -99,9 +118,28 @@ export const Form = ({
 
   return (
     <FormContext.Provider value={contextValue}>
-      <Box flexDirection="column" gap={1}>
+      <Box
+        flexDirection="column"
+        gap={1}
+        aria-role="list"
+        aria-state={{ disabled: disabled || undefined }}
+      >
+        <Text aria-label={`${ariaLabel}.${isFocused ? " Focused." : ""}`}>
+          {""}
+        </Text>
+        {Object.keys(errors).length > 0 && (
+          <Box aria-role="listitem">
+            <Text
+              aria-label={`Form errors: ${Object.entries(errors)
+                .map(([name, error]) => `${name}: ${error}`)
+                .join(". ")}`}
+            >
+              {`Errors: ${Object.keys(errors).length}`}
+            </Text>
+          </Box>
+        )}
         {children}
-        <Text color={theme.colors.mutedForeground} dimColor>
+        <Text aria-hidden color={theme.colors.mutedForeground} dimColor>
           Press Ctrl+S to submit
         </Text>
       </Box>

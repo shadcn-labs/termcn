@@ -1,8 +1,14 @@
 import { Box, Text } from "ink";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
-import { useInput } from "@/hooks/use-input";
+import { useInteraction } from "@/hooks/use-interaction";
+import type { InteractionProps } from "@/hooks/use-interaction";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import {
+  resolveStatusSymbol,
+  resolveTerminalSymbol,
+} from "@/registry/bases/ink/lib/accessibility";
 
 import { DiffView } from "./diff-view";
 
@@ -15,11 +21,12 @@ export interface FileChangeItem {
   content?: string;
 }
 
-export interface FileChangeProps {
+export interface FileChangeProps extends InteractionProps {
   changes: FileChangeItem[];
   onAccept?: (path: string) => void;
   onReject?: (path: string) => void;
   onAcceptAll?: () => void;
+  "aria-label"?: string;
 }
 
 const TYPE_ICON: Record<FileChangeType, string> = {
@@ -72,60 +79,80 @@ export const FileChange = ({
   onAccept,
   onReject,
   onAcceptAll,
+  id,
+  autoFocus,
+  isActive,
+  disabled,
+  "aria-label": ariaLabel = "File changes",
 }: FileChangeProps) => {
   const theme = useTheme();
+  const unicode = useUnicode();
+  const cursor = resolveTerminalSymbol(unicode, "›", ">");
   const [activeIndex, setActiveIndex] = useState(0);
   const [expandedPaths, setExpandedPaths] = useState<Set<string>>(new Set());
   const [acceptedPaths, setAcceptedPaths] = useState<Set<string>>(new Set());
   const [rejectedPaths, setRejectedPaths] = useState<Set<string>>(new Set());
 
-  useInput((input, key) => {
-    if (key.upArrow) {
-      setActiveIndex((i) => Math.max(0, i - 1));
-    } else if (key.downArrow) {
-      setActiveIndex((i) => Math.min(changes.length - 1, i + 1));
-    } else if (key.return || input === " ") {
-      const item = changes[activeIndex];
-      if (!item) {
-        return;
-      }
-      setExpandedPaths((prev) => {
-        const next = new Set(prev);
-        if (next.has(item.path)) {
-          next.delete(item.path);
-        } else {
-          next.add(item.path);
+  const { isFocused } = useInteraction(
+    (input, key) => {
+      if (key.upArrow) {
+        setActiveIndex((i) => Math.max(0, i - 1));
+      } else if (key.downArrow) {
+        setActiveIndex((i) => Math.min(changes.length - 1, i + 1));
+      } else if (key.home) {
+        setActiveIndex(0);
+      } else if (key.end) {
+        setActiveIndex(Math.max(0, changes.length - 1));
+      } else if (key.return || input === " ") {
+        const item = changes[activeIndex];
+        if (!item) {
+          return;
         }
-        return next;
-      });
-    } else if (input === "y" || input === "Y") {
-      const item = changes[activeIndex];
-      if (!item) {
-        return;
+        setExpandedPaths((prev) => {
+          const next = new Set(prev);
+          if (next.has(item.path)) {
+            next.delete(item.path);
+          } else {
+            next.add(item.path);
+          }
+          return next;
+        });
+      } else if (input === "y" || input === "Y") {
+        const item = changes[activeIndex];
+        if (!item) {
+          return;
+        }
+        setAcceptedPaths((prev) => new Set([...prev, item.path]));
+        setRejectedPaths((prev) => {
+          const next = new Set(prev);
+          next.delete(item.path);
+          return next;
+        });
+        onAccept?.(item.path);
+      } else if (input === "n" || input === "N") {
+        const item = changes[activeIndex];
+        if (!item) {
+          return;
+        }
+        setRejectedPaths((prev) => new Set([...prev, item.path]));
+        setAcceptedPaths((prev) => {
+          const next = new Set(prev);
+          next.delete(item.path);
+          return next;
+        });
+        onReject?.(item.path);
+      } else if (input === "a" || input === "A") {
+        onAcceptAll?.();
       }
-      setAcceptedPaths((prev) => new Set([...prev, item.path]));
-      setRejectedPaths((prev) => {
-        const next = new Set(prev);
-        next.delete(item.path);
-        return next;
-      });
-      onAccept?.(item.path);
-    } else if (input === "n" || input === "N") {
-      const item = changes[activeIndex];
-      if (!item) {
-        return;
-      }
-      setRejectedPaths((prev) => new Set([...prev, item.path]));
-      setAcceptedPaths((prev) => {
-        const next = new Set(prev);
-        next.delete(item.path);
-        return next;
-      });
-      onReject?.(item.path);
-    } else if (input === "a" || input === "A") {
-      onAcceptAll?.();
-    }
-  });
+    },
+    { autoFocus, disabled, id, isActive }
+  );
+
+  useEffect(() => {
+    setActiveIndex((current) =>
+      Math.min(current, Math.max(0, changes.length - 1))
+    );
+  }, [changes.length]);
 
   const typeColor = (type: FileChangeType): string => {
     switch (type) {
@@ -145,14 +172,20 @@ export const FileChange = ({
   };
 
   return (
-    <Box flexDirection="column">
+    <Box
+      flexDirection="column"
+      aria-role="list"
+      aria-state={{ disabled: disabled || undefined }}
+    >
+      <Text aria-label={`${ariaLabel}. ${changes.length} files.`}>{""}</Text>
       <Box gap={2} marginBottom={1}>
         <Text bold color={theme.colors.foreground}>
           File Changes ({changes.length})
         </Text>
-        <Text dimColor color={theme.colors.mutedForeground}>
-          [↑↓] navigate [Enter/Space] expand [y] accept [n] reject [a] accept
-          all
+        <Text aria-hidden dimColor color={theme.colors.mutedForeground}>
+          {unicode
+            ? "[↑↓] navigate [Enter/Space] expand [y] accept [n] reject [a] accept all"
+            : "[up/down] navigate [Enter/Space] expand [y] accept [n] reject [a] accept all"}
         </Text>
       </Box>
 
@@ -165,10 +198,23 @@ export const FileChange = ({
         const diffParts = item.diff ? parseDiff(item.diff) : null;
 
         return (
-          <Box key={item.path} flexDirection="column">
+          <Box
+            key={item.path}
+            flexDirection="column"
+            aria-role="listitem"
+            aria-state={{
+              expanded: isExpanded,
+              selected: isActive && isFocused,
+            }}
+          >
+            <Text
+              aria-label={`${item.type} file ${item.path}${isAccepted ? ", accepted" : isRejected ? ", rejected" : ", pending"}${isExpanded ? ", expanded" : ", collapsed"}${isActive && isFocused ? ", current" : ""}`}
+            >
+              {""}
+            </Text>
             <Box gap={1}>
               <Text color={isActive ? theme.colors.primary : undefined}>
-                {isActive ? "›" : " "}
+                {isActive && isFocused ? `[${cursor}]` : " "}
               </Text>
               <Text bold color={typeColor(item.type)}>
                 {TYPE_ICON[item.type]}
@@ -182,14 +228,20 @@ export const FileChange = ({
                 {item.path}
               </Text>
               {isAccepted && (
-                <Text color={theme.colors.success ?? "green"}>✓ accepted</Text>
+                <Text color={theme.colors.success ?? "green"}>
+                  {resolveStatusSymbol(unicode, "success")} accepted
+                </Text>
               )}
               {isRejected && (
-                <Text color={theme.colors.error ?? "red"}>✗ rejected</Text>
+                <Text color={theme.colors.error ?? "red"}>
+                  {resolveStatusSymbol(unicode, "error")} rejected
+                </Text>
               )}
               {(item.diff || item.content) && (
                 <Text dimColor color={theme.colors.mutedForeground}>
-                  {isExpanded ? "▼" : "▶"}
+                  {isExpanded
+                    ? resolveTerminalSymbol(unicode, "▼", "v")
+                    : resolveTerminalSymbol(unicode, "▶", ">")}
                 </Text>
               )}
             </Box>

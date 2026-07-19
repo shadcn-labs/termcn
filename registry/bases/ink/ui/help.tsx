@@ -1,6 +1,8 @@
 import { Box, Text } from "ink";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import { resolveBorderStyle } from "@/registry/bases/ink/lib/accessibility";
 
 export interface HelpProps {
   keymap: Record<string, string>;
@@ -9,19 +11,23 @@ export interface HelpProps {
 }
 
 export const Help = ({ keymap, title, compact = false }: HelpProps) => {
+  const unicode = useUnicode();
   const theme = useTheme();
   const entries = Object.entries(keymap);
 
   if (compact) {
     const parts = entries.map(([key, action]) => `${key}: ${action}`);
     return (
-      <Box gap={1} flexWrap="wrap">
+      <Box gap={1} flexWrap="wrap" aria-role="toolbar">
+        <Text aria-label={title ?? "Help"}>{""}</Text>
         {title && (
           <Text color={theme.colors.primary} bold>
             {title} |
           </Text>
         )}
-        <Text color={theme.colors.mutedForeground}>{parts.join(" · ")}</Text>
+        <Text color={theme.colors.mutedForeground}>
+          {parts.join(unicode ? " · " : " - ")}
+        </Text>
       </Box>
     );
   }
@@ -31,11 +37,13 @@ export const Help = ({ keymap, title, compact = false }: HelpProps) => {
   return (
     <Box
       flexDirection="column"
-      borderStyle="round"
+      borderStyle={resolveBorderStyle("round", unicode)}
       borderColor={theme.colors.border}
       paddingX={1}
       gap={0}
+      aria-role="toolbar"
     >
+      <Text aria-label={title ?? "Help"}>{""}</Text>
       {title && (
         <Text color={theme.colors.primary} bold>
           {title}
@@ -44,7 +52,7 @@ export const Help = ({ keymap, title, compact = false }: HelpProps) => {
       {entries.map(([key, action]) => (
         <Box key={key} gap={2}>
           <Box
-            borderStyle="single"
+            borderStyle={resolveBorderStyle("single", unicode)}
             borderColor={theme.colors.primary}
             paddingX={1}
             minWidth={keyWidth + 4}

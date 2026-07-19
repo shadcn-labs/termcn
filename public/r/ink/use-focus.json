@@ -9,7 +9,7 @@
   "files": [
     {
       "path": "registry/hooks/use-focus.ts",
-      "content": "import { useFocus as inkUseFocus } from \"ink\";\n\nexport const useFocus = (options?: {\n  autoFocus?: boolean;\n  id?: string;\n  isActive?: boolean;\n}) => inkUseFocus(options);\n",
+      "content": "import { useFocus as inkUseFocus } from \"ink\";\n\n/** @deprecated Import useFocus from Ink or use useInteraction instead. */\nexport const useFocus = (options?: {\n  autoFocus?: boolean;\n  id?: string;\n  isActive?: boolean;\n}) => inkUseFocus(options);\n",
       "type": "registry:hook"
     }
   ],

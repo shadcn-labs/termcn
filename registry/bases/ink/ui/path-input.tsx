@@ -4,12 +4,22 @@ import { join, dirname, basename } from "node:path";
 import { Box, Text } from "ink";
 import React, { useState } from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
-import { useFocus } from "@/hooks/use-focus";
-import { useInput } from "@/hooks/use-input";
+import { useInteraction } from "@/hooks/use-interaction";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import {
+  resolveBorderStyle,
+  resolveTerminalSymbol,
+} from "@/registry/bases/ink/lib/accessibility";
+import {
+  graphemeLength,
+  removeGraphemeBefore,
+} from "@/registry/bases/ink/lib/terminal-text";
 
 export interface PathInputProps {
   value?: string;
+  defaultValue?: string;
+  onValueChange?: (value: string) => void;
   onChange?: (value: string) => void;
   onSubmit?: (value: string) => void;
   label?: string;
@@ -19,6 +29,11 @@ export interface PathInputProps {
   width?: number;
   filter?: string;
   dirsOnly?: boolean;
+  isActive?: boolean;
+  disabled?: boolean;
+  readOnly?: boolean;
+  required?: boolean;
+  "aria-label"?: string;
 }
 
 const getCompletions = (
@@ -73,6 +88,8 @@ const getCompletions = (
 
 export const PathInput = ({
   value: controlledValue,
+  defaultValue = "",
+  onValueChange,
   onChange,
   onSubmit,
   label,
@@ -82,74 +99,86 @@ export const PathInput = ({
   width = 40,
   filter,
   dirsOnly = false,
+  isActive = true,
+  disabled = false,
+  readOnly = false,
+  required = false,
+  "aria-label": ariaLabel,
 }: PathInputProps) => {
-  const [internalValue, setInternalValue] = useState("");
+  const unicode = useUnicode();
+  const cursor = resolveTerminalSymbol(unicode, "█", "|");
+  const [internalValue, setInternalValue] = useState(defaultValue);
   const [completionIndex, setCompletionIndex] = useState(0);
   const theme = useTheme();
-  const { isFocused } = useFocus({ autoFocus, id });
 
   const value = controlledValue ?? internalValue;
+  const applyChange = (nextValue: string) => {
+    const changeHandler = onValueChange ?? onChange;
+    if (changeHandler) {
+      changeHandler(nextValue);
+    } else {
+      setInternalValue(nextValue);
+    }
+  };
+
+  const { isFocused } = useInteraction(
+    (input, key) => {
+      const completionOptions = getCompletions(value, filter, dirsOnly);
+
+      if (key.return) {
+        onSubmit?.(value);
+        return;
+      }
+
+      if (key.rightArrow) {
+        if (completionOptions.length > 0) {
+          const selected =
+            completionOptions[completionIndex] ?? completionOptions[0];
+          applyChange(selected);
+          setCompletionIndex(0);
+        }
+        return;
+      }
+
+      if (key.upArrow) {
+        setCompletionIndex((c) => Math.max(0, c - 1));
+        return;
+      }
+
+      if (key.downArrow) {
+        setCompletionIndex((c) =>
+          Math.min(completionOptions.length - 1, c + 1)
+        );
+        return;
+      }
+
+      if (readOnly) {
+        return;
+      }
+
+      if (key.backspace) {
+        const newVal = removeGraphemeBefore(value, graphemeLength(value)).value;
+        setCompletionIndex(0);
+        applyChange(newVal);
+        return;
+      }
+
+      if (key.escape) {
+        return;
+      }
+
+      if (input && !(key.ctrl || key.meta)) {
+        setCompletionIndex(0);
+        applyChange(value + input);
+      }
+    },
+    { autoFocus, disabled, id, isActive }
+  );
+
   const completions =
     isFocused && value.length > 0
       ? getCompletions(value, filter, dirsOnly)
       : [];
-
-  useInput((input, key) => {
-    if (!isFocused) {
-      return;
-    }
-
-    if (key.return) {
-      onSubmit?.(value);
-      return;
-    }
-
-    if (key.tab) {
-      if (completions.length > 0) {
-        const selected = completions[completionIndex] ?? completions[0];
-        if (onChange) {
-          onChange(selected);
-        } else {
-          setInternalValue(selected);
-        }
-        setCompletionIndex(0);
-      }
-      return;
-    }
-
-    if (key.upArrow) {
-      setCompletionIndex((c) => Math.max(0, c - 1));
-      return;
-    }
-
-    if (key.downArrow) {
-      setCompletionIndex((c) => Math.min(completions.length - 1, c + 1));
-      return;
-    }
-
-    if (key.backspace || key.delete) {
-      const newVal = value.slice(0, -1);
-      setCompletionIndex(0);
-      if (onChange) {
-        onChange(newVal);
-      } else {
-        setInternalValue(newVal);
-      }
-      return;
-    }
-
-    if (key.escape) {
-      return;
-    }
-
-    const newVal = value + input;
-    setCompletionIndex(0);
-    if (onChange) {
-      onChange(newVal);
-    } else {
-      setInternalValue(newVal);
-    }
-  });
 
   const borderColor = isFocused ? theme.colors.focusRing : theme.colors.border;
 
@@ -157,28 +186,44 @@ export const PathInput = ({
     <Box flexDirection="column">
       {label && <Text bold>{label}</Text>}
       <Box
-        borderStyle="round"
+        aria-label={ariaLabel ?? `${label ?? "Path"}: ${value || "empty"}`}
+        aria-role="textbox"
+        aria-state={{ disabled, readonly: readOnly, required }}
+        borderStyle={resolveBorderStyle("round", unicode)}
         borderColor={borderColor}
         width={width}
         paddingX={1}
       >
         <Text
+          aria-hidden
           color={value ? theme.colors.foreground : theme.colors.mutedForeground}
         >
           {value || placeholder}
         </Text>
-        {isFocused && <Text color={theme.colors.focusRing}>█</Text>}
+        {isFocused && (
+          <Text aria-hidden color={theme.colors.focusRing}>
+            {cursor}
+          </Text>
+        )}
       </Box>
       {isFocused && completions.length > 0 && (
         <Box
+          aria-role="listbox"
           flexDirection="column"
-          borderStyle="single"
+          borderStyle={resolveBorderStyle("single", unicode)}
           borderColor={theme.colors.border}
           width={width}
         >
           {completions.map((c, idx) => (
-            <Box key={c} paddingX={1}>
+            <Box
+              key={c}
+              aria-label={c}
+              aria-role="option"
+              aria-state={{ selected: idx === completionIndex }}
+              paddingX={1}
+            >
               <Text
+                aria-hidden
                 color={
                   idx === completionIndex
                     ? theme.colors.selectionForeground
@@ -195,8 +240,12 @@ export const PathInput = ({
         </Box>
       )}
       {isFocused && completions.length > 0 && (
-        <Text color={theme.colors.mutedForeground} dimColor>
-          Tab: accept · ↑↓: navigate
+        <Text aria-hidden color={theme.colors.mutedForeground} dimColor>
+          {resolveTerminalSymbol(
+            unicode,
+            "Right arrow: accept · ↑↓: navigate",
+            "Right arrow: accept | up/down: navigate"
+          )}
         </Text>
       )}
     </Box>

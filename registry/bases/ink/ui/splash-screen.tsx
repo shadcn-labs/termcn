@@ -1,7 +1,8 @@
 import { Box, Text } from "ink";
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
 
 import { BigText } from "./big-text";
 
@@ -32,7 +33,8 @@ const AltColorBigText = ({
   color: string;
   colorAlt: string;
 }) => {
-  const onChar = font === "block" ? "█" : "▓";
+  const unicode = useUnicode();
+  const onChar = unicode ? (font === "block" ? "█" : "▓") : "#";
   const offChar = " ";
 
   const FONT: Record<string, number[][]> = {
@@ -277,6 +279,7 @@ export const SplashScreen = ({
   padding = 2,
 }: SplashScreenProps) => {
   const theme = useTheme();
+  const unicode = useUnicode();
   const resolvedTitleColor = titleColor ?? theme.colors.primary;
 
   const authorHref = author?.href
@@ -285,7 +288,12 @@ export const SplashScreen = ({
   const authorNode = author ? (authorHref ?? author.name) : null;
 
   return (
-    <Box flexDirection="column" paddingLeft={padding}>
+    <Box flexDirection="column" paddingLeft={padding} aria-role="list">
+      <Text
+        aria-label={`${title}${subtitle ? `. ${subtitle}` : ""}${author ? `. By ${author.name}` : ""}`}
+      >
+        {""}
+      </Text>
       {titleColorAlt ? (
         <AltColorBigText
           text={title}
@@ -307,7 +315,7 @@ export const SplashScreen = ({
 
       {authorNode && (
         <Box marginTop={1}>
-          <Text dimColor>{"Made with ♥ by "}</Text>
+          <Text dimColor>{unicode ? "Made with ♥ by " : "Made by "}</Text>
           <Text>{authorNode}</Text>
         </Box>
       )}
