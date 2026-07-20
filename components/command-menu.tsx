@@ -6,6 +6,8 @@ import {
   CornerDownLeftIcon,
   CircleDashedIcon,
   SquareDashedIcon,
+  Grid3x3Icon,
+  BinaryIcon,
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -28,28 +30,15 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-import { ROUTES } from "@/constants/routes";
 import { SITE } from "@/constants/site";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { useFeedback } from "@/hooks/use-feedback";
 import { useIsMac } from "@/hooks/use-is-mac";
 import { useMutationObserver } from "@/hooks/use-mutation-observer";
 import { usePackageManager } from "@/hooks/use-package-manager";
-import {
-  EXCLUDED_SECTIONS,
-  getChartRegistryItemName,
-  isChartsFolder,
-  isComponentsFolder,
-  isDitherChartUrl,
-  isTemplatesFolder,
-  isThemesFolder,
-} from "@/lib/docs";
+import { getChartRegistryItemName, isDitherChartUrl } from "@/lib/docs";
 import { trackEvent } from "@/lib/events";
-import {
-  getCategoryFolders,
-  getCurrentBase,
-  getFolderPages,
-} from "@/lib/page-tree";
+import { getCurrentBase, getTreeGroups } from "@/lib/page-tree";
 import { themePrimaryBySlug } from "@/lib/terminal-themes";
 import { cn } from "@/lib/utils";
 
@@ -123,7 +112,13 @@ const buildDocPageKeywords = (
   ...searchKeywordsFromUrl(url),
 ];
 
-const DocPageLeadingIcon = ({ parsed }: { parsed: DocUrlKind }) => {
+const DocPageLeadingIcon = ({
+  parsed,
+  url,
+}: {
+  parsed: DocUrlKind;
+  url: string;
+}) => {
   if (parsed.kind === "theme") {
     const color = themePrimaryBySlug[parsed.slug];
     return (
@@ -134,8 +129,14 @@ const DocPageLeadingIcon = ({ parsed }: { parsed: DocUrlKind }) => {
       />
     );
   }
-  if (parsed.kind === "component" || parsed.kind === "chart") {
+  if (parsed.kind === "component") {
     return <CircleDashedIcon />;
+  }
+  if (parsed.kind === "chart") {
+    if (isDitherChartUrl(url)) {
+      return <Grid3x3Icon />;
+    }
+    return <BinaryIcon />;
   }
   if (parsed.kind === "template") {
     return <SquareDashedIcon />;
@@ -212,85 +213,10 @@ export const CommandMenu = ({
     },
   });
 
-  const treeGroups = useMemo(() => {
-    const groups: { label: string; pages: { url: string; name: string }[] }[] =
-      [];
-    for (const item of tree.children) {
-      if (item.type !== "folder") {
-        continue;
-      }
-      if (EXCLUDED_SECTIONS.has(item.$id ?? "")) {
-        continue;
-      }
-
-      if (isComponentsFolder(item)) {
-        for (const category of getCategoryFolders(item, currentBase)) {
-          const pages = getFolderPages(category).map((p) => ({
-            name: typeof p.name === "string" ? p.name : String(p.name),
-            url: p.url,
-          }));
-          if (pages.length > 0) {
-            groups.push({
-              label:
-                typeof category.name === "string"
-                  ? category.name
-                  : String(category.name),
-              pages,
-            });
-          }
-        }
-      } else if (isChartsFolder(item)) {
-        const chartPages = getFolderPages(item, currentBase).filter(
-          (page) => page.url !== `${ROUTES.DOCS_CHARTS}/${currentBase}`
-        );
-        const pageGroups = [
-          {
-            label: "Charts",
-            pages: chartPages.filter((page) => !isDitherChartUrl(page.url)),
-          },
-          {
-            label: "Dither",
-            pages: chartPages.filter((page) => isDitherChartUrl(page.url)),
-          },
-        ];
-
-        for (const group of pageGroups) {
-          const pages = group.pages.map((page) => ({
-            name: typeof page.name === "string" ? page.name : String(page.name),
-            url: page.url,
-          }));
-          if (pages.length > 0) {
-            groups.push({ label: group.label, pages });
-          }
-        }
-      } else if (isTemplatesFolder(item) || isThemesFolder(item)) {
-        const pages = getFolderPages(item, currentBase).map((p) => ({
-          name: typeof p.name === "string" ? p.name : String(p.name),
-          url: p.url,
-        }));
-        if (pages.length > 0) {
-          groups.push({
-            label:
-              typeof item.name === "string" ? item.name : String(item.name),
-            pages,
-          });
-        }
-      } else {
-        const pages = getFolderPages(item).map((p) => ({
-          name: typeof p.name === "string" ? p.name : String(p.name),
-          url: p.url,
-        }));
-        if (pages.length > 0) {
-          groups.push({
-            label:
-              typeof item.name === "string" ? item.name : String(item.name),
-            pages,
-          });
-        }
-      }
-    }
-    return groups;
-  }, [tree, currentBase]);
+  const treeGroups = useMemo(
+    () => getTreeGroups(tree, currentBase),
+    [tree, currentBase]
+  );
 
   const handleDocPageHighlight = useCallback(
     (item: { url: string; name?: string }) => {
@@ -365,7 +291,7 @@ export const CommandMenu = ({
         onHighlight={() => handleDocPageHighlight({ name: title, url })}
         onSelect={() => runCommand(() => router.push(url))}
       >
-        <DocPageLeadingIcon parsed={parsed} />
+        <DocPageLeadingIcon parsed={parsed} url={url} />
         {title}
       </CommandMenuItem>
     );
@@ -477,7 +403,13 @@ export const CommandMenu = ({
                 heading={group.label}
               >
                 {group.pages.map((page) =>
-                  renderDocPageItem(page.name, page.url, [group.label])
+                  renderDocPageItem(
+                    typeof page.name === "string"
+                      ? page.name
+                      : String(page.name),
+                    page.url,
+                    [group.label]
+                  )
                 )}
               </CommandGroup>
             ))}

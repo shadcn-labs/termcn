@@ -4,7 +4,7 @@ import type { Root as PageTreeRoot } from "fumadocs-core/page-tree";
 import type { LinkProps } from "next/link";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -16,19 +16,17 @@ import { ROUTES } from "@/constants/routes";
 import { TOP_LEVEL_SECTIONS } from "@/constants/site";
 import { useFeedback } from "@/hooks/use-feedback";
 import {
-  EXCLUDED_SECTIONS,
   getDocsSidebarPanel,
-  isCatalogFolder,
   isChartsFolder,
   isComponentsFolder,
   isDitherChartUrl,
   isTemplatesFolder,
-  isThemesFolder,
 } from "@/lib/docs";
 import {
   getCategoryFolders,
   getCurrentBase,
   getFolderPages,
+  getTreeGroups,
 } from "@/lib/page-tree";
 import type { PageTreeFolder } from "@/lib/page-tree";
 import { cn } from "@/lib/utils";
@@ -162,8 +160,8 @@ const ChartsMobilePanel = ({
 
   return (
     <>
-      <MobileNavGroup label="Basic" pages={charts} setOpen={setOpen} />
-      <MobileNavGroup label="Dither" pages={dither} setOpen={setOpen} />
+      <MobileNavGroup label="Basic Charts" pages={charts} setOpen={setOpen} />
+      <MobileNavGroup label="Dither Charts" pages={dither} setOpen={setOpen} />
     </>
   );
 };
@@ -181,6 +179,10 @@ export const MobileNav = ({
   const pathname = usePathname();
   const currentBase = getCurrentBase(pathname);
   const panel = getDocsSidebarPanel(pathname);
+  const treeGroups = useMemo(
+    () => getTreeGroups(tree, currentBase),
+    [tree, currentBase]
+  );
 
   const renderCatalogPanel = () => {
     const panelProps = { currentBase, setOpen, tree };
@@ -269,29 +271,17 @@ export const MobileNav = ({
           </div>
           {panel
             ? renderCatalogPanel()
-            : tree.children.map((item) => {
-                if (item.type !== "folder") {
-                  return null;
-                }
-                if (EXCLUDED_SECTIONS.has(item.$id ?? "")) {
-                  return null;
-                }
-                if (isCatalogFolder(item)) {
-                  return null;
-                }
-
-                return (
-                  <MobileNavGroup
-                    key={item.$id}
-                    label={item.name}
-                    pages={getFolderPages(
-                      item,
-                      isThemesFolder(item) ? currentBase : undefined
-                    )}
-                    setOpen={setOpen}
-                  />
-                );
-              })}
+            : treeGroups.map((group) => (
+                <MobileNavGroup
+                  key={group.label}
+                  label={group.label}
+                  pages={group.pages.map((p) => ({
+                    name: p.name,
+                    url: p.url,
+                  }))}
+                  setOpen={setOpen}
+                />
+              ))}
         </div>
       </PopoverContent>
     </Popover>
