@@ -43,6 +43,7 @@ const InfoBoxRoot = ({
 
   return (
     <box
+      borderStyle={borderStyle}
       borderColor={resolvedBorderColor}
       flexDirection="column"
       paddingLeft={padding[1]}

@@ -194,7 +194,11 @@ export const DataGrid = <
         </box>
       )}
 
-      <box borderColor={resolvedBorderColor} flexDirection="column">
+      <box
+        borderStyle={borderStyle}
+        borderColor={resolvedBorderColor}
+        flexDirection="column"
+      >
         <box flexDirection="row" paddingLeft={1} paddingRight={1}>
           {rowNumHeader && <text fg="#666">{rowNumHeader}</text>}
           <text fg={theme.colors.primary}>

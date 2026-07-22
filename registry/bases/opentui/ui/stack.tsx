@@ -27,8 +27,11 @@ export const Stack = ({
 }: StackProps) => (
   <box
     flexDirection={direction === "vertical" ? "column" : "row"}
+    gap={gap}
     width={width as number}
     height={height as number}
+    alignItems={alignItems}
+    justifyContent={justifyContent}
   >
     {children}
   </box>

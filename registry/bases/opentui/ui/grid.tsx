@@ -17,9 +17,9 @@ export const Grid = ({ columns, gap = 0, children }: GridProps) => {
   }
 
   return (
-    <box flexDirection="column">
+    <box flexDirection="column" gap={gap}>
       {rows.map((row, rowIdx) => (
-        <box key={rowIdx} flexDirection="row">
+        <box key={rowIdx} flexDirection="row" gap={gap}>
           {row.map((cell, colIdx) => (
             <box key={colIdx} flexGrow={1}>
               {cell}

@@ -92,7 +92,7 @@ export const Log = ({
 
   return (
     <box flexDirection="column" gap={0}>
-      <box flexDirection="column">
+      <box flexDirection="column" height={height}>
         {visible.map((entry, i) => {
           const levelColor = LEVEL_COLORS[entry.level];
           const levelLabel = LEVEL_LABELS[entry.level];

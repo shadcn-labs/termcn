@@ -58,7 +58,11 @@ export const Panel = ({
   );
 
   if (!bordered) {
-    return <box flexDirection="column">{inner}</box>;
+    return (
+      <box flexDirection="column" width={width} height={height}>
+        {inner}
+      </box>
+    );
   }
 
   return (
@@ -66,6 +70,8 @@ export const Panel = ({
       flexDirection="column"
       borderStyle={borderStyle ?? theme.border.style}
       borderColor={borderColor ?? theme.colors.border}
+      width={width}
+      height={height}
     >
       {inner}
     </box>

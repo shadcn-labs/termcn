@@ -152,6 +152,7 @@ export const FilePicker = ({
       <box
         borderStyle="single"
         borderColor={isFocused ? theme.colors.focusRing : theme.colors.border}
+        width={width}
         paddingLeft={1}
         paddingRight={1}
       >
@@ -164,6 +165,7 @@ export const FilePicker = ({
         flexDirection="column"
         borderStyle="single"
         borderColor={theme.colors.border}
+        width={width}
       >
         {visible.map((entry, idx) => {
           const absIdx = visibleStart + idx;

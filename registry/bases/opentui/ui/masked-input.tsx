@@ -118,7 +118,13 @@ export const MaskedInput = ({
           <b>{label}</b>
         </text>
       )}
-      <box borderStyle="rounded" paddingLeft={1} paddingRight={1}>
+      <box
+        borderStyle="rounded"
+        borderColor={borderColor}
+        width={width}
+        paddingLeft={1}
+        paddingRight={1}
+      >
         {display.length > 0 ? (
           <text fg={theme.colors.foreground}>{display}</text>
         ) : placeholder ? (

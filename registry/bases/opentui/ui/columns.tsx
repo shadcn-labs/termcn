@@ -21,7 +21,7 @@ export const Columns = ({ children, gap = 0, align = "top" }: ColumnsProps) => {
   const items = React.Children.toArray(children);
 
   return (
-    <box flexDirection="row" alignItems={ALIGN_MAP[align]}>
+    <box flexDirection="row" gap={gap} alignItems={ALIGN_MAP[align]}>
       {items.map((child, index) => (
         <box key={index} flexGrow={1} flexDirection="column">
           {child}

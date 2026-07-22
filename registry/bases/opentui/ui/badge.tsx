@@ -70,6 +70,7 @@ export const Badge = ({
 
   return (
     <box
+      borderStyle={borderStyle}
       borderColor={variantColor}
       paddingLeft={paddingX}
       paddingRight={paddingX}

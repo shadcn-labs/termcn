@@ -30,7 +30,7 @@ export const Heading = ({
   switch (level) {
     case 1: {
       return (
-        <box>
+        <box flexDirection="row">
           <text fg={resolvedColor}>
             <b>{prefix1}</b>
           </text>
@@ -46,7 +46,7 @@ export const Heading = ({
     }
     case 2: {
       return (
-        <box>
+        <box flexDirection="row">
           <text fg={resolvedColor}>
             <b>{prefix2}</b>
           </text>
@@ -58,7 +58,7 @@ export const Heading = ({
     }
     case 3: {
       return (
-        <box>
+        <box flexDirection="row">
           <text>
             <b>{prefix3}</b>
           </text>
@@ -70,7 +70,7 @@ export const Heading = ({
     }
     case 4: {
       return (
-        <box>
+        <box flexDirection="row">
           <text fg="#666">
             <u>{children}</u>
           </text>
@@ -79,7 +79,7 @@ export const Heading = ({
     }
     default: {
       return (
-        <box>
+        <box flexDirection="row">
           <text>{children}</text>
         </box>
       );

@@ -28,7 +28,7 @@ export const FormField = ({
   const resolvedLabelColor = labelColor ?? theme.colors.foreground;
 
   return (
-    <box flexDirection="column">
+    <box flexDirection="column" gap={gap}>
       <box gap={0}>
         <text fg={resolvedLabelColor}>
           <b>{label}</b>

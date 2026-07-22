@@ -277,6 +277,7 @@ export const Code = ({
       {language ? (
         <box
           key="lang"
+          flexDirection="row"
           justifyContent="flex-end"
           paddingLeft={1}
           paddingRight={1}

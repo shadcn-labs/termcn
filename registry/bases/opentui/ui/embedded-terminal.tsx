@@ -90,7 +90,12 @@ export const EmbeddedTerminal = ({
   );
 
   return (
-    <box flexDirection="column" borderStyle="rounded" borderColor="cyan">
+    <box
+      flexDirection="column"
+      borderStyle="rounded"
+      borderColor="cyan"
+      width={width}
+    >
       {err ? (
         <text fg="red">{err}</text>
       ) : (

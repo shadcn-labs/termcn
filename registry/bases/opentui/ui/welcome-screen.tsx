@@ -201,6 +201,7 @@ const WelcomeScreenRoot = ({
         <text fg={resolvedBorderColor}>{" ─"}</text>
       </box>
       <box
+        borderStyle={borderStyle}
         borderColor={resolvedBorderColor}
         borderTop={false}
         flexDirection="row"

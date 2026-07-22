@@ -92,6 +92,7 @@ const LoginFlowAnnouncement = ({
   const theme = useTheme();
   return (
     <box
+      borderStyle={borderStyle}
       borderColor={borderColor ?? theme.colors.border}
       flexDirection="row"
       paddingLeft={1}

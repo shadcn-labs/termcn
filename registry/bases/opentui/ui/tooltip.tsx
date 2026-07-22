@@ -36,6 +36,7 @@ export const Tooltip = ({
 
   const tooltipBox = (
     <box
+      borderStyle={borderStyle}
       borderColor={resolvedBorderColor}
       paddingLeft={paddingX}
       paddingRight={paddingX}
@@ -72,7 +73,7 @@ export const Tooltip = ({
 
   if (position === "left") {
     return (
-      <box flexDirection="row" alignItems="center">
+      <box flexDirection="row" alignItems="center" gap={gap}>
         {tooltipBox}
         <box>{children}</box>
       </box>
@@ -80,7 +81,7 @@ export const Tooltip = ({
   }
 
   return (
-    <box flexDirection="row" alignItems="center">
+    <box flexDirection="row" alignItems="center" gap={gap}>
       <box>{children}</box>
       {tooltipBox}
     </box>

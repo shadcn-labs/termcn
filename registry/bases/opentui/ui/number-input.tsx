@@ -142,7 +142,12 @@ export const NumberInput = ({
         </text>
       )}
       <box flexDirection="row" alignItems="center" gap={1}>
-        <box paddingLeft={paddingX} paddingRight={paddingX}>
+        <box
+          borderStyle={borderStyle}
+          borderColor={borderColor}
+          paddingLeft={paddingX}
+          paddingRight={paddingX}
+        >
           <text
             fg={
               displayValue

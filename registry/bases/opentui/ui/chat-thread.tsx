@@ -18,5 +18,9 @@ export const ChatThread = ({
     ? { height: maxHeight, overflow: "hidden" as const }
     : {};
 
-  return <box flexDirection="column">{children}</box>;
+  return (
+    <box flexDirection="column" {...containerProps}>
+      {children}
+    </box>
+  );
 };

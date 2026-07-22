@@ -116,6 +116,7 @@ export const NotificationCenter = ({
             paddingLeft={1}
             paddingRight={1}
             marginTop={0}
+            width={width}
           >
             <box flexDirection="row" gap={1}>
               <text fg={color}>

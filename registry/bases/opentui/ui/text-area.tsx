@@ -204,6 +204,8 @@ export const TextArea = ({
       )}
       <box
         flexDirection="column"
+        borderStyle={borderStyle}
+        borderColor={borderColor}
         paddingLeft={paddingX}
         paddingRight={paddingX}
       >

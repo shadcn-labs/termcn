@@ -89,7 +89,13 @@ export const PasswordInput = ({
         </text>
       )}
       <box flexDirection="row" alignItems="center" gap={1}>
-        <box paddingLeft={paddingX} paddingRight={paddingX}>
+        <box
+          borderStyle={borderStyle}
+          borderColor={borderColor}
+          paddingLeft={paddingX}
+          paddingRight={paddingX}
+          width={width}
+        >
           <text
             fg={value ? theme.colors.foreground : theme.colors.mutedForeground}
           >

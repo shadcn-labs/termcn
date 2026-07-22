@@ -152,7 +152,13 @@ export const PathInput = ({
           <b>{label}</b>
         </text>
       )}
-      <box borderStyle="rounded" paddingLeft={1} paddingRight={1}>
+      <box
+        borderStyle="rounded"
+        borderColor={borderColor}
+        width={width}
+        paddingLeft={1}
+        paddingRight={1}
+      >
         <text
           fg={value ? theme.colors.foreground : theme.colors.mutedForeground}
         >

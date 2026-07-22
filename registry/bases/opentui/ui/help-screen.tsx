@@ -88,7 +88,9 @@ const HelpScreenRoot = ({
   return (
     <box flexDirection="column" paddingLeft={2}>
       <box marginBottom={1}>
-        <BigText color={resolvedColor}>{title}</BigText>
+        <BigText font={font} color={resolvedColor}>
+          {title}
+        </BigText>
       </box>
 
       {tagline && (

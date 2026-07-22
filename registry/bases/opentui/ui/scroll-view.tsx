@@ -78,7 +78,7 @@ export const ScrollView = ({
   );
 
   return (
-    <box flexDirection="row" overflow="hidden">
+    <box flexDirection="row" height={height} overflow="hidden">
       <box
         flexGrow={1}
         flexDirection="column"

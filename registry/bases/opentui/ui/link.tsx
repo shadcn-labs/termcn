@@ -50,8 +50,8 @@ export const Link = ({
 
     return (
       <box flexDirection="row">
-        <text fg={resolvedColor} underline={true}>
-          {wrapWithLink(text, href)}
+        <text fg={resolvedColor}>
+          <u>{wrapWithLink(text, href)}</u>
         </text>
       </box>
     );
@@ -59,8 +59,8 @@ export const Link = ({
 
   return (
     <box flexDirection="row">
-      <text fg={resolvedColor} underline={true}>
-        {children}
+      <text fg={resolvedColor}>
+        <u>{children}</u>
       </text>
       {showHref || fallback === true ? (
         <text fg="#666">{` (${href})`}</text>

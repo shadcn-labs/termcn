@@ -33,6 +33,7 @@ export interface BoxProps {
   height?: number | string;
   minWidth?: number;
   minHeight?: number;
+  padding?: number;
   paddingLeft?: number;
   paddingRight?: number;
   paddingTop?: number;
@@ -42,6 +43,7 @@ export interface BoxProps {
   marginTop?: number;
   marginBottom?: number;
   gap?: number;
+  overflow?: string;
   [key: string]: unknown;
 }
 
@@ -50,6 +52,8 @@ export const Box = ({
   borderVariant = "default",
   borderColor,
   children,
+  borderStyle,
+  flexDirection = "row",
   ...props
 }: BoxProps) => {
   const theme = useTheme();
@@ -81,10 +85,10 @@ export const Box = ({
 
   return (
     <box
-      borderStyle={
-        border ? (props.borderStyle ?? theme.border.style) : undefined
-      }
+      borderStyle={border ? (borderStyle ?? theme.border.style) : undefined}
       borderColor={border ? resolvedBorderColor : undefined}
+      flexDirection={flexDirection}
+      {...props}
     >
       {children}
     </box>

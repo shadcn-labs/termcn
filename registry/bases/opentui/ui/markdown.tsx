@@ -53,7 +53,7 @@ const InlineLine = ({ segments }: { segments: InlineSegment[] }) => {
   const theme = useTheme();
 
   return (
-    <box>
+    <box flexDirection="row">
       {segments.map((seg, i) => {
         if (seg.code) {
           return (
@@ -64,9 +64,9 @@ const InlineLine = ({ segments }: { segments: InlineSegment[] }) => {
         }
         if (seg.link) {
           return (
-            <box key={i}>
-              <text fg={theme.colors.info} underline={true}>
-                {seg.text}
+            <box key={i} flexDirection="row">
+              <text fg={theme.colors.info}>
+                <u>{seg.text}</u>
               </text>
               <text fg="#666">{` (${seg.url})`}</text>
             </box>
@@ -155,7 +155,7 @@ export const Markdown = ({ children, width }: MarkdownProps) => {
       elements.push(<box key={i} />);
     } else {
       elements.push(
-        <box key={i} flexWrap="wrap">
+        <box key={i} flexWrap="wrap" width={width}>
           <InlineLine segments={parseInline(line)} />
         </box>
       );

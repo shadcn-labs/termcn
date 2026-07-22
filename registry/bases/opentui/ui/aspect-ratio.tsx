@@ -14,5 +14,9 @@ export const AspectRatio = ({
 }: AspectRatioProps) => {
   const height = Math.round(width / ratio / 2);
 
-  return <box overflow="hidden">{children}</box>;
+  return (
+    <box width={width} height={height} overflow="hidden">
+      {children}
+    </box>
+  );
 };

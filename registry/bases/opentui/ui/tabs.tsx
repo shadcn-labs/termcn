@@ -96,6 +96,7 @@ export const Tabs = ({
         })}
       </box>
       <box
+        borderStyle={borderStyle}
         borderColor={resolvedBorderColor}
         paddingLeft={paddingX}
         paddingRight={paddingX}

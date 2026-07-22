@@ -51,7 +51,7 @@ const AppShellHeader = ({ children }: AppShellHeaderProps) => (
 );
 
 const AppShellTip = ({ children }: AppShellTipProps) => (
-  <box paddingLeft={2} paddingTop={0} paddingBottom={0}>
+  <box flexDirection="row" paddingLeft={2} paddingTop={0} paddingBottom={0}>
     <text fg="#666">{"  Tip: "}</text>
     <text fg="#666">{children}</text>
   </box>
@@ -108,6 +108,7 @@ const AppShellInput = ({
 
   return (
     <box
+      borderStyle={borderStyle}
       borderColor={borderColor ?? theme.colors.border}
       flexDirection="row"
       paddingLeft={1}
@@ -136,7 +137,7 @@ const AppShellContent = ({ children, height = 20 }: AppShellContentProps) => {
   });
 
   return (
-    <box flexDirection="row" overflow="hidden">
+    <box flexDirection="row" height={height} overflow="hidden">
       <box flexGrow={1} flexDirection="column" marginTop={-scrollTop as number}>
         {children}
       </box>

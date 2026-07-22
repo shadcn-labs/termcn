@@ -51,7 +51,9 @@ export const Modal = ({
   return (
     <box
       flexDirection="column"
+      borderStyle={borderStyle}
       borderColor={resolvedBorderColor}
+      width={width}
       paddingLeft={paddingX}
       paddingRight={paddingX}
       paddingTop={paddingY}

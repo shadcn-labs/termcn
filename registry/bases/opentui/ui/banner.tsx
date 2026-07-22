@@ -83,7 +83,7 @@ export const Banner = ({
 
   return (
     <box flexDirection="column">
-      <box flexDirection="row">
+      <box flexDirection="row" gap={gap}>
         <text fg={variantColor}>{accentChar}</text>
         <box flexDirection="column">
           <box flexDirection="row" gap={1}>

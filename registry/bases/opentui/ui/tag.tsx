@@ -26,6 +26,7 @@ export const Tag = ({
   return (
     <box
       borderStyle="rounded"
+      borderColor={borderColor}
       paddingLeft={1}
       paddingRight={1}
       flexDirection="row"

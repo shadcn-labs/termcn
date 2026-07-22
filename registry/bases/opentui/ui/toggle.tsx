@@ -60,6 +60,7 @@ export const Toggle = ({
   return (
     <box gap={1} alignItems="center">
       <box
+        borderStyle={borderStyle}
         borderColor={focusColor}
         paddingLeft={paddingX}
         paddingRight={paddingX}

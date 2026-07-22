@@ -214,18 +214,44 @@ export const ExamplesIndex: Record<string, Record<string, any>> = {
       filePath: "examples/ink/big-text-demo.tsx",
       name: "big-text-demo",
     },
-    "big-text-fonts": {
+    "big-text-shade": {
       component: React.lazy(async () => {
-        const mod = await import("./ink/big-text-fonts");
+        const mod = await import("./ink/big-text-shade");
         const exportName =
           Object.keys(mod).find(
             (key) =>
               typeof mod[key] === "function" || typeof mod[key] === "object"
-          ) || "big-text-fonts";
+          ) || "big-text-shade";
         return { default: mod.default || mod[exportName] };
       }),
-      filePath: "examples/ink/big-text-fonts.tsx",
-      name: "big-text-fonts",
+      filePath: "examples/ink/big-text-shade.tsx",
+      name: "big-text-shade",
+    },
+    "big-text-simple": {
+      component: React.lazy(async () => {
+        const mod = await import("./ink/big-text-simple");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "big-text-simple";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/ink/big-text-simple.tsx",
+      name: "big-text-simple",
+    },
+    "big-text-slim": {
+      component: React.lazy(async () => {
+        const mod = await import("./ink/big-text-slim");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "big-text-slim";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/ink/big-text-slim.tsx",
+      name: "big-text-slim",
     },
     "box-demo": {
       component: React.lazy(async () => {
@@ -903,6 +929,32 @@ export const ExamplesIndex: Record<string, Record<string, any>> = {
       filePath: "examples/ink/git-status-demo.tsx",
       name: "git-status-demo",
     },
+    "gradient-atlas": {
+      component: React.lazy(async () => {
+        const mod = await import("./ink/gradient-atlas");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "gradient-atlas";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/ink/gradient-atlas.tsx",
+      name: "gradient-atlas",
+    },
+    "gradient-cristal": {
+      component: React.lazy(async () => {
+        const mod = await import("./ink/gradient-cristal");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "gradient-cristal";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/ink/gradient-cristal.tsx",
+      name: "gradient-cristal",
+    },
     "gradient-demo": {
       component: React.lazy(async () => {
         const mod = await import("./ink/gradient-demo");
@@ -916,18 +968,148 @@ export const ExamplesIndex: Record<string, Record<string, any>> = {
       filePath: "examples/ink/gradient-demo.tsx",
       name: "gradient-demo",
     },
-    "gradient-presets": {
+    "gradient-fruit": {
       component: React.lazy(async () => {
-        const mod = await import("./ink/gradient-presets");
+        const mod = await import("./ink/gradient-fruit");
         const exportName =
           Object.keys(mod).find(
             (key) =>
               typeof mod[key] === "function" || typeof mod[key] === "object"
-          ) || "gradient-presets";
+          ) || "gradient-fruit";
         return { default: mod.default || mod[exportName] };
       }),
-      filePath: "examples/ink/gradient-presets.tsx",
-      name: "gradient-presets",
+      filePath: "examples/ink/gradient-fruit.tsx",
+      name: "gradient-fruit",
+    },
+    "gradient-instagram": {
+      component: React.lazy(async () => {
+        const mod = await import("./ink/gradient-instagram");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "gradient-instagram";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/ink/gradient-instagram.tsx",
+      name: "gradient-instagram",
+    },
+    "gradient-mind": {
+      component: React.lazy(async () => {
+        const mod = await import("./ink/gradient-mind");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "gradient-mind";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/ink/gradient-mind.tsx",
+      name: "gradient-mind",
+    },
+    "gradient-morning": {
+      component: React.lazy(async () => {
+        const mod = await import("./ink/gradient-morning");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "gradient-morning";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/ink/gradient-morning.tsx",
+      name: "gradient-morning",
+    },
+    "gradient-passion": {
+      component: React.lazy(async () => {
+        const mod = await import("./ink/gradient-passion");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "gradient-passion";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/ink/gradient-passion.tsx",
+      name: "gradient-passion",
+    },
+    "gradient-pastel": {
+      component: React.lazy(async () => {
+        const mod = await import("./ink/gradient-pastel");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "gradient-pastel";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/ink/gradient-pastel.tsx",
+      name: "gradient-pastel",
+    },
+    "gradient-rainbow": {
+      component: React.lazy(async () => {
+        const mod = await import("./ink/gradient-rainbow");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "gradient-rainbow";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/ink/gradient-rainbow.tsx",
+      name: "gradient-rainbow",
+    },
+    "gradient-retro": {
+      component: React.lazy(async () => {
+        const mod = await import("./ink/gradient-retro");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "gradient-retro";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/ink/gradient-retro.tsx",
+      name: "gradient-retro",
+    },
+    "gradient-summer": {
+      component: React.lazy(async () => {
+        const mod = await import("./ink/gradient-summer");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "gradient-summer";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/ink/gradient-summer.tsx",
+      name: "gradient-summer",
+    },
+    "gradient-teen": {
+      component: React.lazy(async () => {
+        const mod = await import("./ink/gradient-teen");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "gradient-teen";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/ink/gradient-teen.tsx",
+      name: "gradient-teen",
+    },
+    "gradient-vice": {
+      component: React.lazy(async () => {
+        const mod = await import("./ink/gradient-vice");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "gradient-vice";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/ink/gradient-vice.tsx",
+      name: "gradient-vice",
     },
     "grid-demo": {
       component: React.lazy(async () => {
@@ -1761,6 +1943,19 @@ export const ExamplesIndex: Record<string, Record<string, any>> = {
       filePath: "examples/ink/tag-input-demo.tsx",
       name: "tag-input-demo",
     },
+    "tag-outline": {
+      component: React.lazy(async () => {
+        const mod = await import("./ink/tag-outline-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "tag-outline";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/ink/tag-outline-demo.tsx",
+      name: "tag-outline",
+    },
     "text-area-demo": {
       component: React.lazy(async () => {
         const mod = await import("./ink/text-area-demo");
@@ -2257,18 +2452,44 @@ export const ExamplesIndex: Record<string, Record<string, any>> = {
       filePath: "examples/opentui/big-text-demo.tsx",
       name: "big-text-demo",
     },
-    "big-text-fonts": {
+    "big-text-shade": {
       component: React.lazy(async () => {
-        const mod = await import("./opentui/big-text-fonts");
+        const mod = await import("./opentui/big-text-shade");
         const exportName =
           Object.keys(mod).find(
             (key) =>
               typeof mod[key] === "function" || typeof mod[key] === "object"
-          ) || "big-text-fonts";
+          ) || "big-text-shade";
         return { default: mod.default || mod[exportName] };
       }),
-      filePath: "examples/opentui/big-text-fonts.tsx",
-      name: "big-text-fonts",
+      filePath: "examples/opentui/big-text-shade.tsx",
+      name: "big-text-shade",
+    },
+    "big-text-simple": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/big-text-simple");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "big-text-simple";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/big-text-simple.tsx",
+      name: "big-text-simple",
+    },
+    "big-text-slim": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/big-text-slim");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "big-text-slim";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/big-text-slim.tsx",
+      name: "big-text-slim",
     },
     "box-demo": {
       component: React.lazy(async () => {
@@ -2920,6 +3141,32 @@ export const ExamplesIndex: Record<string, Record<string, any>> = {
       filePath: "examples/opentui/git-status-demo.tsx",
       name: "git-status-demo",
     },
+    "gradient-atlas": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/gradient-atlas");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "gradient-atlas";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/gradient-atlas.tsx",
+      name: "gradient-atlas",
+    },
+    "gradient-cristal": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/gradient-cristal");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "gradient-cristal";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/gradient-cristal.tsx",
+      name: "gradient-cristal",
+    },
     "gradient-demo": {
       component: React.lazy(async () => {
         const mod = await import("./opentui/gradient-demo");
@@ -2933,18 +3180,148 @@ export const ExamplesIndex: Record<string, Record<string, any>> = {
       filePath: "examples/opentui/gradient-demo.tsx",
       name: "gradient-demo",
     },
-    "gradient-presets": {
+    "gradient-fruit": {
       component: React.lazy(async () => {
-        const mod = await import("./opentui/gradient-presets");
+        const mod = await import("./opentui/gradient-fruit");
         const exportName =
           Object.keys(mod).find(
             (key) =>
               typeof mod[key] === "function" || typeof mod[key] === "object"
-          ) || "gradient-presets";
+          ) || "gradient-fruit";
         return { default: mod.default || mod[exportName] };
       }),
-      filePath: "examples/opentui/gradient-presets.tsx",
-      name: "gradient-presets",
+      filePath: "examples/opentui/gradient-fruit.tsx",
+      name: "gradient-fruit",
+    },
+    "gradient-instagram": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/gradient-instagram");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "gradient-instagram";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/gradient-instagram.tsx",
+      name: "gradient-instagram",
+    },
+    "gradient-mind": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/gradient-mind");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "gradient-mind";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/gradient-mind.tsx",
+      name: "gradient-mind",
+    },
+    "gradient-morning": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/gradient-morning");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "gradient-morning";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/gradient-morning.tsx",
+      name: "gradient-morning",
+    },
+    "gradient-passion": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/gradient-passion");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "gradient-passion";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/gradient-passion.tsx",
+      name: "gradient-passion",
+    },
+    "gradient-pastel": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/gradient-pastel");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "gradient-pastel";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/gradient-pastel.tsx",
+      name: "gradient-pastel",
+    },
+    "gradient-rainbow": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/gradient-rainbow");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "gradient-rainbow";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/gradient-rainbow.tsx",
+      name: "gradient-rainbow",
+    },
+    "gradient-retro": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/gradient-retro");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "gradient-retro";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/gradient-retro.tsx",
+      name: "gradient-retro",
+    },
+    "gradient-summer": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/gradient-summer");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "gradient-summer";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/gradient-summer.tsx",
+      name: "gradient-summer",
+    },
+    "gradient-teen": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/gradient-teen");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "gradient-teen";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/gradient-teen.tsx",
+      name: "gradient-teen",
+    },
+    "gradient-vice": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/gradient-vice");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "gradient-vice";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/gradient-vice.tsx",
+      name: "gradient-vice",
     },
     "grid-demo": {
       component: React.lazy(async () => {
@@ -3777,6 +4154,19 @@ export const ExamplesIndex: Record<string, Record<string, any>> = {
       }),
       filePath: "examples/opentui/tag-input-demo.tsx",
       name: "tag-input-demo",
+    },
+    "tag-outline": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/tag-outline-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "tag-outline";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/tag-outline-demo.tsx",
+      name: "tag-outline",
     },
     "text-area-demo": {
       component: React.lazy(async () => {
