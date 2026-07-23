@@ -1,8 +1,11 @@
-import { Box, Text } from "ink";
-import React, { useState } from "react";
+import { useIsScreenReaderEnabled, Box, Text } from "ink";
+import React, { useEffect, useState } from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
-import { useInput } from "@/hooks/use-input";
+import { useInteraction } from "@/hooks/use-interaction";
+import type { InteractionProps } from "@/hooks/use-interaction";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import { resolveBorderStyle } from "@/registry/bases/ink/lib/accessibility";
 
 export interface SidebarItem {
   key: string;
@@ -10,15 +13,17 @@ export interface SidebarItem {
   icon?: string;
   badge?: string | number;
   children?: SidebarItem[];
+  disabled?: boolean;
 }
 
-export interface SidebarProps {
+export interface SidebarProps extends InteractionProps {
   items: SidebarItem[];
   activeKey?: string;
   onSelect?: (key: string) => void;
   collapsed?: boolean;
   width?: number;
   title?: string;
+  "aria-label"?: string;
 }
 
 const flattenItems = (
@@ -43,8 +48,15 @@ export const Sidebar = ({
   collapsed = false,
   width = 20,
   title,
+  id,
+  autoFocus,
+  isActive,
+  disabled,
+  "aria-label": ariaLabel = title ?? "Sidebar navigation",
 }: SidebarProps) => {
+  const unicode = useUnicode();
   const theme = useTheme();
+  const isScreenReaderEnabled = useIsScreenReaderEnabled();
   const [focusIndex, setFocusIndex] = useState(0);
   const [expandedKeys, setExpandedKeys] = useState<Set<string>>(new Set());
 
@@ -63,47 +75,77 @@ export const Sidebar = ({
     });
   };
 
-  useInput((_input, key) => {
-    if (key.upArrow) {
-      setFocusIndex((prev) => Math.max(0, prev - 1));
-    } else if (key.downArrow) {
-      setFocusIndex((prev) => Math.min(flatItems.length - 1, prev + 1));
-    } else if (key.return) {
-      const entry = flatItems[focusIndex];
-      if (!entry) {
-        return;
+  const enabledIndices = flatItems
+    .map(({ item }, index) => ({ index, item }))
+    .filter(({ item }) => !item.disabled);
+  const { isFocused: hasFocus } = useInteraction(
+    (_input, key) => {
+      const enabledIndex = enabledIndices.findIndex(
+        ({ index }) => index === focusIndex
+      );
+      if (key.upArrow) {
+        setFocusIndex(
+          enabledIndices[Math.max(0, enabledIndex - 1)]?.index ?? 0
+        );
+      } else if (key.downArrow) {
+        setFocusIndex(
+          enabledIndices[Math.min(enabledIndices.length - 1, enabledIndex + 1)]
+            ?.index ?? 0
+        );
+      } else if (key.home) {
+        setFocusIndex(enabledIndices[0]?.index ?? 0);
+      } else if (key.end) {
+        setFocusIndex(enabledIndices.at(-1)?.index ?? 0);
+      } else if (key.return) {
+        const entry = flatItems[focusIndex];
+        if (!entry || entry.item.disabled) {
+          return;
+        }
+        if (entry.item.children && entry.item.children.length > 0) {
+          toggleExpand(entry.item.key);
+        } else {
+          onSelect?.(entry.item.key);
+        }
+      } else if (key.rightArrow) {
+        const entry = flatItems[focusIndex];
+        if (entry?.item.children && entry.item.children.length > 0) {
+          setExpandedKeys((prev) => new Set([...prev, entry.item.key]));
+        }
+      } else if (key.leftArrow) {
+        const entry = flatItems[focusIndex];
+        if (entry?.item.children && expandedKeys.has(entry.item.key)) {
+          setExpandedKeys((prev) => {
+            const next = new Set(prev);
+            next.delete(entry.item.key);
+            return next;
+          });
+        }
       }
-      if (entry.item.children && entry.item.children.length > 0) {
-        toggleExpand(entry.item.key);
-      } else {
-        onSelect?.(entry.item.key);
-      }
-    } else if (key.rightArrow) {
-      const entry = flatItems[focusIndex];
-      if (entry?.item.children && entry.item.children.length > 0) {
-        setExpandedKeys((prev) => new Set([...prev, entry.item.key]));
-      }
-    } else if (key.leftArrow) {
-      const entry = flatItems[focusIndex];
-      if (entry?.item.children && expandedKeys.has(entry.item.key)) {
-        setExpandedKeys((prev) => {
-          const next = new Set(prev);
-          next.delete(entry.item.key);
-          return next;
-        });
-      }
+    },
+    { autoFocus, disabled, id, isActive }
+  );
+
+  useEffect(() => {
+    if (!flatItems[focusIndex] || flatItems[focusIndex]?.item.disabled) {
+      setFocusIndex(enabledIndices[0]?.index ?? 0);
     }
-  });
+  }, [enabledIndices, flatItems, focusIndex]);
 
   return (
     <Box
       flexDirection="column"
-      borderStyle="single"
+      borderStyle={resolveBorderStyle(
+        isScreenReaderEnabled ? undefined : "single",
+        unicode
+      )}
       borderColor={theme.colors.border}
       width={effectiveWidth}
       paddingX={0}
       paddingY={0}
+      aria-role="list"
+      aria-state={{ disabled: disabled || undefined }}
     >
+      <Text aria-label={ariaLabel}>{""}</Text>
       {title && !collapsed && (
         <Box paddingX={1} marginBottom={1}>
           <Text bold color={theme.colors.primary}>
@@ -112,7 +154,7 @@ export const Sidebar = ({
         </Box>
       )}
       {flatItems.map(({ item, depth }, idx) => {
-        const isFocused = idx === focusIndex;
+        const isFocused = idx === focusIndex && hasFocus;
         const isActive = item.key === activeKey;
         const indent = collapsed ? 0 : depth * 2;
         const hasChildren = item.children && item.children.length > 0;
@@ -128,7 +170,16 @@ export const Sidebar = ({
             collapsedColor = theme.colors.mutedForeground;
           }
           return (
-            <Box key={item.key} paddingX={0}>
+            <Box
+              key={item.key}
+              paddingX={0}
+              aria-role="listitem"
+              aria-label={`${item.label}${item.badge === undefined ? "" : `, badge ${item.badge}`}`}
+              aria-state={{
+                disabled: item.disabled || undefined,
+                selected: isActive,
+              }}
+            >
               <Text color={collapsedColor} bold={isActive}>
                 {item.icon ?? item.label.charAt(0)}
               </Text>
@@ -146,14 +197,25 @@ export const Sidebar = ({
         }
 
         return (
-          <Box key={item.key} flexDirection="row" alignItems="center">
+          <Box
+            key={item.key}
+            flexDirection="row"
+            alignItems="center"
+            aria-role="listitem"
+            aria-label={`${item.label}${item.badge === undefined ? "" : `, badge ${item.badge}`}`}
+            aria-state={{
+              disabled: item.disabled || undefined,
+              expanded: hasChildren ? isExpanded : undefined,
+              selected: isActive,
+            }}
+          >
             <Text color={isActive ? theme.colors.primary : "transparent"}>
-              {isActive ? "▌" : " "}
+              {isActive ? (unicode ? "▌" : "|") : " "}
             </Text>
             {indent > 0 && <Text>{" ".repeat(indent)}</Text>}
             {hasChildren ? (
               <Text color={theme.colors.mutedForeground}>
-                {isExpanded ? "▾ " : "▸ "}
+                {isExpanded ? (unicode ? "▾ " : "v ") : unicode ? "▸ " : "> "}
               </Text>
             ) : (
               <Text>{"  "}</Text>

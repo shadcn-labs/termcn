@@ -1,10 +1,13 @@
 import { Box, Text } from "ink";
 import React, { useState } from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
-import { useInput } from "@/hooks/use-input";
+import { isActivationKey, useInteraction } from "@/hooks/use-interaction";
+import type { InteractionProps } from "@/hooks/use-interaction";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import { resolveTerminalSymbol } from "@/registry/bases/ink/lib/accessibility";
 
-export interface ConfirmProps {
+export interface ConfirmProps extends InteractionProps {
   message: string;
   onConfirm?: () => void;
   onCancel?: () => void;
@@ -12,6 +15,7 @@ export interface ConfirmProps {
   cancelLabel?: string;
   defaultValue?: boolean;
   variant?: "default" | "danger";
+  "aria-label"?: string;
 }
 
 export const Confirm = ({
@@ -22,40 +26,56 @@ export const Confirm = ({
   cancelLabel = "No",
   defaultValue = false,
   variant = "default",
+  id,
+  autoFocus,
+  isActive,
+  disabled,
+  "aria-label": ariaLabel,
 }: ConfirmProps) => {
   const theme = useTheme();
+  const unicode = useUnicode();
+  const cursor = resolveTerminalSymbol(unicode, "›", ">");
   const [selected, setSelected] = useState<boolean>(defaultValue);
 
-  useInput((input, key) => {
-    if (key.leftArrow || key.rightArrow) {
-      setSelected((s) => !s);
-    } else if (key.return) {
-      if (selected) {
+  const { isFocused } = useInteraction(
+    (input, key) => {
+      if (key.leftArrow || key.rightArrow) {
+        setSelected((s) => !s);
+      } else if (isActivationKey(input, key)) {
+        if (selected) {
+          onConfirm?.();
+        } else {
+          onCancel?.();
+        }
+      } else if (input === "y" || input === "Y") {
         onConfirm?.();
-      } else {
+      } else if (input === "n" || input === "N") {
         onCancel?.();
       }
-    } else if (input === "y" || input === "Y") {
-      onConfirm?.();
-    } else if (input === "n" || input === "N") {
-      onCancel?.();
-    }
-  });
+    },
+    { autoFocus, disabled, id, isActive }
+  );
 
   const yesColor =
     variant === "danger" ? theme.colors.error : theme.colors.primary;
 
   return (
-    <Box flexDirection="column" gap={0}>
+    <Box flexDirection="column" gap={0} aria-role="toolbar">
+      <Text aria-label={ariaLabel ?? `Confirmation: ${message}`}>{""}</Text>
       <Text>
         <Text color={theme.colors.primary}>{"? "}</Text>
         {message}
       </Text>
       <Box gap={2} paddingLeft={2}>
-        <Box gap={1}>
+        <Box
+          gap={1}
+          aria-role="button"
+          aria-label={confirmLabel}
+          aria-state={{ disabled: disabled || undefined }}
+        >
           {selected ? (
             <Text color={yesColor} bold>
-              {"› "}
+              {isFocused ? `[${cursor}] ` : `${cursor} `}
               {confirmLabel}
             </Text>
           ) : (
@@ -65,7 +85,12 @@ export const Confirm = ({
             </Text>
           )}
         </Box>
-        <Box gap={1}>
+        <Box
+          gap={1}
+          aria-role="button"
+          aria-label={cancelLabel}
+          aria-state={{ disabled: disabled || undefined }}
+        >
           {selected ? (
             <Text color={theme.colors.mutedForeground}>
               {"  "}
@@ -73,7 +98,7 @@ export const Confirm = ({
             </Text>
           ) : (
             <Text bold>
-              {"› "}
+              {isFocused ? `[${cursor}] ` : `${cursor} `}
               {cancelLabel}
             </Text>
           )}

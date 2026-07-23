@@ -1,6 +1,8 @@
-import { Box, Text } from "ink";
+import { useIsScreenReaderEnabled, Box, Text } from "ink";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import { resolveBorderStyle } from "@/registry/bases/ink/lib/accessibility";
 import type { BorderStyle } from "@/registry/bases/ink/ui/types";
 
 export interface CodeProps {
@@ -16,6 +18,7 @@ export interface CodeProps {
   commentColor?: string;
   operatorColor?: string;
   plainColor?: string;
+  "aria-label"?: string;
 }
 
 const KEYWORDS = new Set([
@@ -225,15 +228,20 @@ export const Code = ({
   inline = false,
   borderStyle = "single",
   showLineNumbers = true,
-  lineNumberSeparator = "│ ",
+  lineNumberSeparator,
   keywordColor: keywordColorProp,
   stringColor: stringColorProp,
   numberColor: numberColorProp,
   commentColor: commentColorProp,
   operatorColor: operatorColorProp,
   plainColor: plainColorProp,
+  "aria-label": ariaLabel,
 }: CodeProps) => {
+  const unicode = useUnicode();
   const theme = useTheme();
+  const isScreenReaderEnabled = useIsScreenReaderEnabled();
+  const resolvedLineNumberSeparator =
+    lineNumberSeparator ?? (unicode ? "│ " : "| ");
 
   const keywordColor = keywordColorProp ?? theme.colors.accent;
   const stringColor = stringColorProp ?? theme.colors.success;
@@ -244,14 +252,23 @@ export const Code = ({
 
   const lines = children.split("\n");
 
+  if (isScreenReaderEnabled) {
+    return (
+      <Text aria-label={ariaLabel ?? `${language ?? "Code"}: ${children}`}>
+        {""}
+      </Text>
+    );
+  }
+
   if (inline) {
     const displayLine = lines[0] ?? "";
     return (
       <Box
-        borderStyle={borderStyle}
+        borderStyle={resolveBorderStyle(borderStyle, unicode)}
         borderColor={theme.colors.border}
         paddingX={1}
       >
+        {ariaLabel && <Text aria-label={ariaLabel}>{""}</Text>}
         <CodeLine
           line={displayLine}
           keywordColor={keywordColor}
@@ -270,9 +287,10 @@ export const Code = ({
   return (
     <Box
       flexDirection="column"
-      borderStyle={borderStyle}
+      borderStyle={resolveBorderStyle(borderStyle, unicode)}
       borderColor={theme.colors.border}
     >
+      {ariaLabel && <Text aria-label={ariaLabel}>{""}</Text>}
       {language && (
         <Box justifyContent="flex-end" paddingX={1}>
           <Text color={theme.colors.mutedForeground}>{language}</Text>
@@ -286,7 +304,7 @@ export const Code = ({
                 {String(idx + 1).padStart(lineNumberWidth, " ")}{" "}
               </Text>
               <Text color={theme.colors.mutedForeground}>
-                {lineNumberSeparator}
+                {resolvedLineNumberSeparator}
               </Text>
             </>
           )}

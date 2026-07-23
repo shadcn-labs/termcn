@@ -1,7 +1,9 @@
 import { Box, Text } from "ink";
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import { resolveBorderStyle } from "@/registry/bases/ink/lib/accessibility";
 import type { BorderStyle } from "@/registry/bases/ink/ui/types";
 
 export interface InfoBoxProps {
@@ -10,6 +12,7 @@ export interface InfoBoxProps {
   padding?: [number, number];
   width?: number | "full";
   children: ReactNode;
+  "aria-label"?: string;
 }
 
 export interface InfoBoxHeaderProps {
@@ -37,20 +40,24 @@ const InfoBoxRoot = ({
   padding = [0, 1],
   width,
   children,
+  "aria-label": ariaLabel = "Information",
 }: InfoBoxProps) => {
+  const unicode = useUnicode();
   const theme = useTheme();
   const resolvedBorderColor = borderColor ?? theme.colors.border;
 
   return (
     <Box
-      borderStyle={borderStyle}
+      borderStyle={resolveBorderStyle(borderStyle, unicode)}
       borderColor={resolvedBorderColor}
       flexDirection="column"
       paddingX={padding[1]}
       paddingY={padding[0]}
       width={width === "full" ? undefined : width}
       flexGrow={width === "full" ? 1 : undefined}
+      aria-role="list"
     >
+      <Text aria-label={ariaLabel}>{""}</Text>
       {children}
     </Box>
   );
@@ -64,8 +71,17 @@ const InfoBoxHeader = ({
   version,
   versionColor = "cyan",
 }: InfoBoxHeaderProps) => (
-  <Box flexDirection="row" gap={1}>
-    {icon && <Text color={iconColor}>{icon}</Text>}
+  <Box
+    flexDirection="row"
+    gap={1}
+    aria-role="listitem"
+    aria-label={`${label}${description ? `. ${description}` : ""}${version ? `. Version ${version}` : ""}`}
+  >
+    {icon && (
+      <Text aria-hidden color={iconColor}>
+        {icon}
+      </Text>
+    )}
     <Text bold>{label}</Text>
     {description && <Text dimColor>{description}</Text>}
     {version && <Text color={versionColor}>{version}</Text>}
@@ -82,10 +98,15 @@ const InfoBoxRow = ({
   color,
 }: InfoBoxRowProps) => {
   const theme = useTheme();
-  const prefix = tree ? "└ " : "";
+  const unicode = useUnicode();
+  const prefix = tree ? (unicode ? "└ " : "`- ") : "";
 
   return (
-    <Box flexDirection="row">
+    <Box
+      flexDirection="row"
+      aria-role="listitem"
+      aria-label={`${label}${value ? `: ${value}` : ""}${valueDetail ? `. ${valueDetail}` : ""}`}
+    >
       <Text color={color ?? theme.colors.mutedForeground}>
         {prefix}
         {label}

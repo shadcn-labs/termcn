@@ -1,14 +1,16 @@
 import { Box, Text } from "ink";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
-import { useInput } from "@/hooks/use-input";
+import { useInteraction } from "@/hooks/use-interaction";
+import type { InteractionProps } from "@/hooks/use-interaction";
+import { useTheme } from "@/hooks/use-theme";
 
-export interface JSONViewProps {
+export interface JSONViewProps extends InteractionProps {
   data: unknown;
   indent?: number;
   collapsed?: boolean;
   label?: string;
+  "aria-label"?: string;
 }
 
 interface JSONLine {
@@ -119,6 +121,11 @@ export const JSONView = ({
   indent = 2,
   collapsed = false,
   label,
+  id,
+  autoFocus,
+  isActive,
+  disabled,
+  "aria-label": ariaLabel = label ?? "JSON value",
 }: JSONViewProps) => {
   const theme = useTheme();
   const [collapsedPaths, setCollapsedPaths] = useState<Set<string>>(new Set());
@@ -156,26 +163,39 @@ export const JSONView = ({
     }
   }
 
-  useInput((input, key) => {
-    if (key.upArrow) {
-      setCursor((c) => Math.max(0, c - 1));
-    } else if (key.downArrow) {
-      setCursor((c) => Math.min(visibleLines.length - 1, c + 1));
-    } else if (input === " ") {
-      const line = visibleLines[cursor];
-      if (line && line.collapsible) {
-        setCollapsedPaths((prev) => {
-          const next = new Set(prev);
-          if (next.has(line.path)) {
-            next.delete(line.path);
-          } else {
-            next.add(line.path);
-          }
-          return next;
-        });
+  const { isFocused } = useInteraction(
+    (input, key) => {
+      if (key.upArrow) {
+        setCursor((c) => Math.max(0, c - 1));
+      } else if (key.downArrow) {
+        setCursor((c) => Math.min(visibleLines.length - 1, c + 1));
+      } else if (key.home) {
+        setCursor(0);
+      } else if (key.end) {
+        setCursor(Math.max(0, visibleLines.length - 1));
+      } else if (input === " ") {
+        const line = visibleLines[cursor];
+        if (line && line.collapsible) {
+          setCollapsedPaths((prev) => {
+            const next = new Set(prev);
+            if (next.has(line.path)) {
+              next.delete(line.path);
+            } else {
+              next.add(line.path);
+            }
+            return next;
+          });
+        }
       }
-    }
-  });
+    },
+    { autoFocus, disabled, id, isActive }
+  );
+
+  useEffect(() => {
+    setCursor((current) =>
+      Math.min(current, Math.max(0, visibleLines.length - 1))
+    );
+  }, [visibleLines.length]);
 
   const renderValue = (value: unknown): React.ReactNode => {
     if (value === null) {
@@ -191,7 +211,12 @@ export const JSONView = ({
   };
 
   return (
-    <Box flexDirection="column">
+    <Box
+      flexDirection="column"
+      aria-role="list"
+      aria-state={{ disabled: disabled || undefined }}
+    >
+      <Text aria-label={ariaLabel}>{""}</Text>
       {label && (
         <Text bold color={theme.colors.primary}>
           {label}
@@ -206,7 +231,15 @@ export const JSONView = ({
             collapsedPaths.has(line.path) ||
             (collapsed && collapsedPaths.size === 0 && line.depth === 0);
           return (
-            <Box key={line.path + idx}>
+            <Box
+              key={line.path + idx}
+              aria-role="listitem"
+              aria-label={`${line.key ?? "value"}, level ${line.depth + 1}, ${isCollapsed ? "collapsed" : "expanded"}${isCursor && isFocused ? ", current" : ""}`}
+              aria-state={{
+                expanded: !isCollapsed,
+                selected: isCursor && isFocused,
+              }}
+            >
               <Text
                 backgroundColor={isCursor ? theme.colors.selection : undefined}
               >
@@ -238,7 +271,7 @@ export const JSONView = ({
 
         if (line.type === "close") {
           return (
-            <Box key={line.path + idx}>
+            <Box key={line.path + idx} aria-role="listitem">
               <Text
                 backgroundColor={isCursor ? theme.colors.selection : undefined}
               >
@@ -251,7 +284,12 @@ export const JSONView = ({
         }
 
         return (
-          <Box key={line.path + idx}>
+          <Box
+            key={line.path + idx}
+            aria-role="listitem"
+            aria-label={`${line.key ?? "value"}: ${String(line.value)}${isCursor && isFocused ? ", current" : ""}`}
+            aria-state={{ selected: isCursor && isFocused }}
+          >
             <Text
               backgroundColor={isCursor ? theme.colors.selection : undefined}
             >

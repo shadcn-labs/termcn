@@ -1,4 +1,7 @@
+import { useIsScreenReaderEnabled } from "ink";
 import * as React from "react";
+
+import { useMotion } from "@/hooks/use-motion";
 
 type Subscriber = (tick: number) => void;
 const pool = new Map<
@@ -40,19 +43,35 @@ const unsubscribe = (milliseconds: number, subscriber: Subscriber) => {
   }
 };
 
+export interface UseAnimationOptions {
+  intervalMs: number;
+  isActive?: boolean;
+}
+
 export const useAnimation = (
-  rate: number | { intervalMs: number } = 12
+  rate: number | UseAnimationOptions = 12
 ): number => {
   const [frame, setFrame] = React.useState(0);
+  const { reduced } = useMotion();
+  const isScreenReaderEnabled = useIsScreenReaderEnabled();
   const milliseconds =
     typeof rate === "number" ? Math.round(1000 / rate) : rate.intervalMs;
+  const isActive =
+    (typeof rate === "number" ? true : (rate.isActive ?? true)) &&
+    !reduced &&
+    !isScreenReaderEnabled;
 
   React.useEffect(() => {
+    if (!isActive) {
+      setFrame(0);
+      return;
+    }
+
     const callback: Subscriber = (tick) => setFrame(tick);
     subscribe(milliseconds, callback);
 
     return () => unsubscribe(milliseconds, callback);
-  }, [milliseconds]);
+  }, [isActive, milliseconds]);
 
   return frame;
 };

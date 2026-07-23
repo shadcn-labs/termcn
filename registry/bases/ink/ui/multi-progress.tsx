@@ -1,6 +1,11 @@
 import { Box, Text } from "ink";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import {
+  padToTerminalWidth,
+  truncateToTerminalWidth,
+} from "@/registry/bases/ink/lib/terminal-text";
 
 export type MultiProgressStatus = "pending" | "running" | "done" | "error";
 
@@ -19,10 +24,11 @@ export interface MultiProgressProps {
   labelWidth?: number;
   compact?: boolean;
   showPercent?: boolean;
+  "aria-label"?: string;
 }
 
-const truncate = (s: string, n: number): string =>
-  s.length > n ? `${s.slice(0, n - 1)}…` : s.padEnd(n);
+const truncate = (s: string, n: number, ellipsis: string): string =>
+  padToTerminalWidth(truncateToTerminalWidth(s, n, ellipsis), n);
 
 export const MultiProgress = ({
   items,
@@ -30,8 +36,10 @@ export const MultiProgress = ({
   labelWidth = 20,
   compact = false,
   showPercent = true,
+  "aria-label": ariaLabel = "Progress tasks",
 }: MultiProgressProps) => {
   const theme = useTheme();
+  const unicode = useUnicode();
 
   const statusColor = (status: MultiProgressStatus | undefined): string => {
     switch (status) {
@@ -54,11 +62,14 @@ export const MultiProgress = ({
     const pct = item.total > 0 ? Math.min(1, item.value / item.total) : 0;
     const filled = Math.round(pct * barWidth);
     const empty = barWidth - filled;
-    return `${"█".repeat(filled)}${"░".repeat(empty)}`;
+    const fill = unicode ? "█" : "#";
+    const emptyFill = unicode ? "░" : ".";
+    return `${fill.repeat(filled)}${emptyFill.repeat(empty)}`;
   };
 
   return (
-    <Box flexDirection="column">
+    <Box flexDirection="column" aria-role="list">
+      <Text aria-label={`${ariaLabel}. ${items.length} tasks.`}>{""}</Text>
       {items.map((item) => {
         const pct =
           item.total > 0
@@ -66,11 +77,20 @@ export const MultiProgress = ({
             : 0;
         const color = statusColor(item.status);
         const bar = renderBar(item);
-        const label = truncate(item.label, labelWidth);
+        const label = truncate(item.label, labelWidth, unicode ? "…" : "...");
 
         if (compact) {
           return (
-            <Box key={item.id} flexDirection="row" gap={1}>
+            <Box
+              key={item.id}
+              flexDirection="row"
+              gap={1}
+              aria-role="progressbar"
+              aria-label={`${item.label}: ${pct}%. ${item.statusText ?? item.status ?? "running"}.`}
+              aria-state={{
+                busy: item.status === "running" || item.status === undefined,
+              }}
+            >
               <Text color={color}>{label}</Text>
               <Text color={theme.colors.mutedForeground}>[</Text>
               <Text color={color}>{bar}</Text>
@@ -90,7 +110,16 @@ export const MultiProgress = ({
         }
 
         return (
-          <Box key={item.id} flexDirection="column" marginBottom={0}>
+          <Box
+            key={item.id}
+            flexDirection="column"
+            marginBottom={0}
+            aria-role="progressbar"
+            aria-label={`${item.label}: ${pct}%. ${item.statusText ?? item.status ?? "running"}.`}
+            aria-state={{
+              busy: item.status === "running" || item.status === undefined,
+            }}
+          >
             <Box flexDirection="row" gap={1}>
               <Text bold color={color}>
                 {label}

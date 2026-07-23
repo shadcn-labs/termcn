@@ -3,11 +3,14 @@ import React, { useState } from "react";
 import type { ReactNode } from "react";
 
 import { useInterval } from "@/hooks/use-interval";
+import { useUnicode } from "@/hooks/use-unicode";
 
 export interface UsageMonitorProps {
   refreshInterval?: number;
   separatorChar?: string;
   children: ReactNode;
+  isActive?: boolean;
+  "aria-label"?: string;
 }
 
 export interface UsageMonitorHeaderProps {
@@ -119,37 +122,43 @@ const formatValue = (
 };
 
 const statusDotChar = (
-  status: "green" | "yellow" | "red"
+  status: "green" | "yellow" | "red",
+  unicode: boolean
 ): {
   char: string;
   color: string;
 } => {
   switch (status) {
     case "green": {
-      return { char: "●", color: "green" };
+      return { char: unicode ? "●" : "o", color: "green" };
     }
     case "yellow": {
-      return { char: "◕", color: "yellow" };
+      return { char: unicode ? "◕" : "!", color: "yellow" };
     }
     case "red": {
-      return { char: "○", color: "red" };
+      return { char: unicode ? "○" : "x", color: "red" };
     }
     default: {
-      return { char: "●", color: "green" };
+      return { char: unicode ? "●" : "o", color: "green" };
     }
   }
 };
 
 const UsageMonitorRoot = ({
   refreshInterval = 1000,
-  separatorChar = "─",
+  separatorChar,
   children,
+  isActive = true,
+  "aria-label": ariaLabel = "Usage monitor",
 }: UsageMonitorProps) => {
+  const unicode = useUnicode();
+  const resolvedSeparatorChar = separatorChar ?? (unicode ? "─" : "-");
   const [, setTick] = useState(0);
-  useInterval(() => setTick((t) => t + 1), refreshInterval);
+  useInterval(() => setTick((t) => t + 1), refreshInterval, { isActive });
 
   return (
-    <Box flexDirection="column">
+    <Box flexDirection="column" aria-role="list">
+      <Text aria-label={ariaLabel}>{""}</Text>
       {React.Children.map(children, (child, i) => (
         <React.Fragment key={i}>
           {child}
@@ -157,7 +166,9 @@ const UsageMonitorRoot = ({
             React.isValidElement(child) &&
             (child.type as unknown as { displayName?: string }).displayName !==
               "UsageMonitor.StatusBar" && (
-              <Text dimColor>{separatorChar.repeat(44)}</Text>
+              <Text aria-hidden dimColor>
+                {resolvedSeparatorChar.repeat(44)}
+              </Text>
             )}
         </React.Fragment>
       ))}
@@ -168,23 +179,28 @@ const UsageMonitorRoot = ({
 const UsageMonitorHeader = ({
   title,
   titleColor = "cyan",
-  decorator = "◆ ✦ ◆ ✦",
-  separatorChar = "═",
+  decorator,
+  separatorChar,
   separatorColor,
-}: UsageMonitorHeaderProps) => (
-  <Box flexDirection="column">
-    <Box flexDirection="row" justifyContent="center">
-      <Text dimColor>{`${decorator}  `}</Text>
-      <Text color={titleColor} bold>
-        {title}
+}: UsageMonitorHeaderProps) => {
+  const unicode = useUnicode();
+  const resolvedDecorator = decorator ?? (unicode ? "◆ ✦ ◆ ✦" : "* + * +");
+  const resolvedSeparatorChar = separatorChar ?? (unicode ? "═" : "=");
+  return (
+    <Box flexDirection="column">
+      <Box flexDirection="row" justifyContent="center">
+        <Text dimColor>{`${resolvedDecorator}  `}</Text>
+        <Text color={titleColor} bold>
+          {title}
+        </Text>
+        <Text dimColor>{`  ${resolvedDecorator}`}</Text>
+      </Box>
+      <Text color={separatorColor} dimColor={!separatorColor}>
+        {resolvedSeparatorChar.repeat(44)}
       </Text>
-      <Text dimColor>{`  ${decorator}`}</Text>
     </Box>
-    <Text color={separatorColor} dimColor={!separatorColor}>
-      {separatorChar.repeat(44)}
-    </Text>
-  </Box>
-);
+  );
+};
 UsageMonitorHeader.displayName = "UsageMonitor.Header";
 
 const UsageMonitorTags = ({
@@ -236,25 +252,38 @@ const UsageMonitorMetric = ({
   format,
   formatFn,
   barWidth = 22,
-  barFillChar = "█",
-  barEmptyChar = "░",
+  barFillChar,
+  barEmptyChar,
   barColor = "white",
   maxDim = false,
   showMax = true,
 }: UsageMonitorMetricProps) => {
-  const filled = Math.round((percent / 100) * barWidth);
+  const unicode = useUnicode();
+  const resolvedBarFillChar = barFillChar ?? (unicode ? "█" : "#");
+  const resolvedBarEmptyChar = barEmptyChar ?? (unicode ? "░" : ".");
+  const normalizedPercent = Math.max(0, Math.min(100, percent));
+  const filled = Math.round((normalizedPercent / 100) * barWidth);
   const empty = barWidth - filled;
-  const bar = barFillChar.repeat(filled) + barEmptyChar.repeat(empty);
-  const dot = statusDotChar(status as "green" | "yellow" | "red");
+  const bar =
+    resolvedBarFillChar.repeat(filled) + resolvedBarEmptyChar.repeat(empty);
+  const dot = statusDotChar(status as "green" | "yellow" | "red", unicode);
   const { current, maxStr } = formatValue(value, max, format, formatFn);
 
   return (
-    <Box flexDirection="row" gap={1}>
+    <Box
+      flexDirection="row"
+      gap={1}
+      aria-role="progressbar"
+      aria-label={`${label}: ${normalizedPercent.toFixed(1)}%, ${current}${showMax && maxStr ? ` of ${maxStr}` : ""}, status ${status}.`}
+      aria-state={{ busy: normalizedPercent < 100 }}
+    >
       {icon && <Text>{icon}</Text>}
       <Text dimColor>{label.padEnd(16)}</Text>
-      <Text color={dot.color}>{dot.char}</Text>
-      <Text color={barColor}>{`[${bar}]`}</Text>
-      <Text>{` ${percent.toFixed(1)}%`}</Text>
+      <Text aria-hidden color={dot.color}>
+        {dot.char}
+      </Text>
+      <Text aria-hidden color={barColor}>{`[${bar}]`}</Text>
+      <Text>{` ${normalizedPercent.toFixed(1)}%`}</Text>
       <Text>{` ${current}`}</Text>
       {showMax && maxStr && <Text dimColor={maxDim}>{`/ ${maxStr}`}</Text>}
     </Box>
@@ -267,19 +296,25 @@ const UsageMonitorDistributionMetric = ({
   segments,
   barWidth = 22,
 }: UsageMonitorDistributionMetricProps) => {
+  const unicode = useUnicode();
   const bars = segments.map((seg) => {
     const count = Math.round((seg.percent / 100) * barWidth);
     return { ...seg, count };
   });
 
   return (
-    <Box flexDirection="row" gap={1}>
+    <Box
+      flexDirection="row"
+      gap={1}
+      aria-role="listitem"
+      aria-label={`${label}: ${segments.map((segment) => `${segment.label} ${segment.percent}%`).join(", ")}`}
+    >
       {icon && <Text>{icon}</Text>}
       <Text dimColor>{label.padEnd(16)}</Text>
       <Text>[</Text>
       {bars.map((seg, i) => (
         <Text key={i} color={seg.color ?? "white"}>
-          {"█".repeat(seg.count)}
+          {(unicode ? "█" : "#").repeat(seg.count)}
         </Text>
       ))}
       <Text>]</Text>
@@ -294,7 +329,9 @@ const UsageMonitorDistributionMetric = ({
 };
 
 const UsageMonitorStats = ({ children }: { children: ReactNode }) => (
-  <Box flexDirection="column">{children}</Box>
+  <Box flexDirection="column" aria-role="list">
+    {children}
+  </Box>
 );
 
 const UsageMonitorStatRow = ({
@@ -304,7 +341,12 @@ const UsageMonitorStatRow = ({
   valueSuffix,
   valueColor = "white",
 }: UsageMonitorStatRowProps) => (
-  <Box flexDirection="row" gap={1}>
+  <Box
+    flexDirection="row"
+    gap={1}
+    aria-role="listitem"
+    aria-label={`${label}: ${value}${valueSuffix ? ` ${valueSuffix}` : ""}`}
+  >
     {icon && <Text>{icon}</Text>}
     <Text dimColor>{label.padEnd(16)}</Text>
     <Text color={valueColor}>{value}</Text>
@@ -312,14 +354,17 @@ const UsageMonitorStatRow = ({
   </Box>
 );
 
-const UsageMonitorPredictions = ({ children }: { children: ReactNode }) => (
-  <Box flexDirection="column">
-    <Text bold>🔮 Predictions:</Text>
-    <Box flexDirection="column" paddingLeft={4}>
-      {children}
+const UsageMonitorPredictions = ({ children }: { children: ReactNode }) => {
+  const unicode = useUnicode();
+  return (
+    <Box flexDirection="column">
+      <Text bold>{unicode ? "🔮 Predictions:" : "Predictions:"}</Text>
+      <Box flexDirection="column" paddingLeft={4}>
+        {children}
+      </Box>
     </Box>
-  </Box>
-);
+  );
+};
 
 const UsageMonitorPrediction = ({
   label,
@@ -341,16 +386,25 @@ const UsageMonitorStatusBar = ({
   statusDot: dot = "green",
   separator = " | ",
 }: UsageMonitorStatusBarProps) => {
+  const unicode = useUnicode();
   const [time, setTime] = useState(() => new Date().toTimeString().slice(0, 8));
   useInterval(() => setTime(new Date().toTimeString().slice(0, 8)), 1000);
 
-  const dotInfo = statusDotChar(dot);
+  const dotInfo = statusDotChar(dot, unicode);
 
   return (
     <Box flexDirection="row" paddingTop={1}>
-      {clock && <Text color={clockColor ?? "cyan"}>{`⏰ ${time}`}</Text>}
+      {clock && (
+        <Text color={clockColor ?? "cyan"}>
+          {unicode ? `⏰ ${time}` : `time ${time}`}
+        </Text>
+      )}
       {sessionLabel && (
-        <Text color={sessionColor}>{`${separator}📄 ${sessionLabel}`}</Text>
+        <Text color={sessionColor}>
+          {unicode
+            ? `${separator}📄 ${sessionLabel}`
+            : `${separator}session ${sessionLabel}`}
+        </Text>
       )}
       {exitHint && <Text dimColor>{`${separator}${exitHint}`}</Text>}
       <Text color={dotInfo.color}>{`${separator}${dotInfo.char}`}</Text>

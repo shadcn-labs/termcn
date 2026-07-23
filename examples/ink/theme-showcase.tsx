@@ -1,6 +1,6 @@
 import { Box, Text } from "ink";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
+import { useTheme } from "@/hooks/use-theme";
 
 export default function ThemeShowcasePreview() {
   const theme = useTheme();

@@ -1,13 +1,28 @@
-import { Box, Text } from "ink";
+import { useCursor, Box, Text } from "ink";
 import React, { useEffect, useState } from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
-import { useFocus } from "@/hooks/use-focus";
-import { useInput } from "@/hooks/use-input";
+import { useInteraction } from "@/hooks/use-interaction";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import {
+  resolveBorderStyle,
+  resolveTerminalSymbol,
+} from "@/registry/bases/ink/lib/accessibility";
+import {
+  cursorCellOffset,
+  graphemeLength,
+  insertAtGrapheme,
+  removeGraphemeAt,
+  removeGraphemeBefore,
+  sliceGraphemes,
+  splitGraphemes,
+} from "@/registry/bases/ink/lib/terminal-text";
 import type { BorderStyle } from "@/registry/bases/ink/ui/types";
 
 export interface TextInputProps {
   value?: string;
+  defaultValue?: string;
+  onValueChange?: (value: string) => void;
   onChange?: (value: string) => void;
   onSubmit?: (value: string) => void;
   placeholder?: string;
@@ -19,6 +34,12 @@ export interface TextInputProps {
   label?: string;
   autoFocus?: boolean;
   id?: string;
+  isActive?: boolean;
+  disabled?: boolean;
+  readOnly?: boolean;
+  required?: boolean;
+  "aria-label"?: string;
+  cursorOrigin?: { x: number; y: number };
   bordered?: boolean;
   borderStyle?: BorderStyle;
   paddingX?: number;
@@ -27,6 +48,8 @@ export interface TextInputProps {
 
 export const TextInput = ({
   value: controlledValue,
+  defaultValue = "",
+  onValueChange,
   onChange,
   onSubmit,
   placeholder = "",
@@ -38,101 +61,125 @@ export const TextInput = ({
   label,
   autoFocus = false,
   id,
+  isActive = true,
+  disabled = false,
+  readOnly = false,
+  required = false,
+  "aria-label": ariaLabel,
+  cursorOrigin,
   bordered = true,
   borderStyle = "round",
   paddingX = 1,
-  cursor = "█",
+  cursor,
 }: TextInputProps) => {
-  const [internalValue, setInternalValue] = useState("");
+  const unicode = useUnicode();
+  const resolvedCursor = cursor ?? resolveTerminalSymbol(unicode, "█", "|");
+  const [internalValue, setInternalValue] = useState(defaultValue);
   const [cursorOffset, setCursorOffset] = useState(0);
   const [cursorWidth, setCursorWidth] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const theme = useTheme();
-  const { isFocused } = useFocus({ autoFocus, id });
+  const { setCursorPosition } = useCursor();
 
   const value = controlledValue ?? internalValue;
+  const valueLength = graphemeLength(value);
 
   useEffect(() => {
-    if (cursorOffset > value.length) {
-      setCursorOffset(value.length);
+    if (cursorOffset > valueLength) {
+      setCursorOffset(valueLength);
     }
-  }, [value, cursorOffset]);
+  }, [cursorOffset, valueLength]);
 
   const setValue = (next: string) => {
-    if (onChange) {
-      onChange(next);
+    const changeHandler = onValueChange ?? onChange;
+    if (changeHandler) {
+      changeHandler(next);
     } else {
       setInternalValue(next);
     }
   };
 
-  useInput((input, key) => {
-    if (!isFocused) {
-      return;
-    }
-
-    if (
-      key.upArrow ||
-      key.downArrow ||
-      (key.ctrl && input === "c") ||
-      key.tab ||
-      (key.shift && key.tab)
-    ) {
-      return;
-    }
-
-    if (key.return) {
-      const err = validate ? validate(value) : null;
-      if (err) {
-        setError(err);
+  const { isFocused } = useInteraction(
+    (input, key) => {
+      if (
+        key.upArrow ||
+        key.downArrow ||
+        (key.ctrl && input === "c") ||
+        key.tab ||
+        (key.shift && key.tab)
+      ) {
         return;
       }
-      setError(null);
-      onSubmit?.(value);
-      return;
-    }
 
-    if (key.escape) {
-      return;
-    }
-
-    let nextOffset = cursorOffset;
-    let nextValue = value;
-    let nextCursorWidth = 0;
-
-    if (key.leftArrow) {
-      if (showCursor) {
-        nextOffset = Math.max(0, nextOffset - 1);
+      if (key.return) {
+        const err = validate ? validate(value) : null;
+        if (err) {
+          setError(err);
+          return;
+        }
+        setError(null);
+        onSubmit?.(value);
+        return;
       }
-    } else if (key.rightArrow) {
-      if (showCursor) {
-        nextOffset = Math.min(value.length, nextOffset + 1);
+
+      if (key.escape) {
+        return;
       }
-    } else if (key.backspace || key.delete) {
-      if (cursorOffset > 0) {
-        nextValue =
-          value.slice(0, cursorOffset - 1) + value.slice(cursorOffset);
-        nextOffset = cursorOffset - 1;
+
+      let nextOffset = cursorOffset;
+      let nextValue = value;
+      let nextCursorWidth = 0;
+
+      if (key.leftArrow) {
+        if (showCursor) {
+          nextOffset = Math.max(0, nextOffset - 1);
+        }
+      } else if (key.rightArrow) {
+        if (showCursor) {
+          nextOffset = Math.min(valueLength, nextOffset + 1);
+        }
+      } else if (key.home) {
+        nextOffset = 0;
+      } else if (key.end) {
+        nextOffset = valueLength;
+      } else if (!readOnly && key.backspace) {
+        const result = removeGraphemeBefore(value, cursorOffset);
+        nextValue = result.value;
+        nextOffset = result.cursor;
+      } else if (!readOnly && key.delete) {
+        const result = removeGraphemeAt(value, cursorOffset);
+        nextValue = result.value;
+        nextOffset = result.cursor;
+      } else if (!readOnly && input) {
+        nextValue = insertAtGrapheme(value, cursorOffset, input);
+        const insertedLength = graphemeLength(input);
+        nextOffset = cursorOffset + insertedLength;
+
+        if (insertedLength > 1) {
+          nextCursorWidth = insertedLength;
+        }
       }
-    } else {
-      nextValue =
-        value.slice(0, cursorOffset) + input + value.slice(cursorOffset);
-      nextOffset = cursorOffset + input.length;
 
-      if (input.length > 1) {
-        nextCursorWidth = input.length;
+      setCursorOffset(nextOffset);
+      setCursorWidth(nextCursorWidth);
+
+      if (nextValue !== value) {
+        setValue(nextValue);
       }
-    }
+    },
+    { autoFocus, disabled, id, isActive }
+  );
 
-    setCursorOffset(nextOffset);
-    setCursorWidth(nextCursorWidth);
-
-    if (nextValue !== value) {
-      setValue(nextValue);
-    }
-  });
-
-  const displayValue = mask ? mask.repeat(value.length) : value;
+  const displayValue = mask ? mask.repeat(valueLength) : value;
+  const useNativeCursor = Boolean(cursorOrigin && showCursor && isFocused);
+  setCursorPosition(
+    useNativeCursor && cursorOrigin
+      ? {
+          x: cursorOrigin.x + cursorCellOffset(displayValue, cursorOffset),
+          y: cursorOrigin.y,
+        }
+      : undefined
+  );
 
   let borderColor: string;
   if (error) {
@@ -147,29 +194,33 @@ export const TextInput = ({
 
   const renderValue = () => {
     if (!value && placeholder) {
-      if (showCursor && isFocused) {
+      if (showCursor && isFocused && !useNativeCursor) {
+        const placeholderGraphemes = splitGraphemes(placeholder);
         return (
           <Text color={theme.colors.mutedForeground}>
-            <Text inverse>{placeholder[0] ?? " "}</Text>
-            {placeholder.slice(1)}
+            <Text inverse>{placeholderGraphemes[0] ?? " "}</Text>
+            {placeholderGraphemes.slice(1)}
           </Text>
         );
       }
       return <Text color={theme.colors.mutedForeground}>{placeholder}</Text>;
     }
 
-    if (!showCursor || !isFocused) {
+    if (!showCursor || !isFocused || useNativeCursor) {
       return <Text color={theme.colors.foreground}>{displayValue}</Text>;
     }
 
-    const before = displayValue.slice(0, cursorOffset - pasteWidth);
-    const highlighted = displayValue.slice(
+    const before = sliceGraphemes(displayValue, 0, cursorOffset - pasteWidth);
+    const highlighted = sliceGraphemes(
+      displayValue,
       cursorOffset - pasteWidth,
       cursorOffset
     );
     const cursorChar =
-      cursorOffset < displayValue.length ? displayValue[cursorOffset] : cursor;
-    const after = displayValue.slice(cursorOffset + 1);
+      cursorOffset < graphemeLength(displayValue)
+        ? sliceGraphemes(displayValue, cursorOffset, cursorOffset + 1)
+        : resolvedCursor;
+    const after = sliceGraphemes(displayValue, cursorOffset + 1);
 
     return (
       <Text color={theme.colors.foreground}>
@@ -188,7 +239,15 @@ export const TextInput = ({
       {label && <Text bold>{label}</Text>}
       {bordered ? (
         <Box
-          borderStyle={borderStyle}
+          aria-label={
+            ariaLabel ??
+            `${label ?? "Text input"}: ${
+              mask ? `${valueLength} characters` : value || "empty"
+            }${error ? `. Error: ${error}` : ""}`
+          }
+          aria-role="textbox"
+          aria-state={{ disabled, readonly: readOnly, required }}
+          borderStyle={resolveBorderStyle(borderStyle, unicode)}
           borderColor={borderColor}
           width={width}
           paddingX={paddingX}
@@ -196,7 +255,18 @@ export const TextInput = ({
           {renderValue()}
         </Box>
       ) : (
-        <Box width={width} paddingX={paddingX}>
+        <Box
+          aria-label={
+            ariaLabel ??
+            `${label ?? "Text input"}: ${
+              mask ? `${valueLength} characters` : value || "empty"
+            }${error ? `. Error: ${error}` : ""}`
+          }
+          aria-role="textbox"
+          aria-state={{ disabled, readonly: readOnly, required }}
+          width={width}
+          paddingX={paddingX}
+        >
           {renderValue()}
         </Box>
       )}

@@ -1,8 +1,10 @@
 import { Box as InkBox } from "ink";
 import type { BoxProps as InkBoxProps } from "ink";
-import type { ReactNode } from "react";
+import React from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import { resolveBorderStyle } from "@/registry/bases/ink/lib/accessibility";
 
 export type BorderVariant =
   | "default"
@@ -16,7 +18,7 @@ export interface BoxProps extends InkBoxProps {
   border?: boolean;
   borderVariant?: BorderVariant;
   borderColor?: string;
-  children?: ReactNode;
+  children?: React.ReactNode;
 }
 
 export const Box = ({
@@ -27,6 +29,7 @@ export const Box = ({
   ...props
 }: BoxProps) => {
   const theme = useTheme();
+  const unicode = useUnicode();
 
   const resolvedBorderColor =
     borderColor ??
@@ -55,11 +58,13 @@ export const Box = ({
 
   return (
     <InkBox
+      {...props}
       borderStyle={
-        border ? (props.borderStyle ?? theme.border.style) : undefined
+        border
+          ? resolveBorderStyle(props.borderStyle ?? theme.border.style, unicode)
+          : undefined
       }
       borderColor={border ? resolvedBorderColor : undefined}
-      {...props}
     >
       {children}
     </InkBox>

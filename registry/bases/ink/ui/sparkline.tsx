@@ -1,15 +1,20 @@
 import { Box, Text } from "ink";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import { summarizeSeries } from "@/registry/bases/ink/lib/accessibility";
 
 export interface SparklineProps {
   data: number[];
   width?: number;
   color?: string;
   label?: string;
+  accessibleSummary?: string;
+  "aria-label"?: string;
 }
 
 const BRAILLE_LEVELS = ["⣀", "⣄", "⣤", "⣦", "⣶", "⣷", "⣿", "⣿"];
+const ASCII_LEVELS = [".", ":", "-", "=", "+", "*", "#", "@"];
 
 const normalize = (data: number[], levels: number): number[] => {
   if (data.length === 0) {
@@ -29,15 +34,19 @@ export const Sparkline = ({
   width = 20,
   color,
   label,
+  accessibleSummary,
+  "aria-label": ariaLabel,
 }: SparklineProps) => {
   const theme = useTheme();
+  const unicode = useUnicode();
   const resolvedColor = color ?? theme.colors.primary;
+  const levelsForOutput = unicode ? BRAILLE_LEVELS : ASCII_LEVELS;
 
   if (data.length === 0) {
     return (
       <Box>
         {label && <Text color={theme.colors.mutedForeground}>{label} </Text>}
-        <Text color={theme.colors.mutedForeground}>{"─".repeat(width)}</Text>
+        <Text color={theme.colors.mutedForeground}>{"-".repeat(width)}</Text>
       </Box>
     );
   }
@@ -50,13 +59,24 @@ export const Sparkline = ({
         )
       : data;
 
-  const levels = normalize(sampled, BRAILLE_LEVELS.length);
+  const levels = normalize(sampled, levelsForOutput.length);
   const sparkStr = levels
-    .map((l) => BRAILLE_LEVELS[l] ?? BRAILLE_LEVELS[0])
+    .map((level) => levelsForOutput[level] ?? levelsForOutput[0])
     .join("");
 
   return (
-    <Box flexDirection="row" gap={1}>
+    <Box
+      flexDirection="row"
+      gap={1}
+      aria-label={
+        ariaLabel ??
+        accessibleSummary ??
+        summarizeSeries(
+          label ?? "Sparkline",
+          data.map((value, index) => ({ label: String(index + 1), value }))
+        )
+      }
+    >
       {label && <Text color={theme.colors.mutedForeground}>{label}</Text>}
       <Text color={resolvedColor}>{sparkStr}</Text>
     </Box>

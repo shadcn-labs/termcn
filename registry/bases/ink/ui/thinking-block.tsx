@@ -1,16 +1,20 @@
-import { Box, Text } from "ink";
+import { useIsScreenReaderEnabled, Box, Text } from "ink";
 import React, { useState } from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
-import { useInput } from "@/hooks/use-input";
+import { isActivationKey, useInteraction } from "@/hooks/use-interaction";
+import type { InteractionProps } from "@/hooks/use-interaction";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import { resolveBorderStyle } from "@/registry/bases/ink/lib/accessibility";
 
-export interface ThinkingBlockProps {
+export interface ThinkingBlockProps extends InteractionProps {
   content: string;
   streaming?: boolean;
   defaultCollapsed?: boolean;
   label?: string;
   tokenCount?: number;
   duration?: number;
+  "aria-label"?: string;
 }
 
 export const ThinkingBlock = ({
@@ -20,15 +24,25 @@ export const ThinkingBlock = ({
   label = "Reasoning",
   tokenCount,
   duration,
+  id,
+  autoFocus,
+  isActive,
+  disabled,
+  "aria-label": ariaLabel,
 }: ThinkingBlockProps) => {
+  const unicode = useUnicode();
   const theme = useTheme();
+  const isScreenReaderEnabled = useIsScreenReaderEnabled();
   const [collapsed, setCollapsed] = useState(defaultCollapsed);
 
-  useInput((input, key) => {
-    if (key.return || input === " ") {
-      setCollapsed((c) => !c);
-    }
-  });
+  const { isFocused } = useInteraction(
+    (input, key) => {
+      if (isActivationKey(input, key)) {
+        setCollapsed((c) => !c);
+      }
+    },
+    { autoFocus, disabled, id, isActive }
+  );
 
   const tokenStr =
     tokenCount === undefined ? null : `${tokenCount.toLocaleString()} tokens`;
@@ -41,18 +55,36 @@ export const ThinkingBlock = ({
     durationStr,
   ].filter(Boolean);
 
-  const headerText = headerParts.join(" · ");
+  const headerText = headerParts.join(unicode ? " · " : " - ");
 
   return (
     <Box
       flexDirection="column"
-      borderStyle="single"
+      borderStyle={resolveBorderStyle(
+        isScreenReaderEnabled ? undefined : "single",
+        unicode
+      )}
       borderColor={theme.colors.border}
       paddingX={1}
+      aria-role="button"
+      aria-state={{
+        busy: streaming,
+        disabled: disabled || undefined,
+        expanded: !collapsed,
+      }}
     >
+      <Text
+        aria-label={
+          ariaLabel ?? `${headerText}. ${collapsed ? "Collapsed" : "Expanded"}.`
+        }
+      >
+        {""}
+      </Text>
       <Box gap={1}>
-        <Text color={theme.colors.mutedForeground}>
-          {collapsed ? "▶" : "▼"}
+        <Text aria-hidden color={theme.colors.mutedForeground}>
+          {isFocused ? "[" : ""}
+          {collapsed ? (unicode ? "▶" : ">") : unicode ? "▼" : "v"}
+          {isFocused ? "]" : ""}
         </Text>
         <Text
           color={

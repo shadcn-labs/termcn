@@ -10,6 +10,7 @@ const { ROUTES } = await jiti.import("./constants/routes");
 const opentuiJsxRuntimeTurbo = "./lib/opentui-bridge/react-jsx-runtime.ts";
 const opentuiJsxDevRuntimeTurbo =
   "./lib/opentui-bridge/react-jsx-dev-runtime.ts";
+const inkWebAdapterTurbo = "./lib/ink-web-adapter.ts";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -103,7 +104,7 @@ const nextConfig = {
       "@opentui/react": "@gridland/utils",
       "@opentui/react/jsx-dev-runtime": opentuiJsxDevRuntimeTurbo,
       "@opentui/react/jsx-runtime": opentuiJsxRuntimeTurbo,
-      ink: "ink-web",
+      ink: inkWebAdapterTurbo,
     },
   },
 };

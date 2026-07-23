@@ -1,8 +1,10 @@
 import { Box, Text } from "ink";
 import React, { useState } from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
-import { useInput } from "@/hooks/use-input";
+import { useInteraction } from "@/hooks/use-interaction";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import { resolveTerminalSymbol } from "@/registry/bases/ink/lib/accessibility";
 
 export interface MultiSelectOption<T = string> {
   value: T;
@@ -14,25 +16,45 @@ export interface MultiSelectOption<T = string> {
 export interface MultiSelectProps<T = string> {
   options: MultiSelectOption<T>[];
   value?: T[];
+  defaultValue?: T[];
+  onValueChange?: (values: T[]) => void;
   onChange?: (values: T[]) => void;
   onSubmit?: (values: T[]) => void;
   cursor?: string;
   checkmark?: string;
   height?: number;
+  label?: string;
+  id?: string;
+  autoFocus?: boolean;
+  isActive?: boolean;
+  disabled?: boolean;
+  "aria-label"?: string;
 }
 
 export const MultiSelect = <T = string,>({
   options,
   value: controlledValue,
+  defaultValue = [],
+  onValueChange,
   onChange,
   onSubmit,
-  cursor = "›",
-  checkmark = "◉",
+  cursor,
+  checkmark,
   height,
+  label,
+  id,
+  autoFocus = false,
+  isActive = true,
+  disabled = false,
+  "aria-label": ariaLabel,
 }: MultiSelectProps<T>) => {
   const theme = useTheme();
+  const unicode = useUnicode();
+  const resolvedCursor = cursor ?? resolveTerminalSymbol(unicode, "›", ">");
+  const resolvedCheckmark =
+    checkmark ?? resolveTerminalSymbol(unicode, "◉", "[x]");
   const [activeIndex, setActiveIndex] = useState(0);
-  const [internalSelected, setInternalSelected] = useState<T[]>([]);
+  const [internalSelected, setInternalSelected] = useState<T[]>(defaultValue);
 
   const selected = controlledValue ?? internalSelected;
 
@@ -56,48 +78,73 @@ export const MultiSelect = <T = string,>({
     ? options.slice(scrollOffset, scrollOffset + height)
     : options;
 
-  useInput((input, key) => {
-    if (key.upArrow) {
-      setActiveIndex((i) => {
-        let next = i - 1;
-        while (next >= 0 && options[next]?.disabled) {
-          next -= 1;
+  const { isFocused } = useInteraction(
+    (input, key) => {
+      if (key.upArrow) {
+        setActiveIndex((i) => {
+          let next = i - 1;
+          while (next >= 0 && options[next]?.disabled) {
+            next -= 1;
+          }
+          return next < 0 ? i : next;
+        });
+      } else if (key.downArrow) {
+        setActiveIndex((i) => {
+          let next = i + 1;
+          while (next < options.length && options[next]?.disabled) {
+            next += 1;
+          }
+          return next >= options.length ? i : next;
+        });
+      } else if (input === " ") {
+        const opt = options[activeIndex];
+        if (!opt || opt.disabled) {
+          return;
         }
-        return next < 0 ? i : next;
-      });
-    } else if (key.downArrow) {
-      setActiveIndex((i) => {
-        let next = i + 1;
-        while (next < options.length && options[next]?.disabled) {
-          next += 1;
+        const isSelected = selected.includes(opt.value);
+        const next = isSelected
+          ? selected.filter((v) => v !== opt.value)
+          : [...selected, opt.value];
+        if (controlledValue === undefined) {
+          setInternalSelected(next);
         }
-        return next >= options.length ? i : next;
-      });
-    } else if (input === " ") {
-      const opt = options[activeIndex];
-      if (!opt || opt.disabled) {
-        return;
+        (onValueChange ?? onChange)?.(next);
+      } else if (key.return) {
+        onSubmit?.(selected);
+      } else if (key.home) {
+        const firstEnabled = options.findIndex((option) => !option.disabled);
+        if (firstEnabled !== -1) {
+          setActiveIndex(firstEnabled);
+        }
+      } else if (key.end) {
+        const lastEnabled = options.findLastIndex((option) => !option.disabled);
+        if (lastEnabled !== -1) {
+          setActiveIndex(lastEnabled);
+        }
       }
-      const isSelected = selected.includes(opt.value);
-      const next = isSelected
-        ? selected.filter((v) => v !== opt.value)
-        : [...selected, opt.value];
-      if (controlledValue === undefined) {
-        setInternalSelected(next);
-      }
-      onChange?.(next);
-    } else if (key.return) {
-      onSubmit?.(selected);
-    }
-  });
+    },
+    { autoFocus, disabled, id, isActive }
+  );
 
   return (
-    <Box flexDirection="column">
+    <Box
+      aria-role="listbox"
+      aria-state={{ disabled, multiselectable: true }}
+      flexDirection="column"
+    >
+      <Text
+        aria-label={ariaLabel ?? label ?? "Multi select"}
+        bold={Boolean(label)}
+      >
+        {label ?? ""}
+      </Text>
       {visibleOptions.map((opt, visibleIdx) => {
         const idx = scrollOffset + visibleIdx;
         const isActive = idx === activeIndex;
         const isSelected = selected.includes(opt.value);
-        const icon = isSelected ? checkmark : "○";
+        const icon = isSelected
+          ? resolvedCheckmark
+          : resolveTerminalSymbol(unicode, "○", "[ ]");
 
         let iconColor: string;
         if (opt.disabled) {
@@ -118,18 +165,32 @@ export const MultiSelect = <T = string,>({
         }
 
         return (
-          <Box key={idx} gap={1}>
-            <Text color={isActive ? theme.colors.primary : undefined}>
-              {isActive ? cursor : " "}
+          <Box
+            key={idx}
+            aria-label={opt.hint ? `${opt.label}: ${opt.hint}` : opt.label}
+            aria-role="option"
+            aria-state={{ disabled: opt.disabled, selected: isSelected }}
+            gap={1}
+          >
+            <Text
+              aria-hidden
+              color={isActive ? theme.colors.primary : undefined}
+            >
+              {isFocused && isActive ? resolvedCursor : " "}
             </Text>
-            <Text color={iconColor} dimColor={opt.disabled}>
+            <Text aria-hidden color={iconColor} dimColor={opt.disabled}>
               {icon}
             </Text>
-            <Text color={labelColor} bold={isActive} dimColor={opt.disabled}>
+            <Text
+              aria-hidden
+              color={labelColor}
+              bold={isFocused && isActive}
+              dimColor={opt.disabled}
+            >
               {opt.label}
             </Text>
             {opt.hint && (
-              <Text color={theme.colors.mutedForeground} dimColor>
+              <Text aria-hidden color={theme.colors.mutedForeground} dimColor>
                 {opt.hint}
               </Text>
             )}

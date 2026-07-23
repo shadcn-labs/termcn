@@ -1,6 +1,8 @@
 import { Box, Text } from "ink";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import { toAsciiComponentText } from "@/registry/bases/ink/lib/accessibility";
 
 export type BigTextFont = "block" | "simple" | "shade" | "slim";
 
@@ -8,6 +10,8 @@ export interface BigTextProps {
   children: string;
   color?: string;
   font?: BigTextFont;
+  "aria-label"?: string;
+  "aria-hidden"?: boolean;
 }
 
 const FONT: Record<string, number[][]> = {
@@ -376,8 +380,15 @@ const SHADE_CHARS: Record<number, string> = {
 const renderShadeRow = (row: number[]): string =>
   row.map((p) => (p ? (SHADE_CHARS[3] ?? "▓") : " ")).join("");
 
-export const BigText = ({ children, color, font = "block" }: BigTextProps) => {
+export const BigText = ({
+  children,
+  color,
+  font = "block",
+  "aria-label": ariaLabel,
+  "aria-hidden": ariaHidden,
+}: BigTextProps) => {
   const theme = useTheme();
+  const unicode = useUnicode();
   const resolvedColor = color ?? theme.colors.primary;
 
   const chars = [...children];
@@ -385,7 +396,11 @@ export const BigText = ({ children, color, font = "block" }: BigTextProps) => {
   if (font === "slim") {
     const rowCount = 3;
     return (
-      <Box flexDirection="column">
+      <Box
+        flexDirection="column"
+        aria-label={ariaHidden ? undefined : (ariaLabel ?? children)}
+        aria-hidden={ariaHidden}
+      >
         {Array.from({ length: rowCount }, (_, rowIdx) => (
           <Box key={rowIdx} flexDirection="row">
             {chars.map((ch, charIdx) => {
@@ -394,7 +409,7 @@ export const BigText = ({ children, color, font = "block" }: BigTextProps) => {
               const line = slimChar ? (slimChar[rowIdx] ?? "   ") : "   ";
               return (
                 <Text key={charIdx} color={resolvedColor}>
-                  {`${line} `}
+                  {`${unicode ? line : toAsciiComponentText(line)} `}
                 </Text>
               );
             })}
@@ -412,7 +427,11 @@ export const BigText = ({ children, color, font = "block" }: BigTextProps) => {
   const rows = 5;
 
   return (
-    <Box flexDirection="column">
+    <Box
+      flexDirection="column"
+      aria-label={ariaHidden ? undefined : (ariaLabel ?? children)}
+      aria-hidden={ariaHidden}
+    >
       {Array.from({ length: rows }, (_, rowIdx) => (
         <Box key={rowIdx} flexDirection="row">
           {chars.map((ch, charIdx) => {
@@ -424,7 +443,7 @@ export const BigText = ({ children, color, font = "block" }: BigTextProps) => {
                 : row.map((pixel) => (pixel ? onChar : offChar)).join("");
             return (
               <Text key={charIdx} color={resolvedColor}>
-                {`${rowStr} `}
+                {`${unicode ? rowStr : toAsciiComponentText(rowStr)} `}
               </Text>
             );
           })}

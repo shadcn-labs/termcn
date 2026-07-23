@@ -1,8 +1,10 @@
 import { Box, Text } from "ink";
 import React, { useState, useMemo, useEffect } from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
-import { useInput } from "@/hooks/use-input";
+import { useInteraction } from "@/hooks/use-interaction";
+import type { InteractionProps } from "@/hooks/use-interaction";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
 
 export type LogLevel = "debug" | "info" | "warn" | "error";
 
@@ -12,12 +14,13 @@ export interface LogEntry {
   timestamp?: Date;
 }
 
-export interface LogProps {
+export interface LogProps extends InteractionProps {
   entries: LogEntry[];
   height?: number;
   showTimestamp?: boolean;
   filter?: string;
   follow?: boolean;
+  "aria-label"?: string;
 }
 
 const LEVEL_COLORS: Record<LogLevel, string> = {
@@ -47,8 +50,14 @@ export const Log = ({
   showTimestamp = true,
   filter,
   follow: followProp = false,
+  id,
+  autoFocus,
+  isActive,
+  disabled,
+  "aria-label": ariaLabel = "Application log",
 }: LogProps) => {
   const theme = useTheme();
+  const unicode = useUnicode();
   const [scrollOffset, setScrollOffset] = useState(0);
   const [follow, setFollow] = useState(followProp);
 
@@ -72,26 +81,48 @@ export const Log = ({
     }
   }, [follow, maxOffset]);
 
-  useInput((input, key) => {
-    if (input === "j" || key.downArrow) {
-      setScrollOffset((o) => Math.min(maxOffset, o + 1));
-      if (follow) {
+  const { isFocused } = useInteraction(
+    (input, key) => {
+      if (input === "j" || key.downArrow) {
+        setScrollOffset((o) => Math.min(maxOffset, o + 1));
+        if (follow) {
+          setFollow(false);
+        }
+      } else if (input === "k" || key.upArrow) {
+        setScrollOffset((o) => Math.max(0, o - 1));
+        if (follow) {
+          setFollow(false);
+        }
+      } else if (input === "f") {
+        setFollow((f) => !f);
+      } else if (key.home) {
+        setScrollOffset(0);
         setFollow(false);
+      } else if (key.end) {
+        setScrollOffset(maxOffset);
+      } else if (key.pageUp) {
+        setScrollOffset((offset) => Math.max(0, offset - height));
+      } else if (key.pageDown) {
+        setScrollOffset((offset) => Math.min(maxOffset, offset + height));
       }
-    } else if (input === "k" || key.upArrow) {
-      setScrollOffset((o) => Math.max(0, o - 1));
-      if (follow) {
-        setFollow(false);
-      }
-    } else if (input === "f") {
-      setFollow((f) => !f);
-    }
-  });
+    },
+    { autoFocus, disabled, id, isActive }
+  );
 
   const visible = filtered.slice(scrollOffset, scrollOffset + height);
 
   return (
-    <Box flexDirection="column" gap={0}>
+    <Box
+      flexDirection="column"
+      gap={0}
+      aria-role="list"
+      aria-state={{ disabled: disabled || undefined }}
+    >
+      <Text
+        aria-label={`${ariaLabel}. Showing ${visible.length} of ${filtered.length} entries.${isFocused ? " Focused." : ""}`}
+      >
+        {""}
+      </Text>
       <Box flexDirection="column" height={height}>
         {visible.map((entry, i) => {
           const levelColor = LEVEL_COLORS[entry.level];
@@ -105,7 +136,12 @@ export const Log = ({
             messageColor = theme.colors.foreground;
           }
           return (
-            <Box key={i} gap={1}>
+            <Box
+              key={`${entry.timestamp?.getTime() ?? scrollOffset + i}-${i}`}
+              gap={1}
+              aria-role="listitem"
+              aria-label={`${entry.level}${entry.timestamp ? ` at ${formatTimestamp(entry.timestamp)}` : ""}: ${entry.message}`}
+            >
               {showTimestamp && entry.timestamp && (
                 <Text color={theme.colors.mutedForeground} dimColor>
                   {formatTimestamp(entry.timestamp)}
@@ -119,16 +155,17 @@ export const Log = ({
           );
         })}
       </Box>
-      <Box gap={2} marginTop={0}>
+      <Box aria-hidden gap={2} marginTop={0}>
         <Text color={theme.colors.mutedForeground} dimColor>
-          {scrollOffset + 1}–{Math.min(scrollOffset + height, filtered.length)}/
-          {filtered.length}
+          {scrollOffset + 1}
+          {unicode ? "–" : "-"}
+          {Math.min(scrollOffset + height, filtered.length)}/{filtered.length}
         </Text>
         <Text
           color={follow ? theme.colors.success : theme.colors.mutedForeground}
           dimColor
         >
-          {follow ? "↓ follow" : "f follow"}
+          {follow ? (unicode ? "↓ follow" : "down follow") : "f follow"}
         </Text>
         <Text color={theme.colors.mutedForeground} dimColor>
           j/k scroll

@@ -44,14 +44,18 @@ npm install ink
 />
 
 <ComponentSource
-  base="ink"
-  name="theme-provider"
-  title="components/ui/theme-provider.tsx"
+  src="registry/bases/ink/hooks/use-theme.ts"
+  title="hooks/use-theme.ts"
 />
 
 <ComponentSource
-  src="registry/bases/ink/hooks/use-input.ts"
-  title="hooks/use-input.ts"
+  src="registry/bases/ink/hooks/use-unicode.ts"
+  title="hooks/use-unicode.ts"
+/>
+
+<ComponentSource
+  src="registry/bases/ink/hooks/use-interaction.tsx"
+  title="hooks/use-interaction.tsx"
 />
 
 <ComponentSource
@@ -89,3 +93,41 @@ import { Pagination } from "@/components/ui/pagination";
 | `onChange`  | `(page: number) => void` | -          |
 | `showEdges` | `boolean`                | `true`     |
 | `siblings`  | `number`                 | `1`        |
+
+{/* ink-v1-contract */}
+
+## Keyboard
+
+| Key                 | Behavior                                              |
+| ------------------- | ----------------------------------------------------- |
+| Arrow keys          | Move inside the composite control.                    |
+| `Home` / `End`      | Move to the first or last enabled item.               |
+| `Enter` / `Space`   | Activate, select, or toggle the current item.         |
+| `Escape`            | Cancel or close when the component owns a surface.    |
+| `Tab` / `Shift+Tab` | Move to the next or previous Termcn/Ink focus target. |
+
+## Focus and composition
+
+This is one native Ink tab stop. Its input subscription is active only while focused, enabled, active, and inside the topmost focus scope. Compose it with other controls through `useInteraction`; do not attach a second renderer-wide `useInput` handler for the same keys.
+
+Set `autoFocus` only on the intended initial control. Application-global shortcuts such as `q` belong to the application template and require an explicit active boundary.
+
+## V1 public contract
+
+The state contract supports both `onValueChange` and `onChange`; they are equal source-owned aliases, and controlled values take precedence over defaults. Submission and cancellation use `onSubmit` and `onCancel` where applicable. Interactive components also accept `id`, `autoFocus`, `isActive`, `disabled`, and `aria-label` where applicable.
+
+## Accessibility
+
+Termcn targets Ink 6.8 terminal accessibility and predictable terminal screen-reader output. This is not a claim of browser ARIA behavior or general WCAG conformance. Semantic roles and supported states are owned by the component; use `aria-label` to provide a contextual name.
+
+## Screen reader behavior
+
+Decorative borders, focus glyphs, cursor frames, and redundant hints are omitted. Labels and semantic state remain in the linear output. Ink has no browser-style live-region API, so dynamic announcements are intentionally batched to meaningful state changes.
+
+## Motion and Unicode
+
+`NO_MOTION=1`, `CI=true`, and screen-reader mode stop component animation handles. `NO_UNICODE=1` selects the component's ASCII-safe defaults where it owns the glyph; caller-supplied icons, borders, and render functions remain the caller's responsibility.
+
+## Known Ink limitations
+
+Ink 6.8 does not expose DOM semantics or roles such as `dialog`, `alert`, `heading`, `link`, `tree`, `row`, and `cell`. Termcn uses the closest supported role plus explicit textual output. Reusable text controls cannot discover absolute terminal coordinates in Ink 6.8; pass `cursorOrigin` when IME cursor positioning is required.

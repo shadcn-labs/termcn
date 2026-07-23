@@ -1,0 +1,54 @@
+---
+title: "Accessible Ink applications"
+description: "Terminal accessibility, screen-reader output, motion, Unicode, and rendering guidance for Termcn Ink."
+---
+
+Termcn targets the accessibility contract exposed by Ink 6.8 and predictable linear output in terminal screen readers. Terminals do not provide the DOM, browser accessibility trees, or live regions, so this is not a general WCAG-conformance claim.
+
+## Native primitives, local decisions
+
+Published components render Ink's `Box` and `Text` directly. There is no `TerminalBox`, `TerminalText`, accessibility component, or mandatory runtime provider between the component and Ink. Theme, Unicode, and motion behavior live in standalone `registry:hook` items under `hooks/`; each owns a usable default context, and `ThemeProvider` only supplies overrides when mounted.
+
+Reusable non-React helpers install as `lib/accessibility.ts`; they contain only contracts and deterministic functions for visual alternatives, summaries, borders, and built-in symbol fallback. Grapheme and terminal-cell operations remain in `lib/terminal-text.ts` because they form an independent text-editing concern. Registry dependencies are inferred from source imports, so installing one component copies only the helpers and `use-theme`, `use-unicode`, or `use-motion` hooks it actually uses.
+
+## Start with meaningful output
+
+- Give every control a contextual `aria-label`.
+- Keep status words and non-color markers visible; color is supplemental.
+- Supply `alt` to Image and QR Code, or explicitly set `aria-hidden={true}` when decorative.
+- Supply `accessibleSummary` when a chart's generated bounded summary is not enough.
+- Keep caller-supplied render functions meaningful in screen-reader mode.
+
+When Ink screen-reader mode is active, Termcn removes decorative borders, cursors, gradients, animation frames, plot glyphs, and redundant key hints. Tables and grids become labelled rows, trees include depth and expanded state, and visual media becomes plain text.
+
+## Static and dynamic output
+
+Use Ink `Static` for completed logs, messages, tool results, and other history. Keep current progress, streaming state, and the active prompt outside `Static` as one changing region. Ink has no browser-style `aria-live`; Termcn batches streaming output and exposes meaningful state transitions instead of announcing every frame.
+
+## Motion and Unicode
+
+`NO_MOTION=1`, `CI=true`, and screen-reader mode disable Termcn animation intervals. An inactive or closed component also creates no animation handle. `NO_UNICODE=1` selects ASCII-safe built-in symbols and theme borders where the component owns them. Custom icons, borders, and render functions are application-owned and need their own ASCII alternative.
+
+## Recommended render configuration
+
+```tsx
+import { render } from "ink";
+
+render(<App />, {
+  concurrent: true,
+  incrementalRendering: true,
+  isScreenReaderEnabled: process.env.INK_SCREEN_READER === "true",
+  kittyKeyboard: "auto",
+  maxFps: process.env.CI === "true" ? 10 : 30,
+});
+```
+
+Kitty keyboard events include `eventType`. Termcn ignores release events, permits repeat for navigation/editing, and activates Enter/Space only on press or when the event type is unavailable.
+
+## Text cursor and IME
+
+Ink 6.8 cannot discover a reusable component's absolute output coordinates. Text controls therefore render a visual cursor by default and accept `cursorOrigin={{x, y}}` to position the real terminal cursor through `useCursor`. This is required for reliable IME placement when the application knows the control's origin.
+
+## Manual acceptance
+
+Before releasing a full application, test VoiceOver in macOS Terminal, NVDA in Windows Terminal, an Orca/Linux smoke path, xterm keyboard input, Kitty or WezTerm, piped output, 40/80/120-column widths, light/dark/high-contrast themes, and the `NO_UNICODE`, `NO_MOTION`, and `INK_SCREEN_READER` environment modes.

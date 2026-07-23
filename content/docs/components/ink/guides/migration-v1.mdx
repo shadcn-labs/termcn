@@ -1,0 +1,31 @@
+---
+title: "Ink v1 migration"
+description: "Move copied Termcn Ink components to standalone v1 contracts."
+---
+
+Copied shadcn-style source is consumer-owned and is never mutated automatically. Re-run the registry command for the desired component, review the source diff, and migrate application code deliberately.
+
+| Existing usage                            | Standalone v1 behavior                                             |
+| ----------------------------------------- | ------------------------------------------------------------------ |
+| `onChange` for scalar controls            | Fully supported alongside `onValueChange`                          |
+| `onChange` for checkbox/toggle            | Fully supported alongside `onCheckedChange`                        |
+| `isOpen` / `onClose`                      | Supported alongside `open`, `defaultOpen`, and `onOpenChange`      |
+| Shared `use-input` / `use-focus` wrappers | `useInteraction`                                                   |
+| Internal Tab navigation                   | Arrow/Home/End/Page navigation; Tab leaves the composite           |
+| Renderer-wide component shortcuts         | Focused handling with `isActive`; global shortcuts stay in the app |
+| Hooks exported by `theme-provider`        | `@/hooks/use-theme`, `use-unicode`, and `use-motion`               |
+| Code-unit text editing                    | Grapheme-safe editing and terminal-cell measurement                |
+| Visual text cursor only                   | Optional `cursorOrigin` real cursor plus visual fallback           |
+| Optional image description                | Required `alt` or `aria-hidden={true}`                             |
+
+Controlled props always take precedence over defaults. Multi-value controls use arrays. Open surfaces are inactive and create no input/timer subscriptions while closed.
+
+Callback aliases are intentionally not deprecated. Registry components are copied into the application and become consumer-owned source, so consumers may retain `onChange` or choose the more explicit semantic callback without IDE warnings.
+
+Legacy `ink/use-input` and `ink/use-focus` registry URLs remain deprecated compatibility shims, but no v1 component depends on them. Remove direct references after every copied component has moved to `ink/interaction`.
+
+Remove copied `TerminalBox`, `TerminalText`, or accessibility wrapper components as part of the migration. v1 components use Ink's native `Box` and `Text` directly and import pure utilities from `@/lib/accessibility` only when needed.
+
+Move `useTheme` and `useThemeUpdater` imports to `@/hooks/use-theme`, `useUnicode` to `@/hooks/use-unicode`, and `useMotion` to `@/hooks/use-motion`. These hook files own their default contexts, so components continue to work without mounting `ThemeProvider`. Install the provider only when the application needs theme, Unicode, or reduced-motion overrides.
+
+Form validation runs once per submission, renders a concise error summary, and focuses the first invalid field by its Ink focus ID. Make the field's `id` match the `FormField.name` used by the form definition.

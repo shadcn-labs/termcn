@@ -3,10 +3,16 @@
   "name": "ink/use-interval",
   "title": "Use Interval",
   "description": "React-safe interval helper.",
+  "dependencies": [
+    "ink"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/ink/use-motion.json"
+  ],
   "files": [
     {
       "path": "registry/hooks/use-interval.ts",
-      "content": "import * as React from \"react\";\n\nexport const useInterval = (\n  callback: () => void,\n  delay: number | null\n): void => {\n  const savedCallback = React.useRef(callback);\n\n  React.useEffect(() => {\n    savedCallback.current = callback;\n  }, [callback]);\n\n  React.useEffect(() => {\n    if (delay === null) {\n      return;\n    }\n\n    const id = setInterval(() => savedCallback.current(), delay);\n    return () => clearInterval(id);\n  }, [delay]);\n};\n",
+      "content": "import { useIsScreenReaderEnabled } from \"ink\";\nimport * as React from \"react\";\n\nimport { useMotion } from \"@/hooks/use-motion\";\n\nexport interface UseIntervalOptions {\n  isActive?: boolean;\n  respectMotion?: boolean;\n}\n\nexport const useInterval = (\n  callback: () => void,\n  delay: number | null,\n  options: UseIntervalOptions = {}\n): void => {\n  const savedCallback = React.useRef(callback);\n  const { reduced } = useMotion();\n  const isScreenReaderEnabled = useIsScreenReaderEnabled();\n  const respectMotion = options.respectMotion ?? true;\n  const isActive =\n    options.isActive !== false &&\n    (!respectMotion || (!reduced && !isScreenReaderEnabled));\n\n  React.useEffect(() => {\n    savedCallback.current = callback;\n  }, [callback]);\n\n  React.useEffect(() => {\n    if (delay === null || !isActive) {\n      return;\n    }\n\n    const id = setInterval(() => savedCallback.current(), delay);\n    return () => clearInterval(id);\n  }, [delay, isActive]);\n};\n",
       "type": "registry:hook"
     }
   ],

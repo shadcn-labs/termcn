@@ -1,8 +1,15 @@
-import { Box, Text, useInput } from "ink";
+import { useIsScreenReaderEnabled, Box, Text } from "ink";
 import React, { useState } from "react";
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
+import { useInteraction } from "@/hooks/use-interaction";
+import type { InteractionProps } from "@/hooks/use-interaction";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import {
+  resolveStatusSymbol,
+  resolveTerminalSymbol,
+} from "@/registry/bases/ink/lib/accessibility";
 
 export type BannerVariant =
   | "info"
@@ -11,15 +18,7 @@ export type BannerVariant =
   | "success"
   | "neutral";
 
-const ICONS: Record<BannerVariant, string> = {
-  error: "✗",
-  info: "ℹ",
-  neutral: "·",
-  success: "✓",
-  warning: "⚠",
-};
-
-export interface BannerProps {
+export interface BannerProps extends InteractionProps {
   children: ReactNode;
   variant?: BannerVariant;
   icon?: string;
@@ -29,6 +28,7 @@ export interface BannerProps {
   color?: string;
   accentChar?: string;
   gap?: number;
+  "aria-label"?: string;
 }
 
 export const Banner = ({
@@ -39,10 +39,17 @@ export const Banner = ({
   dismissible = false,
   onDismiss,
   color,
-  accentChar = "┃",
+  accentChar,
   gap = 1,
+  id,
+  autoFocus,
+  isActive = true,
+  disabled,
+  "aria-label": ariaLabel,
 }: BannerProps) => {
   const theme = useTheme();
+  const unicode = useUnicode();
+  const isScreenReaderEnabled = useIsScreenReaderEnabled();
   const [dismissed, setDismissed] = useState(false);
 
   const variantColor =
@@ -67,26 +74,50 @@ export const Banner = ({
       }
     })();
 
-  useInput((_, key) => {
-    if (dismissible && key.escape) {
-      setDismissed(true);
-      onDismiss?.();
-    }
-  });
+  const { isFocused } = useInteraction(
+    (_, key) => {
+      if (dismissible && key.escape) {
+        setDismissed(true);
+        onDismiss?.();
+      }
+    },
+    { autoFocus, disabled, id, isActive: isActive && dismissible }
+  );
 
   if (dismissed) {
     return null;
   }
 
-  const resolvedIcon = icon ?? ICONS[variant];
+  const resolvedIcon = icon ?? resolveStatusSymbol(unicode, variant);
+  const resolvedAccentChar =
+    accentChar ?? resolveTerminalSymbol(unicode, "┃", "|");
 
   return (
-    <Box flexDirection="column">
+    <Box
+      flexDirection="column"
+      aria-role={dismissible ? "button" : "listitem"}
+      aria-state={{ disabled: disabled || undefined }}
+    >
+      <Text
+        aria-label={
+          ariaLabel ??
+          `${variant} banner${title ? `: ${title}` : ""}${dismissible ? ". Press Escape to dismiss." : ""}`
+        }
+      >
+        {""}
+      </Text>
       <Box flexDirection="row" gap={gap}>
-        <Text color={variantColor}>{accentChar}</Text>
+        {!isScreenReaderEnabled && (
+          <Text aria-hidden color={variantColor}>
+            {resolvedAccentChar}
+          </Text>
+        )}
         <Box flexDirection="column">
           <Box flexDirection="row" gap={1}>
-            <Text color={variantColor}>{resolvedIcon}</Text>
+            <Text aria-hidden color={variantColor}>
+              {resolvedIcon}
+            </Text>
+            {isFocused && dismissible && <Text aria-hidden>[focused]</Text>}
             {title && (
               <Text bold color={variantColor}>
                 {title}:
@@ -95,7 +126,7 @@ export const Banner = ({
             <Text>{children}</Text>
           </Box>
           {dismissible && (
-            <Text color={theme.colors.muted} dimColor>
+            <Text aria-hidden color={theme.colors.muted} dimColor>
               press Esc to dismiss
             </Text>
           )}

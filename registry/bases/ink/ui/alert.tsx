@@ -1,17 +1,15 @@
-import { Box, Text } from "ink";
+import { useIsScreenReaderEnabled, Box, Text } from "ink";
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import {
+  resolveBorderStyle,
+  resolveStatusSymbol,
+} from "@/registry/bases/ink/lib/accessibility";
 import type { BorderStyle } from "@/registry/bases/ink/ui/types";
 
 export type AlertVariant = "success" | "error" | "warning" | "info";
-
-const ICONS: Record<AlertVariant, string> = {
-  error: "✗",
-  info: "ℹ",
-  success: "✓",
-  warning: "⚠",
-};
 
 export interface AlertProps {
   variant?: AlertVariant;
@@ -23,6 +21,7 @@ export interface AlertProps {
   color?: string;
   paddingX?: number;
   paddingY?: number;
+  "aria-label"?: string;
 }
 
 export const Alert = ({
@@ -35,8 +34,11 @@ export const Alert = ({
   color,
   paddingX = 1,
   paddingY = 0,
+  "aria-label": ariaLabel,
 }: AlertProps) => {
+  const unicode = useUnicode();
   const theme = useTheme();
+  const isScreenReaderEnabled = useIsScreenReaderEnabled();
 
   const variantColor =
     color ??
@@ -57,13 +59,20 @@ export const Alert = ({
       }
     })();
 
-  const resolvedIcon = icon ?? ICONS[variant];
+  const resolvedIcon = icon ?? resolveStatusSymbol(unicode, variant);
 
   const inner = (
     <>
       <Box gap={1}>
-        <Text color={variantColor} bold>
+        <Text aria-hidden color={variantColor} bold>
           {resolvedIcon}
+        </Text>
+        <Text
+          aria-label={
+            ariaLabel ?? `${variant} alert${title ? `: ${title}` : ""}`
+          }
+        >
+          {""}
         </Text>
         {title && (
           <Text bold color={variantColor}>
@@ -85,7 +94,10 @@ export const Alert = ({
 
   return (
     <Box
-      borderStyle={borderStyle ?? theme.border.style}
+      borderStyle={resolveBorderStyle(
+        isScreenReaderEnabled ? undefined : (borderStyle ?? theme.border.style),
+        unicode
+      )}
       borderColor={variantColor}
       paddingX={paddingX}
       paddingY={paddingY}

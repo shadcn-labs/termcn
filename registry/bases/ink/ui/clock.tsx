@@ -1,8 +1,10 @@
 import { Box, Text } from "ink";
 import React, { useState, useCallback } from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
 import { useInterval } from "@/hooks/use-interval";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import { toAsciiComponentText } from "@/registry/bases/ink/lib/accessibility";
 
 export interface ClockProps {
   format?: "12h" | "24h";
@@ -11,6 +13,8 @@ export interface ClockProps {
   timezone?: string;
   color?: string;
   size?: "sm" | "lg";
+  isActive?: boolean;
+  "aria-label"?: string;
 }
 
 const BIG_DIGITS: Record<string, string[]> = {
@@ -28,7 +32,11 @@ const BIG_DIGITS: Record<string, string[]> = {
   ":": ["   ", " ● ", "   ", " ● ", "   "],
 };
 
-const renderBigText = (str: string, color: string): React.ReactElement => {
+const renderBigText = (
+  str: string,
+  color: string,
+  unicode: boolean
+): React.ReactElement => {
   const rows: string[] = ["", "", "", ""];
   for (const ch of str) {
     const segs = BIG_DIGITS[ch] ?? BIG_DIGITS[" "] ?? [];
@@ -40,7 +48,7 @@ const renderBigText = (str: string, color: string): React.ReactElement => {
     <Box flexDirection="column">
       {rows.map((row, i) => (
         <Text key={i} color={color}>
-          {row}
+          {unicode ? row : toAsciiComponentText(row)}
         </Text>
       ))}
     </Box>
@@ -94,28 +102,40 @@ export const Clock = ({
   timezone,
   color,
   size = "sm",
+  isActive = true,
+  "aria-label": ariaLabel,
 }: ClockProps) => {
   const theme = useTheme();
+  const unicode = useUnicode();
   const resolvedColor = color ?? theme.colors.primary;
 
   const [_tick, setTick] = useState(0);
   useInterval(
     useCallback(() => setTick((t) => t + 1), []),
-    1000
+    1000,
+    { isActive }
   );
 
   const { time, ampm } = getTimeParts(format, showSeconds, timezone);
 
   if (size === "lg") {
     return (
-      <Box flexDirection="column" gap={0}>
+      <Box
+        flexDirection="column"
+        gap={0}
+        aria-role="timer"
+        aria-label={
+          ariaLabel ??
+          `Clock: ${time}${ampm}${showDate ? `. ${getDateString(timezone)}` : ""}`
+        }
+      >
         {showDate && (
           <Text color={theme.colors.mutedForeground}>
             {getDateString(timezone)}
           </Text>
         )}
         <Box alignItems="flex-end" gap={0}>
-          {renderBigText(time, resolvedColor)}
+          {renderBigText(time, resolvedColor, unicode)}
           {ampm && (
             <Text color={theme.colors.mutedForeground} bold>
               {ampm}
@@ -127,7 +147,15 @@ export const Clock = ({
   }
 
   return (
-    <Box flexDirection="column" gap={0}>
+    <Box
+      flexDirection="column"
+      gap={0}
+      aria-role="timer"
+      aria-label={
+        ariaLabel ??
+        `Clock: ${time}${ampm}${showDate ? `. ${getDateString(timezone)}` : ""}`
+      }
+    >
       {showDate && (
         <Text color={theme.colors.mutedForeground}>
           {getDateString(timezone)}

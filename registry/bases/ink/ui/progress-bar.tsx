@@ -1,6 +1,8 @@
 import { Box, Text } from "ink";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import { resolveTerminalSymbol } from "@/registry/bases/ink/lib/accessibility";
 
 export interface ProgressBarProps {
   value: number;
@@ -12,6 +14,7 @@ export interface ProgressBarProps {
   emptyChar?: string;
   color?: string;
   label?: string;
+  "aria-label"?: string;
 }
 
 export const ProgressBar = ({
@@ -20,25 +23,40 @@ export const ProgressBar = ({
   width = 30,
   showPercent = true,
   showEta: _showEta = false,
-  fillChar = "█",
-  emptyChar = "░",
+  fillChar,
+  emptyChar,
   color,
   label,
+  "aria-label": ariaLabel,
 }: ProgressBarProps) => {
   const theme = useTheme();
+  const unicode = useUnicode();
   const resolvedColor = color ?? theme.colors.primary;
+  const resolvedFillChar = fillChar ?? resolveTerminalSymbol(unicode, "█", "#");
+  const resolvedEmptyChar =
+    emptyChar ?? resolveTerminalSymbol(unicode, "░", ".");
 
   const percent =
     total === undefined
       ? Math.min(100, Math.round(value))
-      : Math.min(100, Math.round((value / total) * 100));
+      : total <= 0
+        ? 0
+        : Math.min(100, Math.max(0, Math.round((value / total) * 100)));
   const filled = Math.round((percent / 100) * width);
   const empty = width - filled;
 
-  const bar = fillChar.repeat(filled) + emptyChar.repeat(empty);
+  const bar = resolvedFillChar.repeat(filled) + resolvedEmptyChar.repeat(empty);
 
   return (
-    <Box flexDirection="column">
+    <Box
+      flexDirection="column"
+      aria-role="progressbar"
+      aria-label={
+        ariaLabel ??
+        `${label ?? "Progress"}: ${percent}%${total === undefined ? "" : `, ${value} of ${total}`}`
+      }
+      aria-state={{ busy: percent < 100 }}
+    >
       {label && <Text>{label}</Text>}
       <Box gap={1}>
         <Text color={resolvedColor}>{bar}</Text>

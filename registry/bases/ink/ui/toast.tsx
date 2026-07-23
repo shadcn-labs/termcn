@@ -1,17 +1,16 @@
-import { Box, Text } from "ink";
+import { useIsScreenReaderEnabled, Box, Text } from "ink";
 import React, { useState, useEffect } from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
 import { useInterval } from "@/hooks/use-interval";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import {
+  resolveBorderStyle,
+  resolveStatusSymbol,
+  resolveTerminalSymbol,
+} from "@/registry/bases/ink/lib/accessibility";
 
 export type ToastVariant = "success" | "error" | "warning" | "info";
-
-const ICONS: Record<ToastVariant, string> = {
-  error: "✗",
-  info: "ℹ",
-  success: "✓",
-  warning: "⚠",
-};
 
 export interface ToastProps {
   message: string;
@@ -19,6 +18,7 @@ export interface ToastProps {
   duration?: number;
   onDismiss?: () => void;
   icon?: string;
+  "aria-label"?: string;
 }
 
 const BAR_WIDTH = 20;
@@ -30,8 +30,11 @@ export const Toast = ({
   duration = 3000,
   onDismiss,
   icon,
+  "aria-label": ariaLabel,
 }: ToastProps) => {
+  const unicode = useUnicode();
   const theme = useTheme();
+  const isScreenReaderEnabled = useIsScreenReaderEnabled();
   const [elapsed, setElapsed] = useState(0);
   const [dismissed, setDismissed] = useState(false);
 
@@ -76,25 +79,34 @@ export const Toast = ({
   const progress = remaining / duration;
   const filledChars = Math.round(progress * BAR_WIDTH);
   const emptyChars = BAR_WIDTH - filledChars;
-  const bar = "█".repeat(filledChars) + "░".repeat(emptyChars);
+  const bar =
+    resolveTerminalSymbol(unicode, "█", "#").repeat(filledChars) +
+    resolveTerminalSymbol(unicode, "░", ".").repeat(emptyChars);
 
-  const resolvedIcon = icon ?? ICONS[variant];
+  const resolvedIcon = icon ?? resolveStatusSymbol(unicode, variant);
 
   return (
     <Box
-      borderStyle="round"
+      borderStyle={resolveBorderStyle(
+        isScreenReaderEnabled ? undefined : "round",
+        unicode
+      )}
       borderColor={variantColor}
       paddingX={1}
       paddingY={0}
       flexDirection="column"
+      aria-role="listitem"
     >
+      <Text aria-label={ariaLabel ?? `${variant} notification: ${message}`}>
+        {""}
+      </Text>
       <Box gap={1}>
-        <Text color={variantColor} bold>
+        <Text aria-hidden color={variantColor} bold>
           {resolvedIcon}
         </Text>
         <Text>{message}</Text>
       </Box>
-      <Box gap={1}>
+      <Box aria-hidden gap={1}>
         <Text color={variantColor}>{bar}</Text>
         <Text color={theme.colors.muted}>{remainingSeconds}s</Text>
       </Box>

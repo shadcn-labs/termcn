@@ -1,6 +1,12 @@
 import { Box, Text } from "ink";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import {
+  padToTerminalWidth,
+  terminalWidth,
+  truncateToTerminalWidth,
+} from "@/registry/bases/ink/lib/terminal-text";
 
 export interface HeatMapProps {
   data: number[][];
@@ -9,6 +15,9 @@ export interface HeatMapProps {
   colorScale?: string[];
   cellWidth?: number;
   showValues?: boolean;
+  title?: string;
+  accessibleSummary?: string;
+  "aria-label"?: string;
 }
 
 const DEFAULT_COLOR_SCALE = [
@@ -24,6 +33,7 @@ const DEFAULT_COLOR_SCALE = [
 ];
 
 const SHADE_CHARS = [" ", "░", "▒", "▓", "█"];
+const ASCII_SHADE_CHARS = [" ", ".", ":", "*", "#"];
 
 const getColorForValue = (
   value: number,
@@ -39,33 +49,34 @@ const getColorForValue = (
   return scale[idx] ?? scale[0] ?? "#888888";
 };
 
-const getShadeForValue = (value: number, min: number, max: number): string => {
+const getShadeForValue = (
+  value: number,
+  min: number,
+  max: number,
+  shadeChars: string[]
+): string => {
   if (max === min) {
-    return SHADE_CHARS[2] ?? "▒";
+    return shadeChars[2] ?? ":";
   }
   const t = (value - min) / (max - min);
   const idx = Math.min(
-    SHADE_CHARS.length - 1,
-    Math.round(t * (SHADE_CHARS.length - 1))
+    shadeChars.length - 1,
+    Math.round(t * (shadeChars.length - 1))
   );
-  return SHADE_CHARS[idx] ?? SHADE_CHARS[0] ?? " ";
+  return shadeChars[idx] ?? shadeChars[0] ?? " ";
 };
 
 const padCenter = (str: string, width: number): string => {
-  if (str.length >= width) {
-    return str.slice(0, width);
-  }
-  const total = width - str.length;
+  const value = truncateToTerminalWidth(str, width);
+  const total = Math.max(0, width - terminalWidth(value));
   const left = Math.floor(total / 2);
   const right = total - left;
-  return " ".repeat(left) + `${str} `.repeat(right);
+  return " ".repeat(left) + value + " ".repeat(right);
 };
 
 const padStart = (str: string, width: number): string => {
-  if (str.length >= width) {
-    return str.slice(0, width);
-  }
-  return " ".repeat(width - str.length) + str;
+  const value = truncateToTerminalWidth(str, width);
+  return " ".repeat(Math.max(0, width - terminalWidth(value))) + value;
 };
 
 export const HeatMap = ({
@@ -75,8 +86,13 @@ export const HeatMap = ({
   colorScale = DEFAULT_COLOR_SCALE,
   cellWidth = 5,
   showValues = false,
+  title,
+  accessibleSummary,
+  "aria-label": ariaLabel,
 }: HeatMapProps) => {
   const theme = useTheme();
+  const unicode = useUnicode();
+  const shadeChars = unicode ? SHADE_CHARS : ASCII_SHADE_CHARS;
 
   if (data.length === 0 || data[0].length === 0) {
     return <Text color={theme.colors.mutedForeground}>No data</Text>;
@@ -90,11 +106,30 @@ export const HeatMap = ({
   const max = Math.max(...allValues);
 
   const rowLabelWidth = rowLabels
-    ? Math.max(...rowLabels.map((l) => l.length)) + 1
+    ? Math.max(...rowLabels.map((l) => terminalWidth(l))) + 1
     : 0;
 
   return (
-    <Box flexDirection="column">
+    <Box
+      flexDirection="column"
+      aria-label={
+        ariaLabel ??
+        accessibleSummary ??
+        `${title ?? "Heat map"}. Range ${min} to ${max}. ${data
+          .slice(0, 8)
+          .map(
+            (row, rowIndex) =>
+              `${rowLabels?.[rowIndex] ?? `Row ${rowIndex + 1}`}: ${row
+                .slice(0, 8)
+                .map(
+                  (value, columnIndex) =>
+                    `${colLabels?.[columnIndex] ?? `Column ${columnIndex + 1}`} ${value}`
+                )
+                .join(", ")}`
+          )
+          .join(". ")}.`
+      }
+    >
       {colLabels && (
         <Box flexDirection="row">
           {rowLabelWidth > 0 && <Text>{" ".repeat(rowLabelWidth + 1)}</Text>}
@@ -116,7 +151,7 @@ export const HeatMap = ({
 
           {row.map((val, ci) => {
             const cellColor = getColorForValue(val, min, max, colorScale);
-            const shadeChar = getShadeForValue(val, min, max);
+            const shadeChar = getShadeForValue(val, min, max, shadeChars);
             const cellContent = showValues
               ? padCenter(String(Math.round(val)), cellWidth)
               : shadeChar.repeat(cellWidth);
@@ -134,7 +169,7 @@ export const HeatMap = ({
         <Text color={theme.colors.mutedForeground}>Low</Text>
         {colorScale.map((c, idx) => (
           <Text key={idx} color={c}>
-            █
+            {unicode ? "█" : "#"}
           </Text>
         ))}
         <Text color={theme.colors.mutedForeground}>High</Text>

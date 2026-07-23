@@ -1,6 +1,8 @@
 import { Box, Text } from "ink";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import { toAsciiComponentText } from "@/registry/bases/ink/lib/accessibility";
 
 export type DigitSize = "sm" | "md" | "lg";
 
@@ -8,6 +10,8 @@ export interface DigitsProps {
   value: string | number;
   color?: string;
   size?: DigitSize;
+  "aria-label"?: string;
+  "aria-hidden"?: boolean;
 }
 
 const SEGMENTS_MD: Record<string, string[]> = {
@@ -54,14 +58,26 @@ const getFallback = (size: DigitSize): string[] => {
   return [`╭${bar}╮`, side, side, side, `╰${bar}╯`];
 };
 
-export const Digits = ({ value, color, size = "md" }: DigitsProps) => {
+export const Digits = ({
+  value,
+  color,
+  size = "md",
+  "aria-label": ariaLabel,
+  "aria-hidden": ariaHidden,
+}: DigitsProps) => {
   const theme = useTheme();
+  const unicode = useUnicode();
   const resolvedColor = color ?? theme.colors.primary;
   const str = String(value);
 
   if (size === "sm") {
     return (
-      <Text color={resolvedColor} bold>
+      <Text
+        aria-label={ariaHidden ? undefined : (ariaLabel ?? str)}
+        aria-hidden={ariaHidden}
+        color={resolvedColor}
+        bold
+      >
         {str}
       </Text>
     );
@@ -73,7 +89,11 @@ export const Digits = ({ value, color, size = "md" }: DigitsProps) => {
   const rows = 5;
 
   return (
-    <Box flexDirection="column">
+    <Box
+      flexDirection="column"
+      aria-label={ariaHidden ? undefined : (ariaLabel ?? str)}
+      aria-hidden={ariaHidden}
+    >
       {Array.from({ length: rows }, (_, rowIdx) => (
         <Box key={rowIdx} flexDirection="row">
           {chars.map((ch, charIdx) => {
@@ -82,7 +102,7 @@ export const Digits = ({ value, color, size = "md" }: DigitsProps) => {
               segments[rowIdx] ?? " ".repeat(size === "lg" ? 5 : 3);
             return (
               <Text key={charIdx} color={resolvedColor}>
-                {rowStr}{" "}
+                {unicode ? rowStr : toAsciiComponentText(rowStr)}{" "}
               </Text>
             );
           })}

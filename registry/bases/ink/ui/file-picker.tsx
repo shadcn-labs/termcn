@@ -4,12 +4,15 @@ import { join, resolve } from "node:path";
 import { Box, Text } from "ink";
 import React, { useState } from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
-import { useFocus } from "@/hooks/use-focus";
-import { useInput } from "@/hooks/use-input";
+import { useInteraction } from "@/hooks/use-interaction";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import { resolveBorderStyle } from "@/registry/bases/ink/lib/accessibility";
 
 export interface FilePickerProps {
   value?: string;
+  defaultValue?: string;
+  onValueChange?: (path: string) => void;
   onChange?: (path: string) => void;
   onSubmit?: (path: string) => void;
   label?: string;
@@ -20,6 +23,9 @@ export interface FilePickerProps {
   id?: string;
   width?: number;
   maxVisible?: number;
+  isActive?: boolean;
+  disabled?: boolean;
+  "aria-label"?: string;
 }
 
 interface FileEntry {
@@ -76,6 +82,8 @@ const readDir = (
 
 export const FilePicker = ({
   value: controlledValue,
+  defaultValue = "",
+  onValueChange,
   onChange,
   onSubmit,
   label,
@@ -86,12 +94,15 @@ export const FilePicker = ({
   id,
   width = 50,
   maxVisible = 8,
+  isActive = true,
+  disabled = false,
+  "aria-label": ariaLabel,
 }: FilePickerProps) => {
+  const unicode = useUnicode();
   const theme = useTheme();
-  const { isFocused } = useFocus({ autoFocus, id });
   const [currentDir, setCurrentDir] = useState(resolve(startDir));
   const [cursor, setCursor] = useState(0);
-  const [internalValue, setInternalValue] = useState("");
+  const [internalValue, setInternalValue] = useState(defaultValue);
 
   const selected = controlledValue ?? internalValue;
   const entries = readDir(currentDir, extensions, dirsOnly);
@@ -105,53 +116,61 @@ export const FilePicker = ({
 
   const visibleStart = Math.max(0, cursor - maxVisible + 1);
   const visible = allEntries.slice(visibleStart, visibleStart + maxVisible);
-
-  useInput((input, key) => {
-    if (!isFocused) {
-      return;
+  const applyChange = (nextPath: string) => {
+    const changeHandler = onValueChange ?? onChange;
+    if (changeHandler) {
+      changeHandler(nextPath);
+    } else {
+      setInternalValue(nextPath);
     }
+  };
 
-    if (key.upArrow) {
-      setCursor((c) => Math.max(0, c - 1));
-    } else if (key.downArrow) {
-      setCursor((c) => Math.min(allEntries.length - 1, c + 1));
-    } else if (key.return) {
-      const entry = allEntries[cursor];
-      if (!entry) {
-        return;
-      }
-      if (entry.isDir) {
-        setCurrentDir(entry.path);
+  const { isFocused } = useInteraction(
+    (input, key) => {
+      if (key.upArrow) {
+        setCursor((c) => Math.max(0, c - 1));
+      } else if (key.downArrow) {
+        setCursor((c) => Math.min(allEntries.length - 1, c + 1));
+      } else if (key.return) {
+        const entry = allEntries[cursor];
+        if (!entry) {
+          return;
+        }
+        if (entry.isDir) {
+          setCurrentDir(entry.path);
+          setCursor(0);
+        } else {
+          applyChange(entry.path);
+          onSubmit?.(entry.path);
+        }
+      } else if (input === " ") {
+        const entry = allEntries[cursor];
+        if (entry && !entry.isDir) {
+          applyChange(entry.path);
+        }
+      } else if (key.home) {
         setCursor(0);
-      } else {
-        if (onChange) {
-          onChange(entry.path);
-        } else {
-          setInternalValue(entry.path);
-        }
-        onSubmit?.(entry.path);
+      } else if (key.end) {
+        setCursor(Math.max(0, allEntries.length - 1));
+      } else if (key.escape) {
+        setCurrentDir((d) => resolve(d, ".."));
+        setCursor(0);
       }
-    } else if (input === " ") {
-      const entry = allEntries[cursor];
-      if (entry && !entry.isDir) {
-        if (onChange) {
-          onChange(entry.path);
-        } else {
-          setInternalValue(entry.path);
-        }
-      }
-    } else if (key.escape) {
-      setCurrentDir((d) => resolve(d, ".."));
-      setCursor(0);
-    }
-  });
+    },
+    { autoFocus, disabled, id, isActive }
+  );
 
   return (
     <Box flexDirection="column">
-      {label && <Text bold>{label}</Text>}
+      <Text
+        aria-label={ariaLabel ?? label ?? "File picker"}
+        bold={Boolean(label)}
+      >
+        {label ?? ""}
+      </Text>
 
       <Box
-        borderStyle="single"
+        borderStyle={resolveBorderStyle("single", unicode)}
         borderColor={isFocused ? theme.colors.focusRing : theme.colors.border}
         width={width}
         paddingX={1}
@@ -162,8 +181,10 @@ export const FilePicker = ({
       </Box>
 
       <Box
+        aria-role="listbox"
+        aria-state={{ disabled }}
         flexDirection="column"
-        borderStyle="single"
+        borderStyle={resolveBorderStyle("single", unicode)}
         borderColor={theme.colors.border}
         width={width}
       >
@@ -182,13 +203,20 @@ export const FilePicker = ({
           }
 
           return (
-            <Box key={entry.path} paddingX={1}>
+            <Box
+              key={entry.path}
+              aria-label={`${entry.isDir ? "Directory" : "File"}: ${entry.name}`}
+              aria-role="option"
+              aria-state={{ selected: isSelected }}
+              paddingX={1}
+            >
               <Text
+                aria-hidden
                 color={isCursor ? theme.colors.selectionForeground : entryColor}
                 backgroundColor={isCursor ? theme.colors.selection : undefined}
                 bold={entry.isDir}
               >
-                {entry.isDir ? "▶ " : "· "}
+                {entry.isDir ? (unicode ? "▶ " : "> ") : unicode ? "· " : "- "}
                 {entry.name}
                 {entry.isDir ? "/" : ""}
               </Text>
@@ -212,8 +240,10 @@ export const FilePicker = ({
       )}
 
       {isFocused && (
-        <Text color={theme.colors.mutedForeground} dimColor>
-          ↑↓: navigate · Enter: open/select · Esc: up
+        <Text aria-hidden color={theme.colors.mutedForeground} dimColor>
+          {unicode
+            ? "↑↓: navigate · Enter: open/select · Esc: up"
+            : "up/down: navigate - Enter: open/select - Esc: up"}
         </Text>
       )}
     </Box>

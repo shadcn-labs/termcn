@@ -1,12 +1,22 @@
 import { Box, Text } from "ink";
 import React, { useState } from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
-import { useFocus } from "@/hooks/use-focus";
-import { useInput } from "@/hooks/use-input";
+import { useInteraction } from "@/hooks/use-interaction";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import {
+  resolveBorderStyle,
+  resolveTerminalSymbol,
+} from "@/registry/bases/ink/lib/accessibility";
+import {
+  graphemeLength,
+  removeGraphemeBefore,
+} from "@/registry/bases/ink/lib/terminal-text";
 
 export interface EmailInputProps {
   value?: string;
+  defaultValue?: string;
+  onValueChange?: (value: string) => void;
   onChange?: (value: string) => void;
   onSubmit?: (value: string) => void;
   label?: string;
@@ -15,6 +25,11 @@ export interface EmailInputProps {
   id?: string;
   width?: number;
   suggestions?: string[];
+  isActive?: boolean;
+  disabled?: boolean;
+  readOnly?: boolean;
+  required?: boolean;
+  "aria-label"?: string;
 }
 
 const isValidEmail = (email: string): boolean => {
@@ -42,6 +57,8 @@ const getBorderColor = (
 
 export const EmailInput = ({
   value: controlledValue,
+  defaultValue = "",
+  onValueChange,
   onChange,
   onSubmit,
   label,
@@ -50,17 +67,24 @@ export const EmailInput = ({
   id,
   width = 40,
   suggestions = ["gmail.com", "yahoo.com", "hotmail.com", "outlook.com"],
+  isActive = true,
+  disabled = false,
+  readOnly = false,
+  required = false,
+  "aria-label": ariaLabel,
 }: EmailInputProps) => {
-  const [internalValue, setInternalValue] = useState("");
+  const unicode = useUnicode();
+  const cursor = resolveTerminalSymbol(unicode, "█", "|");
+  const [internalValue, setInternalValue] = useState(defaultValue);
   const [error, setError] = useState<string | null>(null);
   const theme = useTheme();
-  const { isFocused } = useFocus({ autoFocus, id });
 
   const value = controlledValue ?? internalValue;
 
   const applyChange = (newVal: string) => {
-    if (onChange) {
-      onChange(newVal);
+    const changeHandler = onValueChange ?? onChange;
+    if (changeHandler) {
+      changeHandler(newVal);
     } else {
       setInternalValue(newVal);
     }
@@ -84,45 +108,49 @@ export const EmailInput = ({
     return match.slice(afterAt.length);
   };
 
-  useInput((input, key) => {
-    if (!isFocused) {
-      return;
-    }
-
-    if (key.return) {
-      if (!isValidEmail(value)) {
-        setError("Please enter a valid email address");
+  const { isFocused } = useInteraction(
+    (input, key) => {
+      if (key.return) {
+        if (!isValidEmail(value)) {
+          setError("Please enter a valid email address");
+          return;
+        }
+        setError(null);
+        onSubmit?.(value);
         return;
       }
-      setError(null);
-      onSubmit?.(value);
-      return;
-    }
 
-    if (key.tab) {
-      const hint = getSuggestion(value);
-      if (hint) {
-        const newVal = value + hint;
-        applyChange(newVal);
+      if (key.rightArrow) {
+        const hint = getSuggestion(value);
+        if (hint) {
+          const newVal = value + hint;
+          applyChange(newVal);
+        }
+        return;
       }
-      return;
-    }
 
-    if (key.backspace || key.delete) {
+      if (readOnly) {
+        return;
+      }
+
+      if (key.backspace) {
+        setError(null);
+        const newVal = removeGraphemeBefore(value, graphemeLength(value)).value;
+        applyChange(newVal);
+        return;
+      }
+
+      if (key.escape || key.upArrow || key.downArrow) {
+        return;
+      }
+
       setError(null);
-      const newVal = value.slice(0, -1);
-      applyChange(newVal);
-      return;
-    }
-
-    if (key.escape || key.upArrow || key.downArrow) {
-      return;
-    }
-
-    setError(null);
-    const newVal = value + input;
-    applyChange(newVal);
-  });
+      if (input && !(key.ctrl || key.meta)) {
+        applyChange(value + input);
+      }
+    },
+    { autoFocus, disabled, id, isActive }
+  );
 
   const borderColor = getBorderColor(error, isFocused, theme);
 
@@ -132,7 +160,15 @@ export const EmailInput = ({
     <Box flexDirection="column">
       {label && <Text bold>{label}</Text>}
       <Box
-        borderStyle="round"
+        aria-label={
+          ariaLabel ??
+          `${label ?? "Email"}: ${value || "empty"}${
+            error ? `. Error: ${error}` : ""
+          }`
+        }
+        aria-role="textbox"
+        aria-state={{ disabled, readonly: readOnly, required }}
+        borderStyle={resolveBorderStyle("round", unicode)}
         borderColor={borderColor}
         width={width}
         paddingX={1}
@@ -143,16 +179,20 @@ export const EmailInput = ({
           {value || placeholder}
         </Text>
         {isFocused && suggestion && (
-          <Text color={theme.colors.mutedForeground} dimColor>
+          <Text aria-hidden color={theme.colors.mutedForeground} dimColor>
             {suggestion}
           </Text>
         )}
-        {isFocused && <Text color={theme.colors.focusRing}>█</Text>}
+        {isFocused && (
+          <Text aria-hidden color={theme.colors.focusRing}>
+            {cursor}
+          </Text>
+        )}
       </Box>
       {error && <Text color={theme.colors.error}>{error}</Text>}
       {isFocused && suggestion && (
-        <Text color={theme.colors.mutedForeground} dimColor>
-          Tab to complete: {value}
+        <Text aria-hidden color={theme.colors.mutedForeground} dimColor>
+          Right arrow to complete: {value}
           {suggestion}
         </Text>
       )}

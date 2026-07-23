@@ -1,7 +1,9 @@
-import { Box, Text } from "ink";
+import { useIsScreenReaderEnabled, Box, Text } from "ink";
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import { resolveBorderStyle } from "@/registry/bases/ink/lib/accessibility";
 import type { BorderStyle } from "@/registry/bases/ink/ui/types";
 
 export interface TooltipProps {
@@ -16,6 +18,7 @@ export interface TooltipProps {
   gap?: number;
   arrowDown?: string;
   arrowUp?: string;
+  "aria-label"?: string;
 }
 
 export const Tooltip = ({
@@ -28,18 +31,27 @@ export const Tooltip = ({
   paddingX = 1,
   paddingY = 0,
   gap = 1,
-  arrowDown = "↓",
-  arrowUp = "↑",
+  arrowDown,
+  arrowUp,
+  "aria-label": ariaLabel,
 }: TooltipProps) => {
+  const unicode = useUnicode();
   const theme = useTheme();
+  const isScreenReaderEnabled = useIsScreenReaderEnabled();
   const resolvedBorderColor = borderColor ?? theme.colors.border;
+  const resolvedArrowDown = arrowDown ?? (unicode ? "↓" : "v");
+  const resolvedArrowUp = arrowUp ?? (unicode ? "↑" : "^");
 
   const tooltipBox = (
     <Box
-      borderStyle={borderStyle}
+      borderStyle={resolveBorderStyle(
+        isScreenReaderEnabled ? undefined : borderStyle,
+        unicode
+      )}
       borderColor={resolvedBorderColor}
       paddingX={paddingX}
       paddingY={paddingY}
+      aria-label={ariaLabel ?? `Tooltip: ${content}`}
     >
       <Text color={theme.colors.foreground}>{content}</Text>
     </Box>
@@ -53,7 +65,9 @@ export const Tooltip = ({
     return (
       <Box flexDirection="column" alignItems="flex-start">
         {tooltipBox}
-        <Text color={theme.colors.mutedForeground}>{arrowDown}</Text>
+        <Text aria-hidden color={theme.colors.mutedForeground}>
+          {resolvedArrowDown}
+        </Text>
         <Box>{children}</Box>
       </Box>
     );
@@ -63,7 +77,9 @@ export const Tooltip = ({
     return (
       <Box flexDirection="column" alignItems="flex-start">
         <Box>{children}</Box>
-        <Text color={theme.colors.mutedForeground}>{arrowUp}</Text>
+        <Text aria-hidden color={theme.colors.mutedForeground}>
+          {resolvedArrowUp}
+        </Text>
         {tooltipBox}
       </Box>
     );

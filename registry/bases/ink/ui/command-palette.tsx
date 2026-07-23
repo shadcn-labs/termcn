@@ -1,8 +1,14 @@
-import { Box, Text } from "ink";
-import React, { useState } from "react";
+import { useIsScreenReaderEnabled, Box, Text } from "ink";
+import { useEffect, useId, useState } from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
-import { useInput } from "@/hooks/use-input";
+import { FocusScope, useInteraction } from "@/hooks/use-interaction";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import { resolveBorderStyle } from "@/registry/bases/ink/lib/accessibility";
+import {
+  graphemeLength,
+  removeGraphemeBefore,
+} from "@/registry/bases/ink/lib/terminal-text";
 
 export interface Command {
   id: string;
@@ -11,151 +17,192 @@ export interface Command {
   shortcut?: string;
   onSelect?: () => void;
   group?: string;
+  disabled?: boolean;
 }
 
 export interface CommandPaletteProps {
   commands: Command[];
-  isOpen: boolean;
+  open?: boolean;
+  defaultOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  isOpen?: boolean;
   onClose?: () => void;
   placeholder?: string;
   maxItems?: number;
+  returnFocusId?: string;
+  "aria-label"?: string;
 }
 
-/**
- * Fuzzy match: returns true if query is a subsequence of str (case insensitive).
- */
-const fuzzyMatch = (str: string, query: string): boolean => {
+const fuzzyMatch = (value: string, query: string): boolean => {
   if (!query) {
     return true;
   }
-  const s = str.toLowerCase();
-  const q = query.toLowerCase();
-  let qi = 0;
-  for (let i = 0; i < s.length && qi < q.length; i += 1) {
-    if (s[i] === q[qi]) {
-      qi += 1;
+  const normalizedValue = value.toLocaleLowerCase();
+  const normalizedQuery = query.toLocaleLowerCase();
+  let queryIndex = 0;
+  for (
+    let valueIndex = 0;
+    valueIndex < normalizedValue.length && queryIndex < normalizedQuery.length;
+    valueIndex += 1
+  ) {
+    if (normalizedValue[valueIndex] === normalizedQuery[queryIndex]) {
+      queryIndex += 1;
     }
   }
-  return qi === q.length;
+  return queryIndex === normalizedQuery.length;
 };
 
-/**
- * Score fuzzy match: lower = better. Consecutive matches score better.
- */
-const fuzzyScore = (str: string, query: string): number => {
+const fuzzyScore = (value: string, query: string): number => {
   if (!query) {
     return 0;
   }
-  const s = str.toLowerCase();
-  const q = query.toLowerCase();
+  const normalizedValue = value.toLocaleLowerCase();
+  const normalizedQuery = query.toLocaleLowerCase();
   let score = 0;
-  let qi = 0;
-  let lastMatchIdx = -1;
-
-  for (let i = 0; i < s.length && qi < q.length; i += 1) {
-    if (s[i] === q[qi]) {
-      score += i - lastMatchIdx - 1;
-      lastMatchIdx = i;
-      qi += 1;
+  let queryIndex = 0;
+  let previousMatch = -1;
+  for (
+    let valueIndex = 0;
+    valueIndex < normalizedValue.length && queryIndex < normalizedQuery.length;
+    valueIndex += 1
+  ) {
+    if (normalizedValue[valueIndex] === normalizedQuery[queryIndex]) {
+      score += valueIndex - previousMatch - 1;
+      previousMatch = valueIndex;
+      queryIndex += 1;
     }
   }
-
   return score;
 };
 
-export const CommandPalette = ({
+interface CommandPaletteContentProps {
+  commands: Command[];
+  controlId: string;
+  label: string;
+  maxItems: number;
+  onClose: () => void;
+  placeholder: string;
+}
+
+const CommandPaletteContent = ({
   commands,
-  isOpen,
+  controlId,
+  label,
+  maxItems,
   onClose,
-  placeholder = "Type a command...",
-  maxItems = 8,
-}: CommandPaletteProps) => {
+  placeholder,
+}: CommandPaletteContentProps) => {
+  const unicode = useUnicode();
   const theme = useTheme();
+  const isScreenReaderEnabled = useIsScreenReaderEnabled();
   const [query, setQuery] = useState("");
   const [cursor, setCursor] = useState(0);
-
   const filtered = commands
-    .filter((c) => fuzzyMatch(c.label, query))
-    .toSorted((a, b) => fuzzyScore(a.label, query) - fuzzyScore(b.label, query))
+    .filter((command) => fuzzyMatch(command.label, query))
+    .toSorted(
+      (first, second) =>
+        fuzzyScore(first.label, query) - fuzzyScore(second.label, query)
+    )
     .slice(0, maxItems);
 
-  useInput((input, key) => {
-    if (!isOpen) {
-      return;
-    }
+  useEffect(() => {
+    setCursor((current) => Math.max(0, Math.min(current, filtered.length - 1)));
+  }, [filtered.length]);
 
-    if (key.escape) {
-      setQuery("");
-      setCursor(0);
-      onClose?.();
-      return;
-    }
-
-    if (key.upArrow) {
-      setCursor((c) => Math.max(0, c - 1));
-      return;
-    }
-
-    if (key.downArrow) {
-      setCursor((c) => Math.min(filtered.length - 1, c + 1));
-      return;
-    }
-
-    if (key.return) {
-      const cmd = filtered[cursor];
-      if (cmd) {
-        cmd.onSelect?.();
-        setQuery("");
-        setCursor(0);
-        onClose?.();
+  const { isFocused } = useInteraction(
+    (input, key) => {
+      if (key.upArrow) {
+        setCursor((current) => Math.max(0, current - 1));
+        return;
       }
-      return;
-    }
 
-    if (key.backspace || key.delete) {
-      setQuery((q) => q.slice(0, -1));
-      setCursor(0);
-      return;
-    }
+      if (key.downArrow) {
+        setCursor((current) =>
+          Math.max(0, Math.min(filtered.length - 1, current + 1))
+        );
+        return;
+      }
 
-    if (key.tab) {
-      return;
-    }
+      if (key.home) {
+        setCursor(0);
+        return;
+      }
 
-    setQuery((q) => q + input);
-    setCursor(0);
-  });
+      if (key.end) {
+        setCursor(Math.max(0, filtered.length - 1));
+        return;
+      }
 
-  if (!isOpen) {
-    return null;
+      if (key.return) {
+        const command = filtered[cursor];
+        if (command && !command.disabled) {
+          command.onSelect?.();
+          onClose();
+        }
+        return;
+      }
+
+      if (key.backspace) {
+        setQuery(
+          (current) =>
+            removeGraphemeBefore(current, graphemeLength(current)).value
+        );
+        setCursor(0);
+        return;
+      }
+
+      if (key.delete || key.tab || key.ctrl || key.meta) {
+        return;
+      }
+
+      if (input) {
+        setQuery((current) => current + input);
+        setCursor(0);
+      }
+    },
+    { autoFocus: true, id: controlId }
+  );
+
+  const groups = new Map<string | undefined, Command[]>();
+  for (const command of filtered) {
+    const groupCommands = groups.get(command.group) ?? [];
+    groupCommands.push(command);
+    groups.set(command.group, groupCommands);
   }
-
-  const groups = new Map<string | undefined, typeof filtered>();
-  for (const cmd of filtered) {
-    const g = cmd.group;
-    if (!groups.has(g)) {
-      groups.set(g, []);
-    }
-    groups.get(g)?.push(cmd);
-  }
-
-  let flatIdx = 0;
+  const indexById = new Map(
+    filtered.map((command, index) => [command.id, index] as const)
+  );
 
   return (
     <Box
       flexDirection="column"
-      borderStyle="round"
+      borderStyle={resolveBorderStyle("round", unicode)}
       borderColor={theme.colors.focusRing}
       paddingX={1}
     >
-      <Box borderStyle="single" borderColor={theme.colors.border} paddingX={1}>
-        <Text color={theme.colors.mutedForeground}>⌘ </Text>
+      <Text aria-label={label}>{""}</Text>
+      <Box
+        aria-label={`${label} query: ${query || "empty"}`}
+        aria-role="combobox"
+        aria-state={{ expanded: true }}
+        borderStyle={resolveBorderStyle("single", unicode)}
+        borderColor={theme.colors.border}
+        paddingX={1}
+      >
+        <Text aria-hidden color={theme.colors.mutedForeground}>
+          {unicode ? "⌘ " : "> "}
+        </Text>
         <Text
+          aria-hidden
           color={query ? theme.colors.foreground : theme.colors.mutedForeground}
         >
           {query || placeholder}
         </Text>
-        <Text color={theme.colors.focusRing}>█</Text>
+        {isFocused && !isScreenReaderEnabled && (
+          <Text aria-hidden color={theme.colors.focusRing}>
+            {unicode ? "█" : "|"}
+          </Text>
+        )}
       </Box>
 
       {filtered.length === 0 ? (
@@ -165,8 +212,8 @@ export const CommandPalette = ({
           </Text>
         </Box>
       ) : (
-        <Box flexDirection="column">
-          {[...groups.entries()].map(([group, cmds]) => (
+        <Box aria-role="listbox" flexDirection="column">
+          {[...groups.entries()].map(([group, groupCommands]) => (
             <Box key={group ?? "_"} flexDirection="column">
               {group && (
                 <Box paddingX={1}>
@@ -175,12 +222,25 @@ export const CommandPalette = ({
                   </Text>
                 </Box>
               )}
-              {cmds.map((cmd) => {
-                const idx = (flatIdx += 1);
-                const isCursor = idx === cursor;
+              {groupCommands.map((command) => {
+                const index = indexById.get(command.id) ?? -1;
+                const isCursor = index === cursor;
                 return (
-                  <Box key={cmd.id} paddingX={1}>
-                    <Box flexGrow={1}>
+                  <Box
+                    key={command.id}
+                    aria-label={
+                      command.description
+                        ? `${command.label}: ${command.description}`
+                        : command.label
+                    }
+                    aria-role="option"
+                    aria-state={{
+                      disabled: command.disabled,
+                      selected: isCursor,
+                    }}
+                    paddingX={1}
+                  >
+                    <Box aria-hidden flexGrow={1}>
                       <Text
                         color={
                           isCursor
@@ -189,19 +249,19 @@ export const CommandPalette = ({
                         }
                         bold={isCursor}
                         inverse={isCursor}
+                        dimColor={command.disabled}
                       >
-                        {cmd.label}
+                        {command.label}
                       </Text>
-                      {cmd.description && (
+                      {command.description && (
                         <Text color={theme.colors.mutedForeground} dimColor>
-                          {" — "}
-                          {cmd.description}
+                          {`${unicode ? " — " : " - "}${command.description}`}
                         </Text>
                       )}
                     </Box>
-                    {cmd.shortcut && (
-                      <Text color={theme.colors.accent} dimColor>
-                        {cmd.shortcut}
+                    {command.shortcut && (
+                      <Text aria-hidden color={theme.colors.accent} dimColor>
+                        {command.shortcut}
                       </Text>
                     )}
                   </Box>
@@ -212,9 +272,59 @@ export const CommandPalette = ({
         </Box>
       )}
 
-      <Text color={theme.colors.mutedForeground} dimColor>
-        ↑↓: navigate · Enter: run · Esc: close
+      <Text aria-hidden color={theme.colors.mutedForeground} dimColor>
+        {unicode
+          ? "↑↓: navigate · Enter: run · Esc: close"
+          : "up/down: navigate - Enter: run - Esc: close"}
       </Text>
     </Box>
+  );
+};
+
+export const CommandPalette = ({
+  commands,
+  open: controlledOpen,
+  defaultOpen = false,
+  onOpenChange,
+  isOpen,
+  onClose,
+  placeholder = "Type a command...",
+  maxItems = 8,
+  returnFocusId,
+  "aria-label": ariaLabel = "Command palette",
+}: CommandPaletteProps) => {
+  const generatedId = useId();
+  const controlId = `command-palette-${generatedId}`;
+  const [internalOpen, setInternalOpen] = useState(defaultOpen);
+  const open = controlledOpen ?? isOpen ?? internalOpen;
+
+  const close = () => {
+    if (controlledOpen === undefined && isOpen === undefined) {
+      setInternalOpen(false);
+    }
+    onOpenChange?.(false);
+    onClose?.();
+  };
+
+  if (!open) {
+    return null;
+  }
+
+  return (
+    <FocusScope
+      active={open}
+      initialFocusId={controlId}
+      returnFocusId={returnFocusId}
+      onEscapeKey={close}
+    >
+      <CommandPaletteContent
+        commands={commands}
+        controlId={controlId}
+        label={ariaLabel}
+        maxItems={maxItems}
+        onClose={close}
+        placeholder={placeholder}
+      />
+    </FocusScope>
   );
 };

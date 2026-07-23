@@ -2,7 +2,9 @@ import { Box, Text } from "ink";
 import type { ReactNode } from "react";
 import React from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import { resolveBorderStyle } from "@/registry/bases/ink/lib/accessibility";
 import type { BorderStyle } from "@/registry/bases/ink/ui/types";
 
 export interface WelcomeScreenProps {
@@ -78,12 +80,14 @@ const WelcomeScreenLogo = ({
 
 const WelcomeScreenMeta = ({
   items,
-  separator = " · ",
+  separator,
   align = "center",
   dim = false,
   color,
   stack = false,
 }: WelcomeScreenMetaProps) => {
+  const unicode = useUnicode();
+  const resolvedSeparator = separator ?? (unicode ? " · " : " - ");
   if (stack) {
     return (
       <Box
@@ -110,7 +114,7 @@ const WelcomeScreenMeta = ({
       {items.map((item, i) => (
         <Text key={i} dimColor={dim} color={color}>
           {item}
-          {i < items.length - 1 ? separator : ""}
+          {i < items.length - 1 ? resolvedSeparator : ""}
         </Text>
       ))}
     </Box>
@@ -143,6 +147,7 @@ const WelcomeScreenRoot = ({
   leftWidth = 26,
   children,
 }: WelcomeScreenProps) => {
+  const unicode = useUnicode();
   const theme = useTheme();
   const resolvedBorderColor = borderColor ?? theme.colors.border;
   const resolvedAppNameColor = appNameColor ?? theme.colors.primary;
@@ -177,16 +182,17 @@ const WelcomeScreenRoot = ({
   const titleStr = version ? `${appName} ${version}` : appName;
 
   return (
-    <Box flexDirection="column">
+    <Box flexDirection="column" aria-role="list">
+      <Text aria-label={`Welcome to ${titleStr}`}>{""}</Text>
       <Box flexDirection="row">
-        <Text color={resolvedBorderColor}>{"── "}</Text>
+        <Text color={resolvedBorderColor}>{unicode ? "── " : "-- "}</Text>
         <Text color={resolvedAppNameColor} bold>
           {titleStr}
         </Text>
-        <Text color={resolvedBorderColor}>{" ─"}</Text>
+        <Text color={resolvedBorderColor}>{unicode ? " ─" : " -"}</Text>
       </Box>
       <Box
-        borderStyle={borderStyle}
+        borderStyle={resolveBorderStyle(borderStyle, unicode)}
         borderColor={resolvedBorderColor}
         borderTop={false}
         flexDirection="row"
@@ -195,7 +201,7 @@ const WelcomeScreenRoot = ({
           {leftContent}
         </Box>
         <Box width={1} flexDirection="column" alignItems="center">
-          <Text color={resolvedBorderColor}>│</Text>
+          <Text color={resolvedBorderColor}>{unicode ? "│" : "|"}</Text>
         </Box>
         <Box flexGrow={1} flexDirection="column" paddingX={1} paddingY={1}>
           {rightContent}

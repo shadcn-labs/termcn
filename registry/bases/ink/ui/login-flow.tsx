@@ -2,8 +2,11 @@ import { Box, Text } from "ink";
 import React, { useState } from "react";
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
-import { useInput } from "@/hooks/use-input";
+import { useInteraction } from "@/hooks/use-interaction";
+import type { InteractionProps } from "@/hooks/use-interaction";
+import { useTheme } from "@/hooks/use-theme";
+import { useUnicode } from "@/hooks/use-unicode";
+import { resolveBorderStyle } from "@/registry/bases/ink/lib/accessibility";
 import type { BorderStyle } from "@/registry/bases/ink/ui/types";
 
 import { BigText } from "./big-text";
@@ -33,7 +36,7 @@ export interface LoginFlowDescriptionProps {
   children: ReactNode;
 }
 
-export interface LoginFlowSelectProps {
+export interface LoginFlowSelectProps extends InteractionProps {
   label?: string;
   labelBold?: boolean;
   options: string[];
@@ -44,6 +47,7 @@ export interface LoginFlowSelectProps {
   activeColor?: string;
   onSelect?: (index: number) => void;
   keyboardNav?: boolean;
+  "aria-label"?: string;
 }
 
 const LoginFlowRoot = ({
@@ -57,7 +61,7 @@ const LoginFlowRoot = ({
   const resolvedColor = titleColor ?? theme.colors.primary;
 
   return (
-    <Box flexDirection="column" paddingLeft={padding}>
+    <Box flexDirection="column" paddingLeft={padding} aria-role="list">
       {title && (
         <Box marginBottom={1}>
           {title.includes("\n") ? (
@@ -87,10 +91,11 @@ const LoginFlowAnnouncement = ({
   borderColor,
   children,
 }: LoginFlowAnnouncementProps) => {
+  const unicode = useUnicode();
   const theme = useTheme();
   return (
     <Box
-      borderStyle={borderStyle}
+      borderStyle={resolveBorderStyle(borderStyle, unicode)}
       borderColor={borderColor ?? theme.colors.border}
       flexDirection="row"
       paddingX={1}
@@ -121,45 +126,69 @@ const LoginFlowSelect = ({
   options,
   activeIndex: controlledIndex,
   defaultIndex = 0,
-  cursor = "›",
+  cursor,
   cursorColor = "cyan",
   activeColor = "cyan",
   onSelect,
   keyboardNav = true,
+  id,
+  autoFocus,
+  isActive,
+  disabled,
+  "aria-label": ariaLabel = label ?? "Login options",
 }: LoginFlowSelectProps) => {
+  const unicode = useUnicode();
+  const resolvedCursor = cursor ?? (unicode ? "›" : ">");
   const [internalIndex, setInternalIndex] = useState(defaultIndex);
   const activeIdx = controlledIndex ?? internalIndex;
 
-  useInput((input, key) => {
-    if (!keyboardNav) {
-      return;
-    }
-    if (key.upArrow) {
-      const next = Math.max(0, activeIdx - 1);
-      if (controlledIndex === undefined) {
-        setInternalIndex(next);
+  const { isFocused } = useInteraction(
+    (input, key) => {
+      if (!keyboardNav) {
+        return;
       }
-    } else if (key.downArrow) {
-      const next = Math.min(options.length - 1, activeIdx + 1);
-      if (controlledIndex === undefined) {
-        setInternalIndex(next);
-      }
-    } else if (key.return) {
-      onSelect?.(activeIdx);
-    } else {
-      const num = Number.parseInt(input, 10);
-      if (!Number.isNaN(num) && num >= 1 && num <= options.length) {
-        const idx = num - 1;
+      if (key.upArrow) {
+        const next = Math.max(0, activeIdx - 1);
         if (controlledIndex === undefined) {
-          setInternalIndex(idx);
+          setInternalIndex(next);
         }
-        onSelect?.(idx);
+      } else if (key.downArrow) {
+        const next = Math.min(options.length - 1, activeIdx + 1);
+        if (controlledIndex === undefined) {
+          setInternalIndex(next);
+        }
+      } else if (key.home) {
+        if (controlledIndex === undefined) {
+          setInternalIndex(0);
+        }
+      } else if (key.end) {
+        if (controlledIndex === undefined) {
+          setInternalIndex(Math.max(0, options.length - 1));
+        }
+      } else if (key.return) {
+        onSelect?.(activeIdx);
+      } else {
+        const num = Number.parseInt(input, 10);
+        if (!Number.isNaN(num) && num >= 1 && num <= options.length) {
+          const idx = num - 1;
+          if (controlledIndex === undefined) {
+            setInternalIndex(idx);
+          }
+          onSelect?.(idx);
+        }
       }
-    }
-  });
+    },
+    { autoFocus, disabled, id, isActive: isActive && keyboardNav }
+  );
 
   return (
-    <Box flexDirection="column" marginTop={1}>
+    <Box
+      flexDirection="column"
+      marginTop={1}
+      aria-role="listbox"
+      aria-state={{ disabled: disabled || undefined }}
+    >
+      <Text aria-label={ariaLabel}>{""}</Text>
       {label && (
         <Box marginBottom={1}>
           <Text bold={labelBold}>{label}</Text>
@@ -168,9 +197,15 @@ const LoginFlowSelect = ({
       {options.map((opt, i) => {
         const isActive = i === activeIdx;
         return (
-          <Box key={i} flexDirection="row">
+          <Box
+            key={i}
+            flexDirection="row"
+            aria-role="option"
+            aria-label={opt}
+            aria-state={{ selected: isActive }}
+          >
             <Text color={isActive ? cursorColor : undefined}>
-              {isActive ? `${cursor} ` : "  "}
+              {isActive && isFocused ? `[${resolvedCursor}] ` : "  "}
             </Text>
             <Text color={isActive ? undefined : undefined} dimColor={!isActive}>
               {i + 1}.{"  "}
