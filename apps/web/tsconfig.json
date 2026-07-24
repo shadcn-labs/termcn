@@ -22,6 +22,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"],
+      "@termcn/backend/*": ["../../packages/backend/*"],
+      "@termcn/env/*": ["../../packages/env/*"],
       "@opentui/react": ["./types/opentui-react.d.ts"],
       "@opentui/react/jsx-runtime": [
         "./lib/opentui-bridge/react-jsx-runtime.ts"

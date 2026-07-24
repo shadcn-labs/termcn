@@ -111,6 +111,7 @@ const nextConfig = {
       ],
     };
   },
+  transpilePackages: ["@termcn/backend", "@termcn/env"],
   turbopack: {
     resolveAlias: {
       "@opentui/react": "@gridland/utils",

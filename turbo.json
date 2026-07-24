@@ -14,6 +14,9 @@
       "cache": false,
       "persistent": true
     },
+    "dev:setup": {
+      "cache": false
+    },
     "start": {
       "cache": false,
       "persistent": true

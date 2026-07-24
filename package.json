@@ -7,7 +7,10 @@
   ],
   "type": "module",
   "scripts": {
-    "dev": "turbo run dev --filter=web",
+    "dev": "turbo run dev",
+    "dev:web": "turbo run dev --filter=web",
+    "dev:server": "turbo run dev --filter=@termcn/backend",
+    "dev:setup": "turbo run dev:setup --filter=@termcn/backend",
     "build": "turbo run build --filter=web",
     "start": "turbo run start --filter=web",
     "typecheck": "turbo run typecheck",
