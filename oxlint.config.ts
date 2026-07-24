@@ -14,7 +14,6 @@ export default defineConfig({
     ".claude/**",
     "apps/web/.web-kits/**",
     "apps/web/audio/**",
-    "apps/web/types/opentui-react.d.ts",
     "packages/backend/convex/_generated/**",
   ],
   overrides: [

@@ -1,4 +1,3 @@
-import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { createMDX } from "fumadocs-mdx/next";
@@ -10,19 +9,6 @@ const resolvePackage = (specifier) =>
 
 const { LINK } = await jiti.import("./constants/links");
 const { ROUTES } = await jiti.import("./constants/routes");
-
-/** Turbopack requires project-relative alias targets (not absolute paths). */
-const opentuiJsxRuntimeTurbo = "./lib/opentui-bridge/react-jsx-runtime.ts";
-const opentuiJsxDevRuntimeTurbo =
-  "./lib/opentui-bridge/react-jsx-dev-runtime.ts";
-const opentuiJsxRuntimeWebpack = path.resolve(
-  import.meta.dirname,
-  opentuiJsxRuntimeTurbo
-);
-const opentuiJsxDevRuntimeWebpack = path.resolve(
-  import.meta.dirname,
-  opentuiJsxDevRuntimeTurbo
-);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -111,22 +97,27 @@ const nextConfig = {
       ],
     };
   },
-  transpilePackages: ["@termcn/backend", "@termcn/env"],
+  transpilePackages: ["@termcn/backend", "@termcn/env", "@termcn/tui-web"],
   turbopack: {
     resolveAlias: {
-      "@opentui/react": "@gridland/utils",
-      "@opentui/react/jsx-dev-runtime": opentuiJsxDevRuntimeTurbo,
-      "@opentui/react/jsx-runtime": opentuiJsxRuntimeTurbo,
-      ink: "ink-web",
+      "@opentui/react": "@termcn/tui-web/opentui/react",
+      "@opentui/react/jsx-dev-runtime":
+        "@termcn/tui-web/opentui/jsx-dev-runtime",
+      "@opentui/react/jsx-runtime": "@termcn/tui-web/opentui/jsx-runtime",
+      ink: "@termcn/tui-web/ink",
     },
   },
   webpack(config) {
     config.resolve.alias = {
       ...config.resolve.alias,
-      "@opentui/react$": resolvePackage("@gridland/utils"),
-      "@opentui/react/jsx-dev-runtime$": opentuiJsxDevRuntimeWebpack,
-      "@opentui/react/jsx-runtime$": opentuiJsxRuntimeWebpack,
-      ink$: resolvePackage("ink-web"),
+      "@opentui/react$": resolvePackage("@termcn/tui-web/opentui/react"),
+      "@opentui/react/jsx-dev-runtime$": resolvePackage(
+        "@termcn/tui-web/opentui/jsx-dev-runtime"
+      ),
+      "@opentui/react/jsx-runtime$": resolvePackage(
+        "@termcn/tui-web/opentui/jsx-runtime"
+      ),
+      ink$: resolvePackage("@termcn/tui-web/ink"),
     };
     return config;
   },

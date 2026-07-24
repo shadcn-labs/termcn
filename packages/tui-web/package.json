@@ -1,0 +1,76 @@
+{
+  "name": "@termcn/tui-web",
+  "version": "0.1.0",
+  "description": "Render Ink and OpenTUI React components in the browser",
+  "license": "MIT",
+  "files": [
+    "dist",
+    "README.md",
+    "styles.css"
+  ],
+  "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./descriptors": {
+      "types": "./dist/descriptors.d.ts",
+      "import": "./dist/descriptors.js"
+    },
+    "./ink": {
+      "types": "./dist/runtime/ink.d.ts",
+      "import": "./dist/runtime/ink.js"
+    },
+    "./next": {
+      "types": "./dist/runtime/next.d.ts",
+      "import": "./dist/runtime/next.js"
+    },
+    "./opentui/react": {
+      "types": "./dist/runtime/opentui-react.d.ts",
+      "import": "./dist/runtime/opentui-react.js"
+    },
+    "./opentui/jsx-runtime": {
+      "types": "./dist/runtime/opentui-jsx-runtime.d.ts",
+      "import": "./dist/runtime/opentui-jsx-runtime.js"
+    },
+    "./opentui/jsx-dev-runtime": {
+      "types": "./dist/runtime/opentui-jsx-dev-runtime.d.ts",
+      "import": "./dist/runtime/opentui-jsx-dev-runtime.js"
+    },
+    "./styles.css": "./styles.css"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@gridland/utils": "^0.4.3",
+    "@gridland/web": "^0.4.3",
+    "@xterm/xterm": "6.0.0",
+    "ink-web": "0.2.0",
+    "react-reconciler": "0.33.0",
+    "scheduler": "^0.27.0"
+  },
+  "devDependencies": {
+    "@termcn/config": "workspace:*",
+    "@types/node": "^24.3.0",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "ink": "6.8.0",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "typescript": "^6"
+  },
+  "peerDependencies": {
+    "ink": "^6.8.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "engines": {
+    "node": ">=20.9.0"
+  }
+}
