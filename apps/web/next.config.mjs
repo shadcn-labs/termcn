@@ -1,7 +1,12 @@
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
 import { createMDX } from "fumadocs-mdx/next";
 import { createJiti } from "jiti";
 
 const jiti = createJiti(import.meta.url);
+const resolvePackage = (specifier) =>
+  fileURLToPath(import.meta.resolve(specifier));
 
 const { LINK } = await jiti.import("./constants/links");
 const { ROUTES } = await jiti.import("./constants/routes");
@@ -10,6 +15,14 @@ const { ROUTES } = await jiti.import("./constants/routes");
 const opentuiJsxRuntimeTurbo = "./lib/opentui-bridge/react-jsx-runtime.ts";
 const opentuiJsxDevRuntimeTurbo =
   "./lib/opentui-bridge/react-jsx-dev-runtime.ts";
+const opentuiJsxRuntimeWebpack = path.resolve(
+  import.meta.dirname,
+  opentuiJsxRuntimeTurbo
+);
+const opentuiJsxDevRuntimeWebpack = path.resolve(
+  import.meta.dirname,
+  opentuiJsxDevRuntimeTurbo
+);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -105,6 +118,16 @@ const nextConfig = {
       "@opentui/react/jsx-runtime": opentuiJsxRuntimeTurbo,
       ink: "ink-web",
     },
+  },
+  webpack(config) {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      "@opentui/react$": resolvePackage("@gridland/utils"),
+      "@opentui/react/jsx-dev-runtime$": opentuiJsxDevRuntimeWebpack,
+      "@opentui/react/jsx-runtime$": opentuiJsxRuntimeWebpack,
+      ink$: resolvePackage("ink-web"),
+    };
+    return config;
   },
 };
 
