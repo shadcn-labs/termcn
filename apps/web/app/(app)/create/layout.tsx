@@ -3,9 +3,5 @@ export default function CreateLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <div className="flex min-h-[calc(100svh-var(--header-height))] flex-1 flex-col">
-      {children}
-    </div>
-  );
+  return <div className="flex min-h-0 flex-1 flex-col">{children}</div>;
 }

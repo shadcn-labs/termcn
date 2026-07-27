@@ -2,17 +2,16 @@
 
 import {
   CheckIcon,
-  ChevronDownIcon,
   Code2Icon,
   DicesIcon,
   ExternalLinkIcon,
   Layers3Icon,
+  MenuIcon,
   MonitorIcon,
   PackageIcon,
   PaletteIcon,
   RotateCcwIcon,
   Share2Icon,
-  SparklesIcon,
   TerminalIcon,
 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
@@ -21,6 +20,12 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { CopyButton } from "@/components/copy-button";
 import { TerminalPreview } from "@/components/terminal-preview";
 import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -159,96 +164,57 @@ export function CreateBuilder() {
         data-slot="designer"
         className="flex min-h-0 flex-1 flex-col gap-(--gap) p-(--gap) pt-[calc(var(--gap)*0.25)] md:flex-row-reverse"
       >
-        <section className="border-border/70 bg-background/80 relative flex min-h-[34rem] min-w-0 flex-1 flex-col overflow-hidden rounded-2xl border shadow-sm backdrop-blur-xl">
-          <div className="border-border/70 flex h-12 shrink-0 items-center gap-2 border-b px-3 sm:px-4">
-            <div className="flex items-center gap-1.5" aria-hidden="true">
-              <span className="size-2.5 rounded-full bg-red-500/70" />
-              <span className="size-2.5 rounded-full bg-amber-500/70" />
-              <span className="size-2.5 rounded-full bg-emerald-500/70" />
+        <section className="relative flex min-h-[34rem] min-w-0 flex-1 flex-col justify-center overflow-hidden rounded-2xl ring ring-foreground/10 md:min-h-0 md:ring-muted dark:ring-foreground/10">
+          <div className="relative z-0 mx-auto flex w-full flex-1 flex-col overflow-hidden">
+            <div className="absolute inset-0 bg-muted dark:bg-muted/30" />
+            <div className="border-border/60 bg-background/85 relative z-10 flex h-12 shrink-0 items-center gap-2 border-b px-3 backdrop-blur-sm sm:px-4">
+              <div className="flex items-center gap-1.5" aria-hidden="true">
+                <span className="size-2.5 rounded-full bg-red-500/70" />
+                <span className="size-2.5 rounded-full bg-amber-500/70" />
+                <span className="size-2.5 rounded-full bg-emerald-500/70" />
+              </div>
+              <div className="text-muted-foreground ml-2 flex min-w-0 items-center gap-2 text-xs">
+                <TerminalIcon className="size-3.5" />
+                <span className="truncate">
+                  {currentTemplate?.title} · {currentFramework?.title}
+                </span>
+              </div>
+              <div className="ml-auto flex items-center gap-2">
+                <span
+                  className="size-2 rounded-full"
+                  style={{
+                    backgroundColor:
+                      themePrimaryBySlug[config.theme] ?? "currentColor",
+                  }}
+                />
+                <span className="text-muted-foreground hidden text-xs sm:inline">
+                  {currentTheme?.title}
+                </span>
+              </div>
             </div>
-            <div className="text-muted-foreground ml-2 flex min-w-0 items-center gap-2 text-xs">
-              <TerminalIcon className="size-3.5" />
-              <span className="truncate">
-                {currentTemplate?.title} · {currentFramework?.title}
-              </span>
+            <div className="relative z-10 flex min-h-0 flex-1 items-center justify-center overflow-auto p-3 sm:p-6">
+              <div className="w-full max-w-5xl overflow-hidden rounded-xl border border-white/10 bg-black shadow-2xl shadow-black/20">
+                <TerminalPreview
+                  base={config.framework}
+                  name={TEMPLATE_PREVIEWS[config.template]}
+                  rows={30}
+                  theme={config.theme}
+                />
+              </div>
             </div>
-            <div className="ml-auto flex items-center gap-2">
-              <span
-                className="size-2 rounded-full"
-                style={{
-                  backgroundColor:
-                    themePrimaryBySlug[config.theme] ?? "currentColor",
-                }}
-              />
-              <span className="text-muted-foreground hidden text-xs sm:inline">
-                {currentTheme?.title}
-              </span>
-            </div>
-          </div>
-          <div className="bg-surface/30 relative flex min-h-0 flex-1 items-center justify-center overflow-auto p-3 sm:p-6">
-            <div className="w-full max-w-5xl overflow-hidden rounded-xl border border-white/10 bg-black shadow-2xl shadow-black/20">
-              <TerminalPreview
-                base={config.framework}
-                name={TEMPLATE_PREVIEWS[config.template]}
-                rows={30}
-                theme={config.theme}
-              />
-            </div>
-          </div>
-          <div className="border-border/70 bg-background/80 flex min-h-12 shrink-0 flex-wrap items-center gap-x-4 gap-y-1 border-t px-4 py-2 text-xs">
-            <span className="text-muted-foreground">
-              Framework{" "}
-              <span className="text-foreground font-medium">
-                {currentFramework?.title}
-              </span>
-            </span>
-            <span className="text-muted-foreground">
-              Theme{" "}
-              <span className="text-foreground font-medium">
-                {currentTheme?.title}
-              </span>
-            </span>
-            <span className="text-muted-foreground">
-              Template{" "}
-              <span className="text-foreground font-medium">
-                {currentTemplate?.title}
-              </span>
-            </span>
           </div>
         </section>
 
-        <aside className="dark bg-card/90 text-card-foreground isolate z-10 flex max-h-full min-h-0 w-full shrink-0 flex-col self-start overflow-hidden rounded-2xl border border-white/10 shadow-xl backdrop-blur-xl md:h-full md:w-(--customizer-width)">
-          <div className="flex h-12 items-center justify-between border-b border-white/10 px-4">
-            <div className="flex items-center gap-2">
-              <SparklesIcon className="size-4 text-primary" />
-              <span className="text-sm font-medium">Customize</span>
+        <Card className="dark top-24 right-12 isolate z-10 max-h-full min-h-0 w-full shrink-0 self-start overflow-hidden rounded-2xl bg-card/90 py-0 text-card-foreground backdrop-blur-xl md:w-(--customizer-width) md:self-stretch">
+          <CardHeader className="hidden shrink-0 border-b border-white/10 px-3 py-3 md:block">
+            <div className="flex h-9 items-center justify-between rounded-lg border border-white/10 bg-white/[0.025] px-2.5">
+              <span className="text-sm font-medium">Menu</span>
+              <MenuIcon className="text-muted-foreground size-4" />
             </div>
-            <div className="flex items-center gap-1">
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                onClick={share}
-                aria-label="Copy share link"
-              >
-                {shareCopied ? (
-                  <CheckIcon className="size-3.5" />
-                ) : (
-                  <Share2Icon className="size-3.5" />
-                )}
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                onClick={reset}
-                aria-label="Reset"
-              >
-                <RotateCcwIcon className="size-3.5" />
-              </Button>
-            </div>
-          </div>
+          </CardHeader>
 
-          <div className="no-scrollbar min-h-0 flex-1 overflow-y-auto p-4">
-            <div className="flex flex-col divide-y divide-white/10">
+          <CardContent className="no-scrollbar min-h-0 flex-1 overflow-x-auto overflow-y-hidden px-3 py-3 md:overflow-y-auto">
+            <div className="flex min-w-max flex-row gap-2.5 py-px md:min-w-0 md:flex-col md:gap-3.25">
               <FieldSelect
                 icon={Layers3Icon}
                 label="Framework"
@@ -281,16 +247,26 @@ export function CreateBuilder() {
                 }
               />
             </div>
-          </div>
+          </CardContent>
 
-          <div className="grid gap-2 border-t border-white/10 p-4">
-            <Button variant="secondary" onClick={randomize}>
-              <DicesIcon />
-              Randomize
+          <CardFooter className="grid min-w-0 shrink-0 gap-2 border-t border-white/10 px-3 py-3 md:**:[button]:w-full">
+            <Button variant="outline" onClick={share}>
+              {shareCopied ? <CheckIcon /> : <Share2Icon />}
+              {shareCopied ? "Link copied" : "Copy link"}
             </Button>
+            <Button variant="outline" onClick={reset}>
+              <RotateCcwIcon />
+              Reset
+            </Button>
+            <Button variant="outline" onClick={randomize}>
+              <DicesIcon />
+              Shuffle
+            </Button>
+          </CardFooter>
+          <CardFooter className="-mt-3 hidden min-w-0 shrink-0 px-3 pb-3 md:flex md:flex-col md:**:[button]:w-full">
             <ProjectDialog config={config} />
-          </div>
-        </aside>
+          </CardFooter>
+        </Card>
       </div>
       <WelcomeDialog />
     </>
@@ -312,9 +288,14 @@ function FieldSelect({
   options: readonly { name: string; title: string }[];
   value: string;
 }) {
+  const selected = options.find((option) => option.name === value);
+
   return (
-    <label className="group grid grid-cols-[auto_1fr] items-center gap-x-3 gap-y-2 py-4 first:pt-1 last:pb-1">
-      <span className="text-muted-foreground flex size-7 shrink-0 items-center justify-center rounded-md border border-white/10 bg-white/5">
+    <label className="group relative grid min-w-40 cursor-pointer grid-cols-[1fr_auto] items-center gap-x-3 rounded-xl border border-white/10 bg-white/[0.025] px-3 py-2.5 transition-colors hover:bg-white/[0.06] md:min-w-0">
+      <span className="text-muted-foreground text-[10px] leading-none">
+        {label}
+      </span>
+      <span className="text-muted-foreground row-span-2 flex size-7 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/5">
         {color ? (
           <span
             className="size-2.5 rounded-full"
@@ -324,22 +305,21 @@ function FieldSelect({
           <Icon className="size-3.5" />
         )}
       </span>
-      <span className="min-w-0 flex-1 text-sm">{label}</span>
-      <span className="relative col-span-2 w-full">
-        <select
-          aria-label={label}
-          className="h-8 w-full appearance-none truncate rounded-md border border-white/10 bg-white/5 py-1 pr-7 pl-2.5 text-left text-xs outline-none transition-colors hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-primary/50"
-          value={value}
-          onChange={(event) => onChange(event.target.value)}
-        >
-          {options.map((option) => (
-            <option key={option.name} value={option.name}>
-              {option.title}
-            </option>
-          ))}
-        </select>
-        <ChevronDownIcon className="text-muted-foreground pointer-events-none absolute top-1/2 right-2 size-3 -translate-y-1/2" />
+      <span className="mt-1 min-w-0 truncate text-sm font-medium">
+        {selected?.title}
       </span>
+      <select
+        aria-label={label}
+        className="absolute inset-0 size-full cursor-pointer appearance-none opacity-0"
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+      >
+        {options.map((option) => (
+          <option key={option.name} value={option.name}>
+            {option.title}
+          </option>
+        ))}
+      </select>
     </label>
   );
 }
@@ -418,24 +398,9 @@ function ProjectDialog({ config }: { config: ProjectConfig }) {
               aria-label="Copy init command"
             />
           </div>
-
-          <div className="grid grid-cols-3 gap-2 text-xs">
-            <SummaryItem label="Framework" value={config.framework} />
-            <SummaryItem label="Theme" value={config.theme} />
-            <SummaryItem label="Template" value={config.template} />
-          </div>
         </div>
       </DialogContent>
     </Dialog>
-  );
-}
-
-function SummaryItem({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="bg-muted/50 min-w-0 rounded-lg border p-3">
-      <div className="text-muted-foreground">{label}</div>
-      <div className="mt-1 truncate font-medium">{value}</div>
-    </div>
   );
 }
 

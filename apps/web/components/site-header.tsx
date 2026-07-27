@@ -15,11 +15,11 @@ import { SITE } from "@/constants/site";
 import { source } from "@/lib/source";
 
 const navItems = [
-  { href: ROUTES.CREATE, label: "Create" },
   { href: ROUTES.DOCS, label: "Docs" },
   { href: ROUTES.DOCS_COMPONENTS, label: "Components" },
   { href: ROUTES.DOCS_CHARTS, label: "Charts" },
   { href: ROUTES.DOCS_TEMPLATES, label: "Templates" },
+  { href: ROUTES.CREATE, label: "Create" },
 ];
 
 export const SiteHeader = () => (
