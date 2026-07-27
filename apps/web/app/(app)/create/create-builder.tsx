@@ -6,6 +6,7 @@ import {
   DicesIcon,
   ExternalLinkIcon,
   Layers3Icon,
+  LockIcon,
   MenuIcon,
   MonitorIcon,
   PackageIcon,
@@ -13,6 +14,7 @@ import {
   RotateCcwIcon,
   Share2Icon,
   TerminalIcon,
+  UnlockIcon,
 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -35,7 +37,13 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useIsMobile } from "@/hooks/use-mobile";
 import {
   buildInitCommand,
   DEFAULT_PROJECT_CONFIG,
@@ -53,6 +61,8 @@ import type {
 } from "@/lib/create-config";
 import { OPEN_CREATE_CODE_DIALOG_EVENT } from "@/lib/create-events";
 import { themePrimaryBySlug } from "@/lib/terminal-themes";
+
+type ConfigField = keyof ProjectConfig;
 
 const TEMPLATE_PREVIEWS: Record<TemplateName, string> = {
   "app-shell": "app-shell-demo",
@@ -95,10 +105,14 @@ const serializeConfig = (config: ProjectConfig) => {
 
 export function CreateBuilder() {
   const searchParams = useSearchParams();
+  const isMobile = useIsMobile();
   const [config, setConfig] = useState<ProjectConfig>(() =>
     getConfigFromSearchParams(searchParams)
   );
   const configRef = useRef(config);
+  const [lockedFields, setLockedFields] = useState<Set<ConfigField>>(
+    () => new Set()
+  );
   const [projectDialogOpen, setProjectDialogOpen] = useState(false);
   const [shareCopied, setShareCopied] = useState(false);
 
@@ -146,11 +160,29 @@ export function CreateBuilder() {
     const pick = <T,>(items: readonly T[]) =>
       items[Math.floor(Math.random() * items.length)] as T;
     updateConfig({
-      framework: pick(FRAMEWORKS).name,
-      template: pick(TEMPLATES).name,
-      theme: pick(THEMES).name,
+      framework: lockedFields.has("framework")
+        ? configRef.current.framework
+        : pick(FRAMEWORKS).name,
+      template: lockedFields.has("template")
+        ? configRef.current.template
+        : pick(TEMPLATES).name,
+      theme: lockedFields.has("theme")
+        ? configRef.current.theme
+        : pick(THEMES).name,
     });
-  }, [updateConfig]);
+  }, [lockedFields, updateConfig]);
+
+  const toggleLock = useCallback((field: ConfigField) => {
+    setLockedFields((current) => {
+      const next = new Set(current);
+      if (next.has(field)) {
+        next.delete(field);
+      } else {
+        next.add(field);
+      }
+      return next;
+    });
+  }, []);
 
   const reset = useCallback(() => {
     updateConfig(DEFAULT_PROJECT_CONFIG);
@@ -217,46 +249,58 @@ export function CreateBuilder() {
           </div>
         </section>
 
-        <Card className="dark top-24 right-12 isolate z-10 max-h-full min-h-0 w-full shrink-0 self-start overflow-hidden rounded-2xl bg-card/90 py-0 text-card-foreground backdrop-blur-xl md:w-(--customizer-width) md:self-stretch">
+        <Card className="dark top-24 right-12 isolate z-10 max-h-full min-h-0 w-full shrink-0 self-start gap-0 overflow-hidden rounded-2xl bg-card/90 py-0 text-card-foreground backdrop-blur-xl md:w-(--customizer-width) md:self-stretch">
           <CardHeader className="hidden shrink-0 border-b border-white/10 px-3 py-3 md:block">
-            <div className="flex h-9 items-center justify-between rounded-lg border border-white/10 bg-white/[0.025] px-2.5">
-              <span className="text-sm font-medium">Menu</span>
-              <MenuIcon className="text-muted-foreground size-4" />
-            </div>
+            <CustomizerMenu randomize={randomize} reset={reset} share={share} />
           </CardHeader>
 
           <CardContent className="no-scrollbar min-h-0 flex-1 overflow-x-auto overflow-y-hidden px-3 py-3 md:overflow-y-auto">
             <div className="flex min-w-max flex-row gap-2.5 py-px md:min-w-0 md:flex-col md:gap-3.25">
-              <FieldSelect
-                icon={Layers3Icon}
+              <ConfigPicker
+                indicator={<Layers3Icon className="size-4" />}
+                isMobile={isMobile}
                 label="Framework"
+                locked={lockedFields.has("framework")}
                 value={config.framework}
                 options={FRAMEWORKS}
                 onChange={(framework) =>
                   updateConfig({ framework: framework as FrameworkName })
                 }
+                onLockToggle={() => toggleLock("framework")}
               />
-              <FieldSelect
-                icon={PaletteIcon}
+              <div className="-mx-3 hidden h-px bg-white/10 md:block" />
+              <ConfigPicker
+                indicator={
+                  <span
+                    className="size-4 rounded-full"
+                    style={{
+                      background:
+                        themePrimaryBySlug[config.theme] ??
+                        "var(--color-muted-foreground)",
+                    }}
+                  />
+                }
+                isMobile={isMobile}
                 label="Theme"
+                locked={lockedFields.has("theme")}
                 value={config.theme}
                 options={THEMES}
                 onChange={(theme) =>
                   updateConfig({ theme: theme as ThemeName })
                 }
-                color={
-                  themePrimaryBySlug[config.theme] ??
-                  "var(--color-muted-foreground)"
-                }
+                onLockToggle={() => toggleLock("theme")}
               />
-              <FieldSelect
-                icon={MonitorIcon}
+              <ConfigPicker
+                indicator={<MonitorIcon className="size-4" />}
+                isMobile={isMobile}
                 label="Template"
+                locked={lockedFields.has("template")}
                 value={config.template}
                 options={TEMPLATES}
                 onChange={(template) =>
                   updateConfig({ template: template as TemplateName })
                 }
+                onLockToggle={() => toggleLock("template")}
               />
             </div>
           </CardContent>
@@ -289,54 +333,145 @@ export function CreateBuilder() {
   );
 }
 
-function FieldSelect({
-  color,
-  icon: Icon,
+function ConfigPicker({
+  indicator,
+  isMobile,
   label,
+  locked,
   onChange,
+  onLockToggle,
   options,
   value,
 }: {
-  color?: string;
-  icon: React.ComponentType<{ className?: string }>;
+  indicator: React.ReactNode;
+  isMobile: boolean;
   label: string;
+  locked: boolean;
   onChange: (value: string) => void;
+  onLockToggle: () => void;
   options: readonly { name: string; title: string }[];
   value: string;
 }) {
+  const [open, setOpen] = useState(false);
   const selected = options.find((option) => option.name === value);
 
   return (
-    <label className="group relative grid min-w-40 cursor-pointer grid-cols-[1fr_auto] items-center gap-x-3 rounded-xl border border-white/10 bg-white/[0.025] px-3 py-2.5 transition-colors hover:bg-white/[0.06] md:min-w-0">
-      <span className="text-muted-foreground text-[10px] leading-none">
-        {label}
-      </span>
-      <span className="text-muted-foreground row-span-2 flex size-7 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/5">
-        {color ? (
-          <span
-            className="size-2.5 rounded-full"
-            style={{ background: color }}
-          />
-        ) : (
-          <Icon className="size-3.5" />
-        )}
-      </span>
-      <span className="mt-1 min-w-0 truncate text-sm font-medium">
-        {selected?.title}
-      </span>
-      <select
-        aria-label={label}
-        className="absolute inset-0 size-full cursor-pointer appearance-none opacity-0"
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
+    <div className="group/picker relative">
+      <Popover sounds open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <button
+            type="button"
+            className="relative w-36 shrink-0 touch-manipulation rounded-xl p-3 ring-1 ring-foreground/10 select-none hover:bg-muted focus-visible:ring-foreground/50 focus-visible:outline-none data-[state=open]:bg-muted md:w-full md:rounded-lg md:px-2.5 md:py-2"
+          >
+            <span className="flex min-w-0 flex-col justify-start pr-12 text-left">
+              <span className="text-xs text-muted-foreground">{label}</span>
+              <span className="truncate text-sm font-medium text-foreground">
+                {selected?.title}
+              </span>
+            </span>
+            <span className="pointer-events-none absolute top-1/2 right-4 flex size-4 -translate-y-1/2 items-center justify-center text-foreground select-none md:right-2.5">
+              {indicator}
+            </span>
+          </button>
+        </PopoverTrigger>
+        <PopoverContent
+          side={isMobile ? "top" : "right"}
+          align={isMobile ? "center" : "start"}
+          sideOffset={20}
+          className="no-scrollbar max-h-92 w-52 overflow-x-hidden overflow-y-auto rounded-xl border-0 bg-neutral-950/80 p-1.5 text-neutral-100 ring-1 ring-neutral-950/80 backdrop-blur-xl dark:bg-neutral-800/90 dark:ring-neutral-700/50"
+        >
+          <div role="radiogroup" aria-label={label}>
+            {options.map((option) => {
+              const selectedOption = option.name === value;
+              return (
+                <button
+                  key={option.name}
+                  type="button"
+                  role="radio"
+                  aria-checked={selectedOption}
+                  className="relative flex w-full cursor-default items-center gap-2 rounded-lg py-1.5 pr-8 pl-2 text-left text-sm font-medium text-neutral-100 outline-hidden select-none hover:bg-neutral-600 focus-visible:bg-neutral-600 focus-visible:outline-none dark:hover:bg-neutral-700/80 dark:focus-visible:bg-neutral-700/80"
+                  onClick={() => {
+                    onChange(option.name);
+                    setOpen(false);
+                  }}
+                >
+                  {option.title}
+                  {selectedOption && (
+                    <CheckIcon className="absolute right-2 size-4" />
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </PopoverContent>
+      </Popover>
+      <button
+        type="button"
+        title={locked ? `Unlock ${label}` : `Lock ${label}`}
+        aria-label={locked ? `Unlock ${label}` : `Lock ${label}`}
+        data-locked={locked}
+        className="absolute top-1/2 right-8 z-10 flex size-4 -translate-y-1/2 cursor-pointer items-center justify-center rounded opacity-0 outline-none ring-foreground/60 transition-opacity group-focus-within/picker:opacity-100 group-hover/picker:opacity-100 focus:opacity-100 focus-visible:ring-1 data-[locked=true]:opacity-100"
+        onClick={onLockToggle}
       >
-        {options.map((option) => (
-          <option key={option.name} value={option.name}>
-            {option.title}
-          </option>
+        {locked ? (
+          <LockIcon className="size-4 text-foreground" />
+        ) : (
+          <UnlockIcon className="size-4 text-foreground" />
+        )}
+      </button>
+    </div>
+  );
+}
+
+function CustomizerMenu({
+  randomize,
+  reset,
+  share,
+}: {
+  randomize: () => void;
+  reset: () => void;
+  share: () => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const items = [
+    { action: share, label: "Copy link" },
+    { action: randomize, label: "Shuffle" },
+    { action: reset, label: "Reset" },
+  ];
+
+  return (
+    <Popover sounds open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <button
+          type="button"
+          className="flex h-9 w-full items-center justify-between gap-2 rounded-lg px-2.5 ring-1 ring-foreground/10 hover:bg-muted focus-visible:ring-foreground/50 focus-visible:outline-none data-[state=open]:bg-muted"
+        >
+          <span className="text-sm font-medium">Menu</span>
+          <MenuIcon className="size-4 text-muted-foreground" />
+        </button>
+      </PopoverTrigger>
+      <PopoverContent
+        side="right"
+        align="start"
+        alignOffset={-8}
+        sideOffset={20}
+        className="w-52 rounded-xl border-0 bg-neutral-950/80 p-1.5 text-neutral-100 ring-1 ring-neutral-950/80 backdrop-blur-xl dark:bg-neutral-800/90 dark:ring-neutral-700/50"
+      >
+        {items.map((item) => (
+          <button
+            key={item.label}
+            type="button"
+            className="flex w-full items-center rounded-lg px-2 py-1.5 text-sm font-medium hover:bg-neutral-600 focus-visible:bg-neutral-600 focus-visible:outline-none dark:hover:bg-neutral-700/80 dark:focus-visible:bg-neutral-700/80"
+            onClick={() => {
+              item.action();
+              setOpen(false);
+            }}
+          >
+            {item.label}
+          </button>
         ))}
-      </select>
-    </label>
+      </PopoverContent>
+    </Popover>
   );
 }
 
