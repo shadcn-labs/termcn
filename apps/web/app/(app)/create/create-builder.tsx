@@ -39,6 +39,7 @@ import {
 import { Input } from "@/components/ui/input";
 import {
   Popover,
+  PopoverAnchor,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
@@ -106,6 +107,7 @@ const serializeConfig = (config: ProjectConfig) => {
 export function CreateBuilder() {
   const searchParams = useSearchParams();
   const isMobile = useIsMobile();
+  const customizerRef = useRef<HTMLDivElement | null>(null);
   const [config, setConfig] = useState<ProjectConfig>(() =>
     getConfigFromSearchParams(searchParams)
   );
@@ -208,7 +210,7 @@ export function CreateBuilder() {
         data-slot="designer"
         className="flex min-h-0 flex-1 flex-col gap-(--gap) p-(--gap) pt-[calc(var(--gap)*0.25)] md:flex-row-reverse"
       >
-        <section className="relative flex min-h-[34rem] min-w-0 flex-1 flex-col justify-center overflow-hidden rounded-2xl ring ring-foreground/10 md:min-h-0 md:ring-muted dark:ring-foreground/10">
+        <section className="relative flex min-h-0 min-w-0 flex-1 flex-col justify-center overflow-hidden rounded-2xl ring ring-foreground/10 md:ring-muted dark:ring-foreground/10">
           <div className="relative z-0 mx-auto flex w-full flex-1 flex-col overflow-hidden">
             <div className="absolute inset-0 bg-muted dark:bg-muted/30" />
             <div className="border-border/60 bg-background/85 relative z-10 flex h-12 shrink-0 items-center gap-2 border-b px-3 backdrop-blur-sm sm:px-4">
@@ -236,7 +238,7 @@ export function CreateBuilder() {
                 </span>
               </div>
             </div>
-            <div className="relative z-10 flex min-h-0 flex-1 items-center justify-center overflow-auto p-3 sm:p-6">
+            <div className="relative z-10 flex min-h-0 flex-1 items-start justify-center overflow-auto p-3 sm:p-6 md:items-center">
               <div className="w-full max-w-5xl overflow-hidden rounded-xl border border-white/10 bg-black shadow-2xl shadow-black/20">
                 <TerminalPreview
                   base={config.framework}
@@ -249,7 +251,10 @@ export function CreateBuilder() {
           </div>
         </section>
 
-        <Card className="dark top-24 right-12 isolate z-10 max-h-full min-h-0 w-full shrink-0 self-start gap-0 overflow-hidden rounded-2xl bg-card/90 py-0 text-card-foreground backdrop-blur-xl md:w-(--customizer-width) md:self-stretch">
+        <Card
+          ref={customizerRef}
+          className="dark top-24 right-12 isolate z-10 max-h-full min-h-[151px] w-full shrink-0 self-start gap-0 overflow-hidden rounded-2xl bg-card/90 py-0 text-card-foreground backdrop-blur-xl md:min-h-0 md:w-(--customizer-width) md:self-stretch"
+        >
           <CardHeader className="hidden shrink-0 border-b border-white/10 px-3 py-3 md:block">
             <CustomizerMenu randomize={randomize} reset={reset} share={share} />
           </CardHeader>
@@ -258,6 +263,7 @@ export function CreateBuilder() {
             <div className="flex min-w-max flex-row gap-2.5 py-px md:min-w-0 md:flex-col md:gap-3.25">
               <ConfigPicker
                 indicator={<Layers3Icon className="size-4" />}
+                anchorRef={customizerRef}
                 isMobile={isMobile}
                 label="Framework"
                 locked={lockedFields.has("framework")}
@@ -280,6 +286,7 @@ export function CreateBuilder() {
                     }}
                   />
                 }
+                anchorRef={customizerRef}
                 isMobile={isMobile}
                 label="Theme"
                 locked={lockedFields.has("theme")}
@@ -292,6 +299,7 @@ export function CreateBuilder() {
               />
               <ConfigPicker
                 indicator={<MonitorIcon className="size-4" />}
+                anchorRef={customizerRef}
                 isMobile={isMobile}
                 label="Template"
                 locked={lockedFields.has("template")}
@@ -305,16 +313,28 @@ export function CreateBuilder() {
             </div>
           </CardContent>
 
-          <CardFooter className="grid min-w-0 shrink-0 gap-2 border-t border-white/10 px-3 py-3 md:**:[button]:w-full">
-            <Button variant="outline" onClick={share}>
+          <CardFooter className="flex min-w-0 shrink-0 gap-2 border-t border-white/10 px-3 py-3 md:flex-col md:**:[button]:w-full">
+            <Button
+              className="min-w-0 flex-1 md:flex-none"
+              variant="outline"
+              onClick={share}
+            >
               {shareCopied ? <CheckIcon /> : <Share2Icon />}
               {shareCopied ? "Link copied" : "Copy link"}
             </Button>
-            <Button variant="outline" onClick={reset}>
+            <Button
+              className="max-w-20 min-w-0 flex-1 sm:max-w-none md:flex-none"
+              variant="outline"
+              onClick={reset}
+            >
               <RotateCcwIcon />
               Reset
             </Button>
-            <Button variant="outline" onClick={randomize}>
+            <Button
+              className="max-w-20 min-w-0 flex-1 sm:max-w-none md:flex-none"
+              variant="outline"
+              onClick={randomize}
+            >
               <DicesIcon />
               Shuffle
             </Button>
@@ -334,6 +354,7 @@ export function CreateBuilder() {
 }
 
 function ConfigPicker({
+  anchorRef,
   indicator,
   isMobile,
   label,
@@ -343,6 +364,7 @@ function ConfigPicker({
   options,
   value,
 }: {
+  anchorRef: React.RefObject<HTMLDivElement | null>;
   indicator: React.ReactNode;
   isMobile: boolean;
   label: string;
@@ -358,6 +380,11 @@ function ConfigPicker({
   return (
     <div className="group/picker relative">
       <Popover sounds open={open} onOpenChange={setOpen}>
+        {isMobile && (
+          <PopoverAnchor
+            virtualRef={anchorRef as React.RefObject<HTMLDivElement>}
+          />
+        )}
         <PopoverTrigger asChild>
           <button
             type="button"
@@ -378,7 +405,7 @@ function ConfigPicker({
           side={isMobile ? "top" : "right"}
           align={isMobile ? "center" : "start"}
           sideOffset={20}
-          className="no-scrollbar max-h-92 w-52 overflow-x-hidden overflow-y-auto rounded-xl border-0 bg-neutral-950/80 p-1.5 text-neutral-100 ring-1 ring-neutral-950/80 backdrop-blur-xl dark:bg-neutral-800/90 dark:ring-neutral-700/50"
+          className="no-scrollbar max-h-92 w-[calc(var(--radix-popover-content-available-width)-(--spacing(6)))] min-w-32 overflow-x-hidden overflow-y-auto rounded-xl border-0 bg-neutral-950/80 p-1.5 text-neutral-100 ring-1 ring-neutral-950/80 backdrop-blur-xl md:w-52 dark:bg-neutral-800/90 dark:ring-neutral-700/50"
         >
           <div role="radiogroup" aria-label={label}>
             {options.map((option) => {
