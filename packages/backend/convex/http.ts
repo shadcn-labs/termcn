@@ -4,6 +4,7 @@ import { httpRouter } from "convex/server";
 import { internal } from "./_generated/api";
 import { authComponent, createAuth } from "./auth";
 import { hashLicenseKey } from "./lib/license";
+import { seatLimitForTier } from "./lib/plans";
 
 const http = httpRouter();
 
@@ -22,9 +23,14 @@ http.route({
       });
     },
     onPaymentSucceeded: async (ctx, payload) => {
-      const { authId, plan } = payload.data.metadata;
+      const { authId, product, tier: requestedTier } = payload.data.metadata;
+      const plan = product ?? payload.data.metadata.plan;
+      const tier = requestedTier ?? "personal";
 
-      if (plan !== "skill" && plan !== "bundle") {
+      if (
+        (plan !== "skill" && plan !== "bundle") ||
+        (tier !== "personal" && tier !== "team")
+      ) {
         console.error("Dodo payment is missing valid access metadata", {
           paymentId: payload.data.payment_id,
         });
@@ -39,7 +45,15 @@ http.route({
         email: payload.data.customer.email,
         paymentId: payload.data.payment_id,
         plan,
+        seatLimit: seatLimitForTier(tier),
         status: payload.data.status ?? "succeeded",
+        tier,
+      });
+    },
+    onRefundSucceeded: async (ctx, payload) => {
+      await ctx.runMutation(internal.billing.recordRefundSucceeded, {
+        isPartial: payload.data.is_partial,
+        paymentId: payload.data.payment_id,
       });
     },
   }),

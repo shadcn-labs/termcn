@@ -3,21 +3,45 @@ import { v } from "convex/values";
 import { action, env } from "./_generated/server";
 import { checkout, customerPortal } from "./dodo";
 import { isValidEmail, normalizeEmail } from "./lib/email";
-import { accessPlan } from "./validators";
+import { seatLimitForTier } from "./lib/plans";
+import { accessPlan, licenseTier } from "./validators";
 
-const productIdForPlan = (plan: "bundle" | "skill") =>
-  plan === "bundle" ? env.DODO_BUNDLE_PRODUCT_ID : env.DODO_SKILL_PRODUCT_ID;
+const productIdForPlan = (
+  plan: "bundle" | "skill",
+  tier: "personal" | "team"
+) => {
+  const productId = {
+    bundle: {
+      personal: env.DODO_BUNDLE_PRODUCT_ID,
+      team: env.DODO_TEAM_BUNDLE_PRODUCT_ID,
+    },
+    skill: {
+      personal: env.DODO_SKILL_PRODUCT_ID,
+      team: env.DODO_TEAM_SKILL_PRODUCT_ID,
+    },
+  }[plan][tier];
+
+  if (!productId) {
+    throw new Error(
+      `Dodo Payments product is not configured for ${tier} ${plan}`
+    );
+  }
+  return productId;
+};
 
 export const createCheckout = action({
   args: {
     email: v.string(),
     plan: accessPlan,
+    tier: v.optional(licenseTier),
   },
-  handler: async (ctx, { email, plan }) => {
+  handler: async (ctx, { email, plan, tier: requestedTier }) => {
     if (!isValidEmail(email)) {
       throw new Error("Enter a valid email address");
     }
     const normalizedEmail = normalizeEmail(email);
+    const tier = requestedTier ?? "personal";
+    const seatLimit = seatLimitForTier(tier);
     const identity = await ctx.auth.getUserIdentity();
 
     return await checkout(ctx, {
@@ -39,9 +63,14 @@ export const createCheckout = action({
         metadata: {
           ...(identity ? { authId: identity.tokenIdentifier } : {}),
           plan,
+          product: plan,
+          seatLimit: String(seatLimit),
+          tier,
         },
-        product_cart: [{ product_id: productIdForPlan(plan), quantity: 1 }],
-        return_url: `${env.SITE_URL}/checkout/success?plan=${plan}`,
+        product_cart: [
+          { product_id: productIdForPlan(plan, tier), quantity: 1 },
+        ],
+        return_url: `${env.SITE_URL}/checkout/success?plan=${plan}&tier=${tier}`,
       },
     });
   },

@@ -67,7 +67,7 @@ const createAuth = (ctx: GenericCtx<DataModel>) =>
           if (!hasPurchase) {
             throw new APIError("FORBIDDEN", {
               message:
-                "Use the same email address you entered during checkout.",
+                "Use your checkout email or the email invited to a team seat.",
             });
           }
           await sendMagicLinkEmail(email, url);

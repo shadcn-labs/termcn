@@ -8,6 +8,7 @@
  * @module
  */
 
+import type * as accessTokens from "../access-tokens.js";
 import type * as auth from "../auth.js";
 import type * as billing from "../billing.js";
 import type * as dodo from "../dodo.js";
@@ -15,6 +16,7 @@ import type * as health_check from "../health-check.js";
 import type * as http from "../http.js";
 import type * as licenses from "../licenses.js";
 import type * as payments from "../payments.js";
+import type * as teams from "../teams.js";
 import type * as validators from "../validators.js";
 
 import type {
@@ -24,6 +26,7 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  "access-tokens": typeof accessTokens;
   auth: typeof auth;
   billing: typeof billing;
   dodo: typeof dodo;
@@ -31,6 +34,7 @@ declare const fullApi: ApiFromModules<{
   http: typeof http;
   licenses: typeof licenses;
   payments: typeof payments;
+  teams: typeof teams;
   validators: typeof validators;
 }>;
 

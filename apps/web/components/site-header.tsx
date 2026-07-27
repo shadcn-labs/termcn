@@ -1,3 +1,4 @@
+import { UserRoundIcon } from "lucide-react";
 import Link from "next/link";
 
 import { BrandContextMenu } from "@/components/brand-context-menu";
@@ -19,6 +20,7 @@ const navItems = [
   { href: ROUTES.DOCS_COMPONENTS, label: "Components" },
   { href: ROUTES.DOCS_CHARTS, label: "Charts" },
   { href: ROUTES.DOCS_TEMPLATES, label: "Templates" },
+  { href: ROUTES.PRO, label: "Pro" },
 ];
 
 export const SiteHeader = () => (
@@ -41,7 +43,11 @@ export const SiteHeader = () => (
             className="hidden size-8 lg:flex"
             sound="click"
           >
-            <Link href={ROUTES.HOME} transitionTypes={["nav-back"]}>
+            <Link
+              href={ROUTES.HOME}
+              prefetch={false}
+              transitionTypes={["nav-back"]}
+            >
               <LogoMark className="size-5" />
               <span className="sr-only">{SITE.NAME}</span>
             </Link>
@@ -54,6 +60,12 @@ export const SiteHeader = () => (
           </div>
           <NavItemGithub />
           <SponsorLink />
+          <Button asChild size="icon" sound="click" variant="ghost">
+            <Link href={ROUTES.ACCOUNT} prefetch={false}>
+              <UserRoundIcon />
+              <span className="sr-only">Account</span>
+            </Link>
+          </Button>
           <ModeSwitcher />
           <SiteSettings />
         </div>

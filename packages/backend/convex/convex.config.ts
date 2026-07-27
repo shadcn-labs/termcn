@@ -13,6 +13,8 @@ const app = defineApp({
       v.literal("test_mode")
     ),
     DODO_SKILL_PRODUCT_ID: v.string(),
+    DODO_TEAM_BUNDLE_PRODUCT_ID: v.optional(v.string()),
+    DODO_TEAM_SKILL_PRODUCT_ID: v.optional(v.string()),
     RESEND_API_KEY: v.optional(v.string()),
     SITE_URL: v.string(),
   },

@@ -27,6 +27,8 @@ type Env = {
   readonly DODO_PAYMENTS_API_KEY: string;
   readonly DODO_PAYMENTS_ENVIRONMENT: "live_mode" | "test_mode";
   readonly DODO_SKILL_PRODUCT_ID: string;
+  readonly DODO_TEAM_BUNDLE_PRODUCT_ID?: string;
+  readonly DODO_TEAM_SKILL_PRODUCT_ID?: string;
   readonly RESEND_API_KEY?: string;
   readonly SITE_URL: string;
 };
