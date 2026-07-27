@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
 const TAR_BLOCK_SIZE = 512;
-const SKILL_ROOT = ".agents/skills/termcn";
+const SKILL_ROOT = "skills/termcn";
 
 const getBearerToken = (request: Request) => {
   const authorization = request.headers.get("authorization");

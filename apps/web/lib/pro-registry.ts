@@ -25,8 +25,8 @@ interface Registry {
   items: RegistryItem[];
 }
 
-const REGISTRY_PATH = "apps/web/registry.json";
-const REGISTRY_SOURCE_ROOT = "apps/web/registry/";
+const REGISTRY_PATH = "registry/registry.json";
+const REGISTRY_SOURCE_ROOT = "registry/";
 
 const parseRegistry = (source: string): Registry => {
   const registry = JSON.parse(source) as Partial<Registry>;
@@ -55,7 +55,7 @@ export const getProRegistryItem = async (
 
   const files = await Promise.all(
     item.files.map(async (file) => {
-      const sourcePath = `apps/web/${file.path}`;
+      const sourcePath = file.path;
       if (!sourcePath.startsWith(REGISTRY_SOURCE_ROOT)) {
         throw new ProSourceError(
           `Registry source is outside its root: ${file.path}`
