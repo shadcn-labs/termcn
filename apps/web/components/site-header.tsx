@@ -28,7 +28,7 @@ export const SiteHeader = () => (
     style={{ viewTransitionName: "site-header" }}
   >
     <div className="container-wrapper 3xl:fixed:px-0 px-6">
-      <div className="3xl:fixed:container flex h-(--header-height) items-center gap-2">
+      <div className="3xl:fixed:container flex h-(--header-height) **:data-[slot=separator]:h-4! items-center gap-2">
         <MobileNav
           items={navItems}
           tree={source.pageTree}
@@ -53,8 +53,9 @@ export const SiteHeader = () => (
           <div className="hidden w-full flex-1 md:flex md:w-auto md:flex-none">
             <CommandMenu navItems={navItems} tree={source.pageTree} />
           </div>
+          <Separator orientation="vertical" className="ml-2 hidden lg:block" />
           <NavItemGithub />
-          <Separator orientation="vertical" className="mx-1 h-4" />
+          <Separator orientation="vertical" />
           <ModeSwitcher />
           <DesignerActions />
         </div>
