@@ -1,5 +1,5 @@
 {
-  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "$schema": "https://termcn.dev/schema/registry-item.json",
   "name": "opentui/directory-tree",
   "title": "Directory Tree",
   "description": "Filesystem browser with expand/collapse",

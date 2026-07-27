@@ -1,66 +1,66 @@
 ---
 title: Registry
-description: Learn how to use the termcn registry with the shadcn CLI.
+description: Learn how to use the termcn registry with the termcn CLI.
 ---
 
-The **termcn** registry ships Ink and OpenTUI terminal UI components and themes in the [shadcn registry format](https://ui.shadcn.com/docs/registry). Register the namespace once in `components.json`, then pull items by name with the CLI.
+The **termcn** registry ships Ink and OpenTUI terminal UI components and themes in a [shadcn-compatible registry format](https://ui.shadcn.com/docs/registry). The `termcn init` command writes the registry and framework settings to `components.json`, then `termcn add` resolves plain item names against that framework.
 
 ## Setup
 
-Add a **registries** entry for this site. See the [shadcn registry documentation](https://ui.shadcn.com/docs/registry) for all `components.json` fields and behaviors.
+Run `npx termcn@latest init`, or add the registry manually:
 
 ```json
 {
   "registries": {
-    "@termcn": "https://termcn.dev/r/{name}.json"
+    "@termcn": "https://termcn.dev/r/{style}/{name}.json"
   }
 }
 ```
 
-You can replace `@termcn` with another namespace; it only needs to match what you pass to `shadcn add`.
+Set `style` to `ink` or `opentui`. You can replace `@termcn` with another namespace; it only needs to match what you pass to `termcn add`.
 
 ## Usage
 
-Items are namespaced by base: `ink/` for Ink and `opentui/` for OpenTUI.
+After initialization, plain item names use the framework stored in `components.json`.
 
 Install an Ink component:
 
 ```bash
-npx shadcn@latest add @termcn/ink/spinner
+npx termcn@latest add spinner
 ```
 
 Install an OpenTUI component:
 
 ```bash
-npx shadcn@latest add @termcn/opentui/spinner
+npx termcn@latest add spinner
 ```
 
 Install a theme for the matching base:
 
 ```bash
-npx shadcn@latest add @termcn/ink/theme-dracula
+npx termcn@latest add theme-dracula
 ```
 
 ```bash
-npx shadcn@latest add @termcn/opentui/theme-dracula
+npx termcn@latest add theme-dracula
 ```
 
 Install the theme provider for each base:
 
 ```bash
-npx shadcn@latest add @termcn/ink/theme-provider
+npx termcn@latest add theme-provider
 ```
 
 ```bash
-npx shadcn@latest add @termcn/opentui/theme-provider
+npx termcn@latest add theme-provider
 ```
 
 Without a registry alias, use the full URL (as on each docs page):
 
 ```bash
-npx shadcn@latest add https://termcn.dev/r/ink/spinner.json
+npx termcn@latest add https://termcn.dev/r/ink/spinner.json
 ```
 
 ```bash
-npx shadcn@latest add https://termcn.dev/r/opentui/spinner.json
+npx termcn@latest add https://termcn.dev/r/opentui/spinner.json
 ```

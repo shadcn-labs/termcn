@@ -1,5 +1,5 @@
 {
-  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "$schema": "https://termcn.dev/schema/registry-item.json",
   "name": "ink/heading",
   "title": "Heading",
   "description": "h1–h4 styled headings with optional figlet ASCII art",

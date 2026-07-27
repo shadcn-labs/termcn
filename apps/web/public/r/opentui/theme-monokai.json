@@ -1,5 +1,5 @@
 {
-  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "$schema": "https://termcn.dev/schema/registry-item.json",
   "name": "opentui/theme-monokai",
   "title": "Monokai",
   "description": "A classic Monokai-inspired theme for terminal apps.",

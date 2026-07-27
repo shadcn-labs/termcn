@@ -1,5 +1,5 @@
 {
-  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "$schema": "https://termcn.dev/schema/registry-item.json",
   "name": "ink/dither-pie-chart",
   "title": "Dither Pie Chart",
   "description": "Dithered pie and donut charts with textured slices, legends, tooltips, and keyboard inspection",

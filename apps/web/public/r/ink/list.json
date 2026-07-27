@@ -1,5 +1,5 @@
 {
-  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "$schema": "https://termcn.dev/schema/registry-item.json",
   "name": "ink/list",
   "title": "List",
   "description": "Navigable list with optional filtering",

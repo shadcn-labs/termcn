@@ -1,5 +1,5 @@
 {
-  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "$schema": "https://termcn.dev/schema/registry-item.json",
   "name": "opentui/dither-line-chart",
   "title": "Dither Line Chart",
   "description": "Dithered multi-series line charts with solid or dashed strokes, markers, axes, and terminal interaction",

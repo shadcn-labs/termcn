@@ -8,7 +8,6 @@ const jiti = createJiti(import.meta.url);
 const resolvePackage = (specifier) =>
   fileURLToPath(import.meta.resolve(specifier));
 
-const { LINK } = await jiti.import("./constants/links");
 const { ROUTES } = await jiti.import("./constants/routes");
 
 /** Turbopack requires project-relative alias targets (not absolute paths). */
@@ -35,7 +34,7 @@ const nextConfig = {
       '</.well-known/api-catalog>; rel="api-catalog"',
       '</openapi.json>; rel="service-desc"',
       '</docs>; rel="service-doc"',
-      `<${LINK.SHADCN_MCP_DOCS}>; rel="service-doc"; title="shadcn MCP server"`,
+      `<${ROUTES.DOCS_MCP}>; rel="service-doc"; title="termcn MCP server"`,
       '</.well-known/agent-skills/index.json>; rel="describedby"',
     ].join(", ");
 

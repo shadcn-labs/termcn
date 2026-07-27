@@ -3,6 +3,7 @@ export const ROUTES = {
   AGENT_SKILLS_TERMCN_SKILL: "/.well-known/agent-skills/termcn-skill.md",
   API_CATALOG: "/.well-known/api-catalog",
   API_STATUS: "/api/status",
+  CREATE: "/create",
   DOCS: "/docs",
   DOCS_CHANGELOG: "/docs/changelog",
   DOCS_CHARTS: "/docs/charts",

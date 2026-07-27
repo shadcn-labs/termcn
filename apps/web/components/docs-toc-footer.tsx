@@ -34,13 +34,13 @@ export const DocsTocFooter = ({
       </a>
     )}
     <a
-      href={LINK.X_SHADCN_LABS}
+      href={LINK.X}
       target="_blank"
       rel="noopener noreferrer"
       className="transition-colors text-[0.8rem] hover:text-foreground text-muted-foreground [&_svg]:size-3 flex gap-1.5 items-center"
     >
       <XIcon />
-      Follow @shadcnlabs
+      Follow @alaymanguy
     </a>
     <a
       href={LINK.DISCORD}

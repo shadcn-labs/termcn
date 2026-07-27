@@ -71,10 +71,10 @@ export const RegistryAddButton = ({
 
   const commands = useMemo(
     () => ({
-      bun: `bunx --bun shadcn@latest registry add ${registryName}`,
-      npm: `npx shadcn@latest registry add ${registryName}`,
-      pnpm: `pnpm dlx shadcn@latest registry add ${registryName}`,
-      yarn: `yarn shadcn@latest registry add ${registryName}`,
+      bun: `bunx --bun termcn@latest registry add ${registryName}`,
+      npm: `npx termcn@latest registry add ${registryName}`,
+      pnpm: `pnpm dlx termcn@latest registry add ${registryName}`,
+      yarn: `yarn dlx termcn@latest registry add ${registryName}`,
     }),
     [registryName]
   );

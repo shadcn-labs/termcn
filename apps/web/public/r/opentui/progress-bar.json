@@ -1,5 +1,5 @@
 {
-  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "$schema": "https://termcn.dev/schema/registry-item.json",
   "name": "opentui/progress-bar",
   "title": "Progress Bar",
   "description": "Determinate progress bar with percent and value/total display",

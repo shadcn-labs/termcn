@@ -1,5 +1,5 @@
 {
-  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "$schema": "https://termcn.dev/schema/registry-item.json",
   "name": "ink/checkbox",
   "title": "Checkbox",
   "description": "Checkbox with indeterminate state",

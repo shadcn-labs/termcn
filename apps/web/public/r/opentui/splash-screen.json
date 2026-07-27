@@ -1,5 +1,5 @@
 {
-  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "$schema": "https://termcn.dev/schema/registry-item.json",
   "name": "opentui/splash-screen",
   "title": "Splash Screen",
   "description": "Styled startup banner with big ASCII art title, subtitle, author credit, and status line",

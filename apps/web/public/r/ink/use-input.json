@@ -1,5 +1,5 @@
 {
-  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "$schema": "https://termcn.dev/schema/registry-item.json",
   "name": "ink/use-input",
   "title": "Use Input",
   "description": "Keyboard input hook wrapping Ink's useInput.",

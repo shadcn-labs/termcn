@@ -52,7 +52,7 @@ export default function IndexPage() {
             <p className="max-w-2xl text-lg text-muted-foreground sm:text-xl">
               Ready to use, customizable terminal components for React.
               <br className="hidden sm:block" />
-              Built on Ink and OpenTUI. Distributed via shadcn.
+              Built on Ink and OpenTUI. Distributed via termcn.
             </p>
 
             <CommandBox className="mt-4 w-full max-w-xl" />

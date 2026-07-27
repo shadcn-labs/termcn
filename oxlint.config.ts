@@ -18,6 +18,13 @@ export default defineConfig({
   ],
   overrides: [
     {
+      files: ["apps/web/app/(app)/create/**/*.tsx"],
+      rules: {
+        "func-style": "off",
+        "no-use-before-define": "off",
+      },
+    },
+    {
       files: [
         "apps/web/registry/bases/ink/ui/**/*.tsx",
         "apps/web/registry/bases/opentui/ui/**/*.tsx",

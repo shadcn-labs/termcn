@@ -1,6 +1,5 @@
 import { llms } from "fumadocs-core/source";
 
-import { LINK } from "@/constants/links";
 import { ROUTES } from "@/constants/routes";
 import { SITE } from "@/constants/site";
 import { requestOrigin } from "@/lib/agent-discovery/request-origin";
@@ -34,7 +33,7 @@ ${documentationIndex()}
 - [OpenAPI description](${base}${ROUTES.OPENAPI})
 - [API catalog](${base}${ROUTES.API_CATALOG})
 - [Agent skill](${base}${ROUTES.AGENT_SKILLS_TERMCN_SKILL})
-- [shadcn MCP server documentation](${LINK.SHADCN_MCP_DOCS})
+- [termcn MCP server documentation](${base}${ROUTES.DOCS_MCP})
 `;
 };
 

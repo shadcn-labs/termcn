@@ -1,5 +1,5 @@
 {
-  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "$schema": "https://termcn.dev/schema/registry-item.json",
   "name": "opentui/file-change",
   "title": "File Change",
   "description": "Interactive file-change review list with diff expansion, per-file accept/reject actions, and accept-all shortcut",

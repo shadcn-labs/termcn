@@ -1,5 +1,5 @@
 {
-  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "$schema": "https://termcn.dev/schema/registry-item.json",
   "name": "opentui/timer",
   "title": "Timer",
   "description": "Countdown timer with pause/resume and auto-start",

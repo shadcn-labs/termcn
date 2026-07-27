@@ -1,5 +1,5 @@
 {
-  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "$schema": "https://termcn.dev/schema/registry-item.json",
   "name": "opentui/streaming-text",
   "title": "Streaming Text",
   "description": "Token-by-token streaming text with blinking cursor and optional typing animation",

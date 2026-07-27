@@ -1,4 +1,3 @@
-import { LINK } from "@/constants/links";
 import { ROUTES } from "@/constants/routes";
 import { requestOrigin } from "@/lib/agent-discovery/request-origin";
 import { homeContentRoute } from "@/lib/docs";
@@ -37,8 +36,8 @@ const catalogLinkset = (origin: string) => {
           { href: `${base}${ROUTES.LLMS_FULL}`, type: "text/plain" },
           { href: `${base}${homeContentRoute}`, type: "text/markdown" },
           {
-            href: LINK.SHADCN_MCP_DOCS,
-            title: "shadcn MCP server",
+            href: `${base}${ROUTES.DOCS_MCP}`,
+            title: "termcn MCP server",
             type: "text/html",
           },
         ],
