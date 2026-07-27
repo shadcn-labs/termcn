@@ -1,6 +1,5 @@
 "use client";
 
-import { SettingsIcon } from "lucide-react";
 import { useRef, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 
@@ -73,14 +72,9 @@ export const SiteSettings = () => {
   };
 
   const trigger = (
-    <Button
-      variant="ghost"
-      size="icon"
-      className="group/settings extend-touch-target size-8"
-      aria-label="Settings"
-    >
-      <SettingsIcon />
-    </Button>
+    <button type="button" className="transition-colors hover:text-foreground">
+      Settings
+    </button>
   );
 
   const content = (

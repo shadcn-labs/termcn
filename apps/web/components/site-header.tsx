@@ -2,14 +2,14 @@ import Link from "next/link";
 
 import { BrandContextMenu } from "@/components/brand-context-menu";
 import { CommandMenu } from "@/components/command-menu";
+import { DesignerActions } from "@/components/designer-actions";
 import { LogoMark } from "@/components/logo";
 import { MainNav } from "@/components/main-nav";
 import { MobileNav } from "@/components/mobile-nav";
 import { ModeSwitcher } from "@/components/mode-switcher";
 import { NavItemGithub } from "@/components/nav-item-github";
-import { SiteSettings } from "@/components/site-settings";
-import { SponsorLink } from "@/components/sponsor-link";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { ROUTES } from "@/constants/routes";
 import { SITE } from "@/constants/site";
 import { source } from "@/lib/source";
@@ -54,9 +54,9 @@ export const SiteHeader = () => (
             <CommandMenu navItems={navItems} tree={source.pageTree} />
           </div>
           <NavItemGithub />
-          <SponsorLink />
+          <Separator orientation="vertical" className="mx-1 h-4" />
           <ModeSwitcher />
-          <SiteSettings />
+          <DesignerActions />
         </div>
       </div>
     </div>

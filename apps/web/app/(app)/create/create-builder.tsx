@@ -51,6 +51,7 @@ import type {
   TemplateName,
   ThemeName,
 } from "@/lib/create-config";
+import { OPEN_CREATE_CODE_DIALOG_EVENT } from "@/lib/create-events";
 import { themePrimaryBySlug } from "@/lib/terminal-themes";
 
 const TEMPLATE_PREVIEWS: Record<TemplateName, string> = {
@@ -98,6 +99,7 @@ export function CreateBuilder() {
     getConfigFromSearchParams(searchParams)
   );
   const configRef = useRef(config);
+  const [projectDialogOpen, setProjectDialogOpen] = useState(false);
   const [shareCopied, setShareCopied] = useState(false);
 
   useEffect(() => {
@@ -110,6 +112,16 @@ export function CreateBuilder() {
     };
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
+  useEffect(() => {
+    const openProjectDialog = () => setProjectDialogOpen(true);
+    window.addEventListener(OPEN_CREATE_CODE_DIALOG_EVENT, openProjectDialog);
+    return () =>
+      window.removeEventListener(
+        OPEN_CREATE_CODE_DIALOG_EVENT,
+        openProjectDialog
+      );
   }, []);
 
   const updateConfig = useCallback(
@@ -264,7 +276,11 @@ export function CreateBuilder() {
             </Button>
           </CardFooter>
           <CardFooter className="-mt-3 hidden min-w-0 shrink-0 px-3 pb-3 md:flex md:flex-col md:**:[button]:w-full">
-            <ProjectDialog config={config} />
+            <ProjectDialog
+              config={config}
+              open={projectDialogOpen}
+              onOpenChange={setProjectDialogOpen}
+            />
           </CardFooter>
         </Card>
       </div>
@@ -324,7 +340,15 @@ function FieldSelect({
   );
 }
 
-function ProjectDialog({ config }: { config: ProjectConfig }) {
+function ProjectDialog({
+  config,
+  onOpenChange,
+  open,
+}: {
+  config: ProjectConfig;
+  onOpenChange: (open: boolean) => void;
+  open: boolean;
+}) {
   const [packageManager, setPackageManager] = useState<PackageManager>("pnpm");
   const [name, setName] = useState("my-terminal-app");
 
@@ -341,7 +365,7 @@ function ProjectDialog({ config }: { config: ProjectConfig }) {
   );
 
   return (
-    <Dialog sounds>
+    <Dialog sounds open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
         <Button>
           <Code2Icon />

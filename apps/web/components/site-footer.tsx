@@ -1,5 +1,7 @@
 "use client";
 
+import { SiteSettings } from "@/components/site-settings";
+import { SponsorLink } from "@/components/sponsor-link";
 import { LINK } from "@/constants/links";
 import { SITE, UTM_PARAMS } from "@/constants/site";
 import { useFeedback } from "@/hooks/use-feedback";
@@ -14,8 +16,8 @@ export const SiteFooter = () => {
       style={{ viewTransitionName: "site-footer" }}
     >
       <div className="container-wrapper px-4 xl:px-6">
-        <div className="flex h-(--footer-height) items-center justify-between">
-          <div className="text-muted-foreground w-full px-1 text-center text-xs leading-loose sm:text-sm">
+        <div className="flex min-h-(--footer-height) flex-col gap-2 py-4 sm:flex-row sm:items-center sm:justify-between sm:py-0">
+          <div className="text-muted-foreground order-2 w-full px-1 text-left text-xs leading-loose sm:order-1 sm:w-auto sm:text-sm">
             Built by{" "}
             <a
               href={addQueryParams(LINK.PORTFOLIO, UTM_PARAMS)}
@@ -37,6 +39,10 @@ export const SiteFooter = () => {
               GitHub
             </a>
             .
+          </div>
+          <div className="text-muted-foreground order-1 flex items-center gap-4 px-1 text-xs sm:order-2 sm:text-sm">
+            <SponsorLink />
+            <SiteSettings />
           </div>
         </div>
       </div>
