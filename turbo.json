@@ -4,8 +4,15 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
+      "env": ["NEXT_PUBLIC_CONVEX_SITE_URL", "NEXT_PUBLIC_CONVEX_URL"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"],
+      "passThroughEnv": [
+        "TERMCN_PRO_GITHUB_REF",
+        "TERMCN_PRO_GITHUB_REPOSITORY",
+        "TERMCN_PRO_GITHUB_TOKEN",
+        "VERCEL_PROJECT_PRODUCTION_URL"
+      ]
     },
     "typecheck": {
       "dependsOn": ["^typecheck"]
