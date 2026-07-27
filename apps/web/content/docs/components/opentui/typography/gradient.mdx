@@ -1,0 +1,141 @@
+---
+title: "Gradient"
+description: "Color gradient text"
+---
+
+<ComponentPreview base="opentui" name="gradient-demo" hideCode />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+```bash
+npx shadcn@latest add @termcn/opentui/gradient
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install the following dependencies:</Step>
+
+```bash
+npm install @opentui/react
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource
+  src="registry/bases/opentui/ui/types.ts"
+  title="components/ui/types.ts"
+/>
+
+<ComponentSource
+  src="registry/bases/opentui/themes/default.ts"
+  title="lib/terminal-themes/default.ts"
+/>
+
+<ComponentSource
+  base="opentui"
+  name="theme-provider"
+  title="components/ui/theme-provider.tsx"
+/>
+
+<ComponentSource
+  base="opentui"
+  name="gradient"
+  title="components/ui/gradient.tsx"
+/>
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import { Gradient } from "@/components/ui/gradient";
+```
+
+```tsx
+<Gradient colors={["#ff6b6b", "#4ecdc4"]}>Hello Gradient</Gradient>
+```
+
+## Examples
+
+### Cristal
+
+<ComponentPreview base="opentui" name="gradient-cristal" />
+
+### Teen
+
+<ComponentPreview base="opentui" name="gradient-teen" />
+
+### Mind
+
+<ComponentPreview base="opentui" name="gradient-mind" />
+
+### Morning
+
+<ComponentPreview base="opentui" name="gradient-morning" />
+
+### Vice
+
+<ComponentPreview base="opentui" name="gradient-vice" />
+
+### Passion
+
+<ComponentPreview base="opentui" name="gradient-passion" />
+
+### Fruit
+
+<ComponentPreview base="opentui" name="gradient-fruit" />
+
+### Instagram
+
+<ComponentPreview base="opentui" name="gradient-instagram" />
+
+### Atlas
+
+<ComponentPreview base="opentui" name="gradient-atlas" />
+
+### Retro
+
+<ComponentPreview base="opentui" name="gradient-retro" />
+
+### Summer
+
+<ComponentPreview base="opentui" name="gradient-summer" />
+
+### Pastel
+
+<ComponentPreview base="opentui" name="gradient-pastel" />
+
+### Rainbow
+
+<ComponentPreview base="opentui" name="gradient-rainbow" />
+
+## API Reference
+
+### Gradient
+
+Either pass `colors`, or pass `name` (not both required; `name` selects a preset when `colors` is omitted).
+
+| Prop       | Type                                                                                                                                                     | Default    |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| `children` | `string`                                                                                                                                                 | `required` |
+| `colors`   | `string[]`                                                                                                                                               | -          |
+| `name`     | `"cristal" \| "teen" \| "mind" \| "morning" \| "vice" \| "passion" \| "fruit" \| "instagram" \| "atlas" \| "retro" \| "summer" \| "pastel" \| "rainbow"` | -          |
+| `bold`     | `boolean`                                                                                                                                                | `false`    |

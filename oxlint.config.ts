@@ -7,20 +7,20 @@ import vitest from "ultracite/oxlint/vitest";
 export default defineConfig({
   extends: [core, react, next, vitest],
   ignorePatterns: [
-    "public/r/**",
+    "apps/web/public/r/**",
     ".agents/**",
     ".cursor/**",
     ".changeset/**",
     ".claude/**",
-    ".web-kits/**",
-    "audio/**",
-    "types/opentui-react.d.ts",
+    "apps/web/.web-kits/**",
+    "apps/web/audio/**",
+    "apps/web/types/opentui-react.d.ts",
   ],
   overrides: [
     {
       files: [
-        "registry/bases/ink/ui/**/*.tsx",
-        "registry/bases/opentui/ui/**/*.tsx",
+        "apps/web/registry/bases/ink/ui/**/*.tsx",
+        "apps/web/registry/bases/opentui/ui/**/*.tsx",
       ],
       rules: {
         complexity: "off",
