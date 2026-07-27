@@ -11,6 +11,7 @@ import { terminalThemeMap } from "@/lib/terminal-themes";
 
 export interface InkPreviewProps {
   children: React.ReactElement;
+  fontFamily?: string;
   theme?: keyof typeof terminalThemeMap;
   onReady?: () => void;
   rows?: number;
@@ -18,6 +19,7 @@ export interface InkPreviewProps {
 
 const InkPreview = ({
   children,
+  fontFamily,
   theme,
   onReady,
   rows = 18,
@@ -61,7 +63,7 @@ const InkPreview = ({
         padding={10}
         rows={rows}
         focus={false}
-        termOptions={{ theme: xtermTheme }}
+        termOptions={{ fontFamily, theme: xtermTheme }}
         onReady={onReady}
       >
         <ThemeProvider theme={baseTheme}>{children}</ThemeProvider>

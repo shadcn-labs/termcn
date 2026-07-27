@@ -18,12 +18,18 @@ npx termcn@latest init
 You can also select everything up front:
 
 ```bash
-npx termcn@latest init --framework ink --theme dracula --template app-shell --name my-terminal-app --yes
+npx termcn@latest init --framework ink --theme dracula --font jetbrains-mono --icons codicons --template app-shell --name my-terminal-app --yes
 ```
 
 This writes `components.json`, installs the selected theme and template, and
-creates a runnable entry point when the target directory is empty. You can
-build the same command visually on the [Create page](/create).
+creates a runnable entry point plus typed Nerd Font helpers when the target
+directory is empty. You can build the same command visually on the
+[Create page](/create).
+
+Your terminal emulator controls the actual terminal font. After initialization,
+install the selected Nerd Font Mono variant and choose it in your terminal
+profile. See [Fonts and icons](/docs/nerd-fonts) for the supported families,
+generated files, and usage.
 
 ## Add a component
 

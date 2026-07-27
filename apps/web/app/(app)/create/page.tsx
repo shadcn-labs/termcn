@@ -8,7 +8,7 @@ import { CreateBuilder } from "./create-builder";
 
 export const metadata = createPageMetadata({
   description:
-    "Choose an Ink or OpenTUI framework, terminal theme, and starter template, then generate the exact termcn init command.",
+    "Choose an Ink or OpenTUI framework, terminal theme, Nerd Font, icon set, and starter template, then generate the exact termcn init command.",
   path: ROUTES.CREATE,
   title: "Create a terminal app",
 });

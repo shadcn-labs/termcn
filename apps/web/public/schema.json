@@ -14,6 +14,16 @@
       "type": "string",
       "description": "The termcn starter template installed for this project."
     },
+    "font": {
+      "type": "string",
+      "enum": ["jetbrains-mono", "fira-code", "hack", "meslo"],
+      "description": "The Nerd Font Mono family required by this project."
+    },
+    "icons": {
+      "type": "string",
+      "enum": ["codicons", "font-awesome", "material", "octicons"],
+      "description": "The Nerd Fonts glyph set generated for this project."
+    },
     "tailwind": {
       "type": "object",
       "properties": {
