@@ -1,5 +1,5 @@
 {
-  "name": "termcn",
+  "name": "termcn-monorepo",
   "private": true,
   "workspaces": [
     "apps/*",

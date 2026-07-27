@@ -1,0 +1,23 @@
+import { Command } from "commander";
+
+import { highlighter } from "@/src/utils/highlighter";
+import { logger } from "@/src/utils/logger";
+
+export const mcp = new Command()
+  .name("registry:mcp")
+  .description("starts the registry MCP server [DEPRECATED]")
+  .option(
+    "-c, --cwd <cwd>",
+    "the working directory. defaults to the current directory.",
+    process.cwd()
+  )
+  .action(async () => {
+    logger.warn(
+      `The ${highlighter.info(
+        "termcn registry:mcp"
+      )} command is deprecated. Use the ${highlighter.info(
+        "termcn mcp"
+      )} command instead.`
+    );
+    logger.break();
+  });
