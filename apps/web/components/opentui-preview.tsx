@@ -16,6 +16,7 @@ const getTerminalHeight = (rows: number): number =>
 
 export interface OpenTuiPreviewProps {
   children: ReactNode;
+  fontFamily?: string;
   theme?: keyof typeof opentuiTerminalThemeMap;
   rows?: number;
   style?: CSSProperties;
@@ -23,6 +24,7 @@ export interface OpenTuiPreviewProps {
 
 const OpenTuiPreview = ({
   children,
+  fontFamily,
   theme,
   rows = 18,
   style,
@@ -49,6 +51,7 @@ const OpenTuiPreview = ({
       style={{ height: `${height}px`, ...style }}
     >
       <TUI
+        fontFamily={fontFamily}
         style={{
           height: "100%",
           padding: 10,

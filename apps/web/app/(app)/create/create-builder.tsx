@@ -1,6 +1,9 @@
 "use client";
 
+/* eslint-disable func-style, no-use-before-define -- Keep the page-level component first and colocate its private view components below it. */
+
 import {
+  CaseSensitiveIcon,
   CheckIcon,
   Code2Icon,
   DicesIcon,
@@ -49,18 +52,27 @@ import {
   buildInitCommand,
   DEFAULT_PROJECT_CONFIG,
   FRAMEWORKS,
+  NERD_FONTS,
+  NERD_ICON_SETS,
   PACKAGE_MANAGERS,
   TEMPLATES,
   THEMES,
 } from "@/lib/create-config";
 import type {
   FrameworkName,
+  NerdFontName,
+  NerdIconSetName,
   PackageManager,
   ProjectConfig,
   TemplateName,
   ThemeName,
 } from "@/lib/create-config";
 import { OPEN_CREATE_CODE_DIALOG_EVENT } from "@/lib/create-events";
+import {
+  getNerdFont,
+  getNerdFontStack,
+  getNerdIconSet,
+} from "@/lib/nerd-fonts";
 import { themePrimaryBySlug } from "@/lib/terminal-themes";
 
 type ConfigField = keyof ProjectConfig;
@@ -80,13 +92,21 @@ const getConfigFromSearchParams = (
   searchParams: Pick<URLSearchParams, "get">
 ): ProjectConfig => {
   const framework = searchParams.get("framework");
+  const font = searchParams.get("font");
+  const icons = searchParams.get("icons");
   const theme = searchParams.get("theme");
   const template = searchParams.get("template");
 
   return {
+    font: NERD_FONTS.some((entry) => entry.name === font)
+      ? (font as NerdFontName)
+      : DEFAULT_PROJECT_CONFIG.font,
     framework: FRAMEWORKS.some((entry) => entry.name === framework)
       ? (framework as FrameworkName)
       : DEFAULT_PROJECT_CONFIG.framework,
+    icons: NERD_ICON_SETS.some((entry) => entry.name === icons)
+      ? (icons as NerdIconSetName)
+      : DEFAULT_PROJECT_CONFIG.icons,
     template: TEMPLATES.some((entry) => entry.name === template)
       ? (template as TemplateName)
       : DEFAULT_PROJECT_CONFIG.template,
@@ -98,7 +118,9 @@ const getConfigFromSearchParams = (
 
 const serializeConfig = (config: ProjectConfig) => {
   const params = new URLSearchParams();
+  params.set("font", config.font);
   params.set("framework", config.framework);
+  params.set("icons", config.icons);
   params.set("theme", config.theme);
   params.set("template", config.template);
   return params;
@@ -162,9 +184,15 @@ export function CreateBuilder() {
     const pick = <T,>(items: readonly T[]) =>
       items[Math.floor(Math.random() * items.length)] as T;
     updateConfig({
+      font: lockedFields.has("font")
+        ? configRef.current.font
+        : pick(NERD_FONTS).name,
       framework: lockedFields.has("framework")
         ? configRef.current.framework
         : pick(FRAMEWORKS).name,
+      icons: lockedFields.has("icons")
+        ? configRef.current.icons
+        : pick(NERD_ICON_SETS).name,
       template: lockedFields.has("template")
         ? configRef.current.template
         : pick(TEMPLATES).name,
@@ -199,6 +227,8 @@ export function CreateBuilder() {
   const currentFramework = FRAMEWORKS.find(
     (entry) => entry.name === config.framework
   );
+  const currentFont = getNerdFont(config.font);
+  const currentIcons = getNerdIconSet(config.icons);
   const currentTemplate = TEMPLATES.find(
     (entry) => entry.name === config.template
   );
@@ -220,7 +250,13 @@ export function CreateBuilder() {
                 <span className="size-2.5 rounded-full bg-emerald-500/70" />
               </div>
               <div className="text-muted-foreground ml-2 flex min-w-0 items-center gap-2 text-xs">
-                <TerminalIcon className="size-3.5" />
+                <span
+                  aria-hidden="true"
+                  className="text-sm leading-none"
+                  style={{ fontFamily: getNerdFontStack(config.font) }}
+                >
+                  {currentIcons.glyphs.terminal}
+                </span>
                 <span className="truncate">
                   {currentTemplate?.title} · {currentFramework?.title}
                 </span>
@@ -236,12 +272,17 @@ export function CreateBuilder() {
                 <span className="text-muted-foreground hidden text-xs sm:inline">
                   {currentTheme?.title}
                 </span>
+                <span className="text-muted-foreground hidden text-xs lg:inline">
+                  · {currentFont.title}
+                </span>
               </div>
             </div>
             <div className="relative z-10 flex min-h-0 flex-1 items-start justify-center overflow-auto p-3 sm:p-6 md:items-center">
               <div className="w-full max-w-5xl overflow-hidden rounded-xl border border-white/10 bg-black shadow-2xl shadow-black/20">
                 <TerminalPreview
+                  key={`${config.framework}-${config.font}`}
                   base={config.framework}
+                  fontFamily={getNerdFontStack(config.font)}
                   name={TEMPLATE_PREVIEWS[config.template]}
                   rows={30}
                   theme={config.theme}
@@ -310,6 +351,55 @@ export function CreateBuilder() {
                 }
                 onLockToggle={() => toggleLock("template")}
               />
+              <div className="-mx-3 hidden h-px bg-white/10 md:block" />
+              <ConfigPicker
+                indicator={<CaseSensitiveIcon className="size-4" />}
+                anchorRef={customizerRef}
+                isMobile={isMobile}
+                label="Font"
+                locked={lockedFields.has("font")}
+                value={config.font}
+                valueStyle={{ fontFamily: getNerdFontStack(config.font) }}
+                options={NERD_FONTS}
+                getOptionStyle={(option) => ({
+                  fontFamily: getNerdFontStack(option.name as NerdFontName),
+                })}
+                onChange={(font) =>
+                  updateConfig({ font: font as NerdFontName })
+                }
+                onLockToggle={() => toggleLock("font")}
+              />
+              <ConfigPicker
+                indicator={
+                  <span
+                    className="text-base leading-none"
+                    style={{ fontFamily: getNerdFontStack(config.font) }}
+                  >
+                    {currentIcons.glyphs.terminal}
+                  </span>
+                }
+                anchorRef={customizerRef}
+                isMobile={isMobile}
+                label="Icons"
+                locked={lockedFields.has("icons")}
+                value={config.icons}
+                options={NERD_ICON_SETS}
+                getOptionIndicator={(option) => (
+                  <span
+                    className="text-base leading-none"
+                    style={{ fontFamily: getNerdFontStack(config.font) }}
+                  >
+                    {
+                      getNerdIconSet(option.name as NerdIconSetName).glyphs
+                        .terminal
+                    }
+                  </span>
+                )}
+                onChange={(icons) =>
+                  updateConfig({ icons: icons as NerdIconSetName })
+                }
+                onLockToggle={() => toggleLock("icons")}
+              />
             </div>
           </CardContent>
 
@@ -355,6 +445,8 @@ export function CreateBuilder() {
 
 function ConfigPicker({
   anchorRef,
+  getOptionIndicator,
+  getOptionStyle,
   indicator,
   isMobile,
   label,
@@ -363,8 +455,17 @@ function ConfigPicker({
   onLockToggle,
   options,
   value,
+  valueStyle,
 }: {
   anchorRef: React.RefObject<HTMLDivElement | null>;
+  getOptionIndicator?: (option: {
+    name: string;
+    title: string;
+  }) => React.ReactNode;
+  getOptionStyle?: (option: {
+    name: string;
+    title: string;
+  }) => React.CSSProperties;
   indicator: React.ReactNode;
   isMobile: boolean;
   label: string;
@@ -373,6 +474,7 @@ function ConfigPicker({
   onLockToggle: () => void;
   options: readonly { name: string; title: string }[];
   value: string;
+  valueStyle?: React.CSSProperties;
 }) {
   const [open, setOpen] = useState(false);
   const selected = options.find((option) => option.name === value);
@@ -392,7 +494,10 @@ function ConfigPicker({
           >
             <span className="flex min-w-0 flex-col justify-start pr-12 text-left">
               <span className="text-xs text-muted-foreground">{label}</span>
-              <span className="truncate text-sm font-medium text-foreground">
+              <span
+                className="truncate text-sm font-medium text-foreground"
+                style={valueStyle}
+              >
                 {selected?.title}
               </span>
             </span>
@@ -422,7 +527,12 @@ function ConfigPicker({
                     setOpen(false);
                   }}
                 >
-                  {option.title}
+                  <span style={getOptionStyle?.(option)}>{option.title}</span>
+                  {getOptionIndicator && (
+                    <span className="ml-auto mr-2 flex size-4 items-center justify-center">
+                      {getOptionIndicator(option)}
+                    </span>
+                  )}
                   {selectedOption && (
                     <CheckIcon className="absolute right-2 size-4" />
                   )}
@@ -618,8 +728,8 @@ function WelcomeDialog() {
               Design your terminal app
             </DialogTitle>
             <DialogDescription className="max-w-md text-base">
-              Pick a renderer, theme, and starter. The preview and install
-              command update together.
+              Pick a renderer, theme, Nerd Font, icon set, and starter. The
+              preview and install command update together.
             </DialogDescription>
           </DialogHeader>
         </div>
@@ -631,8 +741,8 @@ function WelcomeDialog() {
           />
           <WelcomeFeature
             icon={PaletteIcon}
-            title="Preview every theme"
-            description="All registry themes render against the selected starter."
+            title="Style the whole terminal"
+            description="Preview registry themes, terminal-safe Nerd Fonts, and icon families together."
           />
           <WelcomeFeature
             icon={PackageIcon}

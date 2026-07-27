@@ -15,15 +15,9 @@ export default defineConfig({
     "apps/web/.web-kits/**",
     "apps/web/audio/**",
     "apps/web/types/opentui-react.d.ts",
+    "packages/termcn/**",
   ],
   overrides: [
-    {
-      files: ["apps/web/app/(app)/create/**/*.tsx"],
-      rules: {
-        "func-style": "off",
-        "no-use-before-define": "off",
-      },
-    },
     {
       files: [
         "apps/web/registry/bases/ink/ui/**/*.tsx",

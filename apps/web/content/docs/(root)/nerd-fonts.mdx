@@ -1,0 +1,83 @@
+---
+title: "Fonts and icons"
+description: "Configure terminal-safe Nerd Fonts and semantic icons in termcn projects."
+---
+
+termcn integrates [Nerd Fonts](https://github.com/ryanoasis/nerd-fonts) with
+both Ink and OpenTUI projects. The initializer records a font family and icon
+set in `components.json`, then generates a framework-native `NerdIcon`
+component and a typed semantic glyph map.
+
+## Choose a font and icon set
+
+Use the interactive initializer or pass both choices directly:
+
+```bash
+npx termcn@latest init --font jetbrains-mono --icons codicons
+```
+
+Supported fonts are JetBrains Mono, Fira Code, Hack, and Meslo. termcn uses
+their `Nerd Font Mono` variants because terminal layouts require every glyph
+to occupy a single cell.
+
+Supported icon sets are Codicons, Font Awesome, Material Design, and Octicons.
+Each set provides the same semantic names:
+
+```ts
+type NerdIconName =
+  | "success"
+  | "error"
+  | "warning"
+  | "info"
+  | "terminal"
+  | "folder"
+  | "file"
+  | "rocket"
+  | "settings"
+  | "package";
+```
+
+## Configure your terminal
+
+A terminal application cannot change the typeface selected by the terminal
+emulator. Download the selected family from the
+[Nerd Fonts releases](https://github.com/ryanoasis/nerd-fonts/releases),
+install it, and select its `Nerd Font Mono` face in the terminal profile that
+runs your app.
+
+On macOS, the initializer also exposes the matching Homebrew cask name. For
+example:
+
+```bash
+brew install --cask font-jetbrains-mono-nerd-font
+```
+
+## Use an icon
+
+The initializer generates `src/components/ui/nerd-icon.tsx` and
+`src/lib/nerd-font.ts`. The component uses the renderer selected in
+`components.json`.
+
+For Ink:
+
+```tsx
+import { NerdIcon } from "@/components/ui/nerd-icon";
+
+export function Status() {
+  return <NerdIcon color="green" name="success" />;
+}
+```
+
+For OpenTUI:
+
+```tsx
+/** @jsxImportSource @opentui/react */
+import { NerdIcon } from "@/components/ui/nerd-icon";
+
+export function Status() {
+  return <NerdIcon fg="green" name="success" />;
+}
+```
+
+The glyph map is pinned to Nerd Fonts v3.4.0, matching the version used by the
+[Create page](/create) preview.

@@ -1,4 +1,11 @@
 {
-  "pages": ["index", "installation", "theming", "mcp", "registry"],
+  "pages": [
+    "index",
+    "installation",
+    "nerd-fonts",
+    "theming",
+    "mcp",
+    "registry"
+  ],
   "title": "Overview"
 }

@@ -1,3 +1,6 @@
+import { NERD_FONTS, NERD_ICON_SETS } from "@/lib/nerd-fonts";
+import type { NerdFontName, NerdIconSetName } from "@/lib/nerd-fonts";
+
 export const FRAMEWORKS = [
   {
     description: "React-powered terminal interfaces rendered with Ink.",
@@ -105,13 +108,17 @@ export const TEMPLATES = [
 export type TemplateName = (typeof TEMPLATES)[number]["name"];
 
 export interface ProjectConfig {
+  font: NerdFontName;
   framework: FrameworkName;
+  icons: NerdIconSetName;
   template: TemplateName;
   theme: ThemeName;
 }
 
 export const DEFAULT_PROJECT_CONFIG = {
+  font: "jetbrains-mono",
   framework: "ink",
+  icons: "codicons",
   template: "blank",
   theme: "default",
 } as const satisfies ProjectConfig;
@@ -120,7 +127,9 @@ export const PACKAGE_MANAGERS = ["pnpm", "npm", "yarn", "bun"] as const;
 export type PackageManager = (typeof PACKAGE_MANAGERS)[number];
 
 export const buildInitCommand = ({
+  font,
   framework,
+  icons,
   name,
   packageManager = "pnpm",
   template,
@@ -140,5 +149,8 @@ export const buildInitCommand = ({
 
   const nameFlag = name ? ` --name ${name}` : "";
 
-  return `${runner} init --framework ${framework} --theme ${theme} --template ${template}${nameFlag} --yes`;
+  return `${runner} init --framework ${framework} --theme ${theme} --font ${font} --icons ${icons} --template ${template}${nameFlag} --yes`;
 };
+
+export { NERD_FONTS, NERD_ICON_SETS } from "@/lib/nerd-fonts";
+export type { NerdFontName, NerdIconSetName } from "@/lib/nerd-fonts";
