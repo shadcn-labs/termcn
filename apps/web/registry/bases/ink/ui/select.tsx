@@ -1,7 +1,8 @@
 import { Box, Text } from "ink";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useTheme } from "@/components/ui/ink-theme-provider";
+import { useFocus } from "@/hooks/use-focus";
 import { useInput } from "@/hooks/use-input";
 
 export interface SelectOption<T = string> {
@@ -14,52 +15,89 @@ export interface SelectOption<T = string> {
 export interface SelectProps<T = string> {
   options: SelectOption<T>[];
   value?: T;
+  defaultValue?: T;
   onChange?: (value: T) => void;
   onSubmit?: (value: T) => void;
   label?: string;
   cursor?: string;
   cursorColor?: string;
+  autoFocus?: boolean;
+  isDisabled?: boolean;
+  id?: string;
 }
+
+const findFirstEnabledIndex = <T,>(options: SelectOption<T>[]): number =>
+  options.findIndex((option) => !option.disabled);
 
 export const Select = <T = string,>({
   options,
   value: controlledValue,
+  defaultValue,
   onChange,
   onSubmit,
   label,
   cursor = "›",
   cursorColor,
+  autoFocus = false,
+  isDisabled = false,
+  id,
 }: SelectProps<T>) => {
   const theme = useTheme();
-  const [activeIndex, setActiveIndex] = useState(0);
+  const initialValue = controlledValue ?? defaultValue;
+  const selectedIndex = options.findIndex(
+    (option) => !option.disabled && option.value === initialValue
+  );
+  const initialIndex =
+    selectedIndex !== -1 ? selectedIndex : findFirstEnabledIndex(options);
+  const [activeIndex, setActiveIndex] = useState(initialIndex);
+  const [internalValue, setInternalValue] = useState(defaultValue);
+  const { isFocused } = useFocus({
+    autoFocus,
+    id,
+    isActive: !isDisabled,
+  });
+  const selectedValue = controlledValue ?? internalValue;
 
   const resolvedCursorColor = cursorColor ?? theme.colors.primary;
 
-  useInput((input, key) => {
-    if (key.upArrow) {
-      setActiveIndex((i) => {
-        let next = i - 1;
-        while (next >= 0 && options[next]?.disabled) {
-          next -= 1;
-        }
-        return next < 0 ? i : next;
-      });
-    } else if (key.downArrow) {
-      setActiveIndex((i) => {
-        let next = i + 1;
-        while (next < options.length && options[next]?.disabled) {
-          next += 1;
-        }
-        return next >= options.length ? i : next;
-      });
-    } else if (key.return) {
-      const opt = options[activeIndex];
-      if (opt && !opt.disabled) {
-        onChange?.(opt.value);
-        onSubmit?.(opt.value);
-      }
+  useEffect(() => {
+    const activeOption = options[activeIndex];
+    if (!activeOption || activeOption.disabled) {
+      setActiveIndex(findFirstEnabledIndex(options));
     }
-  });
+  }, [activeIndex, options]);
+
+  useInput(
+    (_input, key) => {
+      if (key.upArrow) {
+        setActiveIndex((index) => {
+          let next = index - 1;
+          while (next >= 0 && options[next]?.disabled) {
+            next -= 1;
+          }
+          return next < 0 ? index : next;
+        });
+      } else if (key.downArrow) {
+        setActiveIndex((index) => {
+          let next = index + 1;
+          while (next < options.length && options[next]?.disabled) {
+            next += 1;
+          }
+          return next >= options.length ? index : next;
+        });
+      } else if (key.return) {
+        const option = options[activeIndex];
+        if (option && !option.disabled) {
+          if (controlledValue === undefined) {
+            setInternalValue(option.value);
+          }
+          onChange?.(option.value);
+          onSubmit?.(option.value);
+        }
+      }
+    },
+    { isActive: isFocused && !isDisabled }
+  );
 
   return (
     <Box flexDirection="column">
@@ -67,7 +105,7 @@ export const Select = <T = string,>({
       {options.map((opt, idx) => {
         const isActive = idx === activeIndex;
         const isSelected =
-          controlledValue !== undefined && opt.value === controlledValue;
+          selectedValue !== undefined && opt.value === selectedValue;
 
         let optColor: string;
         if (opt.disabled) {

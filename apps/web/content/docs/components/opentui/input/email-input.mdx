@@ -50,6 +50,16 @@ npm install @opentui/react
 />
 
 <ComponentSource
+  src="registry/bases/opentui/lib/input-paste.ts"
+  title="lib/input-paste.ts"
+/>
+
+<ComponentSource
+  src="registry/bases/opentui/lib/input-utils.ts"
+  title="lib/input-utils.ts"
+/>
+
+<ComponentSource
   base="opentui"
   name="email-input"
   title="components/ui/email-input.tsx"
@@ -73,6 +83,7 @@ import { EmailInput } from "@/components/ui/email-input";
 <EmailInput
   label="Email"
   placeholder="you@example.com"
+  autoFocus
   onSubmit={(value) => console.log("Submitted:", value)}
 />
 ```
@@ -89,6 +100,8 @@ import { EmailInput } from "@/components/ui/email-input";
 | `label`       | `string`                  | -                                                          |
 | `placeholder` | `string`                  | `"you@example.com"`                                        |
 | `autoFocus`   | `boolean`                 | `false`                                                    |
+| `focused`     | `boolean`                 | -                                                          |
+| `isDisabled`  | `boolean`                 | `false`                                                    |
 | `id`          | `string`                  | -                                                          |
 | `width`       | `number`                  | `40`                                                       |
 | `suggestions` | `string[]`                | `["gmail.com", "yahoo.com", "hotmail.com", "outlook.com"]` |

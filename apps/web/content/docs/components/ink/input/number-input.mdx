@@ -81,6 +81,7 @@ import { NumberInput } from "@/components/ui/number-input";
 
 ```tsx
 <NumberInput
+  autoFocus
   label="Quantity"
   min={0}
   max={100}
@@ -103,6 +104,8 @@ import { NumberInput } from "@/components/ui/number-input";
 | `step`        | `number`                                                                                     | `1`                      |
 | `placeholder` | `string`                                                                                     | `""`                     |
 | `label`       | `string`                                                                                     | -                        |
+| `autoFocus`   | `boolean`                                                                                    | `false`                  |
+| `isDisabled`  | `boolean`                                                                                    | `false`                  |
 | `id`          | `string`                                                                                     | -                        |
 | `format`      | `(n: number) => string`                                                                      | -                        |
 | `borderStyle` | `"single" \| "double" \| "round" \| "bold" \| "singleDouble" \| "doubleSingle" \| "classic"` | `"round"`                |

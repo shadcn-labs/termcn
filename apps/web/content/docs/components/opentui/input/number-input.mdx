@@ -50,6 +50,16 @@ npm install @opentui/react
 />
 
 <ComponentSource
+  src="registry/bases/opentui/lib/input-paste.ts"
+  title="lib/input-paste.ts"
+/>
+
+<ComponentSource
+  src="registry/bases/opentui/lib/input-utils.ts"
+  title="lib/input-utils.ts"
+/>
+
+<ComponentSource
   base="opentui"
   name="number-input"
   title="components/ui/number-input.tsx"
@@ -75,6 +85,7 @@ import { NumberInput } from "@/components/ui/number-input";
   min={0}
   max={100}
   step={1}
+  autoFocus
   onChange={(value) => console.log("Value:", value)}
 />
 ```
@@ -83,19 +94,22 @@ import { NumberInput } from "@/components/ui/number-input";
 
 ### NumberInput
 
-| Prop          | Type                                                                                         | Default                  |
-| ------------- | -------------------------------------------------------------------------------------------- | ------------------------ |
-| `value`       | `number`                                                                                     | -                        |
-| `onChange`    | `(value: number) => void`                                                                    | -                        |
-| `onSubmit`    | `(value: number) => void`                                                                    | -                        |
-| `min`         | `number`                                                                                     | -                        |
-| `max`         | `number`                                                                                     | -                        |
-| `step`        | `number`                                                                                     | `1`                      |
-| `placeholder` | `string`                                                                                     | `""`                     |
-| `label`       | `string`                                                                                     | -                        |
-| `id`          | `string`                                                                                     | -                        |
-| `format`      | `(n: number) => string`                                                                      | -                        |
-| `borderStyle` | `"single" \| "double" \| "round" \| "bold" \| "singleDouble" \| "doubleSingle" \| "classic"` | `"round"`                |
-| `paddingX`    | `number`                                                                                     | `1`                      |
-| `cursor`      | `string`                                                                                     | `"█"`                    |
-| `stepHint`    | `string`                                                                                     | `"↑ +{step}  ↓ -{step}"` |
+| Prop          | Type                                           | Default                  |
+| ------------- | ---------------------------------------------- | ------------------------ |
+| `value`       | `number`                                       | -                        |
+| `onChange`    | `(value: number) => void`                      | -                        |
+| `onSubmit`    | `(value: number) => void`                      | -                        |
+| `min`         | `number`                                       | -                        |
+| `max`         | `number`                                       | -                        |
+| `step`        | `number`                                       | `1`                      |
+| `placeholder` | `string`                                       | `""`                     |
+| `label`       | `string`                                       | -                        |
+| `autoFocus`   | `boolean`                                      | `false`                  |
+| `focused`     | `boolean`                                      | -                        |
+| `isDisabled`  | `boolean`                                      | `false`                  |
+| `id`          | `string`                                       | -                        |
+| `format`      | `(n: number) => string`                        | -                        |
+| `borderStyle` | `"single" \| "double" \| "rounded" \| "heavy"` | `"rounded"`              |
+| `paddingX`    | `number`                                       | `1`                      |
+| `cursor`      | `string`                                       | `"█"`                    |
+| `stepHint`    | `string`                                       | `"↑ +{step}  ↓ -{step}"` |

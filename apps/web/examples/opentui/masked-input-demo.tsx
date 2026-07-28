@@ -6,6 +6,7 @@ export default function MaskedInputDemo() {
       mask="(###) ###-####"
       label="Phone Number"
       placeholder="(555) 123-4567"
+      autoFocus
     />
   );
 }

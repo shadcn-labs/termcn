@@ -1,5 +1,5 @@
 import { Box, Text } from "ink";
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
 
 import { useTheme } from "@/components/ui/ink-theme-provider";
 import { useFocus } from "@/hooks/use-focus";
@@ -15,6 +15,8 @@ export interface SearchInputProps<T = string> {
   placeholder?: string;
   label?: string;
   maxResults?: number;
+  autoFocus?: boolean;
+  isDisabled?: boolean;
   id?: string;
   borderStyle?: BorderStyle;
   paddingX?: number;
@@ -32,6 +34,8 @@ export const SearchInput = <T = string,>({
   placeholder = "Search...",
   label,
   maxResults = 5,
+  autoFocus = false,
+  isDisabled = false,
   id,
   borderStyle = "round",
   paddingX = 1,
@@ -43,7 +47,11 @@ export const SearchInput = <T = string,>({
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [showResults, setShowResults] = useState(false);
   const theme = useTheme();
-  const { isFocused } = useFocus({ id });
+  const { isFocused } = useFocus({
+    autoFocus,
+    id,
+    isActive: !isDisabled,
+  });
 
   const query = controlledValue ?? internalValue;
 
@@ -58,11 +66,10 @@ export const SearchInput = <T = string,>({
   );
 
   const setQuery = (newQuery: string) => {
-    if (onChange) {
-      onChange(newQuery);
-    } else {
+    if (controlledValue === undefined) {
       setInternalValue(newQuery);
     }
+    onChange?.(newQuery);
   };
 
   const filteredResults = useMemo(() => {
@@ -78,66 +85,80 @@ export const SearchInput = <T = string,>({
       .slice(0, maxResults);
   }, [options, query, maxResults, getItemValue]);
 
-  useInput((input, key) => {
-    if (!isFocused) {
-      return;
+  useEffect(() => {
+    if (selectedIndex >= filteredResults.length) {
+      setSelectedIndex(Math.max(0, filteredResults.length - 1));
     }
+  }, [filteredResults.length, selectedIndex]);
 
-    if (key.escape) {
-      setQuery("");
-      setShowResults(false);
-      setSelectedIndex(0);
-      return;
-    }
-
-    if (key.upArrow) {
-      if (showResults && filteredResults.length > 0) {
-        setSelectedIndex((i) => Math.max(0, i - 1));
+  useInput(
+    (input, key) => {
+      if (!isFocused) {
+        return;
       }
-      return;
-    }
 
-    if (key.downArrow) {
-      if (filteredResults.length > 0) {
-        setShowResults(true);
-        setSelectedIndex((i) => Math.min(filteredResults.length - 1, i + 1));
-      }
-      return;
-    }
-
-    if (key.return) {
-      if (showResults && filteredResults.length > 0) {
-        onSelect?.(filteredResults[selectedIndex]);
-        setQuery(getItemValue(filteredResults[selectedIndex]));
+      if (key.escape) {
+        setQuery("");
         setShowResults(false);
         setSelectedIndex(0);
+        return;
       }
-      return;
-    }
 
-    if (key.backspace || key.delete) {
-      const newQuery = query.slice(0, -1);
-      setQuery(newQuery);
-      setSelectedIndex(0);
-      if (newQuery.length === 0) {
-        setShowResults(false);
+      if (key.upArrow) {
+        if (showResults && filteredResults.length > 0) {
+          setSelectedIndex((index) => Math.max(0, index - 1));
+        }
+        return;
       }
-      return;
-    }
 
-    if (key.tab) {
-      return;
-    }
-
-    if (input && input.length > 0) {
-      const newQuery = query + input;
-      setQuery(newQuery);
-      setSelectedIndex(0);
-      if (options && options.length > 0) {
-        setShowResults(true);
+      if (key.downArrow) {
+        if (filteredResults.length > 0) {
+          setShowResults(true);
+          setSelectedIndex((index) =>
+            Math.min(filteredResults.length - 1, index + 1)
+          );
+        }
+        return;
       }
-    }
-  });
+
+      if (key.return) {
+        if (showResults && filteredResults.length > 0) {
+          const selected = filteredResults[selectedIndex];
+          if (selected !== undefined) {
+            onSelect?.(selected);
+            setQuery(getItemValue(selected));
+            setShowResults(false);
+            setSelectedIndex(0);
+          }
+        }
+        return;
+      }
+
+      if (key.backspace || key.delete) {
+        const newQuery = query.slice(0, -1);
+        setQuery(newQuery);
+        setSelectedIndex(0);
+        if (newQuery.length === 0) {
+          setShowResults(false);
+        }
+        return;
+      }
+
+      if (key.tab) {
+        return;
+      }
+
+      if (input) {
+        const newQuery = query + input;
+        setQuery(newQuery);
+        setSelectedIndex(0);
+        if (options && options.length > 0) {
+          setShowResults(true);
+        }
+      }
+    },
+    { isActive: isFocused && !isDisabled }
+  );
 
   const borderColor = isFocused ? theme.colors.focusRing : theme.colors.border;
   const hasResults = showResults && filteredResults.length > 0;

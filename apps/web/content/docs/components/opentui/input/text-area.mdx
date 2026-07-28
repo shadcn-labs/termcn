@@ -50,6 +50,16 @@ npm install @opentui/react
 />
 
 <ComponentSource
+  src="registry/bases/opentui/lib/input-paste.ts"
+  title="lib/input-paste.ts"
+/>
+
+<ComponentSource
+  src="registry/bases/opentui/lib/input-utils.ts"
+  title="lib/input-utils.ts"
+/>
+
+<ComponentSource
   base="opentui"
   name="text-area"
   title="components/ui/text-area.tsx"
@@ -74,6 +84,7 @@ import { TextArea } from "@/components/ui/text-area";
   label="Description"
   placeholder="Enter a description..."
   rows={4}
+  autoFocus
   onSubmit={(value) => console.log("Submitted:", value)}
 />
 ```
@@ -82,15 +93,18 @@ import { TextArea } from "@/components/ui/text-area";
 
 ### TextArea
 
-| Prop          | Type                                                                                         | Default   |
-| ------------- | -------------------------------------------------------------------------------------------- | --------- |
-| `value`       | `string`                                                                                     | -         |
-| `onChange`    | `(value: string) => void`                                                                    | -         |
-| `onSubmit`    | `(value: string) => void`                                                                    | -         |
-| `placeholder` | `string`                                                                                     | `""`      |
-| `rows`        | `number`                                                                                     | `4`       |
-| `label`       | `string`                                                                                     | -         |
-| `id`          | `string`                                                                                     | -         |
-| `borderStyle` | `"single" \| "double" \| "round" \| "bold" \| "singleDouble" \| "doubleSingle" \| "classic"` | `"round"` |
-| `paddingX`    | `number`                                                                                     | `1`       |
-| `cursor`      | `string`                                                                                     | `"█"`     |
+| Prop          | Type                                           | Default     |
+| ------------- | ---------------------------------------------- | ----------- |
+| `value`       | `string`                                       | -           |
+| `onChange`    | `(value: string) => void`                      | -           |
+| `onSubmit`    | `(value: string) => void`                      | -           |
+| `placeholder` | `string`                                       | `""`        |
+| `rows`        | `number`                                       | `4`         |
+| `label`       | `string`                                       | -           |
+| `autoFocus`   | `boolean`                                      | `false`     |
+| `focused`     | `boolean`                                      | -           |
+| `isDisabled`  | `boolean`                                      | `false`     |
+| `id`          | `string`                                       | -           |
+| `borderStyle` | `"single" \| "double" \| "rounded" \| "heavy"` | `"rounded"` |
+| `paddingX`    | `number`                                       | `1`         |
+| `cursor`      | `string`                                       | `"█"`       |

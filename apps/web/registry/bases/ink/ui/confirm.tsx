@@ -2,6 +2,7 @@ import { Box, Text } from "ink";
 import React, { useState } from "react";
 
 import { useTheme } from "@/components/ui/ink-theme-provider";
+import { useFocus } from "@/hooks/use-focus";
 import { useInput } from "@/hooks/use-input";
 
 export interface ConfirmProps {
@@ -12,6 +13,9 @@ export interface ConfirmProps {
   cancelLabel?: string;
   defaultValue?: boolean;
   variant?: "default" | "danger";
+  autoFocus?: boolean;
+  isDisabled?: boolean;
+  id?: string;
 }
 
 export const Confirm = ({
@@ -22,25 +26,36 @@ export const Confirm = ({
   cancelLabel = "No",
   defaultValue = false,
   variant = "default",
+  autoFocus = false,
+  isDisabled = false,
+  id,
 }: ConfirmProps) => {
   const theme = useTheme();
   const [selected, setSelected] = useState<boolean>(defaultValue);
+  const { isFocused } = useFocus({
+    autoFocus,
+    id,
+    isActive: !isDisabled,
+  });
 
-  useInput((input, key) => {
-    if (key.leftArrow || key.rightArrow) {
-      setSelected((s) => !s);
-    } else if (key.return) {
-      if (selected) {
+  useInput(
+    (input, key) => {
+      if (key.leftArrow || key.rightArrow) {
+        setSelected((current) => !current);
+      } else if (key.return) {
+        if (selected) {
+          onConfirm?.();
+        } else {
+          onCancel?.();
+        }
+      } else if (input === "y" || input === "Y") {
         onConfirm?.();
-      } else {
+      } else if (input === "n" || input === "N") {
         onCancel?.();
       }
-    } else if (input === "y" || input === "Y") {
-      onConfirm?.();
-    } else if (input === "n" || input === "N") {
-      onCancel?.();
-    }
-  });
+    },
+    { isActive: isFocused && !isDisabled }
+  );
 
   const yesColor =
     variant === "danger" ? theme.colors.error : theme.colors.primary;

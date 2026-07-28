@@ -19,6 +19,7 @@ interface OpenTUIBoxProps {
   flexWrap?: string;
   gap?: number;
   height?: number | string;
+  id?: string;
   justifyContent?: string;
   key?: React.Key;
   marginBottom?: number;

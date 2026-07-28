@@ -1,8 +1,14 @@
 /* @jsxImportSource @opentui/react */
 import { useKeyboard } from "@opentui/react";
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 
 import { useTheme } from "@/components/ui/opentui-theme-provider";
+import { useInputPaste } from "@/registry/bases/opentui/lib/input-paste";
+import {
+  decodePaste,
+  getKeyText,
+  toSingleLine,
+} from "@/registry/bases/opentui/lib/input-utils";
 import type { BorderStyle } from "@/registry/bases/opentui/ui/types";
 
 export interface SearchInputProps<T = string> {
@@ -14,6 +20,9 @@ export interface SearchInputProps<T = string> {
   placeholder?: string;
   label?: string;
   maxResults?: number;
+  autoFocus?: boolean;
+  focused?: boolean;
+  isDisabled?: boolean;
   id?: string;
   borderStyle?: BorderStyle;
   paddingX?: number;
@@ -31,7 +40,10 @@ export const SearchInput = <T = string,>({
   placeholder = "Search...",
   label,
   maxResults = 5,
-  id: _id,
+  autoFocus = false,
+  focused,
+  isDisabled = false,
+  id,
   borderStyle = "rounded",
   paddingX = 1,
   cursor = "█",
@@ -42,7 +54,7 @@ export const SearchInput = <T = string,>({
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [showResults, setShowResults] = useState(false);
   const theme = useTheme();
-  const [isFocused] = useState(true);
+  const isFocused = !isDisabled && (focused ?? autoFocus);
 
   const query = controlledValue ?? internalValue;
 
@@ -57,11 +69,10 @@ export const SearchInput = <T = string,>({
   );
 
   const setQuery = (newQuery: string) => {
-    if (onChange) {
-      onChange(newQuery);
-    } else {
+    if (controlledValue === undefined) {
       setInternalValue(newQuery);
     }
+    onChange?.(newQuery);
   };
 
   const filteredResults = useMemo(() => {
@@ -76,6 +87,23 @@ export const SearchInput = <T = string,>({
       .filter((item) => getItemValue(item).toLowerCase().includes(lower))
       .slice(0, maxResults);
   }, [options, query, maxResults, getItemValue]);
+
+  useEffect(() => {
+    if (selectedIndex >= filteredResults.length) {
+      setSelectedIndex(Math.max(0, filteredResults.length - 1));
+    }
+  }, [filteredResults.length, selectedIndex]);
+
+  const insertText = (input: string) => {
+    if (!input) {
+      return;
+    }
+    setQuery(query + input);
+    setSelectedIndex(0);
+    if (options && options.length > 0) {
+      setShowResults(true);
+    }
+  };
 
   useKeyboard((key) => {
     if (!isFocused) {
@@ -102,10 +130,13 @@ export const SearchInput = <T = string,>({
     }
     if (key.name === "return") {
       if (showResults && filteredResults.length > 0) {
-        onSelect?.(filteredResults[selectedIndex]);
-        setQuery(getItemValue(filteredResults[selectedIndex]));
-        setShowResults(false);
-        setSelectedIndex(0);
+        const selected = filteredResults[selectedIndex];
+        if (selected !== undefined) {
+          onSelect?.(selected);
+          setQuery(getItemValue(selected));
+          setShowResults(false);
+          setSelectedIndex(0);
+        }
       }
       return;
     }
@@ -121,27 +152,38 @@ export const SearchInput = <T = string,>({
     if (key.name === "tab") {
       return;
     }
-    if (key.name && key.name.length === 1) {
-      const newQuery = query + key.name;
-      setQuery(newQuery);
-      setSelectedIndex(0);
-      if (options && options.length > 0) {
-        setShowResults(true);
-      }
+    insertText(getKeyText(key));
+  });
+
+  useInputPaste((event) => {
+    if (!isFocused) {
+      return;
     }
+    const input = toSingleLine(decodePaste(event.bytes));
+    if (!input) {
+      return;
+    }
+    event.preventDefault();
+    event.stopPropagation();
+    insertText(input);
   });
 
   const borderColor = isFocused ? theme.colors.focusRing : theme.colors.border;
   const hasResults = showResults && filteredResults.length > 0;
 
   return (
-    <box flexDirection="column">
+    <box id={id} flexDirection="column">
       {label && (
         <text>
           <b>{label}</b>
         </text>
       )}
-      <box paddingLeft={paddingX} paddingRight={paddingX}>
+      <box
+        borderStyle={borderStyle}
+        borderColor={borderColor}
+        paddingLeft={paddingX}
+        paddingRight={paddingX}
+      >
         <text fg={theme.colors.mutedForeground}>{searchIcon}</text>
         <text
           fg={query ? theme.colors.foreground : theme.colors.mutedForeground}

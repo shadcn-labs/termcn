@@ -3,6 +3,11 @@ import { useKeyboard } from "@opentui/react";
 import { useState } from "react";
 
 import { useTheme } from "@/components/ui/opentui-theme-provider";
+import { useInputPaste } from "@/registry/bases/opentui/lib/input-paste";
+import {
+  decodePaste,
+  getKeyText,
+} from "@/registry/bases/opentui/lib/input-utils";
 
 export interface MaskedInputProps {
   mask: string;
@@ -12,6 +17,8 @@ export interface MaskedInputProps {
   label?: string;
   placeholder?: string;
   autoFocus?: boolean;
+  focused?: boolean;
+  isDisabled?: boolean;
   id?: string;
   width?: number;
 }
@@ -60,16 +67,34 @@ export const MaskedInput = ({
   onSubmit,
   label,
   placeholder,
-  autoFocus: _autoFocus = false,
-  id: _id,
+  autoFocus = false,
+  focused,
+  isDisabled = false,
+  id,
   width = 40,
 }: MaskedInputProps) => {
   const [internalValue, setInternalValue] = useState("");
   const theme = useTheme();
-  const [isFocused] = useState(true);
+  const isFocused = !isDisabled && (focused ?? autoFocus);
 
   const raw = controlledValue ?? internalValue;
   const max = maxDigits(mask);
+
+  const setValue = (newValue: string) => {
+    if (controlledValue === undefined) {
+      setInternalValue(newValue);
+    }
+    onChange?.(newValue);
+  };
+
+  const insertDigits = (input: string) => {
+    const available = max - raw.length;
+    const digits = [...input].filter((character) => /\d/u.test(character));
+    const inserted = digits.slice(0, available).join("");
+    if (inserted) {
+      setValue(raw + inserted);
+    }
+  };
 
   useKeyboard((key) => {
     if (!isFocused) {
@@ -80,12 +105,7 @@ export const MaskedInput = ({
       return;
     }
     if (key.name === "backspace" || key.name === "delete") {
-      const newVal = raw.slice(0, -1);
-      if (onChange) {
-        onChange(newVal);
-      } else {
-        setInternalValue(newVal);
-      }
+      setValue(raw.slice(0, -1));
       return;
     }
     if (
@@ -96,14 +116,20 @@ export const MaskedInput = ({
     ) {
       return;
     }
-    if (/^\d$/.test(key.name) && raw.length < max) {
-      const newVal = raw + key.name;
-      if (onChange) {
-        onChange(newVal);
-      } else {
-        setInternalValue(newVal);
-      }
+    insertDigits(getKeyText(key));
+  });
+
+  useInputPaste((event) => {
+    if (!isFocused) {
+      return;
     }
+    const input = decodePaste(event.bytes);
+    if (![...input].some((character) => /\d/u.test(character))) {
+      return;
+    }
+    event.preventDefault();
+    event.stopPropagation();
+    insertDigits(input);
   });
 
   const display = raw.length > 0 ? applyMask(raw, mask) : "";
@@ -112,7 +138,7 @@ export const MaskedInput = ({
   const remainingMask = mask.slice(display.length);
 
   return (
-    <box flexDirection="column">
+    <box id={id} flexDirection="column">
       {label && (
         <text>
           <b>{label}</b>
@@ -134,7 +160,7 @@ export const MaskedInput = ({
           <text fg={theme.colors.focusRing}>█</text>
         )}
         {display.length > 0 && display.length < mask.length && (
-          <text fg="#666">{remainingMask}</text>
+          <text fg={theme.colors.mutedForeground}>{remainingMask}</text>
         )}
       </box>
     </box>

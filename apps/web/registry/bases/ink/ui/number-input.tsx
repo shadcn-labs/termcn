@@ -1,5 +1,5 @@
 import { Box, Text } from "ink";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useTheme } from "@/components/ui/ink-theme-provider";
 import { useFocus } from "@/hooks/use-focus";
@@ -15,6 +15,8 @@ export interface NumberInputProps {
   step?: number;
   placeholder?: string;
   label?: string;
+  autoFocus?: boolean;
+  isDisabled?: boolean;
   id?: string;
   format?: (n: number) => string;
   borderStyle?: BorderStyle;
@@ -32,6 +34,8 @@ export const NumberInput = ({
   step = 1,
   placeholder = "",
   label,
+  autoFocus = false,
+  isDisabled = false,
   id,
   format,
   borderStyle = "round",
@@ -40,11 +44,23 @@ export const NumberInput = ({
   stepHint,
 }: NumberInputProps) => {
   const [internalValue, setInternalValue] = useState<number | undefined>();
-  const [buffer, setBuffer] = useState<string>("");
+  const [buffer, setBuffer] = useState<string>(() =>
+    controlledValue === undefined ? "" : String(controlledValue)
+  );
   const theme = useTheme();
-  const { isFocused } = useFocus({ id });
+  const { isFocused } = useFocus({
+    autoFocus,
+    id,
+    isActive: !isDisabled,
+  });
 
   const value = controlledValue ?? internalValue;
+
+  useEffect(() => {
+    if (controlledValue !== undefined) {
+      setBuffer(String(controlledValue));
+    }
+  }, [controlledValue]);
 
   const clamp = (n: number): number => {
     let result = n;
@@ -58,11 +74,10 @@ export const NumberInput = ({
   };
 
   const applyValue = (clamped: number) => {
-    if (onChange) {
-      onChange(clamped);
-    } else {
+    if (controlledValue === undefined) {
       setInternalValue(clamped);
     }
+    onChange?.(clamped);
   };
 
   const commitValue = (n: number) => {
@@ -71,70 +86,77 @@ export const NumberInput = ({
     setBuffer(String(clamped));
   };
 
-  useInput((input, key) => {
-    if (!isFocused) {
+  const insertNumberText = (input: string) => {
+    const newBuffer = buffer + input;
+    if (!/^-?(?:\d+\.?\d*|\.\d*)?$/u.test(newBuffer)) {
       return;
     }
-
-    if (key.upArrow) {
-      const current = value ?? 0;
-      commitValue(current + step);
+    setBuffer(newBuffer);
+    if (newBuffer === "" || newBuffer === "-" || newBuffer === ".") {
       return;
     }
-
-    if (key.downArrow) {
-      const current = value ?? 0;
-      commitValue(current - step);
-      return;
+    const parsed = Number.parseFloat(newBuffer);
+    if (!Number.isNaN(parsed)) {
+      applyValue(clamp(parsed));
     }
+  };
 
-    if (key.return) {
-      const parsed = buffer === "" ? value : Number.parseFloat(buffer);
-      if (parsed !== undefined && !Number.isNaN(parsed)) {
-        const clamped = clamp(parsed);
-        onSubmit?.(clamped);
-      }
-      return;
-    }
-
-    if (key.backspace || key.delete) {
-      const newBuffer = buffer.slice(0, -1);
-      setBuffer(newBuffer);
-      if (newBuffer === "" || newBuffer === "-") {
-        return;
-      }
-      const parsed = Number.parseFloat(newBuffer);
-      if (!Number.isNaN(parsed)) {
-        applyValue(clamp(parsed));
-      }
-      return;
-    }
-
-    if (key.escape || key.tab) {
-      return;
-    }
-
-    if (input && /^[\d.-]$/.test(input)) {
-      if (input === "-" && buffer.length > 0) {
-        return;
-      }
-      if (input === "." && buffer.includes(".")) {
+  useInput(
+    (input, key) => {
+      if (!isFocused) {
         return;
       }
 
-      const newBuffer = buffer + input;
-      setBuffer(newBuffer);
-      const parsed = Number.parseFloat(newBuffer);
-      if (!Number.isNaN(parsed)) {
-        applyValue(clamp(parsed));
+      if (key.upArrow) {
+        const current = value ?? 0;
+        commitValue(current + step);
+        return;
       }
-    }
-  });
+
+      if (key.downArrow) {
+        const current = value ?? 0;
+        commitValue(current - step);
+        return;
+      }
+
+      if (key.return) {
+        const parsed = buffer === "" ? value : Number.parseFloat(buffer);
+        if (parsed !== undefined && !Number.isNaN(parsed)) {
+          const clamped = clamp(parsed);
+          onSubmit?.(clamped);
+        }
+        return;
+      }
+
+      if (key.backspace || key.delete) {
+        const newBuffer = buffer.slice(0, -1);
+        setBuffer(newBuffer);
+        if (newBuffer === "" || newBuffer === "-") {
+          if (controlledValue === undefined) {
+            setInternalValue(undefined);
+          }
+          return;
+        }
+        const parsed = Number.parseFloat(newBuffer);
+        if (!Number.isNaN(parsed)) {
+          applyValue(clamp(parsed));
+        }
+        return;
+      }
+
+      if (key.escape || key.tab) {
+        return;
+      }
+
+      insertNumberText(input);
+    },
+    { isActive: isFocused && !isDisabled }
+  );
 
   const borderColor = isFocused ? theme.colors.focusRing : theme.colors.border;
 
   let displayValue = "";
-  if (isFocused && buffer !== "") {
+  if (isFocused) {
     displayValue = buffer;
   } else if (value !== undefined) {
     displayValue = format ? format(value) : String(value);

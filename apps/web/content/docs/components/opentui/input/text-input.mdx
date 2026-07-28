@@ -50,6 +50,16 @@ npm install @opentui/react
 />
 
 <ComponentSource
+  src="registry/bases/opentui/lib/input-paste.ts"
+  title="lib/input-paste.ts"
+/>
+
+<ComponentSource
+  src="registry/bases/opentui/lib/input-utils.ts"
+  title="lib/input-utils.ts"
+/>
+
+<ComponentSource
   base="opentui"
   name="text-input"
   title="components/ui/text-input.tsx"
@@ -73,6 +83,7 @@ import { TextInput } from "@/components/ui/text-input";
 <TextInput
   label="Project Name"
   placeholder="my-project"
+  autoFocus
   onSubmit={(value) => console.log("Name:", value)}
 />
 ```
@@ -101,21 +112,23 @@ With `showCursor` (default `true`), use the left and right arrow keys to move th
 
 ### TextInput
 
-| Prop                  | Type                                                                                         | Default   |
-| --------------------- | -------------------------------------------------------------------------------------------- | --------- |
-| `value`               | `string`                                                                                     | -         |
-| `onChange`            | `(value: string) => void`                                                                    | -         |
-| `onSubmit`            | `(value: string) => void`                                                                    | -         |
-| `placeholder`         | `string`                                                                                     | `""`      |
-| `mask`                | `string`                                                                                     | -         |
-| `showCursor`          | `boolean`                                                                                    | `true`    |
-| `highlightPastedText` | `boolean`                                                                                    | `false`   |
-| `validate`            | `(value: string) => string\|null`                                                            | -         |
-| `width`               | `number`                                                                                     | `40`      |
-| `label`               | `string`                                                                                     | -         |
-| `autoFocus`           | `boolean`                                                                                    | `false`   |
-| `id`                  | `string`                                                                                     | -         |
-| `bordered`            | `boolean`                                                                                    | `true`    |
-| `borderStyle`         | `"single" \| "double" \| "round" \| "bold" \| "singleDouble" \| "doubleSingle" \| "classic"` | `"round"` |
-| `paddingX`            | `number`                                                                                     | `1`       |
-| `cursor`              | `string`                                                                                     | `"█"`     |
+| Prop                  | Type                                           | Default     |
+| --------------------- | ---------------------------------------------- | ----------- |
+| `value`               | `string`                                       | -           |
+| `onChange`            | `(value: string) => void`                      | -           |
+| `onSubmit`            | `(value: string) => void`                      | -           |
+| `placeholder`         | `string`                                       | `""`        |
+| `mask`                | `string`                                       | -           |
+| `showCursor`          | `boolean`                                      | `true`      |
+| `highlightPastedText` | `boolean`                                      | `false`     |
+| `validate`            | `(value: string) => string\|null`              | -           |
+| `width`               | `number`                                       | `40`        |
+| `label`               | `string`                                       | -           |
+| `autoFocus`           | `boolean`                                      | `false`     |
+| `focused`             | `boolean`                                      | -           |
+| `isDisabled`          | `boolean`                                      | `false`     |
+| `id`                  | `string`                                       | -           |
+| `bordered`            | `boolean`                                      | `true`      |
+| `borderStyle`         | `"single" \| "double" \| "rounded" \| "heavy"` | `"rounded"` |
+| `paddingX`            | `number`                                       | `1`         |
+| `cursor`              | `string`                                       | `"█"`       |

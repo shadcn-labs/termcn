@@ -60,6 +60,11 @@ npm install ink
 />
 
 <ComponentSource
+  src="registry/bases/ink/lib/input-utils.ts"
+  title="lib/input-utils.ts"
+/>
+
+<ComponentSource
   base="ink"
   name="text-input"
   title="components/ui/text-input.tsx"
@@ -81,6 +86,7 @@ import { TextInput } from "@/components/ui/text-input";
 
 ```tsx
 <TextInput
+  autoFocus
   label="Project Name"
   placeholder="my-project"
   onSubmit={(value) => console.log("Name:", value)}
@@ -124,6 +130,7 @@ With `showCursor` (default `true`), use the left and right arrow keys to move th
 | `width`               | `number`                                                                                     | `40`      |
 | `label`               | `string`                                                                                     | -         |
 | `autoFocus`           | `boolean`                                                                                    | `false`   |
+| `isDisabled`          | `boolean`                                                                                    | `false`   |
 | `id`                  | `string`                                                                                     | -         |
 | `bordered`            | `boolean`                                                                                    | `true`    |
 | `borderStyle`         | `"single" \| "double" \| "round" \| "bold" \| "singleDouble" \| "doubleSingle" \| "classic"` | `"round"` |

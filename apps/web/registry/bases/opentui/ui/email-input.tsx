@@ -1,8 +1,17 @@
 /* @jsxImportSource @opentui/react */
 import { useKeyboard } from "@opentui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useTheme } from "@/components/ui/opentui-theme-provider";
+import { useInputPaste } from "@/registry/bases/opentui/lib/input-paste";
+import {
+  decodePaste,
+  deleteBackwardAt,
+  deleteForwardAt,
+  getKeyText,
+  insertAt,
+  toSingleLine,
+} from "@/registry/bases/opentui/lib/input-utils";
 
 export interface EmailInputProps {
   value?: string;
@@ -11,6 +20,8 @@ export interface EmailInputProps {
   label?: string;
   placeholder?: string;
   autoFocus?: boolean;
+  focused?: boolean;
+  isDisabled?: boolean;
   id?: string;
   width?: number;
   suggestions?: string[];
@@ -45,24 +56,34 @@ export const EmailInput = ({
   onSubmit,
   label,
   placeholder = "you@example.com",
-  autoFocus: _autoFocus = false,
-  id: _id,
+  autoFocus = false,
+  focused,
+  isDisabled = false,
+  id,
   width = 40,
   suggestions = ["gmail.com", "yahoo.com", "hotmail.com", "outlook.com"],
 }: EmailInputProps) => {
   const [internalValue, setInternalValue] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [cursorOffset, setCursorOffset] = useState(
+    () => controlledValue?.length ?? 0
+  );
   const theme = useTheme();
-  const [isFocused] = useState(true);
+  const isFocused = !isDisabled && (focused ?? autoFocus);
 
   const value = controlledValue ?? internalValue;
 
+  useEffect(() => {
+    if (cursorOffset > value.length) {
+      setCursorOffset(value.length);
+    }
+  }, [cursorOffset, value]);
+
   const applyChange = (newVal: string) => {
-    if (onChange) {
-      onChange(newVal);
-    } else {
+    if (controlledValue === undefined) {
       setInternalValue(newVal);
     }
+    onChange?.(newVal);
   };
 
   const getSuggestion = (val: string): string | null => {
@@ -83,6 +104,30 @@ export const EmailInput = ({
     return match.slice(afterAt.length);
   };
 
+  const insertText = (input: string) => {
+    let hasAt = value.includes("@");
+    const acceptedInput = [...input]
+      .filter((character) => {
+        if (character !== "@") {
+          return true;
+        }
+        if (hasAt) {
+          return false;
+        }
+        hasAt = true;
+        return true;
+      })
+      .join("");
+
+    if (!acceptedInput) {
+      return;
+    }
+
+    applyChange(insertAt(value, cursorOffset, acceptedInput));
+    setCursorOffset(cursorOffset + acceptedInput.length);
+    setError(null);
+  };
+
   useKeyboard((key) => {
     if (!isFocused) {
       return;
@@ -97,35 +142,61 @@ export const EmailInput = ({
       return;
     }
     if (key.name === "tab") {
-      const hint = getSuggestion(value);
+      const hint =
+        cursorOffset === value.length ? getSuggestion(value) : undefined;
       if (hint) {
         const newVal = value + hint;
         applyChange(newVal);
+        setCursorOffset(newVal.length);
       }
       return;
     }
-    if (key.name === "backspace" || key.name === "delete") {
+    if (key.name === "left") {
+      setCursorOffset((offset) => Math.max(0, offset - 1));
+      return;
+    }
+    if (key.name === "right") {
+      setCursorOffset((offset) => Math.min(value.length, offset + 1));
+      return;
+    }
+    if (key.name === "backspace") {
       setError(null);
-      const newVal = value.slice(0, -1);
-      applyChange(newVal);
+      const result = deleteBackwardAt(value, cursorOffset);
+      applyChange(result.value);
+      setCursorOffset(result.cursorOffset);
+      return;
+    }
+    if (key.name === "delete") {
+      setError(null);
+      applyChange(deleteForwardAt(value, cursorOffset));
       return;
     }
     if (key.name === "escape" || key.name === "up" || key.name === "down") {
       return;
     }
-    if (key.name.length === 1) {
-      setError(null);
-      const newVal = value + key.name;
-      applyChange(newVal);
+    insertText(getKeyText(key));
+  });
+
+  useInputPaste((event) => {
+    if (!isFocused) {
+      return;
     }
+    const input = toSingleLine(decodePaste(event.bytes));
+    if (!input) {
+      return;
+    }
+    event.preventDefault();
+    event.stopPropagation();
+    insertText(input);
   });
 
   const borderColor = getBorderColor(error, isFocused, theme);
 
-  const suggestion = getSuggestion(value);
+  const suggestion =
+    cursorOffset === value.length ? getSuggestion(value) : undefined;
 
   return (
-    <box flexDirection="column">
+    <box id={id} flexDirection="column">
       {label && (
         <text>
           <b>{label}</b>
@@ -138,17 +209,43 @@ export const EmailInput = ({
         paddingLeft={1}
         paddingRight={1}
       >
-        <text
-          fg={value ? theme.colors.foreground : theme.colors.mutedForeground}
-        >
-          {value || placeholder}
-        </text>
-        {isFocused && suggestion && <text fg="#666">{suggestion}</text>}
-        {isFocused && <text fg={theme.colors.focusRing}>█</text>}
+        {value ? (
+          isFocused ? (
+            <>
+              <text fg={theme.colors.foreground}>
+                {value.slice(0, cursorOffset)}
+              </text>
+              {cursorOffset < value.length ? (
+                <>
+                  <text reverse fg={theme.colors.focusRing}>
+                    {value[cursorOffset]}
+                  </text>
+                  <text fg={theme.colors.foreground}>
+                    {value.slice(cursorOffset + 1)}
+                  </text>
+                </>
+              ) : (
+                <>
+                  {suggestion && (
+                    <text fg={theme.colors.mutedForeground}>{suggestion}</text>
+                  )}
+                  <text fg={theme.colors.focusRing}>█</text>
+                </>
+              )}
+            </>
+          ) : (
+            <text fg={theme.colors.foreground}>{value}</text>
+          )
+        ) : (
+          <>
+            <text fg={theme.colors.mutedForeground}>{placeholder}</text>
+            {isFocused && <text fg={theme.colors.focusRing}>█</text>}
+          </>
+        )}
       </box>
       {error && <text fg={theme.colors.error}>{error}</text>}
       {isFocused && suggestion && (
-        <text fg="#666">
+        <text fg={theme.colors.mutedForeground}>
           {"Tab to complete: "}
           {value}
           {suggestion}

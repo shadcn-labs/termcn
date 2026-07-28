@@ -50,6 +50,11 @@ npm install ink
 />
 
 <ComponentSource
+  src="registry/bases/ink/hooks/use-focus.ts"
+  title="hooks/use-focus.ts"
+/>
+
+<ComponentSource
   src="registry/bases/ink/hooks/use-input.ts"
   title="hooks/use-input.ts"
 />
@@ -72,6 +77,7 @@ import { Select } from "@/components/ui/select";
 
 ```tsx
 <Select
+  autoFocus
   label="Choose a framework"
   options={[
     { value: "next", label: "Next.js" },
@@ -86,12 +92,16 @@ import { Select } from "@/components/ui/select";
 
 ### Select
 
-| Prop          | Type                 | Default    |
-| ------------- | -------------------- | ---------- |
-| `options`     | `SelectOption<T>[]`  | `required` |
-| `value`       | `T`                  | -          |
-| `onChange`    | `(value: T) => void` | -          |
-| `onSubmit`    | `(value: T) => void` | -          |
-| `label`       | `string`             | -          |
-| `cursor`      | `string`             | `"›"`      |
-| `cursorColor` | `string`             | -          |
+| Prop           | Type                 | Default    |
+| -------------- | -------------------- | ---------- |
+| `options`      | `SelectOption<T>[]`  | `required` |
+| `value`        | `T`                  | -          |
+| `defaultValue` | `T`                  | -          |
+| `onChange`     | `(value: T) => void` | -          |
+| `onSubmit`     | `(value: T) => void` | -          |
+| `label`        | `string`             | -          |
+| `cursor`       | `string`             | `"›"`      |
+| `cursorColor`  | `string`             | -          |
+| `autoFocus`    | `boolean`            | `false`    |
+| `isDisabled`   | `boolean`            | `false`    |
+| `id`           | `string`             | -          |

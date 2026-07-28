@@ -1,5 +1,5 @@
 import { Box, Text } from "ink";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useTheme } from "@/components/ui/ink-theme-provider";
 import { useFocus } from "@/hooks/use-focus";
@@ -13,15 +13,25 @@ export interface TextAreaProps {
   placeholder?: string;
   rows?: number;
   label?: string;
+  autoFocus?: boolean;
+  isDisabled?: boolean;
   id?: string;
   borderStyle?: BorderStyle;
   paddingX?: number;
   cursor?: string;
 }
 
-const getLines = (v: string): string[] => v.split("\n");
+const getLines = (value: string): string[] => value.split("\n");
 
 const joinLines = (lines: string[]): string => lines.join("\n");
+
+const getEndPosition = (value: string) => {
+  const lines = getLines(value);
+  return {
+    column: lines.at(-1)?.length ?? 0,
+    line: Math.max(0, lines.length - 1),
+  };
+};
 
 export const TextArea = ({
   value: controlledValue,
@@ -30,175 +40,236 @@ export const TextArea = ({
   placeholder = "",
   rows = 4,
   label,
+  autoFocus = false,
+  isDisabled = false,
   id,
   borderStyle = "round",
   paddingX = 1,
   cursor = "█",
 }: TextAreaProps) => {
   const [internalValue, setInternalValue] = useState("");
-  const [cursorLine, setCursorLine] = useState(0);
-  const [cursorCol, setCursorCol] = useState(0);
+  const initialCursor = getEndPosition(controlledValue ?? "");
+  const [cursorLine, setCursorLine] = useState(initialCursor.line);
+  const [cursorColumn, setCursorColumn] = useState(initialCursor.column);
   const [scrollOffset, setScrollOffset] = useState(0);
   const theme = useTheme();
-  const { isFocused } = useFocus({ id });
+  const { isFocused } = useFocus({
+    autoFocus,
+    id,
+    isActive: !isDisabled,
+  });
+  const visibleRowCount = Math.max(1, rows);
 
   const value = controlledValue ?? internalValue;
 
-  const setValue = (newVal: string) => {
-    if (onChange) {
-      onChange(newVal);
-    } else {
-      setInternalValue(newVal);
+  useEffect(() => {
+    const lines = getLines(value);
+    const nextLine = Math.min(cursorLine, Math.max(0, lines.length - 1));
+    const nextColumn = Math.min(cursorColumn, lines[nextLine]?.length ?? 0);
+    if (nextLine !== cursorLine) {
+      setCursorLine(nextLine);
+    }
+    if (nextColumn !== cursorColumn) {
+      setCursorColumn(nextColumn);
+    }
+  }, [cursorColumn, cursorLine, value]);
+
+  const setValue = (newValue: string) => {
+    if (controlledValue === undefined) {
+      setInternalValue(newValue);
+    }
+    onChange?.(newValue);
+  };
+
+  const keepCursorVisible = (line: number) => {
+    if (line < scrollOffset) {
+      setScrollOffset(line);
+    } else if (line >= scrollOffset + visibleRowCount) {
+      setScrollOffset(line - visibleRowCount + 1);
     }
   };
 
-  useInput((input, key) => {
-    if (!isFocused) {
+  const insertText = (input: string) => {
+    if (!input) {
       return;
     }
 
     const lines = getLines(value);
+    const currentLine = lines[cursorLine] ?? "";
+    const before = currentLine.slice(0, cursorColumn);
+    const after = currentLine.slice(cursorColumn);
+    const insertedLines = input
+      .replaceAll("\r\n", "\n")
+      .replaceAll("\r", "\n")
+      .split("\n");
 
-    if (key.return && key.ctrl) {
-      onSubmit?.(value);
-      return;
+    let replacement: string[];
+    let nextLine: number;
+    let nextColumn: number;
+
+    if (insertedLines.length === 1) {
+      const inserted = insertedLines[0] ?? "";
+      replacement = [before + inserted + after];
+      nextLine = cursorLine;
+      nextColumn = cursorColumn + inserted.length;
+    } else {
+      const first = insertedLines[0] ?? "";
+      const last = insertedLines.at(-1) ?? "";
+      replacement = [
+        before + first,
+        ...insertedLines.slice(1, -1),
+        last + after,
+      ];
+      nextLine = cursorLine + insertedLines.length - 1;
+      nextColumn = last.length;
     }
 
-    if (key.return) {
-      const totalLines = lines.length;
-      if (totalLines >= rows && cursorLine === rows - 1) {
+    setValue(
+      joinLines([
+        ...lines.slice(0, cursorLine),
+        ...replacement,
+        ...lines.slice(cursorLine + 1),
+      ])
+    );
+    setCursorLine(nextLine);
+    setCursorColumn(nextColumn);
+    keepCursorVisible(nextLine);
+  };
+
+  useInput(
+    (input, key) => {
+      if (!isFocused) {
         return;
       }
-      const currentLine = lines[cursorLine] ?? "";
-      const before = currentLine.slice(0, cursorCol);
-      const after = currentLine.slice(cursorCol);
-      const newLines = [
-        ...lines.slice(0, cursorLine),
-        before,
-        after,
-        ...lines.slice(cursorLine + 1),
-      ];
-      setValue(joinLines(newLines));
-      const newLine = cursorLine + 1;
-      setCursorLine(newLine);
-      setCursorCol(0);
-      if (newLine >= scrollOffset + rows) {
-        setScrollOffset(newLine - rows + 1);
-      }
-      return;
-    }
 
-    if (key.backspace || key.delete) {
-      const currentLine = lines[cursorLine] ?? "";
-      if (cursorCol > 0) {
-        const newLine =
-          currentLine.slice(0, cursorCol - 1) + currentLine.slice(cursorCol);
-        const newLines = [
-          ...lines.slice(0, cursorLine),
-          newLine,
-          ...lines.slice(cursorLine + 1),
-        ];
-        setValue(joinLines(newLines));
-        setCursorCol(cursorCol - 1);
-      } else if (cursorLine > 0) {
-        const prevLine = lines[cursorLine - 1] ?? "";
-        const mergedLine = prevLine + currentLine;
-        const newLines = [
-          ...lines.slice(0, cursorLine - 1),
-          mergedLine,
-          ...lines.slice(cursorLine + 1),
-        ];
-        setValue(joinLines(newLines));
-        const newLineIdx = cursorLine - 1;
-        setCursorLine(newLineIdx);
-        setCursorCol(prevLine.length);
-        if (newLineIdx < scrollOffset) {
-          setScrollOffset(newLineIdx);
+      const lines = getLines(value);
+
+      if (key.return && key.ctrl) {
+        onSubmit?.(value);
+        return;
+      }
+
+      if (key.return) {
+        insertText("\n");
+        return;
+      }
+
+      if (key.backspace) {
+        const currentLine = lines[cursorLine] ?? "";
+        if (cursorColumn > 0) {
+          const newLine =
+            currentLine.slice(0, cursorColumn - 1) +
+            currentLine.slice(cursorColumn);
+          setValue(
+            joinLines([
+              ...lines.slice(0, cursorLine),
+              newLine,
+              ...lines.slice(cursorLine + 1),
+            ])
+          );
+          setCursorColumn(cursorColumn - 1);
+        } else if (cursorLine > 0) {
+          const previousLine = lines[cursorLine - 1] ?? "";
+          setValue(
+            joinLines([
+              ...lines.slice(0, cursorLine - 1),
+              previousLine + currentLine,
+              ...lines.slice(cursorLine + 1),
+            ])
+          );
+          const nextLine = cursorLine - 1;
+          setCursorLine(nextLine);
+          setCursorColumn(previousLine.length);
+          keepCursorVisible(nextLine);
         }
+        return;
       }
-      return;
-    }
 
-    if (key.leftArrow) {
-      if (cursorCol > 0) {
-        setCursorCol(cursorCol - 1);
-      } else if (cursorLine > 0) {
-        const prevLine = lines[cursorLine - 1] ?? "";
-        const newLineIdx = cursorLine - 1;
-        setCursorLine(newLineIdx);
-        setCursorCol(prevLine.length);
-        if (newLineIdx < scrollOffset) {
-          setScrollOffset(newLineIdx);
+      if (key.delete) {
+        const currentLine = lines[cursorLine] ?? "";
+        if (cursorColumn < currentLine.length) {
+          const newLine =
+            currentLine.slice(0, cursorColumn) +
+            currentLine.slice(cursorColumn + 1);
+          setValue(
+            joinLines([
+              ...lines.slice(0, cursorLine),
+              newLine,
+              ...lines.slice(cursorLine + 1),
+            ])
+          );
+        } else if (cursorLine < lines.length - 1) {
+          const nextLine = lines[cursorLine + 1] ?? "";
+          setValue(
+            joinLines([
+              ...lines.slice(0, cursorLine),
+              currentLine + nextLine,
+              ...lines.slice(cursorLine + 2),
+            ])
+          );
         }
+        return;
       }
-      return;
-    }
 
-    if (key.rightArrow) {
-      const currentLine = lines[cursorLine] ?? "";
-      if (cursorCol < currentLine.length) {
-        setCursorCol(cursorCol + 1);
-      } else if (cursorLine < lines.length - 1) {
-        const newLineIdx = cursorLine + 1;
-        setCursorLine(newLineIdx);
-        setCursorCol(0);
-        if (newLineIdx >= scrollOffset + rows) {
-          setScrollOffset(newLineIdx - rows + 1);
+      if (key.leftArrow) {
+        if (cursorColumn > 0) {
+          setCursorColumn(cursorColumn - 1);
+        } else if (cursorLine > 0) {
+          const nextLine = cursorLine - 1;
+          setCursorLine(nextLine);
+          setCursorColumn((lines[nextLine] ?? "").length);
+          keepCursorVisible(nextLine);
         }
+        return;
       }
-      return;
-    }
 
-    if (key.upArrow) {
-      if (cursorLine > 0) {
-        const newLineIdx = cursorLine - 1;
-        const targetLine = lines[newLineIdx] ?? "";
-        setCursorLine(newLineIdx);
-        setCursorCol(Math.min(cursorCol, targetLine.length));
-        if (newLineIdx < scrollOffset) {
-          setScrollOffset(newLineIdx);
+      if (key.rightArrow) {
+        const currentLine = lines[cursorLine] ?? "";
+        if (cursorColumn < currentLine.length) {
+          setCursorColumn(cursorColumn + 1);
+        } else if (cursorLine < lines.length - 1) {
+          const nextLine = cursorLine + 1;
+          setCursorLine(nextLine);
+          setCursorColumn(0);
+          keepCursorVisible(nextLine);
         }
+        return;
       }
-      return;
-    }
 
-    if (key.downArrow) {
-      if (cursorLine < lines.length - 1) {
-        const newLineIdx = cursorLine + 1;
-        const targetLine = lines[newLineIdx] ?? "";
-        setCursorLine(newLineIdx);
-        setCursorCol(Math.min(cursorCol, targetLine.length));
-        if (newLineIdx >= scrollOffset + rows) {
-          setScrollOffset(newLineIdx - rows + 1);
-        }
+      if (key.upArrow && cursorLine > 0) {
+        const nextLine = cursorLine - 1;
+        setCursorLine(nextLine);
+        setCursorColumn(Math.min(cursorColumn, (lines[nextLine] ?? "").length));
+        keepCursorVisible(nextLine);
+        return;
       }
-      return;
-    }
 
-    if (key.escape || key.tab) {
-      return;
-    }
+      if (key.downArrow && cursorLine < lines.length - 1) {
+        const nextLine = cursorLine + 1;
+        setCursorLine(nextLine);
+        setCursorColumn(Math.min(cursorColumn, (lines[nextLine] ?? "").length));
+        keepCursorVisible(nextLine);
+        return;
+      }
 
-    if (input && input.length > 0) {
-      const currentLine = lines[cursorLine] ?? "";
-      const newLine =
-        currentLine.slice(0, cursorCol) + input + currentLine.slice(cursorCol);
-      const newLines = [
-        ...lines.slice(0, cursorLine),
-        newLine,
-        ...lines.slice(cursorLine + 1),
-      ];
-      setValue(joinLines(newLines));
-      setCursorCol(cursorCol + input.length);
-    }
-  });
+      if (key.escape || key.tab) {
+        return;
+      }
+
+      insertText(input);
+    },
+    { isActive: isFocused && !isDisabled }
+  );
 
   const borderColor = isFocused ? theme.colors.focusRing : theme.colors.border;
   const lines = getLines(value);
-  const visibleLines = lines.slice(scrollOffset, scrollOffset + rows);
+  const visibleLines = lines.slice(
+    scrollOffset,
+    scrollOffset + visibleRowCount
+  );
 
   const paddedLines: string[] = [...visibleLines];
-  while (paddedLines.length < rows) {
+  while (paddedLines.length < visibleRowCount) {
     paddedLines.push("");
   }
 
@@ -213,13 +284,13 @@ export const TextArea = ({
         borderColor={borderColor}
         paddingX={paddingX}
       >
-        {paddedLines.map((line, rowIdx) => {
-          const absoluteLineIdx = rowIdx + scrollOffset;
-          const isActiveLine = isFocused && absoluteLineIdx === cursorLine;
+        {paddedLines.map((line, rowIndex) => {
+          const absoluteLine = rowIndex + scrollOffset;
+          const isActiveLine = isFocused && absoluteLine === cursorLine;
 
-          if (isEmpty && rowIdx === 0) {
+          if (isEmpty && rowIndex === 0) {
             return (
-              <Box key={rowIdx} flexDirection="row">
+              <Box key={rowIndex} flexDirection="row">
                 <Text color={theme.colors.mutedForeground}>{placeholder}</Text>
                 {isFocused && (
                   <Text color={theme.colors.focusRing}>{cursor}</Text>
@@ -229,10 +300,10 @@ export const TextArea = ({
           }
 
           if (isActiveLine) {
-            const before = line.slice(0, cursorCol);
-            const after = line.slice(cursorCol);
+            const before = line.slice(0, cursorColumn);
+            const after = line.slice(cursorColumn);
             return (
-              <Box key={rowIdx} flexDirection="row">
+              <Box key={rowIndex} flexDirection="row">
                 <Text color={theme.colors.foreground}>{before}</Text>
                 <Text color={theme.colors.focusRing}>{cursor}</Text>
                 <Text color={theme.colors.foreground}>{after}</Text>
@@ -241,7 +312,7 @@ export const TextArea = ({
           }
 
           return (
-            <Box key={rowIdx}>
+            <Box key={rowIndex}>
               <Text color={theme.colors.foreground}>{line}</Text>
             </Box>
           );

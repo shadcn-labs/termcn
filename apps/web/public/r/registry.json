@@ -388,6 +388,7 @@
       ],
       "name": "ink/confirm",
       "registryDependencies": [
+        "https://termcn.dev/r/ink/use-focus.json",
         "https://termcn.dev/r/ink/theme-provider.json",
         "https://termcn.dev/r/ink/use-input.json"
       ],
@@ -748,6 +749,11 @@
       "dependencies": ["ink"],
       "description": "Email input with validation and domain suggestions",
       "files": [
+        {
+          "path": "registry/lib/input-utils.ts",
+          "target": "lib/input-utils.ts",
+          "type": "registry:file"
+        },
         {
           "path": "registry/ui/email-input.tsx",
           "type": "registry:ui"
@@ -1280,6 +1286,7 @@
       ],
       "name": "ink/multi-select",
       "registryDependencies": [
+        "https://termcn.dev/r/ink/use-focus.json",
         "https://termcn.dev/r/ink/theme-provider.json",
         "https://termcn.dev/r/ink/use-input.json"
       ],
@@ -2111,6 +2118,16 @@
       "description": "Email input with validation and domain suggestions",
       "files": [
         {
+          "path": "registry/opentui/lib/input-paste.ts",
+          "target": "lib/input-paste.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/opentui/lib/input-utils.ts",
+          "target": "lib/input-utils.ts",
+          "type": "registry:file"
+        },
+        {
           "path": "registry/opentui/ui/email-input.tsx",
           "target": "components/ui/email-input.tsx",
           "type": "registry:ui"
@@ -2567,6 +2584,16 @@
       "description": "Masked input for phone, date, credit card formats",
       "files": [
         {
+          "path": "registry/opentui/lib/input-paste.ts",
+          "target": "lib/input-paste.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/opentui/lib/input-utils.ts",
+          "target": "lib/input-utils.ts",
+          "type": "registry:file"
+        },
+        {
           "path": "registry/opentui/ui/masked-input.tsx",
           "target": "components/ui/masked-input.tsx",
           "type": "registry:ui"
@@ -2712,6 +2739,16 @@
       "description": "Numeric input with increment/decrement and bounds",
       "files": [
         {
+          "path": "registry/opentui/lib/input-paste.ts",
+          "target": "lib/input-paste.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/opentui/lib/input-utils.ts",
+          "target": "lib/input-utils.ts",
+          "type": "registry:file"
+        },
+        {
           "path": "registry/opentui/ui/number-input.tsx",
           "target": "components/ui/number-input.tsx",
           "type": "registry:ui"
@@ -2766,6 +2803,16 @@
       "description": "Password input with masked characters and reveal toggle",
       "files": [
         {
+          "path": "registry/opentui/lib/input-paste.ts",
+          "target": "lib/input-paste.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/opentui/lib/input-utils.ts",
+          "target": "lib/input-utils.ts",
+          "type": "registry:file"
+        },
+        {
           "path": "registry/opentui/ui/password-input.tsx",
           "target": "components/ui/password-input.tsx",
           "type": "registry:ui"
@@ -2783,6 +2830,16 @@
       "dependencies": ["@opentui/react"],
       "description": "Filesystem path input with tab autocomplete",
       "files": [
+        {
+          "path": "registry/opentui/lib/input-paste.ts",
+          "target": "lib/input-paste.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/opentui/lib/input-utils.ts",
+          "target": "lib/input-utils.ts",
+          "type": "registry:file"
+        },
         {
           "path": "registry/opentui/ui/path-input.tsx",
           "target": "components/ui/path-input.tsx",
@@ -2927,6 +2984,16 @@
       "dependencies": ["@opentui/react"],
       "description": "Fuzzy search input with autocomplete",
       "files": [
+        {
+          "path": "registry/opentui/lib/input-paste.ts",
+          "target": "lib/input-paste.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/opentui/lib/input-utils.ts",
+          "target": "lib/input-utils.ts",
+          "type": "registry:file"
+        },
         {
           "path": "registry/opentui/ui/search-input.tsx",
           "target": "components/ui/search-input.tsx",
@@ -3247,6 +3314,16 @@
       "description": "Multi-line text editor with word wrap",
       "files": [
         {
+          "path": "registry/opentui/lib/input-paste.ts",
+          "target": "lib/input-paste.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/opentui/lib/input-utils.ts",
+          "target": "lib/input-utils.ts",
+          "type": "registry:file"
+        },
+        {
           "path": "registry/opentui/ui/text-area.tsx",
           "target": "components/ui/text-area.tsx",
           "type": "registry:ui"
@@ -3264,6 +3341,16 @@
       "dependencies": ["@opentui/react"],
       "description": "Single-line text input with placeholder, validation, mask",
       "files": [
+        {
+          "path": "registry/opentui/lib/input-paste.ts",
+          "target": "lib/input-paste.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/opentui/lib/input-utils.ts",
+          "target": "lib/input-utils.ts",
+          "type": "registry:file"
+        },
         {
           "path": "registry/opentui/ui/text-input.tsx",
           "target": "components/ui/text-input.tsx",
@@ -3602,6 +3689,11 @@
       "description": "Password input with masked characters and reveal toggle",
       "files": [
         {
+          "path": "registry/lib/input-utils.ts",
+          "target": "lib/input-utils.ts",
+          "type": "registry:file"
+        },
+        {
           "path": "registry/ui/password-input.tsx",
           "type": "registry:ui"
         }
@@ -3618,7 +3710,7 @@
     {
       "categories": ["input"],
       "dependencies": ["ink", "glob"],
-      "description": "Filesystem path input with tab autocomplete",
+      "description": "Filesystem path input with arrow-key autocomplete",
       "files": [
         {
           "path": "registry/ui/path-input.tsx",
@@ -3672,6 +3764,11 @@
       "dependencies": ["ink"],
       "description": "Determinate progress bar with percent and value/total display",
       "files": [
+        {
+          "path": "registry/lib/progress-utils.ts",
+          "target": "lib/progress-utils.ts",
+          "type": "registry:file"
+        },
         {
           "path": "registry/ui/progress-bar.tsx",
           "type": "registry:ui"
@@ -3779,6 +3876,7 @@
       ],
       "name": "ink/select",
       "registryDependencies": [
+        "https://termcn.dev/r/ink/use-focus.json",
         "https://termcn.dev/r/ink/theme-provider.json",
         "https://termcn.dev/r/ink/use-input.json"
       ],
@@ -4081,6 +4179,11 @@
       "dependencies": ["ink"],
       "description": "Single-line text input with placeholder, validation, mask",
       "files": [
+        {
+          "path": "registry/lib/input-utils.ts",
+          "target": "lib/input-utils.ts",
+          "type": "registry:file"
+        },
         {
           "path": "registry/ui/text-input.tsx",
           "type": "registry:ui"

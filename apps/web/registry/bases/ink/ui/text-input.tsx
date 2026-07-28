@@ -4,6 +4,11 @@ import React, { useEffect, useState } from "react";
 import { useTheme } from "@/components/ui/ink-theme-provider";
 import { useFocus } from "@/hooks/use-focus";
 import { useInput } from "@/hooks/use-input";
+import {
+  deleteBackwardAt,
+  deleteForwardAt,
+  insertAt,
+} from "@/registry/bases/ink/lib/input-utils";
 import type { BorderStyle } from "@/registry/bases/ink/ui/types";
 
 export interface TextInputProps {
@@ -18,6 +23,7 @@ export interface TextInputProps {
   width?: number;
   label?: string;
   autoFocus?: boolean;
+  isDisabled?: boolean;
   id?: string;
   bordered?: boolean;
   borderStyle?: BorderStyle;
@@ -37,6 +43,7 @@ export const TextInput = ({
   width = 40,
   label,
   autoFocus = false,
+  isDisabled = false,
   id,
   bordered = true,
   borderStyle = "round",
@@ -44,11 +51,17 @@ export const TextInput = ({
   cursor = "█",
 }: TextInputProps) => {
   const [internalValue, setInternalValue] = useState("");
-  const [cursorOffset, setCursorOffset] = useState(0);
+  const [cursorOffset, setCursorOffset] = useState(
+    () => controlledValue?.length ?? 0
+  );
   const [cursorWidth, setCursorWidth] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const theme = useTheme();
-  const { isFocused } = useFocus({ autoFocus, id });
+  const { isFocused } = useFocus({
+    autoFocus,
+    id,
+    isActive: !isDisabled,
+  });
 
   const value = controlledValue ?? internalValue;
 
@@ -59,78 +72,80 @@ export const TextInput = ({
   }, [value, cursorOffset]);
 
   const setValue = (next: string) => {
-    if (onChange) {
-      onChange(next);
-    } else {
+    if (controlledValue === undefined) {
       setInternalValue(next);
     }
+    onChange?.(next);
   };
 
-  useInput((input, key) => {
-    if (!isFocused) {
-      return;
-    }
-
-    if (
-      key.upArrow ||
-      key.downArrow ||
-      (key.ctrl && input === "c") ||
-      key.tab ||
-      (key.shift && key.tab)
-    ) {
-      return;
-    }
-
-    if (key.return) {
-      const err = validate ? validate(value) : null;
-      if (err) {
-        setError(err);
+  useInput(
+    (input, key) => {
+      if (!isFocused) {
         return;
       }
-      setError(null);
-      onSubmit?.(value);
-      return;
-    }
 
-    if (key.escape) {
-      return;
-    }
-
-    let nextOffset = cursorOffset;
-    let nextValue = value;
-    let nextCursorWidth = 0;
-
-    if (key.leftArrow) {
-      if (showCursor) {
-        nextOffset = Math.max(0, nextOffset - 1);
+      if (
+        key.upArrow ||
+        key.downArrow ||
+        (key.ctrl && input === "c") ||
+        key.tab ||
+        (key.shift && key.tab)
+      ) {
+        return;
       }
-    } else if (key.rightArrow) {
-      if (showCursor) {
-        nextOffset = Math.min(value.length, nextOffset + 1);
-      }
-    } else if (key.backspace || key.delete) {
-      if (cursorOffset > 0) {
-        nextValue =
-          value.slice(0, cursorOffset - 1) + value.slice(cursorOffset);
-        nextOffset = cursorOffset - 1;
-      }
-    } else {
-      nextValue =
-        value.slice(0, cursorOffset) + input + value.slice(cursorOffset);
-      nextOffset = cursorOffset + input.length;
 
-      if (input.length > 1) {
-        nextCursorWidth = input.length;
+      if (key.return) {
+        const err = validate ? validate(value) : null;
+        if (err) {
+          setError(err);
+          return;
+        }
+        setError(null);
+        onSubmit?.(value);
+        return;
       }
-    }
 
-    setCursorOffset(nextOffset);
-    setCursorWidth(nextCursorWidth);
+      if (key.escape) {
+        return;
+      }
 
-    if (nextValue !== value) {
-      setValue(nextValue);
-    }
-  });
+      let nextOffset = cursorOffset;
+      let nextValue = value;
+      let nextCursorWidth = 0;
+
+      if (key.leftArrow) {
+        if (showCursor) {
+          nextOffset = Math.max(0, nextOffset - 1);
+        }
+      } else if (key.rightArrow) {
+        if (showCursor) {
+          nextOffset = Math.min(value.length, nextOffset + 1);
+        }
+      } else if (key.backspace) {
+        const result = deleteBackwardAt(value, cursorOffset);
+        nextValue = result.value;
+        nextOffset = result.cursorOffset;
+      } else if (key.delete) {
+        nextValue = deleteForwardAt(value, cursorOffset);
+      } else if (input) {
+        nextValue = insertAt(value, cursorOffset, input);
+        nextOffset = cursorOffset + input.length;
+
+        if (input.length > 1) {
+          nextCursorWidth = input.length;
+        }
+      }
+
+      setCursorOffset(nextOffset);
+      setCursorWidth(nextCursorWidth);
+
+      if (nextValue !== value) {
+        setError(null);
+        setValue(nextValue);
+      }
+    },
+    { isActive: isFocused && !isDisabled }
+  );
 
   const displayValue = mask ? mask.repeat(value.length) : value;
 

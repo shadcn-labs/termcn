@@ -1,9 +1,15 @@
 import { Box, Text } from "ink";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useTheme } from "@/components/ui/ink-theme-provider";
 import { useFocus } from "@/hooks/use-focus";
 import { useInput } from "@/hooks/use-input";
+import {
+  deleteBackwardAt,
+  deleteForwardAt,
+  filterEmailInput,
+  insertAt,
+} from "@/registry/bases/ink/lib/input-utils";
 
 export interface EmailInputProps {
   value?: string;
@@ -12,6 +18,7 @@ export interface EmailInputProps {
   label?: string;
   placeholder?: string;
   autoFocus?: boolean;
+  isDisabled?: boolean;
   id?: string;
   width?: number;
   suggestions?: string[];
@@ -47,23 +54,36 @@ export const EmailInput = ({
   label,
   placeholder = "you@example.com",
   autoFocus = false,
+  isDisabled = false,
   id,
   width = 40,
   suggestions = ["gmail.com", "yahoo.com", "hotmail.com", "outlook.com"],
 }: EmailInputProps) => {
   const [internalValue, setInternalValue] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [cursorOffset, setCursorOffset] = useState(
+    () => controlledValue?.length ?? 0
+  );
   const theme = useTheme();
-  const { isFocused } = useFocus({ autoFocus, id });
+  const { isFocused } = useFocus({
+    autoFocus,
+    id,
+    isActive: !isDisabled,
+  });
 
   const value = controlledValue ?? internalValue;
 
+  useEffect(() => {
+    if (cursorOffset > value.length) {
+      setCursorOffset(value.length);
+    }
+  }, [cursorOffset, value]);
+
   const applyChange = (newVal: string) => {
-    if (onChange) {
-      onChange(newVal);
-    } else {
+    if (controlledValue === undefined) {
       setInternalValue(newVal);
     }
+    onChange?.(newVal);
   };
 
   const getSuggestion = (val: string): string | null => {
@@ -84,49 +104,113 @@ export const EmailInput = ({
     return match.slice(afterAt.length);
   };
 
-  useInput((input, key) => {
-    if (!isFocused) {
+  const insertText = (input: string) => {
+    const acceptedInput = filterEmailInput(value, input);
+    if (!acceptedInput) {
       return;
     }
+    applyChange(insertAt(value, cursorOffset, acceptedInput));
+    setCursorOffset(cursorOffset + acceptedInput.length);
+    setError(null);
+  };
 
-    if (key.return) {
-      if (!isValidEmail(value)) {
-        setError("Please enter a valid email address");
+  useInput(
+    (input, key) => {
+      if (!isFocused) {
         return;
       }
-      setError(null);
-      onSubmit?.(value);
-      return;
-    }
 
-    if (key.tab) {
-      const hint = getSuggestion(value);
-      if (hint) {
-        const newVal = value + hint;
-        applyChange(newVal);
+      if (key.return) {
+        if (!isValidEmail(value)) {
+          setError("Please enter a valid email address");
+          return;
+        }
+        setError(null);
+        onSubmit?.(value);
+        return;
       }
-      return;
-    }
 
-    if (key.backspace || key.delete) {
-      setError(null);
-      const newVal = value.slice(0, -1);
-      applyChange(newVal);
-      return;
-    }
+      if (key.leftArrow) {
+        setCursorOffset((offset) => Math.max(0, offset - 1));
+        return;
+      }
 
-    if (key.escape || key.upArrow || key.downArrow) {
-      return;
-    }
+      if (key.rightArrow) {
+        const hint =
+          cursorOffset === value.length ? getSuggestion(value) : undefined;
+        if (hint) {
+          const completedValue = value + hint;
+          applyChange(completedValue);
+          setCursorOffset(completedValue.length);
+        } else {
+          setCursorOffset((offset) => Math.min(value.length, offset + 1));
+        }
+        return;
+      }
 
-    setError(null);
-    const newVal = value + input;
-    applyChange(newVal);
-  });
+      if (key.backspace) {
+        const result = deleteBackwardAt(value, cursorOffset);
+        applyChange(result.value);
+        setCursorOffset(result.cursorOffset);
+        setError(null);
+        return;
+      }
+
+      if (key.delete) {
+        applyChange(deleteForwardAt(value, cursorOffset));
+        setError(null);
+        return;
+      }
+
+      if (key.escape || key.upArrow || key.downArrow || key.tab) {
+        return;
+      }
+
+      insertText(input);
+    },
+    { isActive: isFocused && !isDisabled }
+  );
 
   const borderColor = getBorderColor(error, isFocused, theme);
 
-  const suggestion = getSuggestion(value);
+  const suggestion =
+    cursorOffset === value.length ? getSuggestion(value) : undefined;
+
+  const renderValue = () => {
+    if (!value) {
+      return (
+        <Text color={theme.colors.mutedForeground}>
+          {placeholder}
+          {isFocused && <Text color={theme.colors.focusRing}>█</Text>}
+        </Text>
+      );
+    }
+
+    if (!isFocused) {
+      return <Text color={theme.colors.foreground}>{value}</Text>;
+    }
+
+    const before = value.slice(0, cursorOffset);
+    const cursorChar = value[cursorOffset] ?? "█";
+    const after = value.slice(
+      cursorOffset < value.length ? cursorOffset + 1 : cursorOffset
+    );
+
+    return (
+      <Text color={theme.colors.foreground}>
+        {before}
+        <Text inverse color={theme.colors.focusRing}>
+          {cursorChar}
+        </Text>
+        {after}
+        {suggestion && (
+          <Text color={theme.colors.mutedForeground} dimColor>
+            {suggestion}
+          </Text>
+        )}
+      </Text>
+    );
+  };
 
   return (
     <Box flexDirection="column">
@@ -137,22 +221,13 @@ export const EmailInput = ({
         width={width}
         paddingX={1}
       >
-        <Text
-          color={value ? theme.colors.foreground : theme.colors.mutedForeground}
-        >
-          {value || placeholder}
-        </Text>
-        {isFocused && suggestion && (
-          <Text color={theme.colors.mutedForeground} dimColor>
-            {suggestion}
-          </Text>
-        )}
-        {isFocused && <Text color={theme.colors.focusRing}>█</Text>}
+        {renderValue()}
       </Box>
       {error && <Text color={theme.colors.error}>{error}</Text>}
       {isFocused && suggestion && (
         <Text color={theme.colors.mutedForeground} dimColor>
-          Tab to complete: {value}
+          {"→ to complete: "}
+          {value}
           {suggestion}
         </Text>
       )}
