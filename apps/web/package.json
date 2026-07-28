@@ -17,6 +17,7 @@
     "@convex-dev/better-auth": "^0.12.5",
     "@gridland/utils": "^0.4.3",
     "@gridland/web": "^0.4.3",
+    "@monaco-editor/react": "^4.7.0",
     "@termcn/backend": "workspace:*",
     "@termcn/env": "workspace:*",
     "@vercel/analytics": "^2.0.1",

@@ -4,6 +4,16 @@ import { ROUTES } from "@/constants/routes";
 import { SITE } from "@/constants/site";
 import { source } from "@/lib/source";
 
+const getStaticPagePriority = (route: string) => {
+  if (route === ROUTES.PRO) {
+    return 0.9;
+  }
+  if (route === ROUTES.STUDIO) {
+    return 0.8;
+  }
+  return 0.4;
+};
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages: MetadataRoute.Sitemap = [
     {
@@ -20,6 +30,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     ...[
       ROUTES.PRO,
+      ROUTES.STUDIO,
       ROUTES.TERMCN_SKILL,
       ROUTES.LICENSE,
       ROUTES.TERMS,
@@ -29,7 +40,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ].map((route) => ({
       changeFrequency: "monthly" as const,
       lastModified: new Date(),
-      priority: route === ROUTES.PRO ? 0.9 : 0.4,
+      priority: getStaticPagePriority(route),
       url: `${SITE.URL}${route}`,
     })),
   ];
