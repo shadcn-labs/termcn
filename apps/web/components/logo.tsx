@@ -38,7 +38,7 @@ export const LogoMark = ({
 );
 
 export const getLogoMarkSVG = (color: string) => `
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" aria-label="Termcn Logo">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" aria-label="termcn Logo">
     <rect x="16" y="16" width="224" height="224" rx="28" stroke="${color}" stroke-width="7"/>
     <path d="m42 56 32 24-32 24" stroke="${color}" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="m208.8 156.8-48 48M199.2 104 108 195.2" stroke-width="19.2" stroke="${color}" stroke-linecap="round"/>

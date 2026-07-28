@@ -62,10 +62,6 @@ import { ThemeProvider } from "@/components/ui/theme-provider";
 import { draculaTheme } from "@/lib/terminal-themes/dracula";
 
 export function App() {
-  return (
-    <ThemeProvider theme={draculaTheme}>
-      {/* your Ink or OpenTUI tree */}
-    </ThemeProvider>
-  );
+  return <ThemeProvider theme={draculaTheme}></ThemeProvider>;
 }
 ```

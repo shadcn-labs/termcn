@@ -137,7 +137,7 @@ export const FocusScope = ({
       !activeScopes.has(scopeId)
     ) {
       console.warn(
-        "Termcn Ink: multiple non-nested focus scopes are active; only nested overlays are supported."
+        "termcn Ink: multiple non-nested focus scopes are active; only nested overlays are supported."
       );
     }
     activeScopes.add(scopeId);
