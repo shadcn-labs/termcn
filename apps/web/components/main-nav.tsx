@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
+import { ROUTES } from "@/constants/routes";
 import { cn } from "@/lib/utils";
 
 export const MainNav = ({
@@ -21,7 +22,10 @@ export const MainNav = ({
         <Button key={item.href} variant="ghost" asChild size="sm" sound="click">
           <Link
             href={item.href}
-            className={cn(pathname === item.href && "text-primary")}
+            className={cn(
+              pathname === item.href && "text-primary",
+              item.href === ROUTES.TERMCN_SKILL && "font-mono"
+            )}
             transitionTypes={["nav-forward"]}
           >
             {item.label}

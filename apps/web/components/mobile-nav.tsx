@@ -248,6 +248,9 @@ export const MobileNav = ({
               </MobileLink>
               {items.map((item) => (
                 <MobileLink
+                  className={cn(
+                    item.href === ROUTES.TERMCN_SKILL && "font-mono"
+                  )}
                   key={item.href}
                   href={item.href}
                   onOpenChange={setOpen}

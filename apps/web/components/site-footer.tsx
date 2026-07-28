@@ -28,9 +28,12 @@ const footerSections = [
   {
     links: [
       { href: ROUTES.HOME, label: "Home" },
+      { href: ROUTES.DOCS, label: "Docs" },
       { href: ROUTES.DOCS_COMPONENTS, label: "Components" },
       { href: ROUTES.DOCS_CHARTS, label: "Charts" },
       { href: ROUTES.DOCS_TEMPLATES, label: "Templates" },
+      { href: ROUTES.SPONSOR, label: "Sponsors" },
+      { href: ROUTES.TERMCN_SKILL, label: "termcn.md" },
       { href: ROUTES.PRO, label: "Get Pro" },
     ],
     title: "Site",
@@ -59,11 +62,11 @@ const footerSections = [
   },
   {
     links: [
-      { href: LINK.AGENTCN, label: "agentcn.run" },
-      { href: LINK.FRAMECN, label: "framecn.dev" },
-      { href: LINK.OGIMAGECN, label: "ogimagecn.com" },
-      { href: LINK.MCPCN, label: "mcpcn.dev" },
-      { href: LINK.EMAILCN, label: "emailcn.run" },
+      { href: LINK.AGENTCN, label: "agentcn" },
+      { href: LINK.FRAMECN, label: "framecn" },
+      { href: LINK.OGIMAGECN, label: "ogimagecn" },
+      { href: LINK.MCPCN, label: "mcpcn" },
+      { href: LINK.EMAILCN, label: "emailcn" },
     ],
     title: "More",
   },
@@ -133,8 +136,10 @@ export const SiteFooter = () => {
                     <h2 className="text-sm font-medium">{section.title}</h2>
                     <ul className="mt-4 space-y-3">
                       {section.links.map((link) => {
-                        const className =
-                          "text-muted-foreground hover:text-foreground text-sm transition-colors";
+                        const className = cn(
+                          "text-muted-foreground hover:text-foreground text-sm transition-colors",
+                          link.href === ROUTES.TERMCN_SKILL && "font-mono"
+                        );
                         const isExternal = link.href.startsWith("http");
 
                         return (

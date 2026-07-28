@@ -30,6 +30,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
+import { ROUTES } from "@/constants/routes";
 import { SITE } from "@/constants/site";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { useFeedback } from "@/hooks/use-feedback";
@@ -391,7 +392,13 @@ export const CommandMenu = ({
                     onSelect={() => runCommand(() => router.push(item.href))}
                   >
                     <ArrowRightIcon />
-                    {item.label}
+                    <span
+                      className={cn(
+                        item.href === ROUTES.TERMCN_SKILL && "font-mono"
+                      )}
+                    >
+                      {item.label}
+                    </span>
                   </CommandMenuItem>
                 ))}
               </CommandGroup>
