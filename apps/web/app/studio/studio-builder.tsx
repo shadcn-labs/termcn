@@ -2,6 +2,8 @@
 
 /* eslint-disable func-style, no-use-before-define -- Builder subcomponents are kept in screen-reading order. */
 
+import { api } from "@termcn/backend/convex/_generated/api";
+import { useConvexAuth, useQuery } from "convex/react";
 import {
   ActivityIcon,
   AlignCenterIcon,
@@ -31,6 +33,7 @@ import {
   ListIcon,
   ListTreeIcon,
   LoaderCircleIcon,
+  LockIcon,
   MinusIcon,
   MonitorIcon,
   MousePointer2Icon,
@@ -52,12 +55,25 @@ import {
   Undo2Icon,
   XIcon,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useTheme } from "next-themes";
+import dynamic from "next/dynamic";
+import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 
 import { LogoMark } from "@/components/logo";
+import { ModeSwitcher } from "@/components/mode-switcher";
 import { TerminalPreview } from "@/components/terminal-preview";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -73,9 +89,26 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
+import {
+  NativeSelect,
+  NativeSelectOption,
+} from "@/components/ui/native-select";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Switch } from "@/components/ui/switch";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
+import { Toggle } from "@/components/ui/toggle";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { ROUTES } from "@/constants/routes";
+import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
 
 type Framework = "ink" | "opentui";
+type StudioExport = "copy" | "file" | "project";
 type LayerKind = "container" | "help" | "list" | "separator" | "table" | "text";
 
 interface LayerNode {
@@ -92,6 +125,11 @@ interface StudioTemplate {
   preview: string;
   title: string;
 }
+
+const MonacoEditor = dynamic(() => import("@monaco-editor/react"), {
+  loading: () => <CodeEditorSkeleton />,
+  ssr: false,
+});
 
 const STUDIO_THEMES = [
   {
@@ -555,6 +593,12 @@ render(<App />);
 `;
 
 export function StudioBuilder() {
+  const { isAuthenticated, isLoading: isAuthLoading } = useConvexAuth();
+  const access = useQuery(
+    api.billing.getCurrentAccess,
+    isAuthenticated ? {} : "skip"
+  );
+  const isDesktop = useMediaQuery("(min-width: 1280px)");
   const initialTemplate =
     STUDIO_TEMPLATES.find((template) => template.id === "git-status") ??
     STUDIO_TEMPLATES[0];
@@ -587,6 +631,7 @@ export function StudioBuilder() {
   const [dim, setDim] = useState(false);
   const [italic, setItalic] = useState(false);
   const [color, setColor] = useState("Green");
+  const [exportGateOpen, setExportGateOpen] = useState(false);
 
   const layers = useMemo(
     () => getTemplateLayers(activeTemplate),
@@ -609,6 +654,14 @@ export function StudioBuilder() {
     template: activeTemplate,
     theme,
   });
+  const [code, setCode] = useState(generatedCode);
+  const canExport = access?.products.bundle === true;
+  const isExportLoading =
+    isAuthLoading || (isAuthenticated && access === undefined);
+
+  useEffect(() => {
+    setCode(generatedCode);
+  }, [generatedCode]);
 
   const useTemplate = () => {
     setActiveTemplate(selectedTemplate);
@@ -631,6 +684,7 @@ export function StudioBuilder() {
     localStorage.setItem(
       "termcn-studio-project",
       JSON.stringify({
+        code,
         framework,
         template: activeTemplate?.id ?? null,
         theme,
@@ -640,12 +694,12 @@ export function StudioBuilder() {
   };
 
   const copyCode = async () => {
-    await navigator.clipboard.writeText(generatedCode);
+    await navigator.clipboard.writeText(code);
     toast.success("TypeScript copied");
   };
 
   const downloadCode = () => {
-    const blob = new Blob([generatedCode], { type: "text/typescript" });
+    const blob = new Blob([code], { type: "text/typescript" });
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement("a");
     anchor.href = url;
@@ -655,148 +709,194 @@ export function StudioBuilder() {
     toast.success("App.tsx downloaded");
   };
 
-  return (
-    <div className="dark flex h-svh min-h-[640px] w-full flex-col overflow-hidden bg-[#151516] font-sans text-neutral-200">
-      <StudioToolbar
-        activeTemplate={activeTemplate}
-        code={generatedCode}
-        framework={framework}
-        leftOpen={leftOpen}
-        rightOpen={rightOpen}
-        onCopyCode={copyCode}
-        onDownloadCode={downloadCode}
-        onFrameworkChange={setFramework}
-        onLeftOpenChange={setLeftOpen}
-        onOpenTemplates={() => setTemplateOpen(true)}
-        onRightOpenChange={setRightOpen}
-        onSave={saveProject}
-      />
+  const copyProjectCommand = async () => {
+    await navigator.clipboard.writeText(
+      `pnpm dlx termcn@latest studio --template ${activeTemplate?.id ?? "blank"}`
+    );
+    toast.success("Project command copied");
+  };
 
-      <div className="flex min-h-0 flex-1">
-        {leftOpen && (
-          <aside className="hidden w-[262px] shrink-0 flex-col border-r border-white/8 bg-[#151516] lg:flex">
+  const requestExport = (kind: StudioExport) => {
+    if (isExportLoading) {
+      toast("Checking Pro access…");
+      return;
+    }
+    if (!canExport) {
+      setExportGateOpen(true);
+      return;
+    }
+    if (kind === "file") {
+      downloadCode();
+      return;
+    }
+    if (kind === "project") {
+      void copyProjectCommand();
+      return;
+    }
+    void copyCode();
+  };
+
+  return (
+    <div className="bg-muted/30 min-h-svh">
+      <DesktopStudioNotice />
+
+      <div className="bg-background text-foreground hidden h-svh min-h-[680px] w-full flex-col overflow-hidden font-sans xl:flex">
+        <StudioToolbar
+          activeTemplate={activeTemplate}
+          canExport={canExport}
+          framework={framework}
+          isExportLoading={isExportLoading}
+          leftOpen={leftOpen}
+          rightOpen={rightOpen}
+          onFrameworkChange={setFramework}
+          onLeftOpenChange={setLeftOpen}
+          onOpenTemplates={() => setTemplateOpen(true)}
+          onRequestExport={requestExport}
+          onRightOpenChange={setRightOpen}
+          onSave={saveProject}
+        />
+
+        <div className="flex min-h-0 flex-1">
+          {leftOpen && (
+            <aside className="bg-background flex w-[262px] shrink-0 flex-col border-r">
+              <PanelTabs
+                active={leftTab}
+                onChange={setLeftTab}
+                tabs={[
+                  { icon: Layers3Icon, id: "layers", label: "Layers" },
+                  { icon: BoxesIcon, id: "assets", label: "Assets" },
+                ]}
+              />
+              {leftTab === "layers" ? (
+                <LayersPanel
+                  expanded={expanded}
+                  layers={layers}
+                  renamedLayers={renamedLayers}
+                  selectedLayerId={selectedLayerId}
+                  onClose={() => setLeftOpen(false)}
+                  onExpandedChange={setExpanded}
+                  onSelect={setSelectedLayerId}
+                />
+              ) : (
+                <AssetsPanel
+                  category={assetCategory}
+                  items={filteredAssets}
+                  search={assetSearch}
+                  onAdd={(label) => {
+                    toast.success(`${label} added to the canvas`);
+                    setLeftTab("layers");
+                  }}
+                  onCategoryChange={setAssetCategory}
+                  onClose={() => setLeftOpen(false)}
+                  onSearchChange={setAssetSearch}
+                />
+              )}
+            </aside>
+          )}
+
+          <main className="bg-muted/20 flex min-w-0 flex-1 flex-col">
             <PanelTabs
-              active={leftTab}
-              onChange={setLeftTab}
+              active={canvasTab}
+              fill={false}
+              onChange={setCanvasTab}
               tabs={[
-                { icon: Layers3Icon, id: "layers", label: "Layers" },
-                { icon: BoxesIcon, id: "assets", label: "Assets" },
+                { icon: BrushIcon, id: "build", label: "Build" },
+                { icon: Code2Icon, id: "code", label: "Code" },
               ]}
             />
-            {leftTab === "layers" ? (
-              <LayersPanel
-                expanded={expanded}
-                layers={layers}
-                renamedLayers={renamedLayers}
+
+            {canvasTab === "build" ? (
+              <BuildCanvas
+                activeTemplate={activeTemplate}
+                framework={framework}
+                selectedLayer={selectedLayer}
                 selectedLayerId={selectedLayerId}
-                onClose={() => setLeftOpen(false)}
-                onExpandedChange={setExpanded}
-                onSelect={setSelectedLayerId}
+                theme={theme}
+                onOpenTemplates={() => setTemplateOpen(true)}
               />
             ) : (
-              <AssetsPanel
-                category={assetCategory}
-                items={filteredAssets}
-                search={assetSearch}
-                onAdd={(label) => {
-                  toast.success(`${label} added to the canvas`);
-                  setLeftTab("layers");
-                }}
-                onCategoryChange={setAssetCategory}
-                onClose={() => setLeftOpen(false)}
-                onSearchChange={setAssetSearch}
+              <CodeCanvas
+                canExport={canExport}
+                code={code}
+                framework={framework}
+                onChange={setCode}
+                onCopy={() => requestExport("copy")}
               />
             )}
-          </aside>
-        )}
+          </main>
 
-        <main className="flex min-w-0 flex-1 flex-col bg-[#171718]">
-          <PanelTabs
-            active={canvasTab}
-            fill={false}
-            onChange={setCanvasTab}
-            tabs={[
-              { icon: BrushIcon, id: "build", label: "Build" },
-              { icon: Code2Icon, id: "code", label: "Code" },
-            ]}
-          />
-
-          {canvasTab === "build" ? (
-            <BuildCanvas
-              activeTemplate={activeTemplate}
-              framework={framework}
-              selectedLayer={selectedLayer}
-              theme={theme}
-              onOpenTemplates={() => setTemplateOpen(true)}
-            />
-          ) : (
-            <CodeCanvas code={generatedCode} onCopy={copyCode} />
+          {rightOpen && (
+            <aside className="bg-background flex w-[320px] shrink-0 flex-col border-l">
+              <PropertiesPanel
+                align={align}
+                bold={bold}
+                color={color}
+                content={
+                  selectedLayer
+                    ? (contentValues[selectedLayer.id] ?? selectedLayer.label)
+                    : ""
+                }
+                dim={dim}
+                italic={italic}
+                renamedLayers={renamedLayers}
+                selectedLayer={selectedLayer}
+                theme={theme}
+                onAlignChange={setAlign}
+                onBoldChange={setBold}
+                onClose={() => setRightOpen(false)}
+                onColorChange={setColor}
+                onContentChange={(value) => {
+                  if (selectedLayer) {
+                    setContentValues((current) => ({
+                      ...current,
+                      [selectedLayer.id]: value,
+                    }));
+                  }
+                }}
+                onDimChange={setDim}
+                onItalicChange={setItalic}
+                onNameChange={(value) => {
+                  if (selectedLayer) {
+                    setRenamedLayers((current) => ({
+                      ...current,
+                      [selectedLayer.id]: value,
+                    }));
+                  }
+                }}
+                onThemeChange={setTheme}
+              />
+            </aside>
           )}
-        </main>
+        </div>
 
-        {rightOpen && (
-          <aside className="hidden w-[320px] shrink-0 flex-col border-l border-white/8 bg-[#151516] xl:flex">
-            <PropertiesPanel
-              align={align}
-              bold={bold}
-              color={color}
-              content={
-                selectedLayer
-                  ? (contentValues[selectedLayer.id] ?? selectedLayer.label)
-                  : ""
-              }
-              dim={dim}
-              italic={italic}
-              renamedLayers={renamedLayers}
-              selectedLayer={selectedLayer}
-              theme={theme}
-              onAlignChange={setAlign}
-              onBoldChange={setBold}
-              onClose={() => setRightOpen(false)}
-              onColorChange={setColor}
-              onContentChange={(value) => {
-                if (selectedLayer) {
-                  setContentValues((current) => ({
-                    ...current,
-                    [selectedLayer.id]: value,
-                  }));
-                }
-              }}
-              onDimChange={setDim}
-              onItalicChange={setItalic}
-              onNameChange={(value) => {
-                if (selectedLayer) {
-                  setRenamedLayers((current) => ({
-                    ...current,
-                    [selectedLayer.id]: value,
-                  }));
-                }
-              }}
-              onThemeChange={setTheme}
-            />
-          </aside>
-        )}
+        <StudioStatus
+          framework={framework}
+          leftOpen={leftOpen}
+          rightOpen={rightOpen}
+          theme={theme}
+          onLeftOpenChange={setLeftOpen}
+          onRightOpenChange={setRightOpen}
+        />
       </div>
 
-      <StudioStatus
-        framework={framework}
-        leftOpen={leftOpen}
-        rightOpen={rightOpen}
-        theme={theme}
-        onLeftOpenChange={setLeftOpen}
-        onRightOpenChange={setRightOpen}
-      />
+      {isDesktop && (
+        <TemplateChooser
+          framework={framework}
+          open={templateOpen}
+          selected={selectedTemplate}
+          selectedId={templateSelection}
+          theme={theme}
+          onEmptyCanvas={useEmptyCanvas}
+          onOpenChange={setTemplateOpen}
+          onSelect={setTemplateSelection}
+          onUseTemplate={useTemplate}
+        />
+      )}
 
-      <TemplateChooser
-        framework={framework}
-        open={templateOpen}
-        selected={selectedTemplate}
-        selectedId={templateSelection}
-        theme={theme}
-        onEmptyCanvas={useEmptyCanvas}
-        onOpenChange={setTemplateOpen}
-        onSelect={setTemplateSelection}
-        onUseTemplate={useTemplate}
+      <ExportGateDialog
+        isAuthenticated={isAuthenticated}
+        open={exportGateOpen}
+        onOpenChange={setExportGateOpen}
       />
     </div>
   );
@@ -804,39 +904,46 @@ export function StudioBuilder() {
 
 function StudioToolbar({
   activeTemplate,
-  code,
+  canExport,
   framework,
+  isExportLoading,
   leftOpen,
-  onCopyCode,
-  onDownloadCode,
   onFrameworkChange,
   onLeftOpenChange,
   onOpenTemplates,
+  onRequestExport,
   onRightOpenChange,
   onSave,
   rightOpen,
 }: {
   activeTemplate: StudioTemplate | null;
-  code: string;
+  canExport: boolean;
   framework: Framework;
+  isExportLoading: boolean;
   leftOpen: boolean;
-  onCopyCode: () => void;
-  onDownloadCode: () => void;
   onFrameworkChange: (framework: Framework) => void;
   onLeftOpenChange: (open: boolean) => void;
   onOpenTemplates: () => void;
+  onRequestExport: (kind: StudioExport) => void;
   onRightOpenChange: (open: boolean) => void;
   onSave: () => void;
   rightOpen: boolean;
 }) {
+  let exportIcon = <LockIcon />;
+  if (isExportLoading) {
+    exportIcon = <LoaderCircleIcon className="animate-spin" />;
+  } else if (canExport) {
+    exportIcon = <DownloadIcon />;
+  }
+
   return (
-    <header className="flex h-14 shrink-0 items-center border-b border-white/8 bg-[#181819] px-3">
+    <header className="bg-background relative flex h-14 shrink-0 items-center border-b px-3">
       <div className="flex min-w-0 flex-1 items-center gap-2">
-        <div className="flex items-center gap-2 border-r border-white/8 pr-3">
-          <LogoMark className="size-5 text-emerald-400" />
+        <div className="flex items-center gap-2 border-r pr-3">
+          <LogoMark className="size-5" />
           <span className="hidden text-sm font-semibold tracking-tight sm:inline">
             termcn
-            <span className="text-neutral-500">.studio</span>
+            <span className="text-muted-foreground">.studio</span>
           </span>
         </div>
         <StudioIconButton
@@ -847,7 +954,7 @@ function StudioToolbar({
         </StudioIconButton>
       </div>
 
-      <div className="pointer-events-none absolute left-1/2 max-w-[32vw] -translate-x-1/2 truncate text-sm font-medium text-neutral-400">
+      <div className="text-muted-foreground pointer-events-none absolute left-1/2 max-w-[28vw] -translate-x-1/2 truncate text-sm font-medium">
         {activeTemplate?.id ?? "my-tui-app"}
       </div>
 
@@ -866,7 +973,7 @@ function StudioToolbar({
         >
           <Redo2Icon />
         </StudioIconButton>
-        <span className="mx-1 hidden h-5 w-px bg-white/8 sm:block" />
+        <span className="bg-border mx-1 hidden h-5 w-px sm:block" />
         <StudioIconButton label="Save project" onClick={onSave}>
           <SaveIcon />
         </StudioIconButton>
@@ -877,7 +984,7 @@ function StudioToolbar({
           <DropdownMenuTrigger asChild>
             <Button
               aria-label="Open project menu"
-              className="size-8 rounded-lg text-neutral-400 hover:bg-white/8 hover:text-neutral-100"
+              className="text-muted-foreground size-8 rounded-lg"
               size="icon-sm"
               sound="click"
               variant="ghost"
@@ -885,110 +992,102 @@ function StudioToolbar({
               <BoxesIcon />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent
-            align="end"
-            className="dark w-60 border-white/10 bg-neutral-900 p-1.5 text-neutral-100"
-          >
+          <DropdownMenuContent align="end" className="w-60 p-1.5">
             <DropdownMenuItem onSelect={onOpenTemplates}>
               <BoxesIcon />
               <div className="flex flex-col">
                 <span>Template gallery</span>
-                <span className="text-[10px] text-neutral-500">
+                <span className="text-muted-foreground text-[10px]">
                   Start from a complete screen
                 </span>
               </div>
             </DropdownMenuItem>
-            <DropdownMenuItem onSelect={onDownloadCode}>
+            <DropdownMenuItem onSelect={() => onRequestExport("file")}>
               <FileCode2Icon />
               <div className="flex flex-col">
                 <span>TypeScript file</span>
-                <span className="text-[10px] text-neutral-500">
+                <span className="text-muted-foreground text-[10px]">
                   Download App.tsx
                 </span>
               </div>
+              {!canExport && <LockIcon className="ml-auto" />}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onSelect={onCopyCode}>
+            <DropdownMenuItem onSelect={() => onRequestExport("copy")}>
               <CopyIcon />
               Copy code
+              {!canExport && <LockIcon className="ml-auto" />}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        <span className="mx-1 h-5 w-px bg-white/8" />
-        <select
+        <ModeSwitcher />
+        <span className="bg-border mx-1 h-5 w-px" />
+        <NativeSelect
           aria-label="Renderer"
-          className="h-9 rounded-lg border border-blue-500/40 bg-blue-500/10 px-3 text-xs font-medium text-blue-300 outline-none focus:border-blue-400"
+          className="w-28 font-mono"
+          size="sm"
           value={framework}
           onChange={(event) =>
             onFrameworkChange(event.target.value as Framework)
           }
         >
-          <option value="ink">Ink v6</option>
-          <option value="opentui">OpenTUI</option>
-        </select>
+          <NativeSelectOption value="ink">Ink v6</NativeSelectOption>
+          <NativeSelectOption value="opentui">OpenTUI</NativeSelectOption>
+        </NativeSelect>
         <DropdownMenu>
           <div className="flex">
             <Button
-              className="h-9 rounded-r-none bg-emerald-600 px-3 text-white hover:bg-emerald-500"
-              onClick={onDownloadCode}
+              className="h-8 rounded-r-none px-3"
+              disabled={isExportLoading}
+              onClick={() => onRequestExport("file")}
               sound="click"
+              variant={canExport ? "default" : "outline"}
             >
-              <DownloadIcon />
-              <span className="hidden sm:inline">Export</span>
+              {exportIcon}
+              <span className="hidden xl:inline">Export</span>
             </Button>
             <DropdownMenuTrigger asChild>
               <Button
                 aria-label="Open export menu"
-                className="h-9 rounded-l-none border-l border-white/15 bg-emerald-600 px-2 text-white hover:bg-emerald-500"
+                className="h-8 rounded-l-none border-l px-2"
                 sound="click"
+                variant={canExport ? "default" : "outline"}
               >
                 <ChevronDownIcon />
               </Button>
             </DropdownMenuTrigger>
           </div>
-          <DropdownMenuContent
-            align="end"
-            className="dark w-64 border-white/10 bg-neutral-900 p-1.5 text-neutral-100"
-          >
-            <DropdownMenuItem
-              onSelect={() => {
-                navigator.clipboard.writeText(
-                  `pnpm dlx termcn@latest studio --template ${activeTemplate?.id ?? "blank"}`
-                );
-                toast.success("Project command copied");
-              }}
-            >
+          <DropdownMenuContent align="end" className="w-64 p-1.5">
+            <DropdownMenuItem onSelect={() => onRequestExport("project")}>
               <TerminalIcon />
               <div className="flex flex-col">
                 <span>npm project</span>
-                <span className="text-[10px] text-neutral-500">
+                <span className="text-muted-foreground text-[10px]">
                   package.json + App.tsx
                 </span>
               </div>
+              {!canExport && <LockIcon className="ml-auto" />}
             </DropdownMenuItem>
-            <DropdownMenuItem onSelect={onDownloadCode}>
+            <DropdownMenuItem onSelect={() => onRequestExport("file")}>
               <FileCode2Icon />
               <div className="flex flex-col">
                 <span>TypeScript file</span>
-                <span className="text-[10px] text-neutral-500">
+                <span className="text-muted-foreground text-[10px]">
                   App.tsx only
                 </span>
               </div>
+              {!canExport && <LockIcon className="ml-auto" />}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onSelect={() => {
-                navigator.clipboard.writeText(code);
-                toast.success("TypeScript copied");
-              }}
-            >
+            <DropdownMenuItem onSelect={() => onRequestExport("copy")}>
               <CopyIcon />
               <div className="flex flex-col">
                 <span>Copy code</span>
-                <span className="text-[10px] text-neutral-500">
+                <span className="text-muted-foreground text-[10px]">
                   Copy TypeScript code
                 </span>
               </div>
+              {!canExport && <LockIcon className="ml-auto" />}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -1010,20 +1109,21 @@ function StudioIconButton({
   ...props
 }: React.ComponentProps<typeof Button> & { label: string }) {
   return (
-    <Button
-      aria-label={label}
-      className={cn(
-        "size-8 rounded-lg text-neutral-500 hover:bg-white/8 hover:text-neutral-100",
-        className
-      )}
-      size="icon-sm"
-      sound="click"
-      title={label}
-      variant="ghost"
-      {...props}
-    >
-      {children}
-    </Button>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button
+          aria-label={label}
+          className={cn("text-muted-foreground size-8 rounded-lg", className)}
+          size="icon-sm"
+          sound="click"
+          variant="ghost"
+          {...props}
+        >
+          {children}
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent sideOffset={6}>{label}</TooltipContent>
+    </Tooltip>
   );
 }
 
@@ -1043,31 +1143,35 @@ function PanelTabs<T extends string>({
   }[];
 }) {
   return (
-    <div className="flex h-12 shrink-0 items-stretch border-b border-white/8 px-3">
-      {tabs.map((tab) => {
-        const Icon = tab.icon;
-        const selected = active === tab.id;
-        return (
-          <button
-            aria-pressed={selected}
-            className={cn(
-              "relative flex min-w-0 items-center justify-center gap-2 px-3 text-xs font-medium text-neutral-500 outline-none hover:text-neutral-200 focus-visible:ring-1 focus-visible:ring-emerald-400/60",
-              fill ? "flex-1" : "min-w-24",
-              selected && "text-neutral-100"
-            )}
-            key={tab.id}
-            type="button"
-            onClick={() => onChange(tab.id)}
-          >
-            <Icon className="size-4" />
-            {tab.label}
-            {selected && (
-              <span className="absolute inset-x-0 bottom-0 h-px bg-emerald-400" />
-            )}
-          </button>
-        );
-      })}
-    </div>
+    <Tabs
+      className="h-12 shrink-0 gap-0 border-b px-3"
+      value={active}
+      onValueChange={(value) => onChange(value as T)}
+    >
+      <TabsList
+        className={cn(
+          "h-full gap-1 rounded-none bg-transparent p-0",
+          fill ? "w-full" : "w-fit"
+        )}
+      >
+        {tabs.map((tab) => {
+          const Icon = tab.icon;
+          return (
+            <TabsTrigger
+              className={cn(
+                "data-[state=active]:border-primary relative h-full rounded-none border-x-0 border-t-0 border-b-2 border-transparent bg-transparent px-3 text-xs shadow-none data-[state=active]:bg-transparent data-[state=active]:shadow-none",
+                fill ? "flex-1" : "min-w-24"
+              )}
+              key={tab.id}
+              value={tab.id}
+            >
+              <Icon className="size-4" />
+              {tab.label}
+            </TabsTrigger>
+          );
+        })}
+      </TabsList>
+    </Tabs>
   );
 }
 
@@ -1100,9 +1204,9 @@ function LayersPanel({
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <div className="flex h-11 shrink-0 items-center border-b border-white/6 px-3">
-        <Layers3Icon className="mr-2 size-4 text-neutral-500" />
-        <span className="text-[11px] font-semibold tracking-wider text-neutral-500 uppercase">
+      <div className="flex h-11 shrink-0 items-center border-b px-3">
+        <Layers3Icon className="text-muted-foreground mr-2 size-4" />
+        <span className="text-muted-foreground text-[11px] font-semibold tracking-wider uppercase">
           Layers
         </span>
         <div className="ml-auto flex items-center gap-0.5">
@@ -1134,7 +1238,7 @@ function LayersPanel({
           onToggle={toggleExpanded}
         />
       </div>
-      <div className="border-t border-white/6 px-3 py-2 text-[10px] text-neutral-600">
+      <div className="text-muted-foreground border-t px-3 py-2 text-[10px]">
         {getAllIds(layers).length} widgets
       </div>
     </div>
@@ -1168,41 +1272,42 @@ function LayerRows({
       <div key={node.id}>
         <div
           className={cn(
-            "group flex h-8 items-center pr-2 text-xs text-neutral-400 hover:bg-white/4 hover:text-neutral-100",
-            selected && "bg-blue-500/20 text-blue-200 hover:bg-blue-500/20"
+            "group hover:bg-muted flex h-8 items-center pr-2 text-xs",
+            selected && "bg-accent text-accent-foreground"
           )}
           style={{ paddingLeft: 6 + depth * 16 }}
         >
-          <button
+          <Button
             aria-label={
               open ? `Collapse ${node.label}` : `Expand ${node.label}`
             }
             className={cn(
-              "flex size-5 shrink-0 items-center justify-center rounded outline-none hover:bg-white/8 focus-visible:ring-1 focus-visible:ring-blue-400",
+              "size-5 shrink-0 rounded",
               !hasChildren && "pointer-events-none opacity-0"
             )}
-            type="button"
+            size="icon-sm"
+            variant="ghost"
             onClick={() => hasChildren && onToggle(node.id)}
           >
             <ChevronRightIcon
               className={cn("size-3 transition-transform", open && "rotate-90")}
             />
-          </button>
-          <button
-            className="flex min-w-0 flex-1 items-center gap-2 text-left outline-none focus-visible:text-blue-200"
-            type="button"
+          </Button>
+          <Button
+            className="h-8 min-w-0 flex-1 justify-start gap-2 px-1 text-left text-xs font-normal"
+            variant="ghost"
             onClick={() => onSelect(node.id)}
           >
-            <Icon className="size-3.5 shrink-0 text-neutral-500" />
+            <Icon className="text-muted-foreground size-3.5 shrink-0" />
             <span className="truncate">
               {renamedLayers[node.id] ?? node.label}
             </span>
             {hasChildren && (
-              <span className="ml-auto text-[10px] text-neutral-600">
+              <span className="text-muted-foreground ml-auto text-[10px]">
                 {node.children?.length}
               </span>
             )}
-          </button>
+          </Button>
         </div>
         {hasChildren && open && (
           <LayerRows
@@ -1239,13 +1344,11 @@ function AssetsPanel({
 }) {
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <div className="flex h-11 shrink-0 items-center gap-2 border-b border-white/6 px-3">
-        <span className="text-[11px] font-semibold tracking-wider text-neutral-500 uppercase">
+      <div className="flex h-11 shrink-0 items-center gap-2 border-b px-3">
+        <span className="text-muted-foreground text-[11px] font-semibold tracking-wider uppercase">
           Components
         </span>
-        <span className="rounded bg-white/6 px-1.5 py-0.5 text-[9px] text-neutral-500">
-          {ASSETS.length}
-        </span>
+        <Badge variant="secondary">{ASSETS.length}</Badge>
         <StudioIconButton
           className="ml-auto"
           label="Close assets panel"
@@ -1254,12 +1357,12 @@ function AssetsPanel({
           <XIcon />
         </StudioIconButton>
       </div>
-      <div className="border-b border-white/6 p-3">
+      <div className="border-b p-3">
         <div className="relative">
-          <SearchIcon className="pointer-events-none absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2 text-neutral-600" />
+          <SearchIcon className="text-muted-foreground pointer-events-none absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2" />
           <Input
             aria-label="Search widgets"
-            className="h-8 border-white/8 bg-white/3 pl-8 text-xs text-neutral-200 placeholder:text-neutral-600"
+            className="h-8 pl-8 text-xs"
             placeholder="Search widgets..."
             value={search}
             onChange={(event) => onSearchChange(event.target.value)}
@@ -1267,17 +1370,15 @@ function AssetsPanel({
         </div>
         <div className="no-scrollbar mt-2 flex gap-1 overflow-x-auto">
           {ASSET_CATEGORIES.map((item) => (
-            <button
-              className={cn(
-                "rounded-full px-2 py-1 text-[9px] font-medium whitespace-nowrap text-neutral-500 hover:bg-white/6 hover:text-neutral-200",
-                category === item && "bg-blue-500/15 text-blue-300"
-              )}
+            <Button
+              className="h-6 rounded-full px-2 text-[9px]"
               key={item}
-              type="button"
+              size="sm"
+              variant={category === item ? "secondary" : "ghost"}
               onClick={() => onCategoryChange(item)}
             >
               {item}
-            </button>
+            </Button>
           ))}
         </div>
       </div>
@@ -1285,15 +1386,15 @@ function AssetsPanel({
         {items.map((item) => {
           const Icon = item.icon;
           return (
-            <button
-              className="group flex min-h-16 flex-col items-center justify-center gap-1.5 rounded-lg border border-white/6 bg-white/2 p-2 text-[9px] text-neutral-500 outline-none hover:border-emerald-400/25 hover:bg-emerald-400/5 hover:text-neutral-200 focus-visible:border-emerald-400/60"
+            <Button
+              className="group text-muted-foreground hover:text-foreground min-h-16 h-auto flex-col gap-1.5 p-2 text-[9px] font-normal"
               key={item.label}
-              type="button"
+              variant="outline"
               onClick={() => onAdd(item.label)}
             >
-              <Icon className="size-4 text-neutral-500 group-hover:text-emerald-300" />
+              <Icon className="size-4" />
               <span className="line-clamp-2">{item.label}</span>
-            </button>
+            </Button>
           );
         })}
       </div>
@@ -1306,61 +1407,72 @@ function BuildCanvas({
   framework,
   onOpenTemplates,
   selectedLayer,
+  selectedLayerId,
   theme,
 }: {
   activeTemplate: StudioTemplate | null;
   framework: Framework;
   onOpenTemplates: () => void;
   selectedLayer: LayerNode | null;
+  selectedLayerId: string | null;
   theme: ThemeSlug;
 }) {
   if (!activeTemplate) {
     return (
-      <div className="flex min-h-0 flex-1 items-center justify-center bg-[#1d1d1f] p-8">
-        <button
-          className="flex min-h-64 w-full max-w-2xl flex-col items-center justify-center gap-4 rounded-xl border border-dashed border-white/12 bg-white/2 text-neutral-500 outline-none hover:border-emerald-400/30 hover:bg-emerald-400/3 focus-visible:border-emerald-400"
-          type="button"
+      <div className="flex min-h-0 flex-1 items-center justify-center p-8">
+        <Button
+          className="text-muted-foreground hover:text-foreground min-h-64 h-auto w-full max-w-2xl flex-col gap-4 border-dashed"
+          variant="outline"
           onClick={onOpenTemplates}
         >
-          <div className="flex size-12 items-center justify-center rounded-xl border border-white/8 bg-white/4">
+          <span className="bg-muted flex size-12 items-center justify-center rounded-xl border">
             <PlusIcon className="size-5" />
-          </div>
-          <div className="text-center">
-            <p className="text-sm font-medium text-neutral-300">
+          </span>
+          <span className="text-center">
+            <span className="text-foreground block text-sm font-medium">
               Start with a template
-            </p>
-            <p className="mt-1 text-xs">
+            </span>
+            <span className="mt-1 block text-xs">
               Or add components from the Assets panel
-            </p>
-          </div>
-        </button>
+            </span>
+          </span>
+        </Button>
       </div>
     );
   }
 
   return (
-    <div className="relative flex min-h-0 flex-1 overflow-auto bg-[#1d1d1f] p-3">
+    <div className="bg-muted/30 relative flex min-h-0 flex-1 overflow-auto p-4">
       <div
         className={cn(
-          "m-auto w-full min-w-[680px] max-w-[1280px] overflow-hidden border border-white/8 bg-black shadow-2xl shadow-black/20",
-          selectedLayer && "ring-1 ring-blue-500/70"
+          "bg-card relative m-auto w-full min-w-[680px] max-w-[1280px] overflow-hidden rounded-lg border shadow-xl",
+          selectedLayerId === "root" && "ring-primary ring-2 ring-offset-2"
         )}
       >
         {activeTemplate.id === "git-status" ? (
-          <GitStatusStudioPreview theme={theme} />
-        ) : (
-          <TerminalPreview
-            base={framework}
-            name={activeTemplate.preview}
-            rows={38}
+          <GitStatusStudioPreview
+            selectedLayerId={selectedLayerId}
             theme={theme}
           />
+        ) : (
+          <>
+            <TerminalPreview
+              base={framework}
+              name={activeTemplate.preview}
+              rows={38}
+              theme={theme}
+            />
+            <GenericSelectionOverlay layerId={selectedLayerId} />
+          </>
         )}
       </div>
       {selectedLayer && (
-        <div className="pointer-events-none absolute right-5 bottom-5 rounded-md border border-blue-400/30 bg-blue-500/15 px-2 py-1 text-[10px] text-blue-200 backdrop-blur">
+        <Badge
+          className="pointer-events-none absolute right-5 bottom-5 shadow-sm"
+          variant="secondary"
+        >
           Editing {selectedLayer.label}
-        </div>
+        </Badge>
       )}
     </div>
   );
@@ -1368,12 +1480,18 @@ function BuildCanvas({
 
 function GitStatusStudioPreview({
   compact = false,
+  selectedLayerId = null,
   theme,
 }: {
   compact?: boolean;
+  selectedLayerId?: string | null;
   theme: ThemeSlug;
 }) {
   const colors = STUDIO_THEME_STYLES[theme];
+  const selectedClass = (id: string) =>
+    !compact &&
+    selectedLayerId === id &&
+    "relative z-10 ring-2 ring-blue-500 ring-inset bg-blue-500/10";
   const files = [
     ["src/lib/template.ts", "modified"],
     ["src/components/app.tsx", "modified"],
@@ -1384,7 +1502,8 @@ function GitStatusStudioPreview({
     <div
       className={cn(
         "flex w-full flex-col overflow-hidden font-mono",
-        compact ? "h-[360px] text-[10px]" : "min-h-[680px] text-sm"
+        compact ? "h-[360px] text-[10px]" : "min-h-[680px] text-sm",
+        selectedClass("root")
       )}
       style={{
         backgroundColor: colors.background,
@@ -1394,18 +1513,28 @@ function GitStatusStudioPreview({
       <div
         className={cn(
           "flex shrink-0 items-center border px-4",
-          compact ? "m-2 h-9" : "m-4 h-12"
+          compact ? "m-2 h-9" : "m-4 h-12",
+          selectedClass("header")
         )}
         style={{ backgroundColor: colors.surface, borderColor: colors.border }}
       >
-        <span className="font-semibold" style={{ color: colors.accent }}>
+        <span
+          className={cn("font-semibold", selectedClass("branch"))}
+          style={{ color: colors.accent }}
+        >
           On branch feature/template-frameworks
         </span>
-        <span className="ml-3" style={{ color: colors.primary }}>
+        <span
+          className={cn("ml-3", selectedClass("ahead"))}
+          style={{ color: colors.primary }}
+        >
           [ahead 2]
         </span>
         <span
-          className="ml-auto hidden sm:inline"
+          className={cn("min-w-3 flex-1", selectedClass("header-spacer"))}
+        />
+        <span
+          className={cn("hidden sm:inline", selectedClass("hint"))}
           style={{ color: colors.muted }}
         >
           working tree has pending changes
@@ -1415,15 +1544,22 @@ function GitStatusStudioPreview({
       <div
         className={cn(
           "grid min-h-0 flex-1 grid-cols-[minmax(190px,0.8fr)_minmax(320px,1.8fr)]",
-          compact ? "gap-2 px-2" : "gap-4 px-4"
+          compact ? "gap-2 px-2" : "gap-4 px-4",
+          selectedClass("body")
         )}
       >
         <section
-          className="flex min-h-0 flex-col border p-4"
+          className={cn(
+            "flex min-h-0 flex-col border p-4",
+            selectedClass("status-pane")
+          )}
           style={{ borderColor: colors.border }}
         >
           <div
-            className="grid grid-cols-[1.5fr_1fr] border"
+            className={cn(
+              "grid grid-cols-[1.5fr_1fr] border",
+              selectedClass("changed-files")
+            )}
             style={{ borderColor: colors.border }}
           >
             {["File", "State"].map((label) => (
@@ -1446,11 +1582,14 @@ function GitStatusStudioPreview({
           </div>
 
           <div
-            className="my-5 h-px"
+            className={cn("my-5 h-px", selectedClass("status-separator"))}
             style={{ backgroundColor: colors.border }}
           />
 
-          <div className="border p-2" style={{ borderColor: colors.border }}>
+          <div
+            className={cn("border p-2", selectedClass("staged-files"))}
+            style={{ borderColor: colors.border }}
+          >
             <div
               className="px-2 py-1"
               style={{
@@ -1466,14 +1605,20 @@ function GitStatusStudioPreview({
         </section>
 
         <section
-          className="flex min-h-0 flex-col border p-5"
+          className={cn(
+            "flex min-h-0 flex-col border p-5",
+            selectedClass("diff-pane")
+          )}
           style={{ borderColor: colors.border }}
         >
-          <h3 className="font-semibold">Diff Preview</h3>
+          <h3 className={cn("font-semibold", selectedClass("diff-title"))}>
+            Diff Preview
+          </h3>
           <pre
             className={cn(
               "mt-5 min-h-0 flex-1 overflow-hidden border p-4 whitespace-pre-wrap",
-              compact ? "leading-4" : "leading-6"
+              compact ? "leading-4" : "leading-6",
+              selectedClass("diff")
             )}
             style={{ borderColor: colors.border }}
           >
@@ -1487,7 +1632,10 @@ function GitStatusStudioPreview({
 +  if (t.frameworks) return t.frameworks.includes(framework);
  });`}
           </pre>
-          <div className="mt-4 shrink-0" style={{ color: colors.primary }}>
+          <div
+            className={cn("mt-4 shrink-0", selectedClass("unstaged"))}
+            style={{ color: colors.primary }}
+          >
             [2 files unstaged]
           </div>
         </section>
@@ -1496,7 +1644,8 @@ function GitStatusStudioPreview({
       <div
         className={cn(
           "flex shrink-0 items-center gap-6 px-5",
-          compact ? "h-8" : "h-12"
+          compact ? "h-8" : "h-12",
+          selectedClass("helpbar")
         )}
       >
         {[
@@ -1516,26 +1665,126 @@ function GitStatusStudioPreview({
   );
 }
 
-function CodeCanvas({ code, onCopy }: { code: string; onCopy: () => void }) {
+const GENERIC_LAYER_BOUNDS: Record<string, string> = {
+  body: "top-[19%] right-[3%] bottom-[12%] left-[3%]",
+  content: "top-[25%] right-[8%] bottom-[34%] left-[8%]",
+  "content-list": "right-[8%] bottom-[17%] left-[8%] h-[14%]",
+  "content-separator": "top-[64%] right-[8%] left-[8%] h-3",
+  header: "top-[3%] right-[3%] left-[3%] h-[14%]",
+  "header-hint": "top-[7%] right-[6%] h-[6%] w-[24%]",
+  helpbar: "right-[3%] bottom-[3%] left-[3%] h-[7%]",
+  root: "inset-0",
+  title: "top-[7%] left-[6%] h-[6%] w-[28%]",
+};
+
+function GenericSelectionOverlay({ layerId }: { layerId: string | null }) {
+  if (!layerId) {
+    return null;
+  }
+
   return (
-    <div className="flex min-h-0 flex-1 flex-col bg-[#202a35]">
-      <div className="flex h-10 shrink-0 items-center border-b border-white/8 bg-[#19212a] px-4">
-        <FileCode2Icon className="mr-2 size-3.5 text-blue-300" />
-        <span className="text-xs text-neutral-300">App.tsx</span>
+    <div
+      aria-hidden="true"
+      className={cn(
+        "pointer-events-none absolute z-20 rounded-sm bg-blue-500/10 ring-2 ring-blue-500 ring-inset",
+        GENERIC_LAYER_BOUNDS[layerId] ?? "inset-[8%]"
+      )}
+    >
+      <Badge className="absolute top-2 left-2 shadow-sm" variant="secondary">
+        {layerId}
+      </Badge>
+    </div>
+  );
+}
+
+function CodeEditorSkeleton() {
+  return (
+    <div className="bg-background grid h-full gap-3 p-5">
+      {Array.from({ length: 10 }, (_, index) => (
+        <Skeleton
+          className={cn("h-4", index % 3 === 0 ? "w-3/5" : "w-4/5")}
+          key={index}
+        />
+      ))}
+    </div>
+  );
+}
+
+function CodeCanvas({
+  canExport,
+  code,
+  framework,
+  onChange,
+  onCopy,
+}: {
+  canExport: boolean;
+  code: string;
+  framework: Framework;
+  onChange: (value: string) => void;
+  onCopy: () => void;
+}) {
+  const { resolvedTheme } = useTheme();
+
+  return (
+    <div className="bg-background flex min-h-0 flex-1 flex-col">
+      <div className="bg-muted/40 flex h-10 shrink-0 items-center border-b px-4">
+        <FileCode2Icon className="text-muted-foreground mr-2 size-3.5" />
+        <span className="font-mono text-xs">App.tsx</span>
+        <Badge className="ml-2" variant="secondary">
+          {framework === "ink" ? "Ink v6" : "OpenTUI"}
+        </Badge>
         <Button
-          className="ml-auto h-7 border-white/8 bg-white/3 text-[10px] text-neutral-300 hover:bg-white/8"
+          className="ml-auto h-7 text-[10px]"
           onClick={onCopy}
           size="sm"
           sound="copy"
           variant="outline"
         >
-          <CopyIcon />
+          {canExport ? <CopyIcon /> : <LockIcon />}
           Copy
         </Button>
       </div>
-      <pre className="no-scrollbar min-h-0 flex-1 overflow-auto p-6 font-mono text-xs leading-6 text-neutral-300">
-        <code>{code}</code>
-      </pre>
+      <div className="min-h-0 flex-1">
+        <MonacoEditor
+          beforeMount={(monaco) => {
+            monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions(
+              {
+                noSemanticValidation: true,
+              }
+            );
+            monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
+              allowNonTsExtensions: true,
+              jsx: monaco.languages.typescript.JsxEmit.ReactJSX,
+              target: monaco.languages.typescript.ScriptTarget.ES2022,
+            });
+          }}
+          language="typescript"
+          loading={<CodeEditorSkeleton />}
+          path={`${framework}/App.tsx`}
+          theme={resolvedTheme === "dark" ? "vs-dark" : "light"}
+          value={code}
+          onChange={(value) => onChange(value ?? "")}
+          options={{
+            automaticLayout: true,
+            bracketPairColorization: { enabled: true },
+            cursorBlinking: "smooth",
+            cursorSmoothCaretAnimation: "on",
+            fontFamily:
+              "var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+            fontLigatures: true,
+            fontSize: 13,
+            lineHeight: 22,
+            minimap: { enabled: true, scale: 1 },
+            padding: { bottom: 16, top: 16 },
+            renderLineHighlight: "all",
+            roundedSelection: true,
+            scrollBeyondLastLine: false,
+            smoothScrolling: true,
+            tabSize: 2,
+            wordWrap: "on",
+          }}
+        />
+      </div>
     </div>
   );
 }
@@ -1581,9 +1830,9 @@ function PropertiesPanel({
 }) {
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <div className="flex h-12 shrink-0 items-center border-b border-white/8 px-3">
-        <SlidersHorizontalIcon className="mr-2 size-4 text-neutral-500" />
-        <span className="text-[11px] font-semibold tracking-wider text-neutral-500 uppercase">
+      <div className="flex h-12 shrink-0 items-center border-b px-3">
+        <SlidersHorizontalIcon className="text-muted-foreground mr-2 size-4" />
+        <span className="text-muted-foreground text-[11px] font-semibold tracking-wider uppercase">
           Properties
         </span>
         <StudioIconButton
@@ -1601,15 +1850,11 @@ function PropertiesPanel({
             {STUDIO_THEMES.map((item) => {
               const selected = theme === item.slug;
               return (
-                <button
+                <Button
                   aria-pressed={selected}
-                  className={cn(
-                    "flex min-h-14 flex-col items-center justify-center gap-1.5 rounded-lg border border-white/8 bg-white/2 px-1 text-[9px] text-neutral-500 outline-none hover:border-white/15 hover:text-neutral-200 focus-visible:border-emerald-400",
-                    selected &&
-                      "border-emerald-400/80 bg-emerald-400/8 text-emerald-300"
-                  )}
+                  className="min-h-14 h-auto flex-col gap-1.5 px-1 text-[9px] font-normal"
                   key={item.slug}
-                  type="button"
+                  variant={selected ? "secondary" : "outline"}
                   onClick={() => onThemeChange(item.slug)}
                 >
                   <span className="flex items-center -space-x-0.5">
@@ -1622,7 +1867,7 @@ function PropertiesPanel({
                     ))}
                   </span>
                   <span className="line-clamp-2 leading-3">{item.label}</span>
-                </button>
+                </Button>
               );
             })}
           </div>
@@ -1633,15 +1878,15 @@ function PropertiesPanel({
             <InspectorSection label="Component">
               <InspectorField label="Name">
                 <Input
-                  className="h-7 border-white/8 bg-white/3 px-2 text-[11px] text-neutral-200"
+                  className="h-7 px-2 text-[11px]"
                   value={renamedLayers[selectedLayer.id] ?? selectedLayer.label}
                   onChange={(event) => onNameChange(event.target.value)}
                 />
               </InspectorField>
               <div className="mt-2">
-                <span className="rounded bg-white/6 px-1.5 py-1 font-mono text-[9px] text-neutral-500">
+                <Badge className="font-mono text-[9px]" variant="secondary">
                   {selectedLayer.kind}
-                </span>
+                </Badge>
               </div>
             </InspectorSection>
 
@@ -1668,7 +1913,7 @@ function PropertiesPanel({
               </div>
 
               <InspectorField className="mt-3" label="Align">
-                <div className="grid grid-cols-3 overflow-hidden rounded border border-white/8">
+                <div className="grid grid-cols-3 overflow-hidden rounded-md border">
                   {[
                     { icon: AlignLeftIcon, value: "left" as const },
                     { icon: AlignCenterIcon, value: "center" as const },
@@ -1676,19 +1921,20 @@ function PropertiesPanel({
                   ].map((item) => {
                     const Icon = item.icon;
                     return (
-                      <button
+                      <Toggle
                         aria-label={`Align ${item.value}`}
-                        aria-pressed={align === item.value}
-                        className={cn(
-                          "flex h-7 items-center justify-center border-r border-white/8 text-neutral-600 last:border-r-0 hover:bg-white/5 hover:text-neutral-300",
-                          align === item.value && "bg-blue-500/20 text-blue-300"
-                        )}
+                        className="h-7 rounded-none border-r last:border-r-0"
                         key={item.value}
-                        type="button"
-                        onClick={() => onAlignChange(item.value)}
+                        pressed={align === item.value}
+                        size="sm"
+                        onPressedChange={(pressed) => {
+                          if (pressed) {
+                            onAlignChange(item.value);
+                          }
+                        }}
                       >
                         <Icon className="size-3.5" />
-                      </button>
+                      </Toggle>
                     );
                   })}
                 </div>
@@ -1701,17 +1947,15 @@ function PropertiesPanel({
               <InspectorField className="mt-3" label="Border">
                 <div className="grid grid-cols-8 gap-1">
                   {Array.from({ length: 8 }, (_, index) => (
-                    <button
+                    <Button
                       aria-label={`Border style ${index + 1}`}
-                      className={cn(
-                        "h-7 rounded border border-white/8 bg-white/2 text-[10px] text-neutral-600 hover:bg-white/7",
-                        index === 0 && "border-blue-500/70 bg-blue-500/15"
-                      )}
+                      className="h-7 px-0 text-[10px]"
                       key={index}
-                      type="button"
+                      size="sm"
+                      variant={index === 0 ? "secondary" : "outline"}
                     >
                       {getBorderGlyph(index)}
-                    </button>
+                    </Button>
                   ))}
                 </div>
               </InspectorField>
@@ -1739,35 +1983,39 @@ function PropertiesPanel({
                 />
               </div>
               <InspectorField className="mt-3" label="FG Color">
-                <select
-                  className="h-8 w-full rounded border border-white/8 bg-white/3 px-2 text-[11px] text-neutral-300 outline-none"
+                <NativeSelect
+                  className="w-full text-[11px]"
+                  size="sm"
                   value={color}
                   onChange={(event) => onColorChange(event.target.value)}
                 >
                   {["Green", "Cyan", "Blue", "Yellow", "Magenta", "Reset"].map(
                     (item) => (
-                      <option key={item}>{item}</option>
+                      <NativeSelectOption key={item}>{item}</NativeSelectOption>
                     )
                   )}
-                </select>
+                </NativeSelect>
               </InspectorField>
             </InspectorSection>
 
             <InspectorSection label="Content">
-              <textarea
+              <Textarea
                 aria-label="Component content"
-                className="min-h-20 w-full resize-none rounded border border-white/8 bg-white/3 p-2 text-[11px] leading-5 text-neutral-300 outline-none focus:border-blue-500/60"
+                className="min-h-20 resize-none text-[11px] leading-5"
                 value={content}
                 onChange={(event) => onContentChange(event.target.value)}
               />
-              <label className="mt-2 flex items-center gap-2 text-[10px] text-neutral-500">
-                <input type="checkbox" />
+              <label
+                className="text-muted-foreground mt-3 flex items-center gap-2 text-[10px]"
+                htmlFor="studio-wrap-content"
+              >
+                <Switch id="studio-wrap-content" />
                 Wrap
               </label>
             </InspectorSection>
           </>
         ) : (
-          <div className="flex min-h-72 items-center justify-center px-6 text-center text-xs text-neutral-600">
+          <div className="text-muted-foreground flex min-h-72 items-center justify-center px-6 text-center text-xs">
             Select a component to edit
           </div>
         )}
@@ -1784,8 +2032,8 @@ function InspectorSection({
   label: string;
 }) {
   return (
-    <section className="border-b border-white/6 p-4">
-      <div className="mb-3 flex items-center gap-2 text-[10px] font-semibold tracking-wider text-neutral-500 uppercase">
+    <section className="border-b p-4">
+      <div className="text-muted-foreground mb-3 flex items-center gap-2 text-[10px] font-semibold tracking-wider uppercase">
         <ChevronDownIcon className="size-3" />
         {label}
       </div>
@@ -1805,7 +2053,9 @@ function InspectorField({
 }) {
   return (
     <label className={cn("block", className)}>
-      <span className="mb-1 block text-[9px] text-neutral-600">{label}</span>
+      <span className="text-muted-foreground mb-1 block text-[9px]">
+        {label}
+      </span>
       {children}
     </label>
   );
@@ -1813,13 +2063,13 @@ function InspectorField({
 
 function UnitInput({ value }: { value: string }) {
   return (
-    <div className="flex h-7 overflow-hidden rounded border border-white/8 bg-white/3">
-      <input
+    <div className="flex h-7 overflow-hidden rounded-md border">
+      <Input
         aria-label="Property value"
-        className="min-w-0 flex-1 bg-transparent px-2 text-[10px] text-neutral-400 outline-none"
+        className="h-7 min-w-0 flex-1 rounded-none border-0 bg-transparent px-2 text-[10px] shadow-none focus-visible:ring-0"
         defaultValue={value}
       />
-      <span className="flex w-7 items-center justify-center border-l border-white/8 text-[8px] text-neutral-600">
+      <span className="text-muted-foreground flex w-7 items-center justify-center border-l text-[8px]">
         px
       </span>
     </div>
@@ -1838,18 +2088,16 @@ function ToggleProperty({
   pressed: boolean;
 }) {
   return (
-    <button
-      aria-pressed={pressed}
-      className={cn(
-        "flex h-8 items-center gap-2 rounded border border-white/8 bg-white/2 px-2 text-[10px] text-neutral-500 hover:bg-white/6",
-        pressed && "border-blue-500/50 bg-blue-500/15 text-blue-300"
-      )}
-      type="button"
-      onClick={() => onChange(!pressed)}
+    <Toggle
+      className="h-8 justify-start gap-2 px-2 text-[10px]"
+      pressed={pressed}
+      size="sm"
+      variant="outline"
+      onPressedChange={onChange}
     >
       <Icon className="size-3" />
       {label}
-    </button>
+    </Toggle>
   );
 }
 
@@ -1872,14 +2120,15 @@ function StudioStatus({
     STUDIO_THEMES.find((item) => item.slug === theme)?.label ?? theme;
 
   return (
-    <footer className="flex h-6 shrink-0 items-center border-t border-white/8 bg-[#171718] px-2 text-[9px] text-neutral-600">
-      <button
-        className="rounded px-1.5 py-0.5 hover:bg-white/6 hover:text-neutral-300 lg:hidden"
-        type="button"
+    <footer className="bg-background text-muted-foreground flex h-7 shrink-0 items-center border-t px-2 text-[9px]">
+      <Button
+        className="h-5 px-1.5 text-[9px] lg:hidden"
+        size="sm"
+        variant="ghost"
         onClick={() => onLeftOpenChange(!leftOpen)}
       >
         Layers
-      </button>
+      </Button>
       <div className="ml-auto flex items-center gap-3">
         <span>{framework === "ink" ? "Ink v6" : "OpenTUI"}</span>
         <span className="flex items-center gap-1">
@@ -1887,15 +2136,101 @@ function StudioStatus({
           102×40
         </span>
         <span>{themeLabel.toLowerCase()}</span>
-        <button
-          className="rounded px-1.5 py-0.5 hover:bg-white/6 hover:text-neutral-300 xl:hidden"
-          type="button"
+        <Button
+          className="h-5 px-1.5 text-[9px] xl:hidden"
+          size="sm"
+          variant="ghost"
           onClick={() => onRightOpenChange(!rightOpen)}
         >
           Properties
-        </button>
+        </Button>
       </div>
     </footer>
+  );
+}
+
+function DesktopStudioNotice() {
+  return (
+    <div className="grid min-h-svh place-items-center p-6 xl:hidden">
+      <Card className="w-full max-w-md">
+        <CardHeader>
+          <Badge className="mb-2" variant="outline">
+            <MonitorIcon />
+            Desktop workspace
+          </Badge>
+          <CardTitle className="text-2xl">Studio needs more room</CardTitle>
+          <CardDescription className="leading-6">
+            termcn Studio is available on desktop screens at least 1280 pixels
+            wide. Your project stays available when you return on desktop.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="bg-muted text-muted-foreground rounded-lg border p-4 text-sm leading-6">
+            The layer tree, live terminal canvas, properties inspector, and code
+            workspace are designed to remain visible together.
+          </div>
+        </CardContent>
+        <CardFooter className="gap-2">
+          <Button asChild>
+            <Link href={ROUTES.HOME}>Back to termcn</Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href={ROUTES.PRO}>Explore Pro</Link>
+          </Button>
+        </CardFooter>
+      </Card>
+    </div>
+  );
+}
+
+function ExportGateDialog({
+  isAuthenticated,
+  onOpenChange,
+  open,
+}: {
+  isAuthenticated: boolean;
+  onOpenChange: (open: boolean) => void;
+  open: boolean;
+}) {
+  const destination = isAuthenticated
+    ? ROUTES.PRO
+    : `${ROUTES.SIGN_IN}?callbackURL=${encodeURIComponent(ROUTES.STUDIO)}`;
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-md">
+        <DialogHeader>
+          <Badge className="mb-2" variant="outline">
+            <LockIcon />
+            Pro export
+          </Badge>
+          <DialogTitle>
+            {isAuthenticated
+              ? "Upgrade to export your Studio project"
+              : "Sign in to export your Studio project"}
+          </DialogTitle>
+          <DialogDescription className="leading-6">
+            Everyone can build, theme, preview, and edit code in Studio. Export,
+            downloads, and copying generated project code are available with a
+            termcn Pro bundle.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="mt-2 flex gap-2">
+          <Button asChild className="flex-1">
+            <Link href={destination}>
+              {isAuthenticated ? "View Pro plans" : "Sign in"}
+            </Link>
+          </Button>
+          <Button
+            className="flex-1"
+            variant="outline"
+            onClick={() => onOpenChange(false)}
+          >
+            Keep building
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -1923,18 +2258,18 @@ function TemplateChooser({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className="dark h-[min(760px,calc(100svh-2rem))] w-[calc(100vw-2rem)] max-w-[1040px] gap-0 overflow-hidden border-white/10 bg-[#0e0e0f] p-0 text-neutral-100 shadow-2xl duration-200 motion-reduce:animate-none motion-reduce:transition-none sm:max-w-[1040px]"
-        overlayClassName="bg-black/65 backdrop-blur-md motion-reduce:animate-none"
+        className="bg-background text-foreground h-[min(760px,calc(100svh-2rem))] w-[calc(100vw-2rem)] max-w-[1040px] gap-0 overflow-hidden p-0 shadow-2xl duration-200 motion-reduce:animate-none motion-reduce:transition-none sm:max-w-[1040px]"
+        overlayClassName="bg-background/70 backdrop-blur-md motion-reduce:animate-none"
       >
-        <div className="flex h-14 shrink-0 items-center border-b border-white/8 px-4 pr-24">
+        <div className="flex h-14 shrink-0 items-center border-b px-4 pr-24">
           <DialogHeader className="gap-0 text-left">
             <DialogTitle className="text-sm">Choose a Template</DialogTitle>
-            <DialogDescription className="text-[10px] text-neutral-600">
+            <DialogDescription className="text-[10px]">
               {STUDIO_TEMPLATES.length} templates
             </DialogDescription>
           </DialogHeader>
           <Button
-            className="absolute top-3 right-12 h-8 border-white/8 bg-white/5 text-[10px] text-neutral-400 hover:bg-white/10 hover:text-white"
+            className="absolute top-3 right-12 h-8 text-[10px]"
             onClick={onEmptyCanvas}
             size="sm"
             sound="click"
@@ -1947,40 +2282,38 @@ function TemplateChooser({
         <div className="flex min-h-0 flex-1">
           <nav
             aria-label="Templates"
-            className="no-scrollbar w-60 shrink-0 overflow-y-auto border-r border-white/8 py-1"
+            className="no-scrollbar w-60 shrink-0 overflow-y-auto border-r py-1"
           >
             {STUDIO_TEMPLATES.map((template) => (
-              <button
+              <Button
                 aria-current={template.id === selectedId ? "true" : undefined}
-                className={cn(
-                  "flex h-9 w-full items-center gap-2 border-b border-white/4 px-3 text-left text-[11px] text-neutral-400 outline-none hover:bg-white/5 hover:text-neutral-100 focus-visible:bg-white/7",
-                  template.id === selectedId && "bg-white/10 text-white"
-                )}
+                className="h-9 w-full justify-start rounded-none border-b px-3 text-left text-[11px] font-normal"
                 key={template.id}
-                type="button"
+                variant={template.id === selectedId ? "secondary" : "ghost"}
                 onClick={() => onSelect(template.id)}
               >
                 <span className="truncate">{template.title}</span>
                 {template.badge && (
-                  <span
+                  <Badge
                     className={cn(
-                      "ml-auto rounded px-1.5 py-0.5 text-[8px]",
+                      "ml-auto text-[8px]",
                       template.badge === "PRO"
-                        ? "bg-violet-500/15 text-violet-300"
-                        : "bg-cyan-500/15 text-cyan-300"
+                        ? "bg-violet-500/15 text-violet-600 dark:text-violet-300"
+                        : "bg-cyan-500/15 text-cyan-700 dark:text-cyan-300"
                     )}
+                    variant="secondary"
                   >
                     {template.badge}
-                  </span>
+                  </Badge>
                 )}
-              </button>
+              </Button>
             ))}
           </nav>
 
           <div className="flex min-w-0 flex-1 flex-col">
-            <div className="flex min-h-0 flex-1 items-center justify-center overflow-auto bg-[#0a0a0b] p-8">
+            <div className="bg-muted/40 flex min-h-0 flex-1 items-center justify-center overflow-auto p-8">
               <div
-                className="w-full max-w-2xl overflow-hidden rounded-lg border border-white/10 bg-black shadow-2xl motion-reduce:animate-none"
+                className="w-full max-w-2xl overflow-hidden rounded-lg border bg-black shadow-2xl motion-reduce:animate-none"
                 key={`${selected.id}-${framework}-${theme}`}
               >
                 {selected.id === "git-status" ? (
@@ -1995,17 +2328,17 @@ function TemplateChooser({
                 )}
               </div>
             </div>
-            <div className="flex min-h-14 shrink-0 items-center gap-4 border-t border-white/8 px-4">
+            <div className="flex min-h-14 shrink-0 items-center gap-4 border-t px-4">
               <div className="min-w-0">
                 <div className="truncate text-xs font-medium">
                   {selected.title}
                 </div>
-                <div className="truncate text-[10px] text-neutral-600">
+                <div className="text-muted-foreground truncate text-[10px]">
                   {selected.description}
                 </div>
               </div>
               <Button
-                className="ml-auto h-8 bg-neutral-100 px-4 text-[10px] text-neutral-950 hover:bg-white"
+                className="ml-auto h-8 px-4 text-[10px]"
                 onClick={onUseTemplate}
                 size="sm"
                 sound="click"
