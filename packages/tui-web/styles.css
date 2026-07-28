@@ -1,0 +1,20 @@
+.tui-web--ink {
+  --ink-terminal-bg: var(--tui-web-background, #000000);
+}
+
+.tui-web--ink .ink-terminal-box {
+  background: var(--tui-web-background, #000000) !important;
+}
+
+.tui-web--ink .ink-terminal-box .xterm .xterm-viewport {
+  background-color: var(--tui-web-background, #000000) !important;
+}
+
+.tui-web--ink .ink-terminal-box .xterm .composition-view {
+  background: var(--tui-web-background, #000000) !important;
+}
+
+.tui-web--ink .ink-terminal-reset {
+  width: auto !important;
+  height: auto !important;
+}

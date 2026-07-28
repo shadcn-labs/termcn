@@ -15,10 +15,11 @@
       ]
     },
     "typecheck": {
-      "dependsOn": ["^typecheck"]
+      "dependsOn": ["^build", "^typecheck"]
     },
     "dev": {
       "cache": false,
+      "dependsOn": ["^build"],
       "persistent": true
     },
     "dev:setup": {

@@ -1,18 +1,25 @@
 "use client";
 
-import { createDynamicTerminal } from "ink-web/next";
+import type { TuiWebProps } from "@termcn/tui-web";
+import { inkComponent, openTuiComponent } from "@termcn/tui-web/descriptors";
+import { createDynamicTerminal } from "@termcn/tui-web/next";
+import { useEffect } from "react";
 
 import { ExamplePreview } from "@/components/example-preview";
-import type { InkPreviewProps } from "@/components/ink-preview";
-import OpenTuiPreview from "@/components/opentui-preview";
-import type { terminalThemeMap } from "@/lib/terminal-themes";
+import { ThemeProvider as InkThemeProvider } from "@/components/ui/ink-theme-provider";
+import { ThemeProvider as OpenTuiThemeProvider } from "@/components/ui/opentui-theme-provider";
+import { useTerminalTheme } from "@/hooks/use-terminal-theme";
+import {
+  opentuiTerminalThemeMap,
+  terminalThemeMap,
+} from "@/lib/terminal-themes";
 import { DEFAULT_BASE_NAME } from "@/registry/bases";
 import type { BaseName } from "@/registry/bases";
 
-const InkPreview = createDynamicTerminal<InkPreviewProps>(
+const DynamicTuiWeb = createDynamicTerminal<TuiWebProps>(
   async () => {
-    const m = await import("./ink-preview");
-    return m.default;
+    const tuiWeb = await import("@termcn/tui-web");
+    return tuiWeb.TuiWeb;
   },
   {
     loading: "spinner",
@@ -32,17 +39,39 @@ export const TerminalPreview = ({
   rows,
   theme,
 }: TerminalPreviewProps) => {
+  const [terminalThemeKey, setTerminalThemeKey] = useTerminalTheme();
+
+  useEffect(() => {
+    if (theme !== undefined) {
+      setTerminalThemeKey(theme);
+    }
+  }, [setTerminalThemeKey, theme]);
+
   if (base !== DEFAULT_BASE_NAME) {
+    const baseTheme = opentuiTerminalThemeMap[terminalThemeKey];
     return (
-      <OpenTuiPreview rows={rows} theme={theme}>
-        <ExamplePreview base={base} name={name} />
-      </OpenTuiPreview>
+      <DynamicTuiWeb
+        component={openTuiComponent(
+          <OpenTuiThemeProvider theme={baseTheme}>
+            <ExamplePreview base={base} name={name} />
+          </OpenTuiThemeProvider>
+        )}
+        rows={rows}
+        theme={baseTheme}
+      />
     );
   }
 
+  const baseTheme = terminalThemeMap[terminalThemeKey];
   return (
-    <InkPreview rows={rows} theme={theme}>
-      <ExamplePreview base={base} name={name} />
-    </InkPreview>
+    <DynamicTuiWeb
+      component={inkComponent(
+        <InkThemeProvider theme={baseTheme}>
+          <ExamplePreview base={base} name={name} />
+        </InkThemeProvider>
+      )}
+      rows={rows}
+      theme={baseTheme}
+    />
   );
 };

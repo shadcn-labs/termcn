@@ -32,27 +32,21 @@ importers:
       '@convex-dev/better-auth':
         specifier: ^0.12.5
         version: 0.12.5(@standard-schema/spec@1.1.0)(better-auth@1.6.15(next@16.2.2(@babel/core@7.28.5)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(convex@1.42.3(react@19.2.4))(hono@4.12.10)(react@19.2.4)(typescript@6.0.2)
-      '@gridland/utils':
-        specifier: ^0.4.3
-        version: 0.4.3(react@19.2.4)
-      '@gridland/web':
-        specifier: ^0.4.3
-        version: 0.4.3(react-reconciler@0.33.0(react@19.2.4))(react@19.2.4)
       '@termcn/backend':
         specifier: workspace:*
         version: link:../../packages/backend
       '@termcn/env':
         specifier: workspace:*
         version: link:../../packages/env
+      '@termcn/tui-web':
+        specifier: workspace:*
+        version: link:../../packages/tui-web
       '@vercel/analytics':
         specifier: ^2.0.1
         version: 2.0.1(next@16.2.2(@babel/core@7.28.5)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react@19.2.4)
       '@web-kits/audio':
         specifier: ^0.1.0
         version: 0.1.0(react@19.2.4)
-      '@xterm/xterm':
-        specifier: 6.0.0
-        version: 6.0.0
       better-auth:
         specifier: 1.6.15
         version: 1.6.15(next@16.2.2(@babel/core@7.28.5)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -86,9 +80,6 @@ importers:
       ink:
         specifier: 6.8.0
         version: 6.8.0(@types/react@19.2.14)(react@19.2.4)
-      ink-web:
-        specifier: 0.2.0
-        version: 0.2.0(@xterm/xterm@6.0.0)(ink@6.8.0(@types/react@19.2.14)(react@19.2.4))(react-reconciler@0.33.0(react@19.2.4))(react@19.2.4)(scheduler@0.27.0)(vite@8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.8.0)(@types/node@25.5.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
       jiti:
         specifier: ^2.6.1
         version: 2.6.1
@@ -235,6 +226,52 @@ importers:
       '@types/node':
         specifier: ^22.13.14
         version: 22.20.1
+      typescript:
+        specifier: ^6
+        version: 6.0.2
+
+  packages/tui-web:
+    dependencies:
+      '@gridland/utils':
+        specifier: ^0.4.3
+        version: 0.4.3(react@19.2.4)
+      '@gridland/web':
+        specifier: ^0.4.3
+        version: 0.4.3(react-reconciler@0.33.0(react@19.2.4))(react@19.2.4)
+      '@xterm/xterm':
+        specifier: 6.0.0
+        version: 6.0.0
+      ink-web:
+        specifier: 0.2.0
+        version: 0.2.0(@xterm/xterm@6.0.0)(ink@6.8.0(@types/react@19.2.14)(react@19.2.4))(react-reconciler@0.33.0(react@19.2.4))(react@19.2.4)(scheduler@0.27.0)(vite@8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.8.0)(@types/node@24.13.3)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
+      react-reconciler:
+        specifier: 0.33.0
+        version: 0.33.0(react@19.2.4)
+      scheduler:
+        specifier: ^0.27.0
+        version: 0.27.0
+    devDependencies:
+      '@termcn/config':
+        specifier: workspace:*
+        version: link:../config
+      '@types/node':
+        specifier: ^24.3.0
+        version: 24.13.3
+      '@types/react':
+        specifier: 19.2.14
+        version: 19.2.14
+      '@types/react-dom':
+        specifier: 19.2.3
+        version: 19.2.3(@types/react@19.2.14)
+      ink:
+        specifier: 6.8.0
+        version: 6.8.0(@types/react@19.2.14)(react@19.2.4)
+      react:
+        specifier: 19.2.4
+        version: 19.2.4
+      react-dom:
+        specifier: 19.2.4
+        version: 19.2.4(react@19.2.4)
       typescript:
         specifier: ^6
         version: 6.0.2
@@ -5020,18 +5057,6 @@ packages:
   wrappy@1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
 
-  ws@8.20.0:
-    resolution: {integrity: sha512-sAt8BhgNbzCtgGbt2OxmpuryO63ZoDk/sqaB/znQm94T4fCEsy/yV+7CdC1kJhOU9lboAEU7R3kquuycDoibVA==}
-    engines: {node: '>=10.0.0'}
-    peerDependencies:
-      bufferutil: ^4.0.1
-      utf-8-validate: '>=5.0.2'
-    peerDependenciesMeta:
-      bufferutil:
-        optional: true
-      utf-8-validate:
-        optional: true
-
   ws@8.21.0:
     resolution: {integrity: sha512-Vsp28b7DRcimFQvrqu2Wek3z1iYxDCWqHYB8Qsnk/S4RfaCQzPGPyBNuVjJV3cd6UiKtUtp6sNM77gWvzcCH+g==}
     engines: {node: '>=10.0.0'}
@@ -8063,7 +8088,7 @@ snapshots:
 
   inherits@2.0.4: {}
 
-  ink-web@0.2.0(@xterm/xterm@6.0.0)(ink@6.8.0(@types/react@19.2.14)(react@19.2.4))(react-reconciler@0.33.0(react@19.2.4))(react@19.2.4)(scheduler@0.27.0)(vite@8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.8.0)(@types/node@25.5.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3)):
+  ink-web@0.2.0(@xterm/xterm@6.0.0)(ink@6.8.0(@types/react@19.2.14)(react@19.2.4))(react-reconciler@0.33.0(react@19.2.4))(react@19.2.4)(scheduler@0.27.0)(vite@8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.8.0)(@types/node@24.13.3)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3)):
     dependencies:
       '@xterm/addon-fit': 0.11.0
       '@xterm/xterm': 6.0.0
@@ -8071,7 +8096,7 @@ snapshots:
       react: 19.2.4
       react-reconciler: 0.33.0(react@19.2.4)
       scheduler: 0.27.0
-      vite: 8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.8.0)(@types/node@25.5.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3)
+      vite: 8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.8.0)(@types/node@24.13.3)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3)
 
   ink@6.8.0(@types/react@19.2.14)(react@19.2.4):
     dependencies:
@@ -8099,7 +8124,7 @@ snapshots:
       type-fest: 5.5.0
       widest-line: 6.0.0
       wrap-ansi: 9.0.2
-      ws: 8.20.0
+      ws: 8.21.0
       yoga-layout: 3.2.1
     optionalDependencies:
       '@types/react': 19.2.14
@@ -9879,6 +9904,23 @@ snapshots:
       '@types/unist': 3.0.3
       vfile-message: 4.0.3
 
+  vite@8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.8.0)(@types/node@24.13.3)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3):
+    dependencies:
+      lightningcss: 1.32.0
+      picomatch: 4.0.4
+      postcss: 8.5.8
+      rolldown: 1.0.0-rc.12(@emnapi/core@1.9.2)(@emnapi/runtime@1.8.0)
+      tinyglobby: 0.2.15
+    optionalDependencies:
+      '@types/node': 24.13.3
+      esbuild: 0.27.7
+      fsevents: 2.3.3
+      jiti: 2.6.1
+      yaml: 2.8.3
+    transitivePeerDependencies:
+      - '@emnapi/core'
+      - '@emnapi/runtime'
+
   vite@8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.8.0)(@types/node@25.5.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3):
     dependencies:
       lightningcss: 1.32.0
@@ -9895,6 +9937,7 @@ snapshots:
     transitivePeerDependencies:
       - '@emnapi/core'
       - '@emnapi/runtime'
+    optional: true
 
   web-haptics@0.0.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4):
     optionalDependencies:
@@ -9936,8 +9979,6 @@ snapshots:
       strip-ansi: 7.2.0
 
   wrappy@1.0.2: {}
-
-  ws@8.20.0: {}
 
   ws@8.21.0: {}
 

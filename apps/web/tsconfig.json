@@ -24,12 +24,12 @@
       "@/*": ["./*"],
       "@termcn/backend/*": ["../../packages/backend/*"],
       "@termcn/env/*": ["../../packages/env/*"],
-      "@opentui/react": ["./types/opentui-react.d.ts"],
+      "@opentui/react": ["../../packages/tui-web/src/runtime/opentui-react.ts"],
       "@opentui/react/jsx-runtime": [
-        "./lib/opentui-bridge/react-jsx-runtime.ts"
+        "../../packages/tui-web/src/runtime/opentui-jsx-runtime.ts"
       ],
       "@opentui/react/jsx-dev-runtime": [
-        "./lib/opentui-bridge/react-jsx-dev-runtime.ts"
+        "../../packages/tui-web/src/runtime/opentui-jsx-dev-runtime.ts"
       ],
       "react": ["./node_modules/@types/react"]
     }
