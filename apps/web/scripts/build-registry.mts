@@ -12,6 +12,11 @@ const syncTargets = [
     to: "lib",
   },
   {
+    from: path.join(root, "registry", "bases", "ink", "providers"),
+    providerImport: "ink-theme-provider",
+    to: "providers",
+  },
+  {
     from: path.join(root, "registry", "bases", "ink", "ui"),
     providerImport: "ink-theme-provider",
     to: "ui",
@@ -29,6 +34,16 @@ const syncTargets = [
   {
     from: path.join(root, "registry", "bases", "opentui", "lib"),
     to: path.join("opentui", "lib"),
+  },
+  {
+    from: path.join(root, "registry", "bases", "opentui", "providers"),
+    providerImport: "opentui-theme-provider",
+    to: path.join("opentui", "providers"),
+  },
+  {
+    from: path.join(root, "registry", "bases", "opentui", "hooks"),
+    providerImport: "opentui-theme-provider",
+    to: path.join("opentui", "hooks"),
   },
   {
     from: path.join(root, "registry", "bases", "opentui", "themes"),
@@ -53,9 +68,13 @@ const transformPublishedImports = (
     .replaceAll("@/registry/bases/opentui/ui/types", "@/components/ui/types")
     .replaceAll("@/registry/bases/ink/themes/", "@/lib/terminal-themes/")
     .replaceAll("@/registry/bases/opentui/themes/", "@/lib/terminal-themes/")
+    .replaceAll("@/registry/bases/ink/hooks/", "@/hooks/")
+    .replaceAll("@/registry/bases/opentui/hooks/", "@/hooks/")
+    .replaceAll("@/registry/bases/ink/providers/", "@/providers/")
+    .replaceAll("@/registry/bases/opentui/providers/", "@/providers/")
     .replaceAll(
       `@/components/ui/${providerImport}`,
-      "@/components/ui/theme-provider"
+      "@/providers/theme-provider"
     );
 
 const ensureDir = async (dir: string) => {

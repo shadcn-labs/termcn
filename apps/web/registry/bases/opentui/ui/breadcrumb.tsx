@@ -1,7 +1,7 @@
 /* @jsxImportSource @opentui/react */
 import { useKeyboard } from "@opentui/react";
 
-import { useTheme } from "@/components/ui/opentui-theme-provider";
+import { useTheme } from "@/registry/bases/opentui/hooks/use-theme";
 
 export interface BreadcrumbItem {
   label: string;

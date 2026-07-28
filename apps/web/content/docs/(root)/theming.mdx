@@ -3,7 +3,7 @@ title: Theming
 description: Terminal themes, ThemeProvider, and custom palettes for Ink and OpenTUI apps.
 ---
 
-**Theming** in termcn means choosing a **terminal theme** (tokens for colors, borders, and spacing) and mounting **`ThemeProvider`** only when an application needs to override the defaults. Ink theme-aware components work without a provider; their standalone hooks install into `hooks/`. Theme packages install into `lib/terminal-themes/`.
+**Theming** in termcn means choosing a **terminal theme** (tokens for colors, borders, and spacing) and mounting **`ThemeProvider`** only when an application needs to override the defaults. Ink and OpenTUI theme-aware components work without a provider; their standalone hooks install into `hooks/`. Theme packages install into `lib/terminal-themes/`.
 
 ## Preview
 
@@ -13,7 +13,7 @@ Use the terminal chrome theme picker to preview palettes in the browser docs she
 
 ## ThemeProvider
 
-Install the provider when you want to customize the active theme or capability contexts:
+Install the provider when you want to customize the active theme:
 
 For Ink:
 
@@ -30,9 +30,9 @@ npx shadcn@latest add @termcn/opentui/theme-provider
 ### Usage
 
 ```tsx
-import { ThemeProvider } from "@/components/ui/theme-provider";
+import { ThemeProvider } from "@/providers/theme-provider";
+import { Spinner } from "@/components/ui/spinner";
 import { defaultTheme } from "@/lib/terminal-themes/default";
-import { Spinner } from "@/registry/ui/spinner";
 
 export function Example() {
   return (
@@ -43,7 +43,7 @@ export function Example() {
 }
 ```
 
-Ink components receive `use-theme`, `use-unicode`, and `use-motion` transitively as `registry:hook` items when needed. Import the hooks directly from the configured shadcn hooks alias:
+Components receive `use-theme`, `use-unicode`, and `use-motion` transitively as `registry:hook` items when needed. Import the hooks directly from the configured shadcn hooks alias:
 
 ```tsx
 import { useTheme, useThemeUpdater } from "@/hooks/use-theme";
@@ -51,12 +51,51 @@ import { useUnicode } from "@/hooks/use-unicode";
 import { useMotion } from "@/hooks/use-motion";
 ```
 
-Each hook has a usable default context, so these imports do not require a mounted provider. OpenTUI retains its existing provider contract.
+Each hook has a usable default context, so these imports do not require a mounted provider in either renderer.
 
-### Custom themes
+## MotionProvider and UnicodeProvider
+
+Motion and Unicode settings are independent from the active theme. Install only the provider that your application needs:
+
+For Ink:
+
+```bash
+npx shadcn@latest add @termcn/ink/motion-provider @termcn/ink/unicode-provider
+```
+
+For OpenTUI:
+
+```bash
+npx shadcn@latest add @termcn/opentui/motion-provider @termcn/opentui/unicode-provider
+```
+
+The providers can be composed in any order because each owns only its matching context:
 
 ```tsx
-import { createTheme } from "@/components/ui/theme-provider";
+import { MotionProvider } from "@/providers/motion-provider";
+import { ThemeProvider } from "@/providers/theme-provider";
+import { UnicodeProvider } from "@/providers/unicode-provider";
+import { defaultTheme } from "@/lib/terminal-themes/default";
+
+export function Example() {
+  return (
+    <ThemeProvider theme={defaultTheme}>
+      <MotionProvider reducedMotion>
+        <UnicodeProvider unicode={false}>
+          <App />
+        </UnicodeProvider>
+      </MotionProvider>
+    </ThemeProvider>
+  );
+}
+```
+
+Without these providers, motion follows `NO_MOTION=1` and `CI=true`, while Unicode follows terminal detection and `NO_UNICODE=1`.
+
+## Custom themes
+
+```tsx
+import { createTheme } from "@/providers/theme-provider";
 
 export const oceanTheme = createTheme({
   name: "ocean",

@@ -1,10 +1,10 @@
 ---
-title: 28 July 2026 - Accessibility improvements for Ink and OpenTUI
-description: Improved keyboard interaction, focus behavior, readable status output, motion and Unicode fallbacks, and nonvisual output across both component collections.
+title: 28 July 2026 - Accessibility improvements for Ink
+description: Improved Ink keyboard interaction, focus behavior, readable status output, motion and Unicode fallbacks, and nonvisual output.
 date: 2026-07-28
 ---
 
-We completed an accessibility-focused pass across the Ink and OpenTUI component collections. The implementations follow the capabilities of each terminal renderer instead of presenting terminal accessibility as browser accessibility or making a general WCAG-conformance claim.
+We completed an accessibility-focused pass across the Ink component collection. The implementation follows Ink's terminal accessibility contract instead of presenting terminal accessibility as browser accessibility or making a general WCAG-conformance claim.
 
 ## Ink
 
@@ -12,12 +12,8 @@ Ink components now use the closest supported native role and state, contextual l
 
 Text editing and responsive output account for graphemes, wide characters, terminal-cell width, and terminal resizing. Animation work is also suspended for screen-reader, reduced-motion, inactive, and CI states.
 
-## OpenTUI
+## Provider architecture
 
-OpenTUI does not expose Ink's ARIA and screen-reader contract, so its accessibility improvements remain text- and interaction-first. Components use explicit labels and status words, visible focus and selection treatment, predictable keyboard controls, disabled-item handling, and theme-backed high-contrast focus colors.
+Theme, motion, and Unicode configuration now use separate provider and hook registry items in both the Ink and OpenTUI collections. Components depend on the provider-optional hooks, so installing a component does not force an application-level provider. This is an architecture consistency change for OpenTUI, not a claim that this release completed the same accessibility pass for OpenTUI.
 
-OpenTUI components also retain ASCII-safe Unicode fallbacks and reduced-motion behavior through the shared theme settings. Visual state is kept understandable without relying on color alone wherever the renderer permits it.
-
-## Shared component behavior
-
-Both registries continue to ship source-owned, standalone components. Consumers can install only the component and its declared dependencies, inspect the implementation, and adapt labels, keyboard behavior, rendering, and terminal-specific fallbacks to their application.
+Ink components continue to ship as source-owned, standalone registry items. Consumers can install only the component and its declared dependencies, inspect the implementation, and adapt labels, keyboard behavior, rendering, and terminal-specific fallbacks to their application.

@@ -81,9 +81,17 @@ export interface ThemeContextValue {
 
 export interface ThemeProviderProps {
   children: ReactNode;
-  noUnicode?: boolean;
-  reducedMotion?: boolean;
   theme?: Theme;
+}
+
+export interface MotionProviderProps {
+  children: ReactNode;
+  reducedMotion?: boolean;
+}
+
+export interface UnicodeProviderProps {
+  children: ReactNode;
+  unicode?: boolean;
 }
 
 export interface AutoThemeProviderProps {

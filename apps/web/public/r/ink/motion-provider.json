@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ink/motion-provider",
+  "title": "Motion Provider",
+  "description": "Optional reduced-motion override provider.",
+  "registryDependencies": [
+    "https://termcn.dev/r/ink/types.json",
+    "https://termcn.dev/r/ink/use-motion.json"
+  ],
+  "files": [
+    {
+      "path": "registry/providers/motion-provider.tsx",
+      "content": "import * as React from \"react\";\n\nimport { isReducedMotion, MotionContext } from \"@/hooks/use-motion\";\nimport type { MotionProviderProps } from \"@/components/ui/types\";\n\nexport type {\n  MotionContextValue,\n  MotionProviderProps,\n} from \"@/components/ui/types\";\n\nexport const MotionProvider = ({\n  children,\n  reducedMotion,\n}: MotionProviderProps) => {\n  const value = React.useMemo(\n    () => ({ reduced: reducedMotion ?? isReducedMotion() }),\n    [reducedMotion]\n  );\n\n  return (\n    <MotionContext.Provider value={value}>{children}</MotionContext.Provider>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "providers/motion-provider.tsx"
+    }
+  ],
+  "categories": [
+    "core"
+  ],
+  "type": "registry:ui"
+}

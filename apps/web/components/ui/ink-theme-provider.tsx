@@ -3,7 +3,7 @@ export {
   createTheme,
   detectColorScheme,
   ThemeProvider,
-} from "@/registry/bases/ink/ui/theme-provider";
+} from "@/registry/bases/ink/providers/theme-provider";
 
 export type {
   AutoThemeProviderProps,
@@ -14,4 +14,4 @@ export type {
   Theme,
   ThemeProviderProps,
   TypographyTokens,
-} from "@/registry/bases/ink/ui/theme-provider";
+} from "@/registry/bases/ink/providers/theme-provider";

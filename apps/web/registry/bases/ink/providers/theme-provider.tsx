@@ -1,8 +1,6 @@
 import * as React from "react";
 
-import { MotionContext, isReducedMotion } from "@/hooks/use-motion";
 import { ThemeContext } from "@/hooks/use-theme";
-import { UnicodeContext, isNoUnicode } from "@/hooks/use-unicode";
 import { defaultTheme } from "@/registry/bases/ink/themes/default";
 import type {
   AutoThemeProviderProps,
@@ -47,8 +45,6 @@ export const detectColorScheme = (): "dark" | "light" => {
 
 export const ThemeProvider = ({
   children,
-  noUnicode,
-  reducedMotion,
   theme = defaultTheme,
 }: ThemeProviderProps) => {
   const [currentTheme, setCurrentTheme] = React.useState(theme);
@@ -57,31 +53,13 @@ export const ThemeProvider = ({
     setCurrentTheme(theme);
   }, [theme]);
 
-  const motionValue = React.useMemo(
-    () => ({ reduced: reducedMotion ?? isReducedMotion() }),
-    [reducedMotion]
-  );
-
-  const unicodeValue = React.useMemo(
-    () => ({
-      unicode: noUnicode === undefined ? !isNoUnicode() : !noUnicode,
-    }),
-    [noUnicode]
-  );
-
   const themeValue = React.useMemo(
     () => ({ setTheme: setCurrentTheme, theme: currentTheme }),
     [currentTheme]
   );
 
   return (
-    <MotionContext.Provider value={motionValue}>
-      <UnicodeContext.Provider value={unicodeValue}>
-        <ThemeContext.Provider value={themeValue}>
-          {children}
-        </ThemeContext.Provider>
-      </UnicodeContext.Provider>
-    </MotionContext.Provider>
+    <ThemeContext.Provider value={themeValue}>{children}</ThemeContext.Provider>
   );
 };
 
