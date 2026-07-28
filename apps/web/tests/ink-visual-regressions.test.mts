@@ -24,6 +24,12 @@ import { Table } from "../registry/bases/ink/ui/table.tsx";
 
 const settle = () => delay(50);
 const plainLines = (frame: string) => stripAnsi(frame).split("\n");
+const waitFor = async (condition: () => boolean, timeout = 1000) => {
+  const deadline = Date.now() + timeout;
+  while (!condition() && Date.now() < deadline) {
+    await delay(10);
+  }
+};
 
 test.afterEach(() => cleanup());
 
@@ -186,7 +192,11 @@ test("app shell wraps its tip and keyboard hints in narrow terminals", async () 
     value: 32,
   });
   instance.stdout.emit("resize");
-  await settle();
+  await waitFor(() =>
+    plainLines(instance.lastFrame() ?? "").every(
+      (line) => stringWidth(line) <= 32
+    )
+  );
 
   const lines = plainLines(instance.lastFrame() ?? "");
   assert.ok(

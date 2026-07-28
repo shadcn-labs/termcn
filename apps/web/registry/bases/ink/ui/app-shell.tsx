@@ -1,5 +1,5 @@
-import { useCursor, Box, Text } from "ink";
-import React, { useState } from "react";
+import { useCursor, useStdout, Box, Text } from "ink";
+import React, { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 
 import { useInteraction } from "@/hooks/use-interaction";
@@ -55,11 +55,30 @@ export interface AppShellHintsProps {
   children?: ReactNode;
 }
 
-const AppShellRoot = ({ children }: AppShellProps) => (
-  <Box flexDirection="column" flexGrow={1} width="100%" aria-role="list">
-    {children}
-  </Box>
-);
+const AppShellRoot = ({ children }: AppShellProps) => {
+  const { stdout } = useStdout();
+  const [terminalColumns, setTerminalColumns] = useState(stdout.columns);
+
+  useEffect(() => {
+    const updateColumns = () => setTerminalColumns(stdout.columns);
+
+    stdout.on("resize", updateColumns);
+    return () => {
+      stdout.off("resize", updateColumns);
+    };
+  }, [stdout]);
+
+  return (
+    <Box
+      flexDirection="column"
+      flexGrow={1}
+      width={terminalColumns ?? "100%"}
+      aria-role="list"
+    >
+      {children}
+    </Box>
+  );
+};
 
 const AppShellHeader = ({ children }: AppShellHeaderProps) => (
   <Box flexDirection="column">{children}</Box>
