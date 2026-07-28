@@ -67,20 +67,19 @@ import { TerminalPreview } from "@/components/terminal-preview";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+} from "@/components/ui/drawer";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -108,8 +107,15 @@ import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
 
 type Framework = "ink" | "opentui";
+type MobileStudioPanel = "assets" | "layers" | "properties";
 type StudioExport = "copy" | "file" | "project";
 type LayerKind = "container" | "help" | "list" | "separator" | "table" | "text";
+
+const MOBILE_PANEL_LABELS: Record<MobileStudioPanel, string> = {
+  assets: "Assets",
+  layers: "Layers",
+  properties: "Properties",
+};
 
 interface LayerNode {
   children?: LayerNode[];
@@ -632,6 +638,9 @@ export function StudioBuilder() {
   const [italic, setItalic] = useState(false);
   const [color, setColor] = useState("Green");
   const [exportGateOpen, setExportGateOpen] = useState(false);
+  const [mobilePanel, setMobilePanel] = useState<MobileStudioPanel | null>(
+    null
+  );
 
   const layers = useMemo(
     () => getTemplateLayers(activeTemplate),
@@ -736,97 +745,194 @@ export function StudioBuilder() {
     void copyCode();
   };
 
+  const selectLayer = (id: string) => {
+    setSelectedLayerId(id);
+    if (!isDesktop) {
+      setMobilePanel(null);
+    }
+  };
+
   return (
-    <div className="bg-muted/30 min-h-svh">
-      <DesktopStudioNotice />
+    <div className="bg-background text-foreground flex h-svh min-h-[560px] w-full flex-col overflow-hidden font-sans">
+      <StudioToolbar
+        activeTemplate={activeTemplate}
+        canExport={canExport}
+        framework={framework}
+        isExportLoading={isExportLoading}
+        leftOpen={leftOpen}
+        rightOpen={rightOpen}
+        onFrameworkChange={setFramework}
+        onLeftOpenChange={setLeftOpen}
+        onOpenMobilePanel={setMobilePanel}
+        onOpenTemplates={() => setTemplateOpen(true)}
+        onRequestExport={requestExport}
+        onRightOpenChange={setRightOpen}
+        onSave={saveProject}
+      />
 
-      <div className="bg-background text-foreground hidden h-svh min-h-[680px] w-full flex-col overflow-hidden font-sans xl:flex">
-        <StudioToolbar
-          activeTemplate={activeTemplate}
-          canExport={canExport}
-          framework={framework}
-          isExportLoading={isExportLoading}
-          leftOpen={leftOpen}
-          rightOpen={rightOpen}
-          onFrameworkChange={setFramework}
-          onLeftOpenChange={setLeftOpen}
-          onOpenTemplates={() => setTemplateOpen(true)}
-          onRequestExport={requestExport}
-          onRightOpenChange={setRightOpen}
-          onSave={saveProject}
-        />
-
-        <div className="flex min-h-0 flex-1">
-          {leftOpen && (
-            <aside className="bg-background flex w-[262px] shrink-0 flex-col border-r">
-              <PanelTabs
-                active={leftTab}
-                onChange={setLeftTab}
-                tabs={[
-                  { icon: Layers3Icon, id: "layers", label: "Layers" },
-                  { icon: BoxesIcon, id: "assets", label: "Assets" },
-                ]}
-              />
-              {leftTab === "layers" ? (
-                <LayersPanel
-                  expanded={expanded}
-                  layers={layers}
-                  renamedLayers={renamedLayers}
-                  selectedLayerId={selectedLayerId}
-                  onClose={() => setLeftOpen(false)}
-                  onExpandedChange={setExpanded}
-                  onSelect={setSelectedLayerId}
-                />
-              ) : (
-                <AssetsPanel
-                  category={assetCategory}
-                  items={filteredAssets}
-                  search={assetSearch}
-                  onAdd={(label) => {
-                    toast.success(`${label} added to the canvas`);
-                    setLeftTab("layers");
-                  }}
-                  onCategoryChange={setAssetCategory}
-                  onClose={() => setLeftOpen(false)}
-                  onSearchChange={setAssetSearch}
-                />
-              )}
-            </aside>
-          )}
-
-          <main className="bg-muted/20 flex min-w-0 flex-1 flex-col">
+      <div className="flex min-h-0 flex-1">
+        {leftOpen && (
+          <aside className="bg-background hidden w-[262px] shrink-0 flex-col border-r xl:flex">
             <PanelTabs
-              active={canvasTab}
-              fill={false}
-              onChange={setCanvasTab}
+              active={leftTab}
+              onChange={setLeftTab}
               tabs={[
-                { icon: BrushIcon, id: "build", label: "Build" },
-                { icon: Code2Icon, id: "code", label: "Code" },
+                { icon: Layers3Icon, id: "layers", label: "Layers" },
+                { icon: BoxesIcon, id: "assets", label: "Assets" },
               ]}
             />
-
-            {canvasTab === "build" ? (
-              <BuildCanvas
-                activeTemplate={activeTemplate}
-                framework={framework}
-                selectedLayer={selectedLayer}
+            {leftTab === "layers" ? (
+              <LayersPanel
+                expanded={expanded}
+                layers={layers}
+                renamedLayers={renamedLayers}
                 selectedLayerId={selectedLayerId}
-                theme={theme}
-                onOpenTemplates={() => setTemplateOpen(true)}
+                onClose={() => setLeftOpen(false)}
+                onExpandedChange={setExpanded}
+                onSelect={selectLayer}
               />
             ) : (
-              <CodeCanvas
-                canExport={canExport}
-                code={code}
-                framework={framework}
-                onChange={setCode}
-                onCopy={() => requestExport("copy")}
+              <AssetsPanel
+                category={assetCategory}
+                items={filteredAssets}
+                search={assetSearch}
+                onAdd={(label) => {
+                  toast.success(`${label} added to the canvas`);
+                  setLeftTab("layers");
+                }}
+                onCategoryChange={setAssetCategory}
+                onClose={() => setLeftOpen(false)}
+                onSearchChange={setAssetSearch}
               />
             )}
-          </main>
+          </aside>
+        )}
 
-          {rightOpen && (
-            <aside className="bg-background flex w-[320px] shrink-0 flex-col border-l">
+        <main className="bg-muted/20 flex min-w-0 flex-1 flex-col">
+          <PanelTabs
+            active={canvasTab}
+            fill={false}
+            onChange={setCanvasTab}
+            tabs={[
+              { icon: BrushIcon, id: "build", label: "Build" },
+              { icon: Code2Icon, id: "code", label: "Code" },
+            ]}
+          />
+
+          {canvasTab === "build" ? (
+            <BuildCanvas
+              activeTemplate={activeTemplate}
+              framework={framework}
+              selectedLayer={selectedLayer}
+              selectedLayerId={selectedLayerId}
+              theme={theme}
+              onOpenTemplates={() => setTemplateOpen(true)}
+            />
+          ) : (
+            <CodeCanvas
+              canExport={canExport}
+              code={code}
+              framework={framework}
+              onChange={setCode}
+              onCopy={() => requestExport("copy")}
+            />
+          )}
+        </main>
+
+        {rightOpen && (
+          <aside className="bg-background hidden w-[320px] shrink-0 flex-col border-l xl:flex">
+            <PropertiesPanel
+              align={align}
+              bold={bold}
+              color={color}
+              content={
+                selectedLayer
+                  ? (contentValues[selectedLayer.id] ?? selectedLayer.label)
+                  : ""
+              }
+              dim={dim}
+              italic={italic}
+              renamedLayers={renamedLayers}
+              selectedLayer={selectedLayer}
+              theme={theme}
+              onAlignChange={setAlign}
+              onBoldChange={setBold}
+              onClose={() => setRightOpen(false)}
+              onColorChange={setColor}
+              onContentChange={(value) => {
+                if (selectedLayer) {
+                  setContentValues((current) => ({
+                    ...current,
+                    [selectedLayer.id]: value,
+                  }));
+                }
+              }}
+              onDimChange={setDim}
+              onItalicChange={setItalic}
+              onNameChange={(value) => {
+                if (selectedLayer) {
+                  setRenamedLayers((current) => ({
+                    ...current,
+                    [selectedLayer.id]: value,
+                  }));
+                }
+              }}
+              onThemeChange={setTheme}
+            />
+          </aside>
+        )}
+      </div>
+
+      <StudioStatus
+        framework={framework}
+        theme={theme}
+        onOpenMobilePanel={setMobilePanel}
+      />
+
+      <Drawer
+        open={mobilePanel !== null}
+        onOpenChange={(open) => {
+          if (!open) {
+            setMobilePanel(null);
+          }
+        }}
+        sounds
+      >
+        <DrawerContent className="h-[82svh] max-h-[82svh] xl:hidden">
+          <DrawerHeader className="sr-only">
+            <DrawerTitle>
+              {mobilePanel ? MOBILE_PANEL_LABELS[mobilePanel] : "Studio panel"}
+            </DrawerTitle>
+            <DrawerDescription>
+              Edit your termcn Studio project.
+            </DrawerDescription>
+          </DrawerHeader>
+          <div className="flex min-h-0 flex-1 flex-col pt-2">
+            {mobilePanel === "layers" && (
+              <LayersPanel
+                expanded={expanded}
+                layers={layers}
+                renamedLayers={renamedLayers}
+                selectedLayerId={selectedLayerId}
+                onClose={() => setMobilePanel(null)}
+                onExpandedChange={setExpanded}
+                onSelect={selectLayer}
+              />
+            )}
+            {mobilePanel === "assets" && (
+              <AssetsPanel
+                category={assetCategory}
+                items={filteredAssets}
+                search={assetSearch}
+                onAdd={(label) => {
+                  toast.success(`${label} added to the canvas`);
+                }}
+                onCategoryChange={setAssetCategory}
+                onClose={() => setMobilePanel(null)}
+                onSearchChange={setAssetSearch}
+              />
+            )}
+            {mobilePanel === "properties" && (
               <PropertiesPanel
                 align={align}
                 bold={bold}
@@ -843,7 +949,7 @@ export function StudioBuilder() {
                 theme={theme}
                 onAlignChange={setAlign}
                 onBoldChange={setBold}
-                onClose={() => setRightOpen(false)}
+                onClose={() => setMobilePanel(null)}
                 onColorChange={setColor}
                 onContentChange={(value) => {
                   if (selectedLayer) {
@@ -865,33 +971,22 @@ export function StudioBuilder() {
                 }}
                 onThemeChange={setTheme}
               />
-            </aside>
-          )}
-        </div>
+            )}
+          </div>
+        </DrawerContent>
+      </Drawer>
 
-        <StudioStatus
-          framework={framework}
-          leftOpen={leftOpen}
-          rightOpen={rightOpen}
-          theme={theme}
-          onLeftOpenChange={setLeftOpen}
-          onRightOpenChange={setRightOpen}
-        />
-      </div>
-
-      {isDesktop && (
-        <TemplateChooser
-          framework={framework}
-          open={templateOpen}
-          selected={selectedTemplate}
-          selectedId={templateSelection}
-          theme={theme}
-          onEmptyCanvas={useEmptyCanvas}
-          onOpenChange={setTemplateOpen}
-          onSelect={setTemplateSelection}
-          onUseTemplate={useTemplate}
-        />
-      )}
+      <TemplateChooser
+        framework={framework}
+        open={templateOpen}
+        selected={selectedTemplate}
+        selectedId={templateSelection}
+        theme={theme}
+        onEmptyCanvas={useEmptyCanvas}
+        onOpenChange={setTemplateOpen}
+        onSelect={setTemplateSelection}
+        onUseTemplate={useTemplate}
+      />
 
       <ExportGateDialog
         isAuthenticated={isAuthenticated}
@@ -910,6 +1005,7 @@ function StudioToolbar({
   leftOpen,
   onFrameworkChange,
   onLeftOpenChange,
+  onOpenMobilePanel,
   onOpenTemplates,
   onRequestExport,
   onRightOpenChange,
@@ -923,6 +1019,7 @@ function StudioToolbar({
   leftOpen: boolean;
   onFrameworkChange: (framework: Framework) => void;
   onLeftOpenChange: (open: boolean) => void;
+  onOpenMobilePanel: (panel: MobileStudioPanel) => void;
   onOpenTemplates: () => void;
   onRequestExport: (kind: StudioExport) => void;
   onRightOpenChange: (open: boolean) => void;
@@ -947,6 +1044,14 @@ function StudioToolbar({
           </span>
         </div>
         <StudioIconButton
+          className="xl:hidden"
+          label="Open layers"
+          onClick={() => onOpenMobilePanel("layers")}
+        >
+          <Layers3Icon />
+        </StudioIconButton>
+        <StudioIconButton
+          className="hidden xl:inline-flex"
           label={leftOpen ? "Hide left panel" : "Show left panel"}
           onClick={() => onLeftOpenChange(!leftOpen)}
         >
@@ -954,7 +1059,7 @@ function StudioToolbar({
         </StudioIconButton>
       </div>
 
-      <div className="text-muted-foreground pointer-events-none absolute left-1/2 max-w-[28vw] -translate-x-1/2 truncate text-sm font-medium">
+      <div className="text-muted-foreground pointer-events-none absolute left-1/2 hidden max-w-[28vw] -translate-x-1/2 truncate text-sm font-medium lg:block">
         {activeTemplate?.id ?? "my-tui-app"}
       </div>
 
@@ -974,10 +1079,18 @@ function StudioToolbar({
           <Redo2Icon />
         </StudioIconButton>
         <span className="bg-border mx-1 hidden h-5 w-px sm:block" />
-        <StudioIconButton label="Save project" onClick={onSave}>
+        <StudioIconButton
+          className="hidden sm:inline-flex"
+          label="Save project"
+          onClick={onSave}
+        >
           <SaveIcon />
         </StudioIconButton>
-        <StudioIconButton label="Choose a template" onClick={onOpenTemplates}>
+        <StudioIconButton
+          className="hidden sm:inline-flex"
+          label="Choose a template"
+          onClick={onOpenTemplates}
+        >
           <FolderOpenIcon />
         </StudioIconButton>
         <DropdownMenu>
@@ -1002,6 +1115,24 @@ function StudioToolbar({
                 </span>
               </div>
             </DropdownMenuItem>
+            <DropdownMenuSeparator className="md:hidden" />
+            <DropdownMenuItem
+              className="md:hidden"
+              onSelect={() => onFrameworkChange("ink")}
+            >
+              <TerminalIcon />
+              Ink v6 renderer
+              {framework === "ink" && <CheckIcon className="ml-auto" />}
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className="md:hidden"
+              onSelect={() => onFrameworkChange("opentui")}
+            >
+              <BracesIcon />
+              OpenTUI renderer
+              {framework === "opentui" && <CheckIcon className="ml-auto" />}
+            </DropdownMenuItem>
+            <DropdownMenuSeparator className="md:hidden" />
             <DropdownMenuItem onSelect={() => onRequestExport("file")}>
               <FileCode2Icon />
               <div className="flex flex-col">
@@ -1021,10 +1152,10 @@ function StudioToolbar({
           </DropdownMenuContent>
         </DropdownMenu>
         <ModeSwitcher />
-        <span className="bg-border mx-1 h-5 w-px" />
+        <span className="bg-border mx-1 hidden h-5 w-px md:block" />
         <NativeSelect
           aria-label="Renderer"
-          className="w-28 font-mono"
+          className="hidden w-28 font-mono md:block"
           size="sm"
           value={framework}
           onChange={(event) =>
@@ -1092,6 +1223,7 @@ function StudioToolbar({
           </DropdownMenuContent>
         </DropdownMenu>
         <StudioIconButton
+          className="hidden xl:inline-flex"
           label={rightOpen ? "Hide properties" : "Show properties"}
           onClick={() => onRightOpenChange(!rightOpen)}
         >
@@ -1442,29 +1574,31 @@ function BuildCanvas({
   }
 
   return (
-    <div className="bg-muted/30 relative flex min-h-0 flex-1 overflow-auto p-4">
+    <div className="bg-muted/30 relative flex min-h-0 flex-1 overflow-auto p-2 sm:p-4">
       <div
         className={cn(
-          "bg-card relative m-auto w-full min-w-[680px] max-w-[1280px] overflow-hidden rounded-lg border shadow-xl",
+          "bg-card relative m-auto w-full max-w-[1280px] overflow-hidden rounded-lg border shadow-xl max-sm:aspect-[17/18] sm:min-w-[680px]",
           selectedLayerId === "root" && "ring-primary ring-2 ring-offset-2"
         )}
       >
-        {activeTemplate.id === "git-status" ? (
-          <GitStatusStudioPreview
-            selectedLayerId={selectedLayerId}
-            theme={theme}
-          />
-        ) : (
-          <>
-            <TerminalPreview
-              base={framework}
-              name={activeTemplate.preview}
-              rows={38}
+        <div className="w-full max-sm:absolute max-sm:top-0 max-sm:left-0 max-sm:w-[680px] max-sm:origin-top-left max-sm:[transform:scale(calc((100vw-1rem)/680))]">
+          {activeTemplate.id === "git-status" ? (
+            <GitStatusStudioPreview
+              selectedLayerId={selectedLayerId}
               theme={theme}
             />
-            <GenericSelectionOverlay layerId={selectedLayerId} />
-          </>
-        )}
+          ) : (
+            <>
+              <TerminalPreview
+                base={framework}
+                name={activeTemplate.preview}
+                rows={38}
+                theme={theme}
+              />
+              <GenericSelectionOverlay layerId={selectedLayerId} />
+            </>
+          )}
+        </div>
       </div>
       {selectedLayer && (
         <Badge
@@ -1724,6 +1858,7 @@ function CodeCanvas({
   onCopy: () => void;
 }) {
   const { resolvedTheme } = useTheme();
+  const isCompact = useMediaQuery("(max-width: 767px)");
 
   return (
     <div className="bg-background flex min-h-0 flex-1 flex-col">
@@ -1772,9 +1907,10 @@ function CodeCanvas({
             fontFamily:
               "var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
             fontLigatures: true,
-            fontSize: 13,
-            lineHeight: 22,
-            minimap: { enabled: true, scale: 1 },
+            fontSize: isCompact ? 12 : 13,
+            lineHeight: isCompact ? 20 : 22,
+            lineNumbersMinChars: isCompact ? 3 : 5,
+            minimap: { enabled: !isCompact, scale: 1 },
             padding: { bottom: 16, top: 16 },
             renderLineHighlight: "all",
             roundedSelection: true,
@@ -2103,83 +2239,56 @@ function ToggleProperty({
 
 function StudioStatus({
   framework,
-  leftOpen,
-  onLeftOpenChange,
-  onRightOpenChange,
-  rightOpen,
+  onOpenMobilePanel,
   theme,
 }: {
   framework: Framework;
-  leftOpen: boolean;
-  onLeftOpenChange: (open: boolean) => void;
-  onRightOpenChange: (open: boolean) => void;
-  rightOpen: boolean;
+  onOpenMobilePanel: (panel: MobileStudioPanel) => void;
   theme: ThemeSlug;
 }) {
   const themeLabel =
     STUDIO_THEMES.find((item) => item.slug === theme)?.label ?? theme;
 
   return (
-    <footer className="bg-background text-muted-foreground flex h-7 shrink-0 items-center border-t px-2 text-[9px]">
-      <Button
-        className="h-5 px-1.5 text-[9px] lg:hidden"
-        size="sm"
-        variant="ghost"
-        onClick={() => onLeftOpenChange(!leftOpen)}
-      >
-        Layers
-      </Button>
-      <div className="ml-auto flex items-center gap-3">
+    <footer className="bg-background text-muted-foreground flex h-12 shrink-0 items-center border-t px-2 text-[9px] xl:h-7">
+      <div className="grid w-full grid-cols-3 gap-1 xl:hidden">
+        <Button
+          className="h-9 gap-1.5 text-[10px]"
+          size="sm"
+          variant="ghost"
+          onClick={() => onOpenMobilePanel("layers")}
+        >
+          <Layers3Icon className="size-3.5" />
+          Layers
+        </Button>
+        <Button
+          className="h-9 gap-1.5 text-[10px]"
+          size="sm"
+          variant="ghost"
+          onClick={() => onOpenMobilePanel("assets")}
+        >
+          <BoxesIcon className="size-3.5" />
+          Assets
+        </Button>
+        <Button
+          className="h-9 gap-1.5 text-[10px]"
+          size="sm"
+          variant="ghost"
+          onClick={() => onOpenMobilePanel("properties")}
+        >
+          <SlidersHorizontalIcon className="size-3.5" />
+          Inspect
+        </Button>
+      </div>
+      <div className="ml-auto hidden items-center gap-3 xl:flex">
         <span>{framework === "ink" ? "Ink v6" : "OpenTUI"}</span>
         <span className="flex items-center gap-1">
           <MonitorIcon className="size-3" />
           102×40
         </span>
         <span>{themeLabel.toLowerCase()}</span>
-        <Button
-          className="h-5 px-1.5 text-[9px] xl:hidden"
-          size="sm"
-          variant="ghost"
-          onClick={() => onRightOpenChange(!rightOpen)}
-        >
-          Properties
-        </Button>
       </div>
     </footer>
-  );
-}
-
-function DesktopStudioNotice() {
-  return (
-    <div className="grid min-h-svh place-items-center p-6 xl:hidden">
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <Badge className="mb-2" variant="outline">
-            <MonitorIcon />
-            Desktop workspace
-          </Badge>
-          <CardTitle className="text-2xl">Studio needs more room</CardTitle>
-          <CardDescription className="leading-6">
-            termcn Studio is available on desktop screens at least 1280 pixels
-            wide. Your project stays available when you return on desktop.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="bg-muted text-muted-foreground rounded-lg border p-4 text-sm leading-6">
-            The layer tree, live terminal canvas, properties inspector, and code
-            workspace are designed to remain visible together.
-          </div>
-        </CardContent>
-        <CardFooter className="gap-2">
-          <Button asChild>
-            <Link href={ROUTES.HOME}>Back to termcn</Link>
-          </Button>
-          <Button asChild variant="outline">
-            <Link href={ROUTES.PRO}>Explore Pro</Link>
-          </Button>
-        </CardFooter>
-      </Card>
-    </div>
   );
 }
 
@@ -2258,7 +2367,7 @@ function TemplateChooser({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className="bg-background text-foreground h-[min(760px,calc(100svh-2rem))] w-[calc(100vw-2rem)] max-w-[1040px] gap-0 overflow-hidden p-0 shadow-2xl duration-200 motion-reduce:animate-none motion-reduce:transition-none sm:max-w-[1040px]"
+        className="bg-background text-foreground h-svh w-screen max-w-none gap-0 overflow-hidden rounded-none border-0 p-0 shadow-2xl duration-200 motion-reduce:animate-none motion-reduce:transition-none sm:h-[min(760px,calc(100svh-2rem))] sm:w-[calc(100vw-2rem)] sm:max-w-[1040px] sm:rounded-lg sm:border"
         overlayClassName="bg-background/70 backdrop-blur-md motion-reduce:animate-none"
       >
         <div className="flex h-14 shrink-0 items-center border-b px-4 pr-24">
@@ -2279,15 +2388,15 @@ function TemplateChooser({
           </Button>
         </div>
 
-        <div className="flex min-h-0 flex-1">
+        <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden sm:flex-row">
           <nav
             aria-label="Templates"
-            className="no-scrollbar w-60 shrink-0 overflow-y-auto border-r py-1"
+            className="no-scrollbar flex h-12 w-full shrink-0 overflow-x-auto border-b sm:block sm:h-auto sm:w-60 sm:overflow-y-auto sm:border-r sm:border-b-0 sm:py-1"
           >
             {STUDIO_TEMPLATES.map((template) => (
               <Button
                 aria-current={template.id === selectedId ? "true" : undefined}
-                className="h-9 w-full justify-start rounded-none border-b px-3 text-left text-[11px] font-normal"
+                className="h-12 w-auto shrink-0 justify-start rounded-none border-r px-3 text-left text-[11px] font-normal sm:h-9 sm:w-full sm:border-r-0 sm:border-b"
                 key={template.id}
                 variant={template.id === selectedId ? "secondary" : "ghost"}
                 onClick={() => onSelect(template.id)}
@@ -2311,24 +2420,26 @@ function TemplateChooser({
           </nav>
 
           <div className="flex min-w-0 flex-1 flex-col">
-            <div className="bg-muted/40 flex min-h-0 flex-1 items-center justify-center overflow-auto p-8">
+            <div className="bg-muted/40 flex min-h-0 flex-1 items-center justify-center overflow-hidden p-2 sm:overflow-auto sm:p-8">
               <div
-                className="w-full max-w-2xl overflow-hidden rounded-lg border bg-black shadow-2xl motion-reduce:animate-none"
+                className="relative aspect-video w-full max-w-2xl shrink-0 overflow-hidden rounded-lg border bg-black shadow-2xl motion-reduce:animate-none sm:aspect-auto"
                 key={`${selected.id}-${framework}-${theme}`}
               >
-                {selected.id === "git-status" ? (
-                  <GitStatusStudioPreview compact theme={theme} />
-                ) : (
-                  <TerminalPreview
-                    base={framework}
-                    name={selected.preview}
-                    rows={20}
-                    theme={theme}
-                  />
-                )}
+                <div className="w-full max-sm:absolute max-sm:top-0 max-sm:left-0 max-sm:w-[640px] max-sm:origin-top-left max-sm:[transform:scale(calc((100vw-1rem)/640))]">
+                  {selected.id === "git-status" ? (
+                    <GitStatusStudioPreview compact theme={theme} />
+                  ) : (
+                    <TerminalPreview
+                      base={framework}
+                      name={selected.preview}
+                      rows={20}
+                      theme={theme}
+                    />
+                  )}
+                </div>
               </div>
             </div>
-            <div className="flex min-h-14 shrink-0 items-center gap-4 border-t px-4">
+            <div className="flex min-h-16 shrink-0 items-center gap-3 border-t px-3 sm:min-h-14 sm:gap-4 sm:px-4">
               <div className="min-w-0">
                 <div className="truncate text-xs font-medium">
                   {selected.title}
@@ -2338,7 +2449,7 @@ function TemplateChooser({
                 </div>
               </div>
               <Button
-                className="ml-auto h-8 px-4 text-[10px]"
+                className="ml-auto h-8 shrink-0 px-3 text-[10px] sm:px-4"
                 onClick={onUseTemplate}
                 size="sm"
                 sound="click"
