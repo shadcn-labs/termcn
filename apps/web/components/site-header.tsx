@@ -19,6 +19,7 @@ const navItems = [
   { href: ROUTES.DOCS_CHARTS, label: "Charts" },
   { href: ROUTES.DOCS_TEMPLATES, label: "Templates" },
   { href: ROUTES.SPONSOR, label: "Sponsors" },
+  { href: ROUTES.STUDIO, label: "Studio" },
   { href: ROUTES.TERMCN_SKILL, label: "termcn.md" },
 ];
 
