@@ -3,7 +3,7 @@ title: Registry
 description: Learn how to use the termcn registry with the shadcn CLI.
 ---
 
-The **termcn** registry ships Ink and OpenTUI terminal UI components and themes in the [shadcn registry format](https://ui.shadcn.com/docs/registry). Register the namespace once in `components.json`, then pull items by name with the CLI.
+The **termcn** registry ships Ink and OpenTUI components, hooks, providers, and themes in the [shadcn registry format](https://ui.shadcn.com/docs/registry). Register the namespace once in `components.json`, then pull items by name with the CLI.
 
 ## Setup
 
@@ -22,6 +22,15 @@ You can replace `@termcn` with another namespace; it only needs to match what yo
 ## Usage
 
 Items are namespaced by base: `ink/` for Ink and `opentui/` for OpenTUI.
+
+Registry files follow these destinations:
+
+- Components install into `components/ui/`.
+- Hooks install into the configured `hooks/` directory.
+- Theme, motion, and Unicode providers install into `providers/`.
+- Themes install into `lib/terminal-themes/`.
+
+Components declare their hook dependencies, so installing a component does not install or require a provider.
 
 Install an Ink component:
 
@@ -53,6 +62,16 @@ npx shadcn@latest add @termcn/ink/theme-provider
 
 ```bash
 npx shadcn@latest add @termcn/opentui/theme-provider
+```
+
+Motion and Unicode providers are independent items:
+
+```bash
+npx shadcn@latest add @termcn/ink/motion-provider @termcn/ink/unicode-provider
+```
+
+```bash
+npx shadcn@latest add @termcn/opentui/motion-provider @termcn/opentui/unicode-provider
 ```
 
 Without a registry alias, use the full URL (as on each docs page):
