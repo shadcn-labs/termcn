@@ -348,6 +348,10 @@
 .ink-terminal-box .xterm .composition-view {
   background: var(--ink-terminal-bg, #000000) !important;
 }
+.terminal-preview-root .xterm .xterm-cursor,
+.terminal-preview-root .xterm .xterm-cursor-layer {
+  display: none !important;
+}
 .terminal-preview-root .ink-terminal-reset {
   width: auto !important;
   height: auto !important;

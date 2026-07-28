@@ -1,5 +1,5 @@
 import { useCursor, Box, Text } from "ink";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useInteraction } from "@/hooks/use-interaction";
 import { useTheme } from "@/hooks/use-theme";
@@ -265,14 +265,24 @@ export const TextArea = ({
   const useNativeCursor = Boolean(
     cursorOrigin && isFocused && cursorRow >= 0 && cursorRow < rows
   );
-  setCursorPosition(
-    useNativeCursor && cursorOrigin
-      ? {
-          x: cursorOrigin.x + cursorCellOffset(activeLine, cursorColumn),
-          y: cursorOrigin.y + cursorRow,
-        }
-      : undefined
-  );
+  useEffect(() => {
+    setCursorPosition(
+      useNativeCursor && cursorOrigin
+        ? {
+            x: cursorOrigin.x + cursorCellOffset(activeLine, cursorColumn),
+            y: cursorOrigin.y + cursorRow,
+          }
+        : undefined
+    );
+    return () => setCursorPosition(undefined);
+  }, [
+    activeLine,
+    cursorColumn,
+    cursorOrigin,
+    cursorRow,
+    setCursorPosition,
+    useNativeCursor,
+  ]);
 
   return (
     <Box flexDirection="column">

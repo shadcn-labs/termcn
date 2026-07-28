@@ -1,5 +1,5 @@
 import { Box, Text } from "ink";
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import { useInteraction } from "@/hooks/use-interaction";
 import type { InteractionProps } from "@/hooks/use-interaction";
@@ -260,7 +260,7 @@ export const Table = <
           {""}
         </Text>
       )}
-      <Box aria-hidden>
+      <Box aria-hidden flexDirection="column">
         <SkeletonRow
           widths={colWidths}
           skeleton={border.top}

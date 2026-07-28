@@ -56,7 +56,7 @@ export interface AppShellHintsProps {
 }
 
 const AppShellRoot = ({ children }: AppShellProps) => (
-  <Box flexDirection="column" flexGrow={1} aria-role="list">
+  <Box flexDirection="column" flexGrow={1} width="100%" aria-role="list">
     {children}
   </Box>
 );
@@ -66,9 +66,11 @@ const AppShellHeader = ({ children }: AppShellHeaderProps) => (
 );
 
 const AppShellTip = ({ children }: AppShellTipProps) => (
-  <Box paddingLeft={2} paddingY={0}>
-    <Text dimColor>{"  Tip: "}</Text>
-    <Text dimColor>{children}</Text>
+  <Box paddingLeft={2} paddingY={0} width="100%">
+    <Text dimColor wrap="wrap">
+      {"Tip: "}
+      {children}
+    </Text>
   </Box>
 );
 
@@ -140,7 +142,10 @@ const AppShellInput = ({
           terminalWidth(value),
         y: cursorOrigin.y,
       });
+    } else {
+      setCursorPosition(undefined);
     }
+    return () => setCursorPosition(undefined);
   }, [cursorOrigin, isFocused, prefix, setCursorPosition, value]);
 
   return (
@@ -224,8 +229,8 @@ const AppShellHints = ({ items, children }: AppShellHintsProps) => {
   const theme = useTheme();
   const content = items ? items.join(" | ") : children;
   return (
-    <Box paddingX={1}>
-      <Text dimColor color={theme.colors.mutedForeground}>
+    <Box paddingX={1} width="100%">
+      <Text dimColor color={theme.colors.mutedForeground} wrap="wrap">
         {content as string}
       </Text>
     </Box>

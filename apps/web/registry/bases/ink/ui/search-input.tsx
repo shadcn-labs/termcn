@@ -1,5 +1,5 @@
-import { Box, Text } from "ink";
-import React, { useState, useMemo, useCallback } from "react";
+import { useCursor, Box, Text } from "ink";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
 
 import { useInteraction } from "@/hooks/use-interaction";
 import { useTheme } from "@/hooks/use-theme";
@@ -11,6 +11,7 @@ import {
 import {
   graphemeLength,
   removeGraphemeBefore,
+  terminalWidth,
 } from "@/registry/bases/ink/lib/terminal-text";
 import type { BorderStyle } from "@/registry/bases/ink/ui/types";
 
@@ -37,6 +38,7 @@ export interface SearchInputProps<T = string> {
   readOnly?: boolean;
   required?: boolean;
   "aria-label"?: string;
+  cursorOrigin?: { x: number; y: number };
 }
 
 export const SearchInput = <T = string,>({
@@ -62,6 +64,7 @@ export const SearchInput = <T = string,>({
   readOnly = false,
   required = false,
   "aria-label": ariaLabel,
+  cursorOrigin,
 }: SearchInputProps<T>) => {
   const unicode = useUnicode();
   const resolvedCursor = cursor ?? resolveTerminalSymbol(unicode, "█", "|");
@@ -73,6 +76,7 @@ export const SearchInput = <T = string,>({
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [showResults, setShowResults] = useState(false);
   const theme = useTheme();
+  const { setCursorPosition } = useCursor();
 
   const query = controlledValue ?? internalValue;
 
@@ -177,6 +181,28 @@ export const SearchInput = <T = string,>({
 
   const borderColor = isFocused ? theme.colors.focusRing : theme.colors.border;
   const hasResults = showResults && filteredResults.length > 0;
+  const useNativeCursor = Boolean(cursorOrigin && isFocused);
+
+  useEffect(() => {
+    setCursorPosition(
+      useNativeCursor && cursorOrigin
+        ? {
+            x:
+              cursorOrigin.x +
+              terminalWidth(resolvedSearchIcon) +
+              terminalWidth(query),
+            y: cursorOrigin.y,
+          }
+        : undefined
+    );
+    return () => setCursorPosition(undefined);
+  }, [
+    cursorOrigin,
+    query,
+    resolvedSearchIcon,
+    setCursorPosition,
+    useNativeCursor,
+  ]);
 
   return (
     <Box flexDirection="column">
@@ -203,7 +229,7 @@ export const SearchInput = <T = string,>({
         >
           {query || placeholder}
         </Text>
-        {isFocused && (
+        {isFocused && !useNativeCursor && (
           <Text aria-hidden color={theme.colors.focusRing}>
             {resolvedCursor}
           </Text>

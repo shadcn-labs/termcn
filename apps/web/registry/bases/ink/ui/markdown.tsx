@@ -124,6 +124,35 @@ export const Markdown = ({
 
   while (i < lines.length) {
     const line = lines[i];
+    const fence = line.match(/^```(?:\s*([^\s`]+))?\s*$/);
+
+    if (fence) {
+      const fenceStart = i;
+      const codeLines: string[] = [];
+      i += 1;
+      while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+        codeLines.push(lines[i]);
+        i += 1;
+      }
+      if (i < lines.length) {
+        i += 1;
+      }
+      if (codeLines.length === 0) {
+        elements.push(<Box key={`code-${fenceStart}`} />);
+      } else {
+        for (const [codeIndex, codeLine] of codeLines.entries()) {
+          elements.push(
+            <Text
+              key={`code-${fenceStart}-${codeIndex}`}
+              color={theme.colors.accent}
+            >
+              {codeLine || " "}
+            </Text>
+          );
+        }
+      }
+      continue;
+    }
 
     const h4 = line.match(/^####\s+(.*)/);
     const h3 = line.match(/^###\s+(.*)/);

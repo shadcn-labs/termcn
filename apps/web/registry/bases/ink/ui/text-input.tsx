@@ -172,14 +172,23 @@ export const TextInput = ({
 
   const displayValue = mask ? mask.repeat(valueLength) : value;
   const useNativeCursor = Boolean(cursorOrigin && showCursor && isFocused);
-  setCursorPosition(
-    useNativeCursor && cursorOrigin
-      ? {
-          x: cursorOrigin.x + cursorCellOffset(displayValue, cursorOffset),
-          y: cursorOrigin.y,
-        }
-      : undefined
-  );
+  useEffect(() => {
+    setCursorPosition(
+      useNativeCursor && cursorOrigin
+        ? {
+            x: cursorOrigin.x + cursorCellOffset(displayValue, cursorOffset),
+            y: cursorOrigin.y,
+          }
+        : undefined
+    );
+    return () => setCursorPosition(undefined);
+  }, [
+    cursorOffset,
+    cursorOrigin,
+    displayValue,
+    setCursorPosition,
+    useNativeCursor,
+  ]);
 
   let borderColor: string;
   if (error) {

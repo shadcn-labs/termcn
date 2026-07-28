@@ -81,9 +81,12 @@ import { AppShell } from "@/components/ui/app-shell";
 ```tsx
 <AppShell>
   <AppShell.Header>
-    <AppShell.Tip>Press Tab to autocomplete commands</AppShell.Tip>
+    <AppShell.Tip>
+      Press Tab to move between the command input and output
+    </AppShell.Tip>
   </AppShell.Header>
   <AppShell.Input
+    autoFocus
     placeholder="Enter a command..."
     prefix="$"
     onSubmit={(value) => console.log(value)}
@@ -91,7 +94,7 @@ import { AppShell } from "@/components/ui/app-shell";
   <AppShell.Content height={16}>
     {/* scrollable output area */}
   </AppShell.Content>
-  <AppShell.Hints items={["↑↓ scroll", "enter submit", "esc quit"]} />
+  <AppShell.Hints items={["tab focus", "enter submit", "↑↓ scroll"]} />
 </AppShell>
 ```
 
@@ -118,15 +121,24 @@ import { AppShell } from "@/components/ui/app-shell";
 
 ### AppShell.Input
 
-| Prop          | Type                                        | Default               |
-| ------------- | ------------------------------------------- | --------------------- |
-| `value`       | `string`                                    | -                     |
-| `onChange`    | `(value: string) => void`                   | -                     |
-| `onSubmit`    | `(value: string) => void`                   | -                     |
-| `placeholder` | `string`                                    | `"Type something..."` |
-| `borderStyle` | `"single" \| "double" \| "round" \| "bold"` | `"single"`            |
-| `borderColor` | `string`                                    | -                     |
-| `prefix`      | `string`                                    | `">"`                 |
+| Prop            | Type                                        | Default               |
+| --------------- | ------------------------------------------- | --------------------- |
+| `value`         | `string`                                    | -                     |
+| `defaultValue`  | `string`                                    | `""`                  |
+| `onValueChange` | `(value: string) => void`                   | -                     |
+| `onChange`      | `(value: string) => void`                   | -                     |
+| `onSubmit`      | `(value: string) => void`                   | -                     |
+| `placeholder`   | `string`                                    | `"Type something..."` |
+| `borderStyle`   | `"single" \| "double" \| "round" \| "bold"` | `"single"`            |
+| `borderColor`   | `string`                                    | -                     |
+| `prefix`        | `string`                                    | `">"`                 |
+| `readOnly`      | `boolean`                                   | `false`               |
+| `required`      | `boolean`                                   | `false`               |
+| `cursorOrigin`  | `{x: number; y: number}`                    | -                     |
+| `id`            | `string`                                    | generated             |
+| `autoFocus`     | `boolean`                                   | `false`               |
+| `isActive`      | `boolean`                                   | `true`                |
+| `disabled`      | `boolean`                                   | `false`               |
 
 ### AppShell.Content
 
@@ -147,17 +159,18 @@ import { AppShell } from "@/components/ui/app-shell";
 
 ## Keyboard
 
-| Key                    | Behavior                                                              |
-| ---------------------- | --------------------------------------------------------------------- |
-| `Left` / `Right`       | Move by grapheme; completion inputs use Right to accept a suggestion. |
-| `Home` / `End`         | Move to the start or end.                                             |
-| `Backspace` / `Delete` | Remove one complete grapheme.                                         |
-| `Enter`                | Submit or confirm; TextArea uses `Ctrl+Enter`.                        |
-| `Tab` / `Shift+Tab`    | Leave the control through Ink focus traversal.                        |
+| Key                    | Behavior                                                   |
+| ---------------------- | ---------------------------------------------------------- |
+| `Tab` / `Shift+Tab`    | Move between the command input and scrollable output.      |
+| `Enter`                | Submit the command while the input is focused.             |
+| `Backspace` / `Delete` | Remove one complete grapheme from the end of the command.  |
+| `Up` / `Down`          | Scroll output one line while the output area is focused.   |
+| `Home`                 | Return the output area to its first line.                  |
+| `PageUp` / `PageDown`  | Scroll output by one viewport while the output is focused. |
 
 ## Focus and composition
 
-This is one native Ink tab stop. Its input subscription is active only while focused, enabled, active, and inside the topmost focus scope. Compose it with other controls through `useInteraction`; do not attach a second renderer-wide `useInput` handler for the same keys.
+`AppShell.Input` and `AppShell.Content` are separate native Ink tab stops. Each input subscription is active only while that region is focused, enabled, active, and inside the topmost focus scope. Compose them with other controls through `useInteraction`; do not attach a second renderer-wide `useInput` handler for the same keys.
 
 Set `autoFocus` only on the intended initial control. Application-global shortcuts such as `q` belong to the application template and require an explicit active boundary.
 

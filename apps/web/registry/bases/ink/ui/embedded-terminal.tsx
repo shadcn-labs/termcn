@@ -1,5 +1,5 @@
-import { useIsScreenReaderEnabled, Box, Text } from "ink";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useIsScreenReaderEnabled, useStdout, Box, Text } from "ink";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import stripAnsi from "strip-ansi";
 
 import { useUnicode } from "@/hooks/use-unicode";
@@ -9,6 +9,7 @@ interface IPty {
   kill: () => void;
   onData: (cb: (data: string) => void) => void;
   onExit: (cb: (e: { exitCode: number }) => void) => void;
+  resize: (columns: number, rows: number) => void;
 }
 
 interface NodePtyModule {
@@ -30,13 +31,15 @@ export interface EmbeddedTerminalProps {
   "aria-label"?: string;
 }
 
+const EMPTY_ARGS: string[] = [];
+
 /**
  * Renders a pseudo-terminal session inside the TUI.
  * Requires optional dependency `node-pty` (native build).
  */
 export const EmbeddedTerminal = ({
   command,
-  args = [],
+  args = EMPTY_ARGS,
   cwd,
   width = 80,
   height = 24,
@@ -46,9 +49,36 @@ export const EmbeddedTerminal = ({
 }: EmbeddedTerminalProps) => {
   const unicode = useUnicode();
   const isScreenReaderEnabled = useIsScreenReaderEnabled();
+  const { stdout } = useStdout();
   const [raw, setRaw] = useState("");
   const [err, setErr] = useState<string | null>(null);
+  const [terminalColumns, setTerminalColumns] = useState(
+    () => stdout.columns ?? width
+  );
   const pendingOutput = useRef("");
+  const ptyRef = useRef<IPty | null>(null);
+  const onExitRef = useRef(onExit);
+  onExitRef.current = onExit;
+
+  useEffect(() => {
+    const updateColumns = () => setTerminalColumns(stdout.columns ?? width);
+    updateColumns();
+    stdout.on("resize", updateColumns);
+    return () => {
+      stdout.off("resize", updateColumns);
+    };
+  }, [stdout, width]);
+
+  const resolvedWidth = Math.max(
+    3,
+    Math.min(Math.max(3, Math.floor(width)), terminalColumns)
+  );
+  const ptyColumns = Math.max(
+    1,
+    resolvedWidth - (isScreenReaderEnabled ? 0 : 2)
+  );
+  const dimensionsRef = useRef({ columns: ptyColumns, rows: height });
+  dimensionsRef.current = { columns: ptyColumns, rows: height };
 
   useEffect(() => {
     if (!isActive) {
@@ -66,13 +96,15 @@ export const EmbeddedTerminal = ({
         if (cancelled) {
           return;
         }
+        const dimensions = dimensionsRef.current;
         const pty = mod.spawn(command, args, {
-          cols: width,
+          cols: dimensions.columns,
           cwd,
           name: "xterm-color",
-          rows: height,
+          rows: dimensions.rows,
         });
         p = pty;
+        ptyRef.current = pty;
         pty.onData((d: string) => {
           if (isScreenReaderEnabled) {
             pendingOutput.current += d;
@@ -87,7 +119,7 @@ export const EmbeddedTerminal = ({
           }
         });
         pty.onExit((e: { exitCode: number }) => {
-          onExit?.(e.exitCode);
+          onExitRef.current?.(e.exitCode);
         });
       } catch {
         setErr(
@@ -101,17 +133,13 @@ export const EmbeddedTerminal = ({
       if (p) {
         p.kill();
       }
+      ptyRef.current = null;
     };
-  }, [
-    args,
-    command,
-    cwd,
-    height,
-    isActive,
-    isScreenReaderEnabled,
-    onExit,
-    width,
-  ]);
+  }, [args, command, cwd, isActive, isScreenReaderEnabled]);
+
+  useEffect(() => {
+    ptyRef.current?.resize(ptyColumns, height);
+  }, [height, ptyColumns]);
 
   const lines = useMemo(
     () => stripAnsi(raw).split("\n").slice(-height),
@@ -126,7 +154,7 @@ export const EmbeddedTerminal = ({
         unicode
       )}
       borderColor="cyan"
-      width={width}
+      width={resolvedWidth}
       aria-role="list"
     >
       <Text aria-label={ariaLabel ?? `Embedded terminal running ${command}`}>

@@ -15,7 +15,7 @@
     "docs:ink-v1": "node ./scripts/update-ink-v1-docs.mts",
     "test": "pnpm test:ink && pnpm test:registry",
     "test:dither": "node --experimental-strip-types --import ./tests/register-typescript-resolver.mjs --test tests/dither-chart-core.test.mts",
-    "test:ink": "JITI_JSX=1 JITI_ALIAS=\"{\\\"@\\\":\\\"$PWD\\\"}\" node --import jiti/register --test --test-concurrency=1 tests/terminal-text.test.mts tests/ink-interaction.test.mts tests/ink-accessibility.test.mts tests/ink-unicode.test.mts",
+    "test:ink": "JITI_JSX=1 JITI_ALIAS=\"{\\\"@\\\":\\\"$PWD\\\"}\" node --import jiti/register --test --test-concurrency=1 tests/terminal-text.test.mts tests/ink-interaction.test.mts tests/ink-accessibility.test.mts tests/ink-unicode.test.mts tests/ink-visual-regressions.test.mts",
     "test:registry": "node --test tests/ink-registry-standalone.test.mts",
     "postinstall": "fumadocs-mdx",
     "check": "ultracite check && pnpm typecheck && pnpm registry:validate && pnpm test"

@@ -80,6 +80,7 @@ import { SearchInput } from "@/components/ui/search-input";
 
 ```tsx
 <SearchInput
+  autoFocus
   label="Search Packages"
   options={["react", "vue", "svelte", "angular", "solid"]}
   placeholder="Search..."
@@ -91,22 +92,25 @@ import { SearchInput } from "@/components/ui/search-input";
 
 ### SearchInput
 
-| Prop           | Type                                                                                         | Default       |
-| -------------- | -------------------------------------------------------------------------------------------- | ------------- |
-| `options`      | `T[]`                                                                                        | -             |
-| `getValue`     | `(item: T) => string`                                                                        | -             |
-| `value`        | `string`                                                                                     | -             |
-| `onChange`     | `(query: string) => void`                                                                    | -             |
-| `onSelect`     | `(item: T) => void`                                                                          | -             |
-| `placeholder`  | `string`                                                                                     | `"Search..."` |
-| `label`        | `string`                                                                                     | -             |
-| `maxResults`   | `number`                                                                                     | `5`           |
-| `id`           | `string`                                                                                     | -             |
-| `borderStyle`  | `"single" \| "double" \| "round" \| "bold" \| "singleDouble" \| "doubleSingle" \| "classic"` | `"round"`     |
-| `paddingX`     | `number`                                                                                     | `1`           |
-| `cursor`       | `string`                                                                                     | `"█"`         |
-| `searchIcon`   | `string`                                                                                     | `"🔍 "`       |
-| `resultCursor` | `string`                                                                                     | `"› "`        |
+| Prop            | Type                                                                                         | Default       |
+| --------------- | -------------------------------------------------------------------------------------------- | ------------- |
+| `options`       | `T[]`                                                                                        | -             |
+| `getValue`      | `(item: T) => string`                                                                        | -             |
+| `value`         | `string`                                                                                     | -             |
+| `defaultValue`  | `string`                                                                                     | `""`          |
+| `onValueChange` | `(query: string) => void`                                                                    | -             |
+| `onChange`      | `(query: string) => void`                                                                    | -             |
+| `onSelect`      | `(item: T) => void`                                                                          | -             |
+| `placeholder`   | `string`                                                                                     | `"Search..."` |
+| `label`         | `string`                                                                                     | -             |
+| `maxResults`    | `number`                                                                                     | `5`           |
+| `id`            | `string`                                                                                     | -             |
+| `borderStyle`   | `"single" \| "double" \| "round" \| "bold" \| "singleDouble" \| "doubleSingle" \| "classic"` | `"round"`     |
+| `paddingX`      | `number`                                                                                     | `1`           |
+| `cursor`        | `string`                                                                                     | `"█"`         |
+| `cursorOrigin`  | `{x: number; y: number}`                                                                     | -             |
+| `searchIcon`    | `string`                                                                                     | `"🔍 "`       |
+| `resultCursor`  | `string`                                                                                     | `"› "`        |
 
 {/* ink-v1-contract */}
 

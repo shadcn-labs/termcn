@@ -49,6 +49,7 @@ export const Select = <T = string,>({
   const theme = useTheme();
   const unicode = useUnicode();
   const resolvedCursor = cursor ?? resolveTerminalSymbol(unicode, "›", ">");
+  const selectedIndicator = resolveTerminalSymbol(unicode, "✓", "*");
   const firstEnabledIndex = Math.max(
     0,
     options.findIndex((option) => !option.disabled)
@@ -113,7 +114,7 @@ export const Select = <T = string,>({
         let optColor: string;
         if (opt.disabled) {
           optColor = theme.colors.mutedForeground;
-        } else if (isActive) {
+        } else if (isFocused && isActive) {
           optColor = resolvedCursorColor;
         } else {
           optColor = theme.colors.foreground;
@@ -132,6 +133,12 @@ export const Select = <T = string,>({
               color={isActive ? resolvedCursorColor : undefined}
             >
               {isFocused && isActive ? resolvedCursor : " "}
+            </Text>
+            <Text
+              aria-hidden
+              color={isSelected ? theme.colors.primary : undefined}
+            >
+              {isSelected ? selectedIndicator : " "}
             </Text>
             <Text
               aria-hidden

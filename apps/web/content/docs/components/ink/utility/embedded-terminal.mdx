@@ -95,6 +95,9 @@ import { EmbeddedTerminal } from "@/components/ui/embedded-terminal";
 | `height`  | `number`                 | `24`       |
 | `onExit`  | `(code: number) => void` | -          |
 
+`width` is the preferred maximum. The component clamps itself to the current
+Ink stdout width and resizes the PTY without restarting the running process.
+
 {/* ink-v1-contract */}
 
 ## Keyboard

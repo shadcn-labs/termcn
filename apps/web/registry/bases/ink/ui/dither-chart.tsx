@@ -1,4 +1,4 @@
-import { useIsScreenReaderEnabled, Box, Text } from "ink";
+import { useIsScreenReaderEnabled, useStdout, Box, Text } from "ink";
 import * as React from "react";
 
 import { useInteraction } from "@/hooks/use-interaction";
@@ -478,6 +478,22 @@ export const DitherChart = ({
   const motion = useMotion();
   const isInkScreenReaderEnabled = useIsScreenReaderEnabled();
   const unicodeContext = useUnicode();
+  const { stdout } = useStdout();
+  const [terminalColumns, setTerminalColumns] = React.useState(
+    () => stdout.columns ?? width
+  );
+  React.useEffect(() => {
+    const updateColumns = () => setTerminalColumns(stdout.columns ?? width);
+    updateColumns();
+    stdout.on("resize", updateColumns);
+    return () => {
+      stdout.off("resize", updateColumns);
+    };
+  }, [stdout, width]);
+  const resolvedWidth = Math.min(
+    Math.max(8, Math.floor(width)),
+    Math.max(8, terminalColumns)
+  );
   const parts = React.useMemo(() => parseParts(children), [children]);
   const names = React.useMemo(
     () =>
@@ -607,7 +623,7 @@ export const DitherChart = ({
         series: parts.series,
         stackType,
         unicode: useUnicodeGlyphs,
-        width,
+        width: resolvedWidth,
         xAxis: parts.xAxis,
         yAxis: parts.yAxis,
       }),
@@ -632,7 +648,7 @@ export const DitherChart = ({
       selected,
       stackType,
       useUnicodeGlyphs,
-      width,
+      resolvedWidth,
     ]
   );
 
@@ -699,7 +715,7 @@ export const DitherChart = ({
   }
 
   return (
-    <Box flexDirection="column" width={width}>
+    <Box flexDirection="column" width={resolvedWidth}>
       {title && (
         <Text bold color={noColor ? undefined : theme.colors.primary}>
           {title}

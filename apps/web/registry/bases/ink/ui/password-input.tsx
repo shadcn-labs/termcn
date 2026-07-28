@@ -1,5 +1,5 @@
 import { useCursor, Box, Text } from "ink";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useInteraction } from "@/hooks/use-interaction";
 import { useTheme } from "@/hooks/use-theme";
@@ -117,14 +117,23 @@ export const PasswordInput = ({
   const displayValue = isVisible ? value : resolvedMask.repeat(valueLength);
   const borderColor = isFocused ? theme.colors.focusRing : theme.colors.border;
   const useNativeCursor = Boolean(cursorOrigin && isFocused);
-  setCursorPosition(
-    useNativeCursor && cursorOrigin
-      ? {
-          x: cursorOrigin.x + cursorCellOffset(displayValue, valueLength),
-          y: cursorOrigin.y,
-        }
-      : undefined
-  );
+  useEffect(() => {
+    setCursorPosition(
+      useNativeCursor && cursorOrigin
+        ? {
+            x: cursorOrigin.x + cursorCellOffset(displayValue, valueLength),
+            y: cursorOrigin.y,
+          }
+        : undefined
+    );
+    return () => setCursorPosition(undefined);
+  }, [
+    cursorOrigin,
+    displayValue,
+    setCursorPosition,
+    useNativeCursor,
+    valueLength,
+  ]);
 
   return (
     <Box flexDirection="column">
