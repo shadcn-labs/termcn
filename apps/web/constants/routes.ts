@@ -33,6 +33,7 @@ export const ROUTES = {
   SIGN_IN: "/sign-in",
   SKILL_BUNDLE: "/api/skills/termcn",
   SPONSOR: "/sponsor",
+  STUDIO: "/studio",
   TERMCN_SKILL: "/termcn-skill",
   TERMS: "/terms",
 } as const;
