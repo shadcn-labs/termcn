@@ -1,4 +1,3 @@
-import { UserRoundIcon } from "lucide-react";
 import Link from "next/link";
 
 import { BrandContextMenu } from "@/components/brand-context-menu";
@@ -8,8 +7,7 @@ import { MainNav } from "@/components/main-nav";
 import { MobileNav } from "@/components/mobile-nav";
 import { ModeSwitcher } from "@/components/mode-switcher";
 import { NavItemGithub } from "@/components/nav-item-github";
-import { SiteSettings } from "@/components/site-settings";
-import { SponsorLink } from "@/components/sponsor-link";
+import { HeaderMenu } from "@/components/site-settings";
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/constants/routes";
 import { SITE } from "@/constants/site";
@@ -20,7 +18,8 @@ const navItems = [
   { href: ROUTES.DOCS_COMPONENTS, label: "Components" },
   { href: ROUTES.DOCS_CHARTS, label: "Charts" },
   { href: ROUTES.DOCS_TEMPLATES, label: "Templates" },
-  { href: ROUTES.PRO, label: "Pro" },
+  { href: ROUTES.SPONSOR, label: "Sponsors" },
+  { href: ROUTES.TERMCN_SKILL, label: "termcn.md" },
 ];
 
 export const SiteHeader = () => (
@@ -33,14 +32,14 @@ export const SiteHeader = () => (
         <MobileNav
           items={navItems}
           tree={source.pageTree}
-          className="flex lg:hidden"
+          className="flex xl:hidden"
         />
         <BrandContextMenu>
           <Button
             asChild
             variant="ghost"
             size="icon"
-            className="hidden size-8 lg:flex"
+            className="hidden size-8 xl:flex"
             sound="click"
           >
             <Link
@@ -53,21 +52,20 @@ export const SiteHeader = () => (
             </Link>
           </Button>
         </BrandContextMenu>
-        <MainNav items={navItems} className="hidden lg:flex" />
+        <MainNav items={navItems} className="hidden xl:flex" />
         <div className="ml-auto flex items-center gap-2 md:flex-1 md:justify-end">
-          <div className="hidden w-full flex-1 md:flex md:w-auto md:flex-none">
+          <div className="hidden w-full flex-1 xl:flex xl:w-auto xl:flex-none">
             <CommandMenu navItems={navItems} tree={source.pageTree} />
           </div>
           <NavItemGithub />
-          <SponsorLink />
-          <Button asChild size="icon" sound="click" variant="ghost">
-            <Link href={ROUTES.ACCOUNT} prefetch={false}>
-              <UserRoundIcon />
-              <span className="sr-only">Account</span>
+          <ModeSwitcher />
+          <Button asChild size="sm" sound="click">
+            <Link href={ROUTES.PRO} prefetch={false}>
+              <span className="xl:hidden">Pro</span>
+              <span className="hidden xl:inline">Get Pro</span>
             </Link>
           </Button>
-          <ModeSwitcher />
-          <SiteSettings />
+          <HeaderMenu />
         </div>
       </div>
     </div>
