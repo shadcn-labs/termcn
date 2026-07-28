@@ -1,6 +1,6 @@
 ---
 title: "Number Input"
-description: "Numeric input with increment/decrement and bounds"
+description: "Focus-aware numeric editor with bounds and precision-aware steps"
 ---
 
 <ComponentPreview base="opentui" name="number-input-demo" hideCode />
@@ -32,6 +32,11 @@ npm install @opentui/react
 ```
 
 <Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource
+  src="registry/bases/opentui/hooks/use-interaction.tsx"
+  title="hooks/use-interaction.tsx"
+/>
 
 <ComponentSource
   src="registry/bases/opentui/ui/types.ts"
@@ -71,6 +76,7 @@ import { NumberInput } from "@/components/ui/number-input";
 
 ```tsx
 <NumberInput
+  autoFocus
   label="Quantity"
   min={0}
   max={100}
@@ -79,23 +85,36 @@ import { NumberInput } from "@/components/ui/number-input";
 />
 ```
 
+Arrow Up and Down use `step`, Option+Arrow uses `smallStep`, and Shift+Arrow
+or Page Up/Down uses `largeStep`. Home and End jump to finite bounds. Drafts
+such as `-` remain editable and are repaired or clamped on Enter or blur.
+
 ## API Reference
 
 ### NumberInput
 
-| Prop          | Type                                                                                         | Default                  |
-| ------------- | -------------------------------------------------------------------------------------------- | ------------------------ |
-| `value`       | `number`                                                                                     | -                        |
-| `onChange`    | `(value: number) => void`                                                                    | -                        |
-| `onSubmit`    | `(value: number) => void`                                                                    | -                        |
-| `min`         | `number`                                                                                     | -                        |
-| `max`         | `number`                                                                                     | -                        |
-| `step`        | `number`                                                                                     | `1`                      |
-| `placeholder` | `string`                                                                                     | `""`                     |
-| `label`       | `string`                                                                                     | -                        |
-| `id`          | `string`                                                                                     | -                        |
-| `format`      | `(n: number) => string`                                                                      | -                        |
-| `borderStyle` | `"single" \| "double" \| "round" \| "bold" \| "singleDouble" \| "doubleSingle" \| "classic"` | `"round"`                |
-| `paddingX`    | `number`                                                                                     | `1`                      |
-| `cursor`      | `string`                                                                                     | `"█"`                    |
-| `stepHint`    | `string`                                                                                     | `"↑ +{step}  ↓ -{step}"` |
+| Prop            | Type                                                                 | Default                  |
+| --------------- | -------------------------------------------------------------------- | ------------------------ |
+| `value`         | `number \| null`                                                     | -                        |
+| `defaultValue`  | `number \| null`                                                     | `null`                   |
+| `onValueChange` | `(value: number \| null, details: NumberInputChangeDetails) => void` | -                        |
+| `onValueCommit` | `(value: number \| null, details: NumberInputChangeDetails) => void` | -                        |
+| `onChange`      | `(value: number) => void`                                            | -                        |
+| `onSubmit`      | `(value: number) => void`                                            | -                        |
+| `min`           | `number`                                                             | -                        |
+| `max`           | `number`                                                             | -                        |
+| `step`          | `number`                                                             | `1`                      |
+| `smallStep`     | `number`                                                             | `0.1`                    |
+| `largeStep`     | `number`                                                             | `10`                     |
+| `placeholder`   | `string`                                                             | `""`                     |
+| `label`         | `string`                                                             | -                        |
+| `id`            | `string`                                                             | -                        |
+| `autoFocus`     | `boolean`                                                            | `false`                  |
+| `disabled`      | `boolean`                                                            | `false`                  |
+| `readOnly`      | `boolean`                                                            | `false`                  |
+| `isActive`      | `boolean`                                                            | `true`                   |
+| `format`        | `(n: number) => string`                                              | -                        |
+| `borderStyle`   | `"single" \| "double" \| "rounded" \| "heavy"`                       | `"rounded"`              |
+| `paddingX`      | `number`                                                             | `1`                      |
+| `cursor`        | `string`                                                             | `"█"`                    |
+| `stepHint`      | `string`                                                             | `"↑ +{step}  ↓ -{step}"` |

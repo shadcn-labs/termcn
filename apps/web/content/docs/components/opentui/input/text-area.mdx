@@ -1,6 +1,6 @@
 ---
 title: "Text Area"
-description: "Multi-line text editor with word wrap"
+description: "Focus-aware multi-line editor with scrolling and paste"
 ---
 
 <ComponentPreview base="opentui" name="text-area-demo" hideCode />
@@ -32,6 +32,11 @@ npm install @opentui/react
 ```
 
 <Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource
+  src="registry/bases/opentui/hooks/use-interaction.tsx"
+  title="hooks/use-interaction.tsx"
+/>
 
 <ComponentSource
   src="registry/bases/opentui/ui/types.ts"
@@ -71,6 +76,7 @@ import { TextArea } from "@/components/ui/text-area";
 
 ```tsx
 <TextArea
+  autoFocus
   label="Description"
   placeholder="Enter a description..."
   rows={4}
@@ -78,19 +84,28 @@ import { TextArea } from "@/components/ui/text-area";
 />
 ```
 
+`rows` controls the visible viewport, not the document length. Use Ctrl+Enter
+to submit while Enter inserts a new line.
+
 ## API Reference
 
 ### TextArea
 
-| Prop          | Type                                                                                         | Default   |
-| ------------- | -------------------------------------------------------------------------------------------- | --------- |
-| `value`       | `string`                                                                                     | -         |
-| `onChange`    | `(value: string) => void`                                                                    | -         |
-| `onSubmit`    | `(value: string) => void`                                                                    | -         |
-| `placeholder` | `string`                                                                                     | `""`      |
-| `rows`        | `number`                                                                                     | `4`       |
-| `label`       | `string`                                                                                     | -         |
-| `id`          | `string`                                                                                     | -         |
-| `borderStyle` | `"single" \| "double" \| "round" \| "bold" \| "singleDouble" \| "doubleSingle" \| "classic"` | `"round"` |
-| `paddingX`    | `number`                                                                                     | `1`       |
-| `cursor`      | `string`                                                                                     | `"█"`     |
+| Prop            | Type                                            | Default     |
+| --------------- | ----------------------------------------------- | ----------- |
+| `value`         | `string`                                        | -           |
+| `defaultValue`  | `string`                                        | `""`        |
+| `onValueChange` | `(value: string) => void`                       | -           |
+| `onChange`      | `(value: string) => void` (compatibility alias) | -           |
+| `onSubmit`      | `(value: string) => void`                       | -           |
+| `placeholder`   | `string`                                        | `""`        |
+| `rows`          | `number`                                        | `4`         |
+| `label`         | `string`                                        | -           |
+| `autoFocus`     | `boolean`                                       | `false`     |
+| `disabled`      | `boolean`                                       | `false`     |
+| `readOnly`      | `boolean`                                       | `false`     |
+| `isActive`      | `boolean`                                       | `true`      |
+| `id`            | `string`                                        | -           |
+| `borderStyle`   | `"single" \| "double" \| "rounded" \| "heavy"`  | `"rounded"` |
+| `paddingX`      | `number`                                        | `1`         |
+| `cursor`        | `string`                                        | `"█"`       |

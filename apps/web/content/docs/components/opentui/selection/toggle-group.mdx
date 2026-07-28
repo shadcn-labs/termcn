@@ -1,0 +1,90 @@
+---
+title: "Toggle Group"
+description: "Single or multiple pressed-state controls with roving focus"
+---
+
+<ComponentPreview base="opentui" name="toggle-group-demo" hideCode />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+```bash
+npx shadcn@latest add @termcn/opentui/toggle-group
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install OpenTUI React.</Step>
+
+```bash
+npm install @opentui/react
+```
+
+<Step>Copy the interaction hook, theme dependencies, and component.</Step>
+
+<ComponentSource
+  src="registry/bases/opentui/hooks/use-interaction.tsx"
+  title="hooks/use-interaction.tsx"
+/>
+
+<ComponentSource
+  src="registry/bases/opentui/ui/types.ts"
+  title="components/ui/types.ts"
+/>
+
+<ComponentSource
+  src="registry/bases/opentui/themes/default.ts"
+  title="lib/terminal-themes/default.ts"
+/>
+
+<ComponentSource
+  base="opentui"
+  name="theme-provider"
+  title="components/ui/theme-provider.tsx"
+/>
+
+<ComponentSource
+  base="opentui"
+  name="toggle-group"
+  title="components/ui/toggle-group.tsx"
+/>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+```
+
+```tsx
+<ToggleGroup defaultValue={["bold"]} multiple>
+  <ToggleGroupItem autoFocus label="Bold" value="bold" />
+  <ToggleGroupItem label="Italic" value="italic" />
+</ToggleGroup>
+```
+
+Horizontal groups use Left/Right and vertical groups use Up/Down. Home and End
+move to the first or last enabled item.
+
+## API Reference
+
+| Part              | Key props                                                           |
+| ----------------- | ------------------------------------------------------------------- |
+| `ToggleGroup`     | `value`, `defaultValue`, `onValueChange`, `multiple`, `orientation` |
+| `ToggleGroupItem` | `value`, `label`, `disabled`, `autoFocus`, `isActive`               |

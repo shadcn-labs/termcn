@@ -1,17 +1,25 @@
 /* @jsxImportSource @opentui/react */
-import { useKeyboard } from "@opentui/react";
 import { useState } from "react";
 
 import { useTheme } from "@/components/ui/opentui-theme-provider";
+import { useInteraction } from "@/registry/bases/opentui/hooks/use-interaction";
+import type { PressDetails } from "@/registry/bases/opentui/hooks/use-interaction";
 import type { BorderStyle } from "@/registry/bases/opentui/ui/types";
 
 export interface ToggleProps {
+  autoFocus?: boolean;
   checked?: boolean;
+  defaultChecked?: boolean;
+  pressed?: boolean;
+  defaultPressed?: boolean;
   onChange?: (checked: boolean) => void;
+  onCheckedChange?: (checked: boolean, details: PressDetails) => void;
+  onPressedChange?: (pressed: boolean, details: PressDetails) => void;
   label?: string;
   onLabel?: string;
   offLabel?: string;
   id?: string;
+  isActive?: boolean;
   disabled?: boolean;
   checkedIcon?: string;
   uncheckedIcon?: string;
@@ -20,12 +28,19 @@ export interface ToggleProps {
 }
 
 export const Toggle = ({
+  autoFocus = false,
   checked: controlledChecked,
+  defaultChecked = false,
+  pressed: controlledPressed,
+  defaultPressed,
   onChange,
+  onCheckedChange,
+  onPressedChange,
   label,
   onLabel = "ON",
   offLabel = "OFF",
-  id: _id,
+  id,
+  isActive = true,
   disabled = false,
   checkedIcon = "●",
   uncheckedIcon = "○",
@@ -33,22 +48,30 @@ export const Toggle = ({
   paddingX = 1,
 }: ToggleProps) => {
   const theme = useTheme();
-  const [isFocused] = useState(true);
-  const [internalChecked, setInternalChecked] = useState(false);
-  const checked = controlledChecked ?? internalChecked;
+  const [internalChecked, setInternalChecked] = useState(
+    defaultPressed ?? defaultChecked
+  );
+  const controlledValue = controlledPressed ?? controlledChecked;
+  const checked = controlledValue ?? internalChecked;
 
-  useKeyboard((key) => {
-    if (!isFocused || disabled) {
-      return;
-    }
-    if (key.name === " ") {
+  const { interactionProps, isFocused } = useInteraction({
+    autoFocus,
+    disabled,
+    id,
+    isActive,
+    onPress: (details) => {
       const next = !checked;
-      if (onChange) {
-        onChange(next);
-      } else {
+      if (controlledValue === undefined) {
         setInternalChecked(next);
       }
-    }
+      if (onPressedChange) {
+        onPressedChange(next, details);
+      } else if (onCheckedChange) {
+        onCheckedChange(next, details);
+      } else {
+        onChange?.(next);
+      }
+    },
   });
 
   const trackColor = checked
@@ -58,7 +81,7 @@ export const Toggle = ({
   const stateLabel = checked ? onLabel : offLabel;
 
   return (
-    <box gap={1} alignItems="center">
+    <box {...interactionProps} gap={1} alignItems="center">
       <box
         borderStyle={borderStyle}
         borderColor={focusColor}

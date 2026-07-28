@@ -2244,6 +2244,19 @@ export const ExamplesIndex: Record<string, Record<string, any>> = {
     },
   },
   opentui: {
+    "accordion-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/accordion-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "accordion-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/accordion-demo.tsx",
+      name: "accordion-demo",
+    },
     "alert-custom": {
       component: React.lazy(async () => {
         const mod = await import("./opentui/alert-custom");
@@ -2530,6 +2543,19 @@ export const ExamplesIndex: Record<string, Record<string, any>> = {
       filePath: "examples/opentui/bullet-list-demo.tsx",
       name: "bullet-list-demo",
     },
+    "button-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/button-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "button-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/button-demo.tsx",
+      name: "button-demo",
+    },
     "card-demo": {
       component: React.lazy(async () => {
         const mod = await import("./opentui/card-demo");
@@ -2659,6 +2685,19 @@ export const ExamplesIndex: Record<string, Record<string, any>> = {
       }),
       filePath: "examples/opentui/code-multiline.tsx",
       name: "code-multiline",
+    },
+    "collapsible-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/collapsible-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "collapsible-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/collapsible-demo.tsx",
+      name: "collapsible-demo",
     },
     "color-picker-demo": {
       component: React.lazy(async () => {
@@ -4064,6 +4103,19 @@ export const ExamplesIndex: Record<string, Record<string, any>> = {
       filePath: "examples/opentui/streaming-text-demo.tsx",
       name: "streaming-text-demo",
     },
+    "switch-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/switch-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "switch-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/switch-demo.tsx",
+      name: "switch-demo",
+    },
     "tabbed-content-demo": {
       component: React.lazy(async () => {
         const mod = await import("./opentui/tabbed-content-demo");
@@ -4323,6 +4375,19 @@ export const ExamplesIndex: Record<string, Record<string, any>> = {
       }),
       filePath: "examples/opentui/toggle-demo.tsx",
       name: "toggle-demo",
+    },
+    "toggle-group-demo": {
+      component: React.lazy(async () => {
+        const mod = await import("./opentui/toggle-group-demo");
+        const exportName =
+          Object.keys(mod).find(
+            (key) =>
+              typeof mod[key] === "function" || typeof mod[key] === "object"
+          ) || "toggle-group-demo";
+        return { default: mod.default || mod[exportName] };
+      }),
+      filePath: "examples/opentui/toggle-group-demo.tsx",
+      name: "toggle-group-demo",
     },
     "token-usage-demo": {
       component: React.lazy(async () => {

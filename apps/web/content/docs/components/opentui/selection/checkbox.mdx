@@ -34,6 +34,11 @@ npm install @opentui/react
 <Step>Copy and paste the following code into your project.</Step>
 
 <ComponentSource
+  src="registry/bases/opentui/hooks/use-interaction.tsx"
+  title="hooks/use-interaction.tsx"
+/>
+
+<ComponentSource
   src="registry/bases/opentui/ui/types.ts"
   title="components/ui/types.ts"
 />
@@ -77,14 +82,18 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 ### Checkbox
 
-| Prop                | Type                         | Default |
-| ------------------- | ---------------------------- | ------- |
-| `checked`           | `boolean`                    | -       |
-| `onChange`          | `(checked: boolean) => void` | -       |
-| `label`             | `string`                     | -       |
-| `indeterminate`     | `boolean`                    | `false` |
-| `disabled`          | `boolean`                    | `false` |
-| `id`                | `string`                     | -       |
-| `checkedIcon`       | `string`                     | `"■"`   |
-| `uncheckedIcon`     | `string`                     | `"□"`   |
-| `indeterminateIcon` | `string`                     | `"▪"`   |
+| Prop                | Type                                                | Default |
+| ------------------- | --------------------------------------------------- | ------- |
+| `checked`           | `boolean`                                           | -       |
+| `defaultChecked`    | `boolean`                                           | `false` |
+| `onCheckedChange`   | `(checked: boolean, details: PressDetails) => void` | -       |
+| `onChange`          | `(checked: boolean) => void`                        | -       |
+| `label`             | `string`                                            | -       |
+| `indeterminate`     | `boolean`                                           | `false` |
+| `disabled`          | `boolean`                                           | `false` |
+| `id`                | `string`                                            | -       |
+| `autoFocus`         | `boolean`                                           | `false` |
+| `isActive`          | `boolean`                                           | `true`  |
+| `checkedIcon`       | `string`                                            | `"■"`   |
+| `uncheckedIcon`     | `string`                                            | `"□"`   |
+| `indeterminateIcon` | `string`                                            | `"▪"`   |

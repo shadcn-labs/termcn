@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/button",
+  "title": "Button",
+  "description": "Focus-aware button with keyboard and pointer activation.",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/interaction.json",
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/button.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport type { ReactNode } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\nimport { useInteraction } from \"@/hooks/use-interaction\";\nimport type {\n  InteractionProps,\n  PressDetails,\n} from \"@/hooks/use-interaction\";\n\nexport interface ButtonProps extends InteractionProps {\n  children?: ReactNode;\n  intent?: \"neutral\" | \"primary\" | \"danger\";\n  label?: string;\n  onPress?: (details: PressDetails) => void;\n  size?: \"compact\" | \"comfortable\";\n}\n\nexport const Button = ({\n  autoFocus = false,\n  children,\n  disabled = false,\n  id,\n  intent = \"primary\",\n  isActive = true,\n  label,\n  onPress,\n  size = \"compact\",\n}: ButtonProps) => {\n  const theme = useTheme();\n  const { interactionProps, isFocused, isPressed } = useInteraction({\n    autoFocus,\n    disabled,\n    id,\n    isActive,\n    onPress,\n  });\n  const content = children ?? label ?? \"\";\n\n  let backgroundColor = theme.colors.muted;\n  let foregroundColor = theme.colors.foreground;\n  if (intent === \"primary\") {\n    backgroundColor = theme.colors.primary;\n    foregroundColor = theme.colors.primaryForeground;\n  } else if (intent === \"danger\") {\n    backgroundColor = theme.colors.error;\n    foregroundColor = theme.colors.errorForeground;\n  }\n  if (disabled) {\n    backgroundColor = theme.colors.muted;\n    foregroundColor = theme.colors.mutedForeground;\n  } else if (isPressed) {\n    backgroundColor = theme.colors.selection;\n    foregroundColor = theme.colors.selectionForeground;\n  } else if (isFocused) {\n    backgroundColor = theme.colors.focusRing;\n  }\n\n  return (\n    <box\n      {...interactionProps}\n      backgroundColor={backgroundColor}\n      paddingLeft={size === \"comfortable\" ? 2 : 1}\n      paddingRight={size === \"comfortable\" ? 2 : 1}\n    >\n      <text fg={foregroundColor}>{isFocused ? <b>{content}</b> : content}</text>\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/button.tsx"
+    }
+  ],
+  "categories": [
+    "forms"
+  ],
+  "type": "registry:ui"
+}

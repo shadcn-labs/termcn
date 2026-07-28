@@ -1,50 +1,62 @@
 /* @jsxImportSource @opentui/react */
-import { useKeyboard } from "@opentui/react";
 import { useState } from "react";
 
 import { useTheme } from "@/components/ui/opentui-theme-provider";
+import { useInteraction } from "@/registry/bases/opentui/hooks/use-interaction";
+import type { PressDetails } from "@/registry/bases/opentui/hooks/use-interaction";
 
 export interface CheckboxProps {
+  autoFocus?: boolean;
   checked?: boolean;
+  defaultChecked?: boolean;
   onChange?: (checked: boolean) => void;
+  onCheckedChange?: (checked: boolean, details: PressDetails) => void;
   label?: string;
   indeterminate?: boolean;
   disabled?: boolean;
   id?: string;
+  isActive?: boolean;
   checkedIcon?: string;
   uncheckedIcon?: string;
   indeterminateIcon?: string;
 }
 
 export const Checkbox = ({
+  autoFocus = false,
   checked: controlledChecked,
+  defaultChecked = false,
   onChange,
+  onCheckedChange,
   label,
   indeterminate = false,
   disabled = false,
-  id: _id,
+  id,
+  isActive = true,
   checkedIcon = "■",
   uncheckedIcon = "□",
   indeterminateIcon = "▪",
 }: CheckboxProps) => {
-  const [internalChecked, setInternalChecked] = useState(false);
+  const [internalChecked, setInternalChecked] = useState(defaultChecked);
   const theme = useTheme();
-  const [isFocused] = useState(true);
 
   const checked = controlledChecked ?? internalChecked;
 
-  useKeyboard((key) => {
-    if (!isFocused || disabled) {
-      return;
-    }
-    if (key.name === " ") {
+  const { interactionProps, isFocused } = useInteraction({
+    autoFocus,
+    disabled,
+    id,
+    isActive,
+    onPress: (details) => {
       const next = !checked;
-      if (onChange) {
-        onChange(next);
-      } else {
+      if (controlledChecked === undefined) {
         setInternalChecked(next);
       }
-    }
+      if (onCheckedChange) {
+        onCheckedChange(next, details);
+      } else {
+        onChange?.(next);
+      }
+    },
   });
 
   const checkedIcon_ = checked ? checkedIcon : uncheckedIcon;
@@ -54,12 +66,16 @@ export const Checkbox = ({
   const iconColor = disabled ? theme.colors.mutedForeground : activeColor;
 
   return (
-    <box gap={1}>
+    <box {...interactionProps} gap={1}>
       <text fg={isFocused ? theme.colors.focusRing : iconColor}>
         {isFocused ? <b>{icon}</b> : icon}
       </text>
       {label && (
-        <text fg={disabled ? "#666" : theme.colors.foreground}>{label}</text>
+        <text
+          fg={disabled ? theme.colors.mutedForeground : theme.colors.foreground}
+        >
+          {label}
+        </text>
       )}
     </box>
   );

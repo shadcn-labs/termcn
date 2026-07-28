@@ -1,6 +1,6 @@
 ---
 title: "Tabs"
-description: "Tab bar with left/right arrow and tab-key navigation"
+description: "Controlled or uncontrolled tab bar with focus-aware navigation"
 ---
 
 <ComponentPreview base="opentui" name="tabs-demo" hideCode />
@@ -32,6 +32,11 @@ npm install @opentui/react
 ```
 
 <Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource
+  src="registry/bases/opentui/hooks/use-interaction.tsx"
+  title="hooks/use-interaction.tsx"
+/>
 
 <ComponentSource
   src="registry/bases/opentui/ui/types.ts"
@@ -87,23 +92,34 @@ import { Tabs } from "@/components/ui/tabs";
 
 ### Tabs
 
-| Prop             | Type                                                                                         | Default    |
-| ---------------- | -------------------------------------------------------------------------------------------- | ---------- |
-| `tabs`           | `Tab[]`                                                                                      | `required` |
-| `defaultTab`     | `string`                                                                                     | -          |
-| `activeTab`      | `string`                                                                                     | -          |
-| `onTabChange`    | `(key: string) => void`                                                                      | -          |
-| `borderColor`    | `string`                                                                                     | -          |
-| `borderStyle`    | `"single" \| "double" \| "round" \| "bold" \| "singleDouble" \| "doubleSingle" \| "classic"` | `"single"` |
-| `separator`      | `string`                                                                                     | `" │ "`    |
-| `tabBarPaddingX` | `number`                                                                                     | `2`        |
-| `paddingX`       | `number`                                                                                     | `1`        |
-| `paddingY`       | `number`                                                                                     | `0`        |
+| Prop             | Type                                                | Default        |
+| ---------------- | --------------------------------------------------- | -------------- |
+| `tabs`           | `Tab[]`                                             | `required`     |
+| `value`          | `string`                                            | -              |
+| `defaultValue`   | `string`                                            | -              |
+| `onValueChange`  | `(key: string, details: TabsChangeDetails) => void` | -              |
+| `defaultTab`     | `string`                                            | -              |
+| `activeTab`      | `string`                                            | -              |
+| `onTabChange`    | `(key: string) => void`                             | -              |
+| `borderColor`    | `string`                                            | -              |
+| `borderStyle`    | `"single" \| "double" \| "rounded" \| "heavy"`      | `"single"`     |
+| `separator`      | `string`                                            | `" │ "`        |
+| `tabBarPaddingX` | `number`                                            | `2`            |
+| `paddingX`       | `number`                                            | `1`            |
+| `paddingY`       | `number`                                            | `0`            |
+| `disabled`       | `boolean`                                           | `false`        |
+| `autoFocus`      | `boolean`                                           | `false`        |
+| `loopFocus`      | `boolean`                                           | `true`         |
+| `activationMode` | `"automatic" \| "manual"`                           | `"automatic"`  |
+| `orientation`    | `"horizontal" \| "vertical"`                        | `"horizontal"` |
+| `id`             | `string`                                            | -              |
+| `isActive`       | `boolean`                                           | `true`         |
 
 ### Tab
 
-| Prop      | Type        | Default    |
-| --------- | ----------- | ---------- |
-| `key`     | `string`    | `required` |
-| `label`   | `string`    | `required` |
-| `content` | `ReactNode` | `required` |
+| Prop       | Type        | Default    |
+| ---------- | ----------- | ---------- |
+| `key`      | `string`    | `required` |
+| `label`    | `string`    | `required` |
+| `content`  | `ReactNode` | `required` |
+| `disabled` | `boolean`   | `false`    |

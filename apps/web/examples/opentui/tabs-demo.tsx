@@ -3,6 +3,7 @@ import { Tabs } from "@/registry/bases/opentui/ui/tabs";
 export default function TabsDemo() {
   return (
     <Tabs
+      autoFocus
       defaultTab="general"
       tabs={[
         {

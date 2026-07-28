@@ -34,6 +34,11 @@ npm install @opentui/react
 <Step>Copy and paste the following code into your project.</Step>
 
 <ComponentSource
+  src="registry/bases/opentui/hooks/use-interaction.tsx"
+  title="hooks/use-interaction.tsx"
+/>
+
+<ComponentSource
   src="registry/bases/opentui/ui/types.ts"
   title="components/ui/types.ts"
 />
@@ -77,16 +82,23 @@ import { Toggle } from "@/components/ui/toggle";
 
 ### Toggle
 
-| Prop            | Type                                                                                         | Default   |
-| --------------- | -------------------------------------------------------------------------------------------- | --------- |
-| `checked`       | `boolean`                                                                                    | -         |
-| `onChange`      | `(checked: boolean) => void`                                                                 | -         |
-| `label`         | `string`                                                                                     | -         |
-| `onLabel`       | `string`                                                                                     | `"ON"`    |
-| `offLabel`      | `string`                                                                                     | `"OFF"`   |
-| `id`            | `string`                                                                                     | -         |
-| `disabled`      | `boolean`                                                                                    | `false`   |
-| `checkedIcon`   | `string`                                                                                     | `"●"`     |
-| `uncheckedIcon` | `string`                                                                                     | `"○"`     |
-| `borderStyle`   | `"single" \| "double" \| "round" \| "bold" \| "singleDouble" \| "doubleSingle" \| "classic"` | `"round"` |
-| `paddingX`      | `number`                                                                                     | `1`       |
+| Prop              | Type                                                | Default     |
+| ----------------- | --------------------------------------------------- | ----------- |
+| `checked`         | `boolean`                                           | -           |
+| `defaultChecked`  | `boolean`                                           | `false`     |
+| `pressed`         | `boolean`                                           | -           |
+| `defaultPressed`  | `boolean`                                           | -           |
+| `onPressedChange` | `(pressed: boolean, details: PressDetails) => void` | -           |
+| `onCheckedChange` | `(checked: boolean, details: PressDetails) => void` | -           |
+| `onChange`        | `(checked: boolean) => void`                        | -           |
+| `label`           | `string`                                            | -           |
+| `onLabel`         | `string`                                            | `"ON"`      |
+| `offLabel`        | `string`                                            | `"OFF"`     |
+| `id`              | `string`                                            | -           |
+| `autoFocus`       | `boolean`                                           | `false`     |
+| `isActive`        | `boolean`                                           | `true`      |
+| `disabled`        | `boolean`                                           | `false`     |
+| `checkedIcon`     | `string`                                            | `"●"`       |
+| `uncheckedIcon`   | `string`                                            | `"○"`       |
+| `borderStyle`     | `"single" \| "double" \| "rounded" \| "heavy"`      | `"rounded"` |
+| `paddingX`        | `number`                                            | `1`         |

@@ -1,0 +1,98 @@
+---
+title: "Button"
+description: "Focus-aware button with keyboard and pointer activation"
+---
+
+<ComponentPreview base="opentui" name="button-demo" hideCode />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+```bash
+npx shadcn@latest add @termcn/opentui/button
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install OpenTUI React.</Step>
+
+```bash
+npm install @opentui/react
+```
+
+<Step>Copy the interaction hook, theme dependencies, and component.</Step>
+
+<ComponentSource
+  src="registry/bases/opentui/hooks/use-interaction.tsx"
+  title="hooks/use-interaction.tsx"
+/>
+
+<ComponentSource
+  src="registry/bases/opentui/ui/types.ts"
+  title="components/ui/types.ts"
+/>
+
+<ComponentSource
+  src="registry/bases/opentui/themes/default.ts"
+  title="lib/terminal-themes/default.ts"
+/>
+
+<ComponentSource
+  base="opentui"
+  name="theme-provider"
+  title="components/ui/theme-provider.tsx"
+/>
+
+<ComponentSource
+  base="opentui"
+  name="button"
+  title="components/ui/button.tsx"
+/>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import { Button } from "@/components/ui/button";
+```
+
+```tsx
+<Button
+  autoFocus
+  label="Deploy"
+  onPress={({ source }) => console.log(source)}
+/>
+```
+
+Button activates on unmodified Enter, Return, or Space and on a primary
+pointer press that starts and ends on the control. `autoFocus` is useful for a
+single primary action; otherwise focus it from your application or by pointer.
+
+## API Reference
+
+| Prop        | Type                                     | Default     |
+| ----------- | ---------------------------------------- | ----------- |
+| `children`  | `ReactNode`                              | -           |
+| `label`     | `string` (used when children are absent) | -           |
+| `onPress`   | `(details: PressDetails) => void`        | -           |
+| `intent`    | `"neutral" \| "primary" \| "danger"`     | `"primary"` |
+| `size`      | `"compact" \| "comfortable"`             | `"compact"` |
+| `disabled`  | `boolean`                                | `false`     |
+| `autoFocus` | `boolean`                                | `false`     |
+| `isActive`  | `boolean`                                | `true`      |

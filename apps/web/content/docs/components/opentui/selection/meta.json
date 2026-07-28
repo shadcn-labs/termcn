@@ -6,7 +6,9 @@
     "multi-select",
     "radio-group",
     "select",
+    "switch",
     "tag-input",
+    "toggle-group",
     "tree-select"
   ],
   "title": "Selection"
