@@ -1,16 +1,16 @@
 ---
 title: MCP
-description: Learn how to use the shadcn MCP (Model Context Protocol) server with termcn.
+description: Learn how to use the termcn MCP (Model Context Protocol) server.
 ---
 
-[MCP](https://modelcontextprotocol.io/) is an open protocol that standardizes how applications provide context to LLMs. The shadcn CLI can register an MCP server so your editor can discover registry components—including items you install from **termcn** via the same CLI.
+[MCP](https://modelcontextprotocol.io/) is an open protocol that standardizes how applications provide context to LLMs. The termcn CLI can register an MCP server so your editor can discover registry components—including the Ink and OpenTUI items you install through termcn.
 
 ## Configure MCP
 
 Run:
 
 ```bash
-npx shadcn@latest mcp init
+npx termcn@latest mcp init
 ```
 
 Choose your MCP client when prompted, then enable the MCP server in that client to finish setup.
@@ -25,4 +25,4 @@ With MCP enabled, you can ask your IDE to work with **Ink** and **OpenTUI** term
 - Lay out a TUI dashboard using **Box**, **Stack**, **Table**, and **DataGrid** with a **Sidebar**.
 - Implement a multi-step flow with **Wizard**, **Form**, **Confirm**, and **Modal**.
 
-Install components from this registry with `npx shadcn@latest add` and the JSON URL from each docs page, then reference them in your Ink or OpenTUI `ThemeProvider` tree as usual.
+Install components from this registry with `npx termcn@latest add`, then reference them in your Ink or OpenTUI `ThemeProvider` tree as usual.

@@ -228,21 +228,21 @@ export const CommandMenu = ({
             ? "opentui"
             : "ink";
         setCopyPayload(
-          `${packageManager} dlx shadcn@latest add ${SITE.REGISTRY}/${base}/theme-${parsed.slug}`
+          `${packageManager} dlx termcn@latest add ${SITE.REGISTRY}/${base}/theme-${parsed.slug}`
         );
         return;
       }
       if (parsed.kind === "chart") {
         const base = parsed.base === "opentui" ? "opentui" : "ink";
         setCopyPayload(
-          `${packageManager} dlx shadcn@latest add ${SITE.REGISTRY}/${base}/${getChartRegistryItemName(parsed.slug)}`
+          `${packageManager} dlx termcn@latest add ${SITE.REGISTRY}/${base}/${getChartRegistryItemName(parsed.slug)}`
         );
         return;
       }
       if (parsed.kind === "component" || parsed.kind === "template") {
         const base = parsed.base === "opentui" ? "opentui" : "ink";
         setCopyPayload(
-          `${packageManager} dlx shadcn@latest add ${SITE.REGISTRY}/${base}/${parsed.slug}`
+          `${packageManager} dlx termcn@latest add ${SITE.REGISTRY}/${base}/${parsed.slug}`
         );
         return;
       }
@@ -254,7 +254,7 @@ export const CommandMenu = ({
   const handleBlockHighlight = useCallback(
     (block: { name: string; description: string; categories: string[] }) => {
       setShowGoToPage(true);
-      setCopyPayload(`${packageManager} dlx shadcn@latest add ${block.name}`);
+      setCopyPayload(`${packageManager} dlx termcn@latest add ${block.name}`);
     },
     [packageManager]
   );
@@ -328,7 +328,7 @@ export const CommandMenu = ({
       if (
         e.key === "c" &&
         (e.metaKey || e.ctrlKey) &&
-        copyPayload.includes("shadcn@latest")
+        copyPayload.includes("termcn@latest")
       ) {
         runCommand(() => {
           copyFeedback();

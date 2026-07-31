@@ -1,5 +1,5 @@
 {
-  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "$schema": "https://termcn.dev/schema/registry-item.json",
   "name": "opentui/dither-radar-chart",
   "title": "Dither Radar Chart",
   "description": "Dithered radar charts for comparing multiple series across terminal-friendly radial axes",

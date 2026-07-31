@@ -91,8 +91,8 @@ const copyDirContents = async (
   );
 };
 
-const runShadcnBuild = (cwd: string) => {
-  const shadcnBin = path.join(
+const runRegistryBuild = (cwd: string) => {
+  const registryCli = path.join(
     root,
     "node_modules",
     ".bin",
@@ -100,7 +100,7 @@ const runShadcnBuild = (cwd: string) => {
   );
 
   const result = spawnSync(
-    shadcnBin,
+    registryCli,
     ["build", "registry.json", "--output", outputDir],
     {
       cwd,
@@ -114,9 +114,37 @@ const runShadcnBuild = (cwd: string) => {
 
   if (result.status !== 0) {
     throw new Error(
-      `shadcn build failed with exit code ${result.status ?? -1}`
+      `registry build failed with exit code ${result.status ?? -1}`
     );
   }
+};
+
+const rewritePublishedSchemas = async (dir: string): Promise<void> => {
+  const entries = await fs.readdir(dir, { withFileTypes: true });
+
+  await Promise.all(
+    entries.map(async (entry) => {
+      const entryPath = path.join(dir, entry.name);
+
+      if (entry.isDirectory()) {
+        await rewritePublishedSchemas(entryPath);
+        return;
+      }
+
+      if (!entry.name.endsWith(".json")) {
+        return;
+      }
+
+      const content = await fs.readFile(entryPath, "utf-8");
+      await fs.writeFile(
+        entryPath,
+        content.replaceAll(
+          "https://ui.shadcn.com/schema/",
+          "https://termcn.dev/schema/"
+        )
+      );
+    })
+  );
 };
 
 const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "termcn-registry-"));
@@ -144,7 +172,8 @@ try {
     ensureDir(path.join(outputDir, "ink")),
     ensureDir(path.join(outputDir, "opentui")),
   ]);
-  runShadcnBuild(tempRoot);
+  runRegistryBuild(tempRoot);
+  await rewritePublishedSchemas(outputDir);
 } finally {
   await fs.rm(tempRoot, { force: true, recursive: true });
 }

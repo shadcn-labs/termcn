@@ -20,7 +20,7 @@ export const SITE = {
     TWITTER: "@alaymanguy",
   },
   DESCRIPTION: {
-    LONG: "A collection of beautifully designed, accessible, and customizable terminal UI components. Built on Ink and OpenTUI. Works with shadcn/ui.",
+    LONG: "A collection of beautifully designed, accessible, and customizable terminal UI components. Built on Ink and OpenTUI. Installed with the termcn CLI.",
     SHORT: "Beautiful terminal UIs, made simple",
   },
   KEYWORDS: [
@@ -32,7 +32,7 @@ export const SITE = {
     "component registry",
     "react components",
     "next.js",
-    "npx shadcn add",
+    "npx termcn add",
   ] as const,
   NAME: "termcn",
   OG_IMAGE: `${baseUrl}/og.png`,

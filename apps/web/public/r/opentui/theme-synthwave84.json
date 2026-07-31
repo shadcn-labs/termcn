@@ -1,5 +1,5 @@
 {
-  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "$schema": "https://termcn.dev/schema/registry-item.json",
   "name": "opentui/theme-synthwave84",
   "title": "Synthwave '84",
   "description": "Synthwave '84 - retro neon.",

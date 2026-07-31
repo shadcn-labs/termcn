@@ -1,5 +1,5 @@
 {
-  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "$schema": "https://termcn.dev/schema/registry-item.json",
   "name": "ink/theme-high-contrast-light",
   "title": "High Contrast Light",
   "description": "WCAG-friendly light high-contrast theme.",

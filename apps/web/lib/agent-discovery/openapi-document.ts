@@ -9,7 +9,7 @@ export const buildOpenApiDocument = (
 
   return {
     info: {
-      description: `Read-only HTTP surfaces for the ${SITE.NAME} documentation site and shadcn component registry.`,
+      description: `Read-only HTTP surfaces for the ${SITE.NAME} documentation site and termcn component registry.`,
       title: "termcn public HTTP API",
       version: "0.1.0",
     },
@@ -106,7 +106,7 @@ export const buildOpenApiDocument = (
               description: "Registry manifest",
             },
           },
-          summary: "shadcn/ui component registry index",
+          summary: "termcn component registry index",
         },
       },
       [ROUTES.DOCS]: {

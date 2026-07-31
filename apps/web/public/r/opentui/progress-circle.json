@@ -1,5 +1,5 @@
 {
-  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "$schema": "https://termcn.dev/schema/registry-item.json",
   "name": "opentui/progress-circle",
   "title": "Progress Circle",
   "description": "Circular progress indicator using Unicode braille",

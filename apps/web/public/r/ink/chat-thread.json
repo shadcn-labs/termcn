@@ -1,5 +1,5 @@
 {
-  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "$schema": "https://termcn.dev/schema/registry-item.json",
   "name": "ink/chat-thread",
   "title": "Chat Thread",
   "description": "Scrollable container for stacking ChatMessage components in a conversation thread",

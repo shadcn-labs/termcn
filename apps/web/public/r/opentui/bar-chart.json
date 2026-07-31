@@ -1,5 +1,5 @@
 {
-  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "$schema": "https://termcn.dev/schema/registry-item.json",
   "name": "opentui/bar-chart",
   "title": "Bar Chart",
   "description": "Horizontal and vertical bar chart with labels",

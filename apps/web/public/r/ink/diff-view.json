@@ -1,5 +1,5 @@
 {
-  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "$schema": "https://termcn.dev/schema/registry-item.json",
   "name": "ink/diff-view",
   "title": "Diff View",
   "description": "Unified, split, and inline diff viewer with LCS-based diff algorithm and line numbers",

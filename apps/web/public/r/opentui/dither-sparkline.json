@@ -1,5 +1,5 @@
 {
-  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "$schema": "https://termcn.dev/schema/registry-item.json",
   "name": "opentui/dither-sparkline",
   "title": "Dither Sparkline",
   "description": "Compact dithered sparklines for terminal dashboards, summaries, and inline metrics",

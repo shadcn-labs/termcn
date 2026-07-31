@@ -1,5 +1,5 @@
 {
-  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "$schema": "https://termcn.dev/schema/registry-item.json",
   "name": "opentui/notification-badge",
   "title": "Notification Badge",
   "description": "Notification Badge component for OpenTUI React.",

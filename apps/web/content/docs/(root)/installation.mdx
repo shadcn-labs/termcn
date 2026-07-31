@@ -1,24 +1,37 @@
 ---
 title: "Installation"
-description: "Install terminal components, hooks, and themes from the registry."
+description: "Initialize a termcn project and install terminal components, hooks, and themes."
 ---
 
 ## Prerequisites
 
-A project with [Ink](https://github.com/vadimdemedes/ink) or [OpenTUI](https://github.com/anomalyco/opentui) set up.
+Node.js 20.18 or later. OpenTUI projects also use Bun at runtime.
 
-## Installation
+## Initialize a project
 
-Run the following command to add any component:
+Run the interactive initializer:
 
 ```bash
-npx shadcn@latest add @termcn/ink/spinner
+npx termcn@latest init
 ```
 
-OpenTUI components use the `opentui/` namespace:
+You can also select everything up front:
 
 ```bash
-npx shadcn@latest add @termcn/opentui/spinner
+npx termcn@latest init --framework ink --theme dracula --template app-shell --name my-terminal-app --yes
+```
+
+This writes `components.json`, installs the selected theme and template, and
+creates a runnable entry point when the target directory is empty. You can
+build the same command visually on the [Create page](/create).
+
+## Add a component
+
+After initialization, component names resolve through the framework stored in
+`components.json`:
+
+```bash
+npx termcn@latest add spinner
 ```
 
 ## Usage
@@ -46,13 +59,13 @@ termcn ships bundled terminal themes that integrate with the `ThemeProvider`:
 For Ink:
 
 ```bash
-npx shadcn@latest add @termcn/ink/theme-dracula
+npx termcn@latest add theme-dracula
 ```
 
 For OpenTUI:
 
 ```bash
-npx shadcn@latest add @termcn/opentui/theme-dracula
+npx termcn@latest add theme-dracula
 ```
 
 Then wrap your app:

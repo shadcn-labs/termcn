@@ -3,6 +3,8 @@ import { Clipboard } from "@/registry/bases/opentui/ui/clipboard";
 
 export default function ClipboardDemo() {
   return (
-    <Clipboard value={`npx shadcn@latest add ${SITE.REGISTRY}/clipboard`} />
+    <Clipboard
+      value={`npx termcn@latest add ${SITE.REGISTRY}/opentui/clipboard`}
+    />
   );
 }

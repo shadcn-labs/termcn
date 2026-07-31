@@ -1,5 +1,5 @@
 {
-  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "$schema": "https://termcn.dev/schema/registry-item.json",
   "name": "opentui/dither-bar-chart",
   "title": "Dither Bar Chart",
   "description": "Dithered grouped, stacked, and percent bar charts with terminal-native textures and interaction",

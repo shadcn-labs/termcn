@@ -1,5 +1,5 @@
 {
-  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "$schema": "https://termcn.dev/schema/registry-item.json",
   "name": "opentui/time-picker",
   "title": "Time Picker",
   "description": "Time picker with hour/minute/second spinners",

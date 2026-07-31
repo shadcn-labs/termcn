@@ -1,5 +1,5 @@
 {
-  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "$schema": "https://termcn.dev/schema/registry-item.json",
   "name": "opentui/multi-progress",
   "title": "Multi Progress",
   "description": "Parallel progress display for package managers, build pipelines, and deploy tools",

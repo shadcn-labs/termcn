@@ -1,5 +1,5 @@
 {
-  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "$schema": "https://termcn.dev/schema/registry-item.json",
   "name": "ink/tabs",
   "title": "Tabs",
   "description": "Tab bar with left/right arrow and tab-key navigation",

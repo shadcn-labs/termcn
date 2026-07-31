@@ -82,7 +82,7 @@ export const FAQJsonLd = () => {
     },
     {
       answer:
-        "Add or edit components under registry/bases/ink/ or registry/bases/opentui/, register them in registry.json, run pnpm registry:build (which refreshes public/r/), then deploy. Consumers install with npx shadcn@latest add against your published registry URL.",
+        "Add or edit components under registry/bases/ink/ or registry/bases/opentui/, register them in registry.json, run pnpm registry:build (which refreshes public/r/), then deploy. Consumers install with npx termcn@latest add against your published registry URL.",
       question: `How do I publish components with ${SITE.NAME}?`,
     },
     {
