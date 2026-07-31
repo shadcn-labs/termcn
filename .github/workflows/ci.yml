@@ -29,6 +29,9 @@ jobs:
 
   typecheck:
     runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_CONVEX_URL: https://giddy-hound-44.convex.cloud
+      NEXT_PUBLIC_CONVEX_SITE_URL: https://giddy-hound-44.convex.site
     steps:
       - uses: actions/checkout@v5
 

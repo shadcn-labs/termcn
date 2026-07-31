@@ -1,0 +1,30 @@
+{
+  "name": "@termcn/backend",
+  "version": "1.0.0",
+  "license": "ISC",
+  "type": "module",
+  "exports": {
+    "./convex/_generated/api": {
+      "types": "./convex/_generated/api.d.ts",
+      "import": "./convex/_generated/api.js"
+    }
+  },
+  "scripts": {
+    "dev": "convex dev",
+    "dev:setup": "convex dev --configure --until-success",
+    "typecheck": "tsc --noEmit -p convex/tsconfig.json"
+  },
+  "dependencies": {
+    "@convex-dev/better-auth": "^0.12.5",
+    "@dodopayments/convex": "^0.2.12",
+    "better-auth": "1.6.15",
+    "convex": "^1.42.1",
+    "dodopayments": "2.42.2",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@termcn/config": "workspace:*",
+    "@types/node": "^24.3.0",
+    "typescript": "^6"
+  }
+}

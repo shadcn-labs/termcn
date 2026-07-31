@@ -21,6 +21,7 @@ export default defineConfig({
     ".claude/**",
     "apps/web/.web-kits/**",
     "apps/web/audio/**",
+    "packages/backend/convex/_generated/**",
   ],
   jsxSingleQuote: false,
   printWidth: 80,

@@ -1,0 +1,21 @@
+{
+  "name": "@termcn/env",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./web": "./src/web.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@t3-oss/env-core": "^0.13.11",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@termcn/config": "workspace:*",
+    "@types/node": "^22.13.14",
+    "typescript": "^6"
+  }
+}

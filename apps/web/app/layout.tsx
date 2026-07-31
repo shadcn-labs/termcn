@@ -1,6 +1,7 @@
 import { SoundProvider } from "@web-kits/audio/react";
 import type { Metadata } from "next";
 
+import { ConvexClientProvider } from "@/app/convex-client-provider";
 import { Analytics } from "@/components/analytics";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
@@ -41,13 +42,15 @@ const RootLayout = ({
         fontVariables
       )}
     >
-      <SoundProvider>
-        <ThemeProvider>
-          {children}
-          <Toaster position="top-center" />
-          <Analytics />
-        </ThemeProvider>
-      </SoundProvider>
+      <ConvexClientProvider>
+        <SoundProvider>
+          <ThemeProvider>
+            {children}
+            <Toaster position="top-center" />
+            <Analytics />
+          </ThemeProvider>
+        </SoundProvider>
+      </ConvexClientProvider>
     </body>
   </html>
 );

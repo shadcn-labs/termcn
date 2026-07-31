@@ -7,8 +7,7 @@ import { MainNav } from "@/components/main-nav";
 import { MobileNav } from "@/components/mobile-nav";
 import { ModeSwitcher } from "@/components/mode-switcher";
 import { NavItemGithub } from "@/components/nav-item-github";
-import { SiteSettings } from "@/components/site-settings";
-import { SponsorLink } from "@/components/sponsor-link";
+import { HeaderMenu } from "@/components/site-settings";
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/constants/routes";
 import { SITE } from "@/constants/site";
@@ -19,6 +18,8 @@ const navItems = [
   { href: ROUTES.DOCS_COMPONENTS, label: "Components" },
   { href: ROUTES.DOCS_CHARTS, label: "Charts" },
   { href: ROUTES.DOCS_TEMPLATES, label: "Templates" },
+  { href: ROUTES.SPONSOR, label: "Sponsors" },
+  { href: ROUTES.TERMCN_SKILL, label: "termcn.md" },
 ];
 
 export const SiteHeader = () => (
@@ -31,31 +32,40 @@ export const SiteHeader = () => (
         <MobileNav
           items={navItems}
           tree={source.pageTree}
-          className="flex lg:hidden"
+          className="flex xl:hidden"
         />
         <BrandContextMenu>
           <Button
             asChild
             variant="ghost"
             size="icon"
-            className="hidden size-8 lg:flex"
+            className="hidden size-8 xl:flex"
             sound="click"
           >
-            <Link href={ROUTES.HOME} transitionTypes={["nav-back"]}>
+            <Link
+              href={ROUTES.HOME}
+              prefetch={false}
+              transitionTypes={["nav-back"]}
+            >
               <LogoMark className="size-5" />
               <span className="sr-only">{SITE.NAME}</span>
             </Link>
           </Button>
         </BrandContextMenu>
-        <MainNav items={navItems} className="hidden lg:flex" />
+        <MainNav items={navItems} className="hidden xl:flex" />
         <div className="ml-auto flex items-center gap-2 md:flex-1 md:justify-end">
-          <div className="hidden w-full flex-1 md:flex md:w-auto md:flex-none">
+          <div className="hidden w-full flex-1 xl:flex xl:w-auto xl:flex-none">
             <CommandMenu navItems={navItems} tree={source.pageTree} />
           </div>
           <NavItemGithub />
-          <SponsorLink />
           <ModeSwitcher />
-          <SiteSettings />
+          <Button asChild size="sm" sound="click">
+            <Link href={ROUTES.PRO} prefetch={false}>
+              <span className="xl:hidden">Pro</span>
+              <span className="hidden xl:inline">Get Pro</span>
+            </Link>
+          </Button>
+          <HeaderMenu />
         </div>
       </div>
     </div>
