@@ -1,21 +1,15 @@
 ---
-title: Ink Theming
-description: Configure terminal themes, ThemeProvider, motion, and Unicode behavior for Ink apps.
+title: Theming
+description: Configure terminal themes, motion, and Unicode behavior for terminal apps.
 ---
 
-**Theming** in termcn means choosing a terminal theme with tokens for colors, borders, and spacing. Ink theme-aware components work without a provider. Mount `ThemeProvider` only when an application needs to override the default theme.
-
-Theme packages install into `lib/terminal-themes/`, hooks install into `hooks/`, and providers install into `providers/`.
-
-## Preview
-
-Use the terminal chrome theme picker to preview palettes in the browser docs shell.
+import { ThemePreviewGrid } from "@/components/theme-preview-grid";
 
 <ComponentPreview base="ink" name="theme-showcase" hideCode />
 
 ## ThemeProvider
 
-Install the provider when you want to customize the active theme:
+Ink components use the default theme without a provider. Install `ThemeProvider` when you want to supply another theme or update the active theme at runtime.
 
 ```bash
 npx shadcn@latest add @termcn/ink/theme-provider
@@ -24,9 +18,9 @@ npx shadcn@latest add @termcn/ink/theme-provider
 ### Usage
 
 ```tsx
-import { ThemeProvider } from "@/providers/theme-provider";
 import { Spinner } from "@/components/ui/spinner";
 import { defaultTheme } from "@/lib/terminal-themes/default";
+import { ThemeProvider } from "@/providers/theme-provider";
 
 export function Example() {
   return (
@@ -37,48 +31,15 @@ export function Example() {
 }
 ```
 
-Components receive `use-theme`, `use-unicode`, and `use-motion` transitively as `registry:hook` items when needed. Import the hooks directly from the configured shadcn hooks alias:
+Theme-aware components receive the provider-optional `use-theme` hook transitively. Application code can import `useTheme` or `useThemeUpdater` from `@/hooks/use-theme` when it needs direct access.
 
-```tsx
-import { useTheme, useThemeUpdater } from "@/hooks/use-theme";
-import { useUnicode } from "@/hooks/use-unicode";
-import { useMotion } from "@/hooks/use-motion";
-```
+## Available themes
 
-Each hook has a usable default context, so these imports do not require a mounted provider.
-
-## MotionProvider and UnicodeProvider
-
-Motion and Unicode settings are independent from the active theme. Install only the provider that your application needs:
-
-```bash
-npx shadcn@latest add @termcn/ink/motion-provider @termcn/ink/unicode-provider
-```
-
-The providers can be composed in any order because each owns only its matching context:
-
-```tsx
-import { MotionProvider } from "@/providers/motion-provider";
-import { ThemeProvider } from "@/providers/theme-provider";
-import { UnicodeProvider } from "@/providers/unicode-provider";
-import { defaultTheme } from "@/lib/terminal-themes/default";
-
-export function Example() {
-  return (
-    <ThemeProvider theme={defaultTheme}>
-      <MotionProvider reducedMotion>
-        <UnicodeProvider unicode={false}>
-          <App />
-        </UnicodeProvider>
-      </MotionProvider>
-    </ThemeProvider>
-  );
-}
-```
-
-Without these providers, motion follows `NO_MOTION=1` and `CI=true`, while Unicode follows terminal detection and `NO_UNICODE=1`.
+<ThemePreviewGrid base="ink" />
 
 ## Custom themes
+
+Use `createTheme` to extend the default tokens while preserving the complete theme shape.
 
 ```tsx
 import { createTheme } from "@/providers/theme-provider";
@@ -94,6 +55,50 @@ export const oceanTheme = createTheme({
 });
 ```
 
-## Available Themes
+## MotionProvider
 
-<ComponentsList className="mt-6" folderName="Themes" base="ink" />
+Motion is independent from the active theme. Install `MotionProvider` only when the application needs to override the default reduced-motion detection.
+
+```bash
+npx shadcn@latest add @termcn/ink/motion-provider
+```
+
+### Usage
+
+```tsx
+import { MotionProvider } from "@/providers/motion-provider";
+
+export function Example() {
+  return (
+    <MotionProvider reducedMotion>
+      <App />
+    </MotionProvider>
+  );
+}
+```
+
+Without the provider, motion follows `NO_MOTION=1` and `CI=true`.
+
+## UnicodeProvider
+
+Unicode support is independent from the active theme. Install `UnicodeProvider` only when the application needs to override terminal detection.
+
+```bash
+npx shadcn@latest add @termcn/ink/unicode-provider
+```
+
+### Usage
+
+```tsx
+import { UnicodeProvider } from "@/providers/unicode-provider";
+
+export function Example() {
+  return (
+    <UnicodeProvider unicode={false}>
+      <App />
+    </UnicodeProvider>
+  );
+}
+```
+
+Without the provider, Unicode support follows terminal detection and `NO_UNICODE=1`.

@@ -74,6 +74,11 @@ const nextConfig = {
         source: `${ROUTES.DOCS}/:path*.mdx`,
       },
       {
+        destination: `${ROUTES.DOCS_THEMING}/ink`,
+        permanent: true,
+        source: ROUTES.DOCS_THEMING,
+      },
+      {
         destination: `${ROUTES.DOCS_COMPONENTS}/ink/:category/:component`,
         permanent: true,
         source: `${ROUTES.DOCS_COMPONENTS}/:category((?!ink|opentui|charts)[^/]+)/:component`,

@@ -4,13 +4,19 @@ import { cn } from "@/lib/utils";
 import { BASE_NAMES, BASES, getBase } from "@/registry/bases";
 import type { BaseName } from "@/registry/bases";
 
-type DocsBaseSwitcherSection = "components" | "templates" | "themes" | "charts";
+type DocsBaseSwitcherSection =
+  | "components"
+  | "templates"
+  | "themes"
+  | "charts"
+  | "theming";
 
 const DOCS_BASE_SWITCHER_SECTIONS = new Set<DocsBaseSwitcherSection>([
   "components",
   "templates",
   "themes",
   "charts",
+  "theming",
 ]);
 
 const isDocsBaseSwitcherSection = (
@@ -23,9 +29,9 @@ export const getDocsBaseSwitcherProps = (
 ): {
   section: DocsBaseSwitcherSection;
   base: string;
-  slug: string;
+  slug?: string;
 } | null => {
-  if (!slug || slug.length < 3) {
+  if (!slug || slug.length < 2) {
     return null;
   }
 
@@ -33,9 +39,16 @@ export const getDocsBaseSwitcherProps = (
 
   if (
     !BASE_NAMES.includes(base as BaseName) ||
-    !isDocsBaseSwitcherSection(section) ||
-    !rest.length
+    !isDocsBaseSwitcherSection(section)
   ) {
+    return null;
+  }
+
+  if (section === "theming") {
+    return rest.length === 0 ? { base, section } : null;
+  }
+
+  if (!rest.length) {
     return null;
   }
 
@@ -57,7 +70,7 @@ export const DocsBaseSwitcher = ({
   className,
 }: {
   base: string;
-  slug: string;
+  slug?: string;
   section: DocsBaseSwitcherSection;
   className?: string;
 }) => {
@@ -68,7 +81,7 @@ export const DocsBaseSwitcher = ({
       {BASES.map((baseItem) => (
         <Link
           key={baseItem.name}
-          href={`/docs/${section}/${baseItem.name}/${slug}`}
+          href={`/docs/${section}/${baseItem.name}${slug ? `/${slug}` : ""}`}
           data-active={base === baseItem.name}
           className="relative inline-flex items-center justify-center gap-1 pt-1 pb-0.5 text-base font-medium text-muted-foreground transition-colors after:absolute after:inset-x-0 after:bottom-[-4px] after:h-0.5 after:bg-foreground after:opacity-0 after:transition-opacity hover:text-foreground data-[active=true]:text-foreground data-[active=true]:after:opacity-100"
         >

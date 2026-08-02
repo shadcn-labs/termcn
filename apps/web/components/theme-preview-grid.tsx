@@ -1,16 +1,27 @@
 import Link from "next/link";
 
-import { THEMES } from "@/registry/bases/ink/themes";
-import type { RegistryThemeName } from "@/registry/bases/ink/themes";
+import type { BaseName } from "@/registry/bases";
+import { THEMES as INK_THEMES } from "@/registry/bases/ink/themes";
+import type { RegistryThemeName as InkThemeName } from "@/registry/bases/ink/themes";
+import { THEMES as OPENTUI_THEMES } from "@/registry/bases/opentui/themes";
+import type { RegistryThemeName as OpenTuiThemeName } from "@/registry/bases/opentui/themes";
+
+type RegistryThemeName = InkThemeName | OpenTuiThemeName;
 
 interface ThemePreviewGridProps {
-  themes: readonly RegistryThemeName[];
+  base?: BaseName;
+  themes?: readonly RegistryThemeName[];
 }
 
-export const ThemePreviewGrid = ({ themes: slugs }: ThemePreviewGridProps) => {
+export const ThemePreviewGrid = ({
+  base = "ink",
+  themes: requestedThemes,
+}: ThemePreviewGridProps) => {
+  const registryThemes = base === "opentui" ? OPENTUI_THEMES : INK_THEMES;
+  const slugs = requestedThemes ?? registryThemes.map((theme) => theme.name);
   const themes = slugs
     .map((slug) => {
-      const theme = THEMES.find((t) => t.name === slug);
+      const theme = registryThemes.find((item) => item.name === slug);
       if (!theme) {
         return null;
       }
@@ -30,7 +41,7 @@ export const ThemePreviewGrid = ({ themes: slugs }: ThemePreviewGridProps) => {
       {themes.map((theme) => (
         <Link
           key={theme.slug}
-          href={`/docs/themes/${theme.slug}`}
+          href={`/docs/themes/${base}/${theme.slug}`}
           className="inline-flex items-center gap-2 text-lg font-medium underline-offset-4 hover:underline md:text-base"
           transitionTypes={["nav-forward"]}
         >
