@@ -2,8 +2,8 @@ import { Box as InkBox } from "ink";
 import type { BoxProps as InkBoxProps } from "ink";
 import React from "react";
 
-import { useTheme } from "@/hooks/use-theme";
-import { useUnicode } from "@/hooks/use-unicode";
+import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
+import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
 import { resolveBorderStyle } from "@/registry/bases/ink/lib/accessibility";
 
 export type BorderVariant =

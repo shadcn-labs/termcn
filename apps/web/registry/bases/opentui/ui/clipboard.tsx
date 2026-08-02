@@ -2,7 +2,7 @@
 import { useKeyboard } from "@opentui/react";
 import { useState, useCallback, useEffect } from "react";
 
-import { useClipboard } from "@/hooks/use-clipboard";
+import { useClipboard } from "@/registry/bases/ink/hooks/use-clipboard";
 import { useTheme } from "@/registry/bases/opentui/hooks/use-theme";
 
 export interface ClipboardProps {

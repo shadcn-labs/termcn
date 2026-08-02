@@ -2,7 +2,7 @@
 import cliSpinners from "cli-spinners";
 import type { SpinnerName } from "cli-spinners";
 
-import { useAnimation } from "@/hooks/use-animation";
+import { useAnimation } from "@/registry/bases/ink/hooks/use-animation";
 import { useTheme } from "@/registry/bases/opentui/hooks/use-theme";
 
 type OpenTUIBoxProps = Record<string, unknown>;

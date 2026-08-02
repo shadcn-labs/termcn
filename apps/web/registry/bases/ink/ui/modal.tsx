@@ -2,9 +2,9 @@ import { Box, Text } from "ink";
 import React, { useState } from "react";
 import type { ReactNode } from "react";
 
-import { FocusScope } from "@/hooks/use-interaction";
-import { useTheme } from "@/hooks/use-theme";
-import { useUnicode } from "@/hooks/use-unicode";
+import { FocusScope } from "@/registry/bases/ink/hooks/use-interaction";
+import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
+import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
 import { resolveBorderStyle } from "@/registry/bases/ink/lib/accessibility";
 import type { BorderStyle } from "@/registry/bases/ink/ui/types";
 

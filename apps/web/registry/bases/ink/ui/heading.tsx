@@ -1,8 +1,8 @@
 import { Box, Text } from "ink";
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/hooks/use-theme";
-import { useUnicode } from "@/hooks/use-unicode";
+import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
+import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
 import { resolveTerminalSymbol } from "@/registry/bases/ink/lib/accessibility";
 
 export type HeadingLevel = 1 | 2 | 3 | 4;

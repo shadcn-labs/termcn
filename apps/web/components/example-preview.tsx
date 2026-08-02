@@ -4,9 +4,9 @@ import { Box, Text } from "ink";
 import { Component as ReactComponent, Suspense } from "react";
 
 import { ExamplesIndex } from "@/examples/__index__";
-import { useTheme as useInkTheme } from "@/hooks/use-theme";
 import { DEFAULT_BASE_NAME } from "@/registry/bases";
 import type { BaseName } from "@/registry/bases";
+import { useTheme as useInkTheme } from "@/registry/bases/ink/hooks/use-theme";
 import { useTheme as useOpenTuiTheme } from "@/registry/bases/opentui/hooks/use-theme";
 
 const InkPreviewPlaceholder = ({

@@ -1,9 +1,9 @@
 import { useIsScreenReaderEnabled, Text } from "ink";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
-import { useMotion } from "@/hooks/use-motion";
-import { useTheme } from "@/hooks/use-theme";
-import { useUnicode } from "@/hooks/use-unicode";
+import { useMotion } from "@/registry/bases/ink/hooks/use-motion";
+import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
+import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
 import { splitGraphemes } from "@/registry/bases/ink/lib/terminal-text";
 
 export interface StreamingTextProps {

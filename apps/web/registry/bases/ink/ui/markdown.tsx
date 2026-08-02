@@ -1,9 +1,9 @@
 import { Box, Text } from "ink";
 import React from "react";
 
-import { useAnimation } from "@/hooks/use-animation";
-import { useTheme } from "@/hooks/use-theme";
-import { useUnicode } from "@/hooks/use-unicode";
+import { useAnimation } from "@/registry/bases/ink/hooks/use-animation";
+import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
+import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
 
 export interface MarkdownProps {
   children: string;

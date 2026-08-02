@@ -1,7 +1,7 @@
 import { Box, Text } from "ink";
 
-import { useTheme } from "@/hooks/use-theme";
-import { useUnicode } from "@/hooks/use-unicode";
+import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
+import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
 import { resolveTerminalSymbol } from "@/registry/bases/ink/lib/accessibility";
 
 export type ProgressCircleSize = "sm" | "md" | "lg";

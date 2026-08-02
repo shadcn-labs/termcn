@@ -1,6 +1,9 @@
 import * as React from "react";
 
-import { isReducedMotion, MotionContext } from "@/hooks/use-motion";
+import {
+  isReducedMotion,
+  MotionContext,
+} from "@/registry/bases/ink/hooks/use-motion";
 import type { MotionProviderProps } from "@/registry/bases/ink/ui/types";
 
 export type {

@@ -70,10 +70,6 @@ export const formatCode = async (code: string) => {
       `@/registry/bases/${base.name}/`,
       "@/components/"
     );
-    formattedCode = formattedCode.replaceAll(
-      `@/components/ui/${base.name}-theme-provider`,
-      "@/providers/theme-provider"
-    );
   }
 
   formattedCode = formattedCode.replaceAll("export default", "export");

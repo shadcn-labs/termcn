@@ -1,10 +1,10 @@
 import { Box, Text } from "ink";
 import React, { useEffect, useMemo, useState } from "react";
 
-import { useInteraction } from "@/hooks/use-interaction";
-import type { InteractionProps } from "@/hooks/use-interaction";
-import { useTheme } from "@/hooks/use-theme";
-import { useUnicode } from "@/hooks/use-unicode";
+import { useInteraction } from "@/registry/bases/ink/hooks/use-interaction";
+import type { InteractionProps } from "@/registry/bases/ink/hooks/use-interaction";
+import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
+import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
 import { resolveBorderStyle } from "@/registry/bases/ink/lib/accessibility";
 import {
   padToTerminalWidth,

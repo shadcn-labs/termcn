@@ -2,7 +2,7 @@ import { Box, Text } from "ink";
 import React, { useMemo } from "react";
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/hooks/use-theme";
+import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
 import {
   padToTerminalWidth,
   terminalWidth,

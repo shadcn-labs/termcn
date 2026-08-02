@@ -1,27 +1,21 @@
 ---
-title: Theming
-description: Terminal themes, ThemeProvider, and custom palettes for Ink and OpenTUI apps.
+title: OpenTUI Theming
+description: Configure terminal themes, ThemeProvider, motion, and Unicode behavior for OpenTUI apps.
 ---
 
-**Theming** in termcn means choosing a **terminal theme** (tokens for colors, borders, and spacing) and mounting **`ThemeProvider`** only when an application needs to override the defaults. Ink and OpenTUI theme-aware components work without a provider; their standalone hooks install into `hooks/`. Theme packages install into `lib/terminal-themes/`.
+**Theming** in termcn means choosing a terminal theme with tokens for colors, borders, and spacing. OpenTUI theme-aware components work without a provider. Mount `ThemeProvider` only when an application needs to override the default theme.
+
+Theme packages install into `lib/terminal-themes/`, hooks install into `hooks/`, and providers install into `providers/`.
 
 ## Preview
 
 Use the terminal chrome theme picker to preview palettes in the browser docs shell.
 
-<ComponentPreview base="ink" name="theme-showcase" hideCode />
+<ComponentPreview base="opentui" name="theme-showcase" hideCode />
 
 ## ThemeProvider
 
 Install the provider when you want to customize the active theme:
-
-For Ink:
-
-```bash
-npx shadcn@latest add @termcn/ink/theme-provider
-```
-
-For OpenTUI:
 
 ```bash
 npx shadcn@latest add @termcn/opentui/theme-provider
@@ -51,19 +45,11 @@ import { useUnicode } from "@/hooks/use-unicode";
 import { useMotion } from "@/hooks/use-motion";
 ```
 
-Each hook has a usable default context, so these imports do not require a mounted provider in either renderer.
+Each hook has a usable default context, so these imports do not require a mounted provider.
 
 ## MotionProvider and UnicodeProvider
 
 Motion and Unicode settings are independent from the active theme. Install only the provider that your application needs:
-
-For Ink:
-
-```bash
-npx shadcn@latest add @termcn/ink/motion-provider @termcn/ink/unicode-provider
-```
-
-For OpenTUI:
 
 ```bash
 npx shadcn@latest add @termcn/opentui/motion-provider @termcn/opentui/unicode-provider
@@ -110,4 +96,4 @@ export const oceanTheme = createTheme({
 
 ## Available Themes
 
-<ComponentsList className="mt-6" folderName="Themes" />
+<ComponentsList className="mt-6" folderName="Themes" base="opentui" />

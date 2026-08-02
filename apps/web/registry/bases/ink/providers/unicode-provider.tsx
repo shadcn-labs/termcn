@@ -1,6 +1,9 @@
 import * as React from "react";
 
-import { isNoUnicode, UnicodeContext } from "@/hooks/use-unicode";
+import {
+  isNoUnicode,
+  UnicodeContext,
+} from "@/registry/bases/ink/hooks/use-unicode";
 import type { UnicodeProviderProps } from "@/registry/bases/ink/ui/types";
 
 export type {

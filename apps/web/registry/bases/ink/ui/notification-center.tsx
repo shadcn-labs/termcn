@@ -1,15 +1,15 @@
 import { useIsScreenReaderEnabled, Box, Text } from "ink";
 import React, { useEffect } from "react";
 
-import { useInteraction } from "@/hooks/use-interaction";
-import type { InteractionProps } from "@/hooks/use-interaction";
+import { useInteraction } from "@/registry/bases/ink/hooks/use-interaction";
+import type { InteractionProps } from "@/registry/bases/ink/hooks/use-interaction";
 import {
   useNotificationsProvider,
   NotificationsContext,
-} from "@/hooks/use-notifications";
-import type { NotificationVariant } from "@/hooks/use-notifications";
-import { useTheme } from "@/hooks/use-theme";
-import { useUnicode } from "@/hooks/use-unicode";
+} from "@/registry/bases/ink/hooks/use-notifications";
+import type { NotificationVariant } from "@/registry/bases/ink/hooks/use-notifications";
+import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
+import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
 import { resolveBorderStyle } from "@/registry/bases/ink/lib/accessibility";
 
 export interface NotificationCenterProps extends InteractionProps {

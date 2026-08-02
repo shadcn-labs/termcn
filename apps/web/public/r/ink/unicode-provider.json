@@ -10,7 +10,7 @@
   "files": [
     {
       "path": "registry/providers/unicode-provider.tsx",
-      "content": "import * as React from \"react\";\n\nimport { isNoUnicode, UnicodeContext } from \"@/hooks/use-unicode\";\nimport type { UnicodeProviderProps } from \"@/components/ui/types\";\n\nexport type {\n  UnicodeContextValue,\n  UnicodeProviderProps,\n} from \"@/components/ui/types\";\n\nexport const UnicodeProvider = ({\n  children,\n  unicode,\n}: UnicodeProviderProps) => {\n  const value = React.useMemo(\n    () => ({ unicode: unicode ?? !isNoUnicode() }),\n    [unicode]\n  );\n\n  return (\n    <UnicodeContext.Provider value={value}>{children}</UnicodeContext.Provider>\n  );\n};\n",
+      "content": "import * as React from \"react\";\n\nimport {\n  isNoUnicode,\n  UnicodeContext,\n} from \"@/hooks/use-unicode\";\nimport type { UnicodeProviderProps } from \"@/components/ui/types\";\n\nexport type {\n  UnicodeContextValue,\n  UnicodeProviderProps,\n} from \"@/components/ui/types\";\n\nexport const UnicodeProvider = ({\n  children,\n  unicode,\n}: UnicodeProviderProps) => {\n  const value = React.useMemo(\n    () => ({ unicode: unicode ?? !isNoUnicode() }),\n    [unicode]\n  );\n\n  return (\n    <UnicodeContext.Provider value={value}>{children}</UnicodeContext.Provider>\n  );\n};\n",
       "type": "registry:ui",
       "target": "providers/unicode-provider.tsx"
     }

@@ -2,8 +2,8 @@ import { useIsScreenReaderEnabled, Box, Text } from "ink";
 import type { BoxProps } from "ink";
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/hooks/use-theme";
-import { useUnicode } from "@/hooks/use-unicode";
+import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
+import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
 import { resolveBorderStyle } from "@/registry/bases/ink/lib/accessibility";
 import type { BorderStyle } from "@/registry/bases/ink/ui/types";
 

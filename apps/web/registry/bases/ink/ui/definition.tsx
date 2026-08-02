@@ -1,6 +1,6 @@
 import { Box, Text } from "ink";
 
-import { useTheme } from "@/hooks/use-theme";
+import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
 
 export interface DefinitionItem {
   term: string;

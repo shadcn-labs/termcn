@@ -2,9 +2,9 @@ import cliSpinners from "cli-spinners";
 import type { SpinnerName } from "cli-spinners";
 import { Box, Text } from "ink";
 
-import { useAnimation } from "@/hooks/use-animation";
-import { useTheme } from "@/hooks/use-theme";
-import { useUnicode } from "@/hooks/use-unicode";
+import { useAnimation } from "@/registry/bases/ink/hooks/use-animation";
+import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
+import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
 
 export type SpinnerType = SpinnerName;
 

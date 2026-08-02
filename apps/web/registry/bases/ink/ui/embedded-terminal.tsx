@@ -2,7 +2,7 @@ import { useIsScreenReaderEnabled, useStdout, Box, Text } from "ink";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import stripAnsi from "strip-ansi";
 
-import { useUnicode } from "@/hooks/use-unicode";
+import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
 import { resolveBorderStyle } from "@/registry/bases/ink/lib/accessibility";
 
 interface IPty {

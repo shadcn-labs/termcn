@@ -4,8 +4,8 @@ import * as path from "node:path";
 import { useIsScreenReaderEnabled, useStdout, Box, Text } from "ink";
 import React, { useEffect, useState } from "react";
 
-import { useTheme } from "@/hooks/use-theme";
-import { useUnicode } from "@/hooks/use-unicode";
+import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
+import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
 import type { VisualAccessibilityProps } from "@/registry/bases/ink/lib/accessibility";
 
 export type ImageProtocol = "auto" | "iterm2" | "kitty" | "ascii";

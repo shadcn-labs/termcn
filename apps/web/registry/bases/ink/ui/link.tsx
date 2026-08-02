@@ -1,9 +1,12 @@
 import { Transform, Box, Text } from "ink";
 import type { ReactNode } from "react";
 
-import { isActivationKey, useInteraction } from "@/hooks/use-interaction";
-import type { InteractionProps } from "@/hooks/use-interaction";
-import { useTheme } from "@/hooks/use-theme";
+import {
+  isActivationKey,
+  useInteraction,
+} from "@/registry/bases/ink/hooks/use-interaction";
+import type { InteractionProps } from "@/registry/bases/ink/hooks/use-interaction";
+import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
 
 const OSC = "\u001B]";
 const SEP = ";";

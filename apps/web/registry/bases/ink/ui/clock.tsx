@@ -1,9 +1,9 @@
 import { Box, Text } from "ink";
 import React, { useState, useCallback } from "react";
 
-import { useInterval } from "@/hooks/use-interval";
-import { useTheme } from "@/hooks/use-theme";
-import { useUnicode } from "@/hooks/use-unicode";
+import { useInterval } from "@/registry/bases/ink/hooks/use-interval";
+import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
+import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
 import { toAsciiComponentText } from "@/registry/bases/ink/lib/accessibility";
 
 export interface ClockProps {

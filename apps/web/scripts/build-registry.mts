@@ -13,22 +13,18 @@ const syncTargets = [
   },
   {
     from: path.join(root, "registry", "bases", "ink", "providers"),
-    providerImport: "ink-theme-provider",
     to: "providers",
   },
   {
     from: path.join(root, "registry", "bases", "ink", "ui"),
-    providerImport: "ink-theme-provider",
     to: "ui",
   },
   {
     from: path.join(root, "registry", "bases", "ink", "hooks"),
-    providerImport: "ink-theme-provider",
     to: "hooks",
   },
   {
     from: path.join(root, "registry", "bases", "ink", "themes"),
-    providerImport: "ink-theme-provider",
     to: "themes",
   },
   {
@@ -37,30 +33,23 @@ const syncTargets = [
   },
   {
     from: path.join(root, "registry", "bases", "opentui", "providers"),
-    providerImport: "opentui-theme-provider",
     to: path.join("opentui", "providers"),
   },
   {
     from: path.join(root, "registry", "bases", "opentui", "hooks"),
-    providerImport: "opentui-theme-provider",
     to: path.join("opentui", "hooks"),
   },
   {
     from: path.join(root, "registry", "bases", "opentui", "themes"),
-    providerImport: "opentui-theme-provider",
     to: path.join("opentui", "themes"),
   },
   {
     from: path.join(root, "registry", "bases", "opentui", "ui"),
-    providerImport: "opentui-theme-provider",
     to: path.join("opentui", "ui"),
   },
 ] as const;
 
-const transformPublishedImports = (
-  content: string,
-  providerImport: "ink-theme-provider" | "opentui-theme-provider"
-) =>
+const transformPublishedImports = (content: string) =>
   content
     .replaceAll("@/registry/bases/ink/lib/", "@/lib/")
     .replaceAll("@/registry/bases/opentui/lib/", "@/lib/")
@@ -71,21 +60,13 @@ const transformPublishedImports = (
     .replaceAll("@/registry/bases/ink/hooks/", "@/hooks/")
     .replaceAll("@/registry/bases/opentui/hooks/", "@/hooks/")
     .replaceAll("@/registry/bases/ink/providers/", "@/providers/")
-    .replaceAll("@/registry/bases/opentui/providers/", "@/providers/")
-    .replaceAll(
-      `@/components/ui/${providerImport}`,
-      "@/providers/theme-provider"
-    );
+    .replaceAll("@/registry/bases/opentui/providers/", "@/providers/");
 
 const ensureDir = async (dir: string) => {
   await fs.mkdir(dir, { recursive: true });
 };
 
-const copyDirContents = async (
-  from: string,
-  to: string,
-  providerImport?: "ink-theme-provider" | "opentui-theme-provider"
-) => {
+const copyDirContents = async (from: string, to: string) => {
   await ensureDir(to);
 
   const entries = await fs.readdir(from, { withFileTypes: true });
@@ -97,16 +78,8 @@ const copyDirContents = async (
         const sourcePath = path.join(from, entry.name);
         const targetPath = path.join(to, entry.name);
 
-        if (!providerImport) {
-          await fs.copyFile(sourcePath, targetPath);
-          return;
-        }
-
         const content = await fs.readFile(sourcePath, "utf-8");
-        await fs.writeFile(
-          targetPath,
-          transformPublishedImports(content, providerImport)
-        );
+        await fs.writeFile(targetPath, transformPublishedImports(content));
       })
   );
 };
@@ -191,11 +164,7 @@ try {
 
   await Promise.all(
     syncTargets.map((target) =>
-      copyDirContents(
-        target.from,
-        path.join(tempRegistryRoot, target.to),
-        "providerImport" in target ? target.providerImport : undefined
-      )
+      copyDirContents(target.from, path.join(tempRegistryRoot, target.to))
     )
   );
 

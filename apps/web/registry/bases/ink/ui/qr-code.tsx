@@ -1,8 +1,8 @@
 import { Box, Text } from "ink";
 import React from "react";
 
-import { useTheme } from "@/hooks/use-theme";
-import { useUnicode } from "@/hooks/use-unicode";
+import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
+import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
 import type { VisualAccessibilityProps } from "@/registry/bases/ink/lib/accessibility";
 
 interface QRCodeBaseProps {

@@ -1,10 +1,10 @@
 import { useIsScreenReaderEnabled, useStdout, Box, Text } from "ink";
 import * as React from "react";
 
-import { useInteraction } from "@/hooks/use-interaction";
-import { useMotion } from "@/hooks/use-motion";
-import { useTheme } from "@/hooks/use-theme";
-import { useUnicode } from "@/hooks/use-unicode";
+import { useInteraction } from "@/registry/bases/ink/hooks/use-interaction";
+import { useMotion } from "@/registry/bases/ink/hooks/use-motion";
+import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
+import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
 import { resolveBorderStyle } from "@/registry/bases/ink/lib/accessibility";
 import {
   colorFor,

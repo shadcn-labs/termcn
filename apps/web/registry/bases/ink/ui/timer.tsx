@@ -1,11 +1,11 @@
 import { Box, Text } from "ink";
 import React, { useState, useCallback } from "react";
 
-import { useInteraction } from "@/hooks/use-interaction";
-import type { InteractionProps } from "@/hooks/use-interaction";
-import { useInterval } from "@/hooks/use-interval";
-import { useTheme } from "@/hooks/use-theme";
-import { useUnicode } from "@/hooks/use-unicode";
+import { useInteraction } from "@/registry/bases/ink/hooks/use-interaction";
+import type { InteractionProps } from "@/registry/bases/ink/hooks/use-interaction";
+import { useInterval } from "@/registry/bases/ink/hooks/use-interval";
+import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
+import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
 
 export interface TimerProps extends InteractionProps {
   duration: number;

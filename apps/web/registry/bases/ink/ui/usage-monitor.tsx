@@ -2,8 +2,8 @@ import { Box, Text } from "ink";
 import React, { useState } from "react";
 import type { ReactNode } from "react";
 
-import { useInterval } from "@/hooks/use-interval";
-import { useUnicode } from "@/hooks/use-unicode";
+import { useInterval } from "@/registry/bases/ink/hooks/use-interval";
+import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
 
 export interface UsageMonitorProps {
   refreshInterval?: number;

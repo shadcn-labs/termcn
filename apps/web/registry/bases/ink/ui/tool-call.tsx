@@ -1,12 +1,15 @@
 import { Box, Text } from "ink";
 import React, { useEffect, useRef, useState } from "react";
 
-import { useAnimation } from "@/hooks/use-animation";
-import { isActivationKey, useInteraction } from "@/hooks/use-interaction";
-import type { InteractionProps } from "@/hooks/use-interaction";
-import { useInterval } from "@/hooks/use-interval";
-import { useTheme } from "@/hooks/use-theme";
-import { useUnicode } from "@/hooks/use-unicode";
+import { useAnimation } from "@/registry/bases/ink/hooks/use-animation";
+import {
+  isActivationKey,
+  useInteraction,
+} from "@/registry/bases/ink/hooks/use-interaction";
+import type { InteractionProps } from "@/registry/bases/ink/hooks/use-interaction";
+import { useInterval } from "@/registry/bases/ink/hooks/use-interval";
+import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
+import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
 import {
   resolveStatusSymbol,
   resolveTerminalSymbol,

@@ -1,7 +1,7 @@
 import { useIsScreenReaderEnabled } from "ink";
 import * as React from "react";
 
-import { useMotion } from "@/hooks/use-motion";
+import { useMotion } from "@/registry/bases/ink/hooks/use-motion";
 
 type Subscriber = (tick: number) => void;
 const pool = new Map<

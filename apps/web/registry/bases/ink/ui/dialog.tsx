@@ -6,9 +6,9 @@ import {
   FocusScope,
   isActivationKey,
   useInteraction,
-} from "@/hooks/use-interaction";
-import { useTheme } from "@/hooks/use-theme";
-import { useUnicode } from "@/hooks/use-unicode";
+} from "@/registry/bases/ink/hooks/use-interaction";
+import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
+import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
 import { resolveBorderStyle } from "@/registry/bases/ink/lib/accessibility";
 
 interface DialogActionsProps {

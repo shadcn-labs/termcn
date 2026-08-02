@@ -2,7 +2,7 @@ import { Box, Text } from "ink";
 import React, { Component } from "react";
 import type { ReactNode } from "react";
 
-import { useUnicode } from "@/hooks/use-unicode";
+import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
 import {
   resolveBorderStyle,
   resolveTerminalSymbol,

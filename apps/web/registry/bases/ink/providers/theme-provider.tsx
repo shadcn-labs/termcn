@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { ThemeContext } from "@/hooks/use-theme";
+import { ThemeContext } from "@/registry/bases/ink/hooks/use-theme";
 import { defaultTheme } from "@/registry/bases/ink/themes/default";
 import type {
   AutoThemeProviderProps,

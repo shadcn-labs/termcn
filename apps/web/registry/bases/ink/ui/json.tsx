@@ -1,9 +1,9 @@
 import { Box, Text } from "ink";
 import React, { useEffect, useState } from "react";
 
-import { useInteraction } from "@/hooks/use-interaction";
-import type { InteractionProps } from "@/hooks/use-interaction";
-import { useTheme } from "@/hooks/use-theme";
+import { useInteraction } from "@/registry/bases/ink/hooks/use-interaction";
+import type { InteractionProps } from "@/registry/bases/ink/hooks/use-interaction";
+import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
 
 export interface JSONViewProps extends InteractionProps {
   data: unknown;

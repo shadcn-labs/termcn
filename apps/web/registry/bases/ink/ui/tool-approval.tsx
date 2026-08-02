@@ -1,11 +1,14 @@
 import { useIsScreenReaderEnabled, Box, Text } from "ink";
 import React, { useState, useEffect, useRef } from "react";
 
-import { isActivationKey, useInteraction } from "@/hooks/use-interaction";
-import type { InteractionProps } from "@/hooks/use-interaction";
-import { useInterval } from "@/hooks/use-interval";
-import { useTheme } from "@/hooks/use-theme";
-import { useUnicode } from "@/hooks/use-unicode";
+import {
+  isActivationKey,
+  useInteraction,
+} from "@/registry/bases/ink/hooks/use-interaction";
+import type { InteractionProps } from "@/registry/bases/ink/hooks/use-interaction";
+import { useInterval } from "@/registry/bases/ink/hooks/use-interval";
+import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
+import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
 import { resolveBorderStyle } from "@/registry/bases/ink/lib/accessibility";
 
 export type RiskLevel = "low" | "medium" | "high";
