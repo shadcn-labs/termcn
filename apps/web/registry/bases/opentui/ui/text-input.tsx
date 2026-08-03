@@ -3,6 +3,15 @@ import { useKeyboard } from "@opentui/react";
 import { useEffect, useState } from "react";
 
 import { useTheme } from "@/components/ui/opentui-theme-provider";
+import { useInputPaste } from "@/registry/bases/opentui/lib/input-paste";
+import {
+  decodePaste,
+  deleteBackwardAt,
+  deleteForwardAt,
+  getKeyText,
+  insertAt,
+  toSingleLine,
+} from "@/registry/bases/opentui/lib/input-utils";
 import type { BorderStyle } from "@/registry/bases/opentui/ui/types";
 
 export interface TextInputProps {
@@ -17,6 +26,8 @@ export interface TextInputProps {
   width?: number;
   label?: string;
   autoFocus?: boolean;
+  focused?: boolean;
+  isDisabled?: boolean;
   id?: string;
   bordered?: boolean;
   borderStyle?: BorderStyle;
@@ -35,19 +46,23 @@ export const TextInput = ({
   validate,
   width = 40,
   label,
-  autoFocus: _autoFocus = false,
-  id: _id,
+  autoFocus = false,
+  focused,
+  isDisabled = false,
+  id,
   bordered = true,
   borderStyle = "rounded",
   paddingX = 1,
   cursor = "█",
 }: TextInputProps) => {
   const [internalValue, setInternalValue] = useState("");
-  const [cursorOffset, setCursorOffset] = useState(0);
+  const [cursorOffset, setCursorOffset] = useState(
+    () => controlledValue?.length ?? 0
+  );
   const [cursorWidth, setCursorWidth] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const theme = useTheme();
-  const [isFocused] = useState(true);
+  const isFocused = !isDisabled && (focused ?? autoFocus);
 
   const value = controlledValue ?? internalValue;
 
@@ -58,11 +73,21 @@ export const TextInput = ({
   }, [value, cursorOffset]);
 
   const setValue = (next: string) => {
-    if (onChange) {
-      onChange(next);
-    } else {
+    if (controlledValue === undefined) {
       setInternalValue(next);
     }
+    onChange?.(next);
+  };
+
+  const insertText = (input: string) => {
+    if (!input) {
+      return;
+    }
+    const nextValue = insertAt(value, cursorOffset, input);
+    setCursorOffset(cursorOffset + input.length);
+    setCursorWidth(input.length);
+    setError(null);
+    setValue(nextValue);
   };
 
   useKeyboard((key) => {
@@ -101,25 +126,39 @@ export const TextInput = ({
       if (showCursor) {
         nextOffset = Math.min(value.length, nextOffset + 1);
       }
-    } else if (key.name === "backspace" || key.name === "delete") {
-      if (cursorOffset > 0) {
-        nextValue =
-          value.slice(0, cursorOffset - 1) + value.slice(cursorOffset);
-        nextOffset = cursorOffset - 1;
-      }
-    } else if (key.name.length === 1) {
-      nextValue =
-        value.slice(0, cursorOffset) + key.name + value.slice(cursorOffset);
-      nextOffset = cursorOffset + key.name.length;
-      if (key.name.length > 1) {
-        nextCursorWidth = key.name.length;
+    } else if (key.name === "backspace") {
+      const result = deleteBackwardAt(value, cursorOffset);
+      nextValue = result.value;
+      nextOffset = result.cursorOffset;
+    } else if (key.name === "delete") {
+      nextValue = deleteForwardAt(value, cursorOffset);
+    } else {
+      const input = getKeyText(key);
+      if (input) {
+        nextValue = insertAt(value, cursorOffset, input);
+        nextOffset = cursorOffset + input.length;
+        nextCursorWidth = input.length;
       }
     }
     setCursorOffset(nextOffset);
     setCursorWidth(nextCursorWidth);
     if (nextValue !== value) {
+      setError(null);
       setValue(nextValue);
     }
+  });
+
+  useInputPaste((event) => {
+    if (!isFocused) {
+      return;
+    }
+    const input = toSingleLine(decodePaste(event.bytes));
+    if (!input) {
+      return;
+    }
+    event.preventDefault();
+    event.stopPropagation();
+    insertText(input);
   });
 
   const displayValue = mask ? mask.repeat(value.length) : value;
@@ -191,7 +230,7 @@ export const TextInput = ({
     : { paddingLeft: paddingX, paddingRight: paddingX, width };
 
   return (
-    <box flexDirection="column">
+    <box id={id} flexDirection="column">
       {label && (
         <text>
           <b>{label}</b>

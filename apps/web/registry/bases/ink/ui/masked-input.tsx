@@ -13,6 +13,7 @@ export interface MaskedInputProps {
   label?: string;
   placeholder?: string;
   autoFocus?: boolean;
+  isDisabled?: boolean;
   id?: string;
   width?: number;
 }
@@ -73,49 +74,61 @@ export const MaskedInput = ({
   label,
   placeholder,
   autoFocus = false,
+  isDisabled = false,
   id,
   width = 40,
 }: MaskedInputProps) => {
   const [internalValue, setInternalValue] = useState("");
   const theme = useTheme();
-  const { isFocused } = useFocus({ autoFocus, id });
+  const { isFocused } = useFocus({
+    autoFocus,
+    id,
+    isActive: !isDisabled,
+  });
 
   const raw = controlledValue ?? internalValue;
   const max = maxDigits(mask);
 
-  useInput((input, key) => {
-    if (!isFocused) {
-      return;
+  const setValue = (newValue: string) => {
+    if (controlledValue === undefined) {
+      setInternalValue(newValue);
     }
+    onChange?.(newValue);
+  };
 
-    if (key.return) {
-      onSubmit?.(raw);
-      return;
+  const insertDigits = (input: string) => {
+    const available = max - raw.length;
+    const digits = [...input].filter((character) => /\d/u.test(character));
+    const inserted = digits.slice(0, available).join("");
+    if (inserted) {
+      setValue(raw + inserted);
     }
+  };
 
-    if (key.backspace || key.delete) {
-      const newVal = raw.slice(0, -1);
-      if (onChange) {
-        onChange(newVal);
-      } else {
-        setInternalValue(newVal);
+  useInput(
+    (input, key) => {
+      if (!isFocused) {
+        return;
       }
-      return;
-    }
 
-    if (key.escape || key.upArrow || key.downArrow || key.tab) {
-      return;
-    }
-
-    if (/^\d$/.test(input) && raw.length < max) {
-      const newVal = raw + input;
-      if (onChange) {
-        onChange(newVal);
-      } else {
-        setInternalValue(newVal);
+      if (key.return) {
+        onSubmit?.(raw);
+        return;
       }
-    }
-  });
+
+      if (key.backspace || key.delete) {
+        setValue(raw.slice(0, -1));
+        return;
+      }
+
+      if (key.escape || key.upArrow || key.downArrow || key.tab) {
+        return;
+      }
+
+      insertDigits(input);
+    },
+    { isActive: isFocused && !isDisabled }
+  );
 
   const display = raw.length > 0 ? applyMask(raw, mask) : "";
   const borderColor = isFocused ? theme.colors.focusRing : theme.colors.border;

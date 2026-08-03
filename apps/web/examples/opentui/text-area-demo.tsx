@@ -6,6 +6,7 @@ export default function TextAreaDemo() {
       label="Description"
       placeholder="Enter a description..."
       rows={4}
+      autoFocus
     />
   );
 }

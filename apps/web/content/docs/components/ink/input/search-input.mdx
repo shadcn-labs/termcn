@@ -81,6 +81,7 @@ import { SearchInput } from "@/components/ui/search-input";
 
 ```tsx
 <SearchInput
+  autoFocus
   label="Search Packages"
   options={["react", "vue", "svelte", "angular", "solid"]}
   placeholder="Search..."
@@ -102,6 +103,8 @@ import { SearchInput } from "@/components/ui/search-input";
 | `placeholder`  | `string`                                                                                     | `"Search..."` |
 | `label`        | `string`                                                                                     | -             |
 | `maxResults`   | `number`                                                                                     | `5`           |
+| `autoFocus`    | `boolean`                                                                                    | `false`       |
+| `isDisabled`   | `boolean`                                                                                    | `false`       |
 | `id`           | `string`                                                                                     | -             |
 | `borderStyle`  | `"single" \| "double" \| "round" \| "bold" \| "singleDouble" \| "doubleSingle" \| "classic"` | `"round"`     |
 | `paddingX`     | `number`                                                                                     | `1`           |

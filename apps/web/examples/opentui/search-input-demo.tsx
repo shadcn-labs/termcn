@@ -6,6 +6,7 @@ export default function SearchInputDemo() {
       label="Search Packages"
       options={["react", "vue", "svelte", "angular", "solid"]}
       placeholder="Search..."
+      autoFocus
     />
   );
 }

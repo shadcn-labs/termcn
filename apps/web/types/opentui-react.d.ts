@@ -8,13 +8,26 @@ declare module "@opentui/react" {
   export function useKeyboard(
     handler: (key: {
       name: string;
+      sequence?: string;
       ctrl?: boolean;
       shift?: boolean;
       meta?: boolean;
       option?: boolean;
+      super?: boolean;
+      hyper?: boolean;
       eventType?: string;
+      preventDefault(): void;
+      stopPropagation(): void;
     }) => void,
     options?: { release?: boolean }
+  ): void;
+
+  export function usePaste(
+    handler: (event: {
+      bytes: Uint8Array;
+      preventDefault(): void;
+      stopPropagation(): void;
+    }) => void
   ): void;
 
   export function useRenderer(): unknown;

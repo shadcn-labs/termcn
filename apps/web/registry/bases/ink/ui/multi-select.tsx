@@ -1,7 +1,8 @@
 import { Box, Text } from "ink";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useTheme } from "@/components/ui/ink-theme-provider";
+import { useFocus } from "@/hooks/use-focus";
 import { useInput } from "@/hooks/use-input";
 
 export interface MultiSelectOption<T = string> {
@@ -19,7 +20,13 @@ export interface MultiSelectProps<T = string> {
   cursor?: string;
   checkmark?: string;
   height?: number;
+  autoFocus?: boolean;
+  isDisabled?: boolean;
+  id?: string;
 }
+
+const findFirstEnabledIndex = <T,>(options: MultiSelectOption<T>[]): number =>
+  options.findIndex((option) => !option.disabled);
 
 export const MultiSelect = <T = string,>({
   options,
@@ -29,12 +36,29 @@ export const MultiSelect = <T = string,>({
   cursor = "›",
   checkmark = "◉",
   height,
+  autoFocus = false,
+  isDisabled = false,
+  id,
 }: MultiSelectProps<T>) => {
   const theme = useTheme();
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(() =>
+    findFirstEnabledIndex(options)
+  );
   const [internalSelected, setInternalSelected] = useState<T[]>([]);
+  const { isFocused } = useFocus({
+    autoFocus,
+    id,
+    isActive: !isDisabled,
+  });
 
   const selected = controlledValue ?? internalSelected;
+
+  useEffect(() => {
+    const activeOption = options[activeIndex];
+    if (!activeOption || activeOption.disabled) {
+      setActiveIndex(findFirstEnabledIndex(options));
+    }
+  }, [activeIndex, options]);
 
   const scrollOffset = (() => {
     if (!height) {
@@ -56,40 +80,43 @@ export const MultiSelect = <T = string,>({
     ? options.slice(scrollOffset, scrollOffset + height)
     : options;
 
-  useInput((input, key) => {
-    if (key.upArrow) {
-      setActiveIndex((i) => {
-        let next = i - 1;
-        while (next >= 0 && options[next]?.disabled) {
-          next -= 1;
+  useInput(
+    (input, key) => {
+      if (key.upArrow) {
+        setActiveIndex((index) => {
+          let next = index - 1;
+          while (next >= 0 && options[next]?.disabled) {
+            next -= 1;
+          }
+          return next < 0 ? index : next;
+        });
+      } else if (key.downArrow) {
+        setActiveIndex((index) => {
+          let next = index + 1;
+          while (next < options.length && options[next]?.disabled) {
+            next += 1;
+          }
+          return next >= options.length ? index : next;
+        });
+      } else if (input === " ") {
+        const option = options[activeIndex];
+        if (!option || option.disabled) {
+          return;
         }
-        return next < 0 ? i : next;
-      });
-    } else if (key.downArrow) {
-      setActiveIndex((i) => {
-        let next = i + 1;
-        while (next < options.length && options[next]?.disabled) {
-          next += 1;
+        const isSelected = selected.includes(option.value);
+        const next = isSelected
+          ? selected.filter((value) => value !== option.value)
+          : [...selected, option.value];
+        if (controlledValue === undefined) {
+          setInternalSelected(next);
         }
-        return next >= options.length ? i : next;
-      });
-    } else if (input === " ") {
-      const opt = options[activeIndex];
-      if (!opt || opt.disabled) {
-        return;
+        onChange?.(next);
+      } else if (key.return) {
+        onSubmit?.(selected);
       }
-      const isSelected = selected.includes(opt.value);
-      const next = isSelected
-        ? selected.filter((v) => v !== opt.value)
-        : [...selected, opt.value];
-      if (controlledValue === undefined) {
-        setInternalSelected(next);
-      }
-      onChange?.(next);
-    } else if (key.return) {
-      onSubmit?.(selected);
-    }
-  });
+    },
+    { isActive: isFocused && !isDisabled }
+  );
 
   return (
     <Box flexDirection="column">

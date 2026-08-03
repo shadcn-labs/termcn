@@ -50,6 +50,11 @@ npm install ink
 />
 
 <ComponentSource
+  src="registry/bases/ink/hooks/use-focus.ts"
+  title="hooks/use-focus.ts"
+/>
+
+<ComponentSource
   src="registry/bases/ink/hooks/use-input.ts"
   title="hooks/use-input.ts"
 />
@@ -76,6 +81,7 @@ import { MultiSelect } from "@/components/ui/multi-select";
 
 ```tsx
 <MultiSelect
+  autoFocus
   options={[
     { value: "react", label: "React" },
     { value: "vue", label: "Vue" },
@@ -89,12 +95,15 @@ import { MultiSelect } from "@/components/ui/multi-select";
 
 ### MultiSelect
 
-| Prop        | Type                     | Default    |
-| ----------- | ------------------------ | ---------- |
-| `options`   | `MultiSelectOption<T>[]` | `required` |
-| `value`     | `T[]`                    | -          |
-| `onChange`  | `(values: T[]) => void`  | -          |
-| `onSubmit`  | `(values: T[]) => void`  | -          |
-| `cursor`    | `string`                 | `"›"`      |
-| `checkmark` | `string`                 | `"◉"`      |
-| `height`    | `number`                 | -          |
+| Prop         | Type                     | Default    |
+| ------------ | ------------------------ | ---------- |
+| `options`    | `MultiSelectOption<T>[]` | `required` |
+| `value`      | `T[]`                    | -          |
+| `onChange`   | `(values: T[]) => void`  | -          |
+| `onSubmit`   | `(values: T[]) => void`  | -          |
+| `cursor`     | `string`                 | `"›"`      |
+| `checkmark`  | `string`                 | `"◉"`      |
+| `height`     | `number`                 | -          |
+| `autoFocus`  | `boolean`                | `false`    |
+| `isDisabled` | `boolean`                | `false`    |
+| `id`         | `string`                 | -          |

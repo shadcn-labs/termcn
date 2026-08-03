@@ -50,6 +50,16 @@ npm install @opentui/react
 />
 
 <ComponentSource
+  src="registry/bases/opentui/lib/input-paste.ts"
+  title="lib/input-paste.ts"
+/>
+
+<ComponentSource
+  src="registry/bases/opentui/lib/input-utils.ts"
+  title="lib/input-utils.ts"
+/>
+
+<ComponentSource
   base="opentui"
   name="masked-input"
   title="components/ui/masked-input.tsx"
@@ -74,6 +84,7 @@ import { MaskedInput } from "@/components/ui/masked-input";
   mask="(###) ###-####"
   label="Phone Number"
   placeholder="(555) 123-4567"
+  autoFocus
 />
 ```
 
@@ -90,5 +101,7 @@ import { MaskedInput } from "@/components/ui/masked-input";
 | `label`       | `string`                  | -          |
 | `placeholder` | `string`                  | -          |
 | `autoFocus`   | `boolean`                 | `false`    |
+| `focused`     | `boolean`                 | -          |
+| `isDisabled`  | `boolean`                 | `false`    |
 | `id`          | `string`                  | -          |
 | `width`       | `number`                  | `40`       |

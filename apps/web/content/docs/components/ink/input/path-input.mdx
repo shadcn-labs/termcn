@@ -1,6 +1,6 @@
 ---
 title: "Path Input"
-description: "Filesystem path input with tab autocomplete"
+description: "Filesystem path input with arrow-key autocomplete"
 ---
 
 <ComponentPreview base="ink" name="path-input-demo" hideCode />
@@ -86,6 +86,7 @@ import { PathInput } from "@/components/ui/path-input";
 
 ```tsx
 <PathInput
+  autoFocus
   label="Project Directory"
   placeholder="/home/user/projects"
   onSubmit={(path) => console.log("Selected:", path)}
@@ -104,6 +105,7 @@ import { PathInput } from "@/components/ui/path-input";
 | `label`       | `string`                  | -       |
 | `placeholder` | `string`                  | `"/"`   |
 | `autoFocus`   | `boolean`                 | `false` |
+| `isDisabled`  | `boolean`                 | `false` |
 | `id`          | `string`                  | -       |
 | `width`       | `number`                  | `40`    |
 | `filter`      | `string`                  | -       |

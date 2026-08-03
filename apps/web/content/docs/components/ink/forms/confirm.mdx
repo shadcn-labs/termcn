@@ -50,6 +50,11 @@ npm install ink
 />
 
 <ComponentSource
+  src="registry/bases/ink/hooks/use-focus.ts"
+  title="hooks/use-focus.ts"
+/>
+
+<ComponentSource
   src="registry/bases/ink/hooks/use-input.ts"
   title="hooks/use-input.ts"
 />
@@ -72,6 +77,7 @@ import { Confirm } from "@/components/ui/confirm";
 
 ```tsx
 <Confirm
+  autoFocus
   message="Are you sure you want to continue?"
   onConfirm={() => console.log("Confirmed")}
   onCancel={() => console.log("Cancelled")}
@@ -91,3 +97,6 @@ import { Confirm } from "@/components/ui/confirm";
 | `cancelLabel`  | `string`                | `"No"`      |
 | `defaultValue` | `boolean`               | `false`     |
 | `variant`      | `"default" \| "danger"` | `"default"` |
+| `autoFocus`    | `boolean`               | `false`     |
+| `isDisabled`   | `boolean`               | `false`     |
+| `id`           | `string`                | -           |

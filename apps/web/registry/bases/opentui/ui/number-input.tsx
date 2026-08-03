@@ -1,8 +1,14 @@
 /* @jsxImportSource @opentui/react */
 import { useKeyboard } from "@opentui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useTheme } from "@/components/ui/opentui-theme-provider";
+import { useInputPaste } from "@/registry/bases/opentui/lib/input-paste";
+import {
+  decodePaste,
+  getKeyText,
+  toSingleLine,
+} from "@/registry/bases/opentui/lib/input-utils";
 import type { BorderStyle } from "@/registry/bases/opentui/ui/types";
 
 export interface NumberInputProps {
@@ -14,6 +20,9 @@ export interface NumberInputProps {
   step?: number;
   placeholder?: string;
   label?: string;
+  autoFocus?: boolean;
+  focused?: boolean;
+  isDisabled?: boolean;
   id?: string;
   format?: (n: number) => string;
   borderStyle?: BorderStyle;
@@ -31,7 +40,10 @@ export const NumberInput = ({
   step = 1,
   placeholder = "",
   label,
-  id: _id,
+  autoFocus = false,
+  focused,
+  isDisabled = false,
+  id,
   format,
   borderStyle = "rounded",
   paddingX = 1,
@@ -39,11 +51,19 @@ export const NumberInput = ({
   stepHint,
 }: NumberInputProps) => {
   const [internalValue, setInternalValue] = useState<number | undefined>();
-  const [buffer, setBuffer] = useState<string>("");
+  const [buffer, setBuffer] = useState<string>(() =>
+    controlledValue === undefined ? "" : String(controlledValue)
+  );
   const theme = useTheme();
-  const [isFocused] = useState(true);
+  const isFocused = !isDisabled && (focused ?? autoFocus);
 
   const value = controlledValue ?? internalValue;
+
+  useEffect(() => {
+    if (controlledValue !== undefined) {
+      setBuffer(String(controlledValue));
+    }
+  }, [controlledValue]);
 
   const clamp = (n: number): number => {
     let result = n;
@@ -57,17 +77,31 @@ export const NumberInput = ({
   };
 
   const applyValue = (clamped: number) => {
-    if (onChange) {
-      onChange(clamped);
-    } else {
+    if (controlledValue === undefined) {
       setInternalValue(clamped);
     }
+    onChange?.(clamped);
   };
 
   const commitValue = (n: number) => {
     const clamped = clamp(n);
     applyValue(clamped);
     setBuffer(String(clamped));
+  };
+
+  const insertNumberText = (input: string) => {
+    const newBuffer = buffer + input;
+    if (!/^-?(?:\d+\.?\d*|\.\d*)?$/u.test(newBuffer)) {
+      return;
+    }
+    setBuffer(newBuffer);
+    if (newBuffer === "" || newBuffer === "-" || newBuffer === ".") {
+      return;
+    }
+    const parsed = Number.parseFloat(newBuffer);
+    if (!Number.isNaN(parsed)) {
+      applyValue(clamp(parsed));
+    }
   };
 
   useKeyboard((key) => {
@@ -96,6 +130,9 @@ export const NumberInput = ({
       const newBuffer = buffer.slice(0, -1);
       setBuffer(newBuffer);
       if (newBuffer === "" || newBuffer === "-") {
+        if (controlledValue === undefined) {
+          setInternalValue(undefined);
+        }
         return;
       }
       const parsed = Number.parseFloat(newBuffer);
@@ -107,26 +144,30 @@ export const NumberInput = ({
     if (key.name === "escape" || key.name === "tab") {
       return;
     }
-    if (key.name && /^[\d.-]$/.test(key.name)) {
-      if (key.name === "-" && buffer.length > 0) {
-        return;
-      }
-      if (key.name === "." && buffer.includes(".")) {
-        return;
-      }
-      const newBuffer = buffer + key.name;
-      setBuffer(newBuffer);
-      const parsed = Number.parseFloat(newBuffer);
-      if (!Number.isNaN(parsed)) {
-        applyValue(clamp(parsed));
-      }
+    insertNumberText(getKeyText(key));
+  });
+
+  useInputPaste((event) => {
+    if (!isFocused) {
+      return;
     }
+    const input = toSingleLine(decodePaste(event.bytes));
+    if (!input) {
+      return;
+    }
+    const nextBuffer = buffer + input;
+    if (!/^-?(?:\d+\.?\d*|\.\d*)?$/u.test(nextBuffer)) {
+      return;
+    }
+    event.preventDefault();
+    event.stopPropagation();
+    insertNumberText(input);
   });
 
   const borderColor = isFocused ? theme.colors.focusRing : theme.colors.border;
 
   let displayValue = "";
-  if (isFocused && buffer !== "") {
+  if (isFocused) {
     displayValue = buffer;
   } else if (value !== undefined) {
     displayValue = format ? format(value) : String(value);
@@ -135,7 +176,7 @@ export const NumberInput = ({
   const resolvedStepHint = stepHint ?? `↑ +${step}  ↓ -${step}`;
 
   return (
-    <box flexDirection="column">
+    <box id={id} flexDirection="column">
       {label && (
         <text>
           <b>{label}</b>

@@ -50,6 +50,11 @@ npm install ink
 />
 
 <ComponentSource
+  src="registry/bases/ink/lib/progress-utils.ts"
+  title="lib/progress-utils.ts"
+/>
+
+<ComponentSource
   base="ink"
   name="progress-bar"
   title="components/ui/progress-bar.tsx"
@@ -72,6 +77,9 @@ import { ProgressBar } from "@/components/ui/progress-bar";
 ```tsx
 <ProgressBar value={42} total={100} label="Uploading" />
 ```
+
+The rendered percentage is clamped to the `0`–`100` range. A non-positive
+`total` renders as `0%`.
 
 ## Examples
 

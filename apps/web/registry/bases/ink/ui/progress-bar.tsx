@@ -1,6 +1,7 @@
 import { Box, Text } from "ink";
 
 import { useTheme } from "@/components/ui/ink-theme-provider";
+import { getProgressPercent } from "@/registry/bases/ink/lib/progress-utils";
 
 export interface ProgressBarProps {
   value: number;
@@ -28,12 +29,10 @@ export const ProgressBar = ({
   const theme = useTheme();
   const resolvedColor = color ?? theme.colors.primary;
 
-  const percent =
-    total === undefined
-      ? Math.min(100, Math.round(value))
-      : Math.min(100, Math.round((value / total) * 100));
-  const filled = Math.round((percent / 100) * width);
-  const empty = width - filled;
+  const percent = getProgressPercent(value, total);
+  const safeWidth = Math.max(0, Math.floor(width));
+  const filled = Math.round((percent / 100) * safeWidth);
+  const empty = safeWidth - filled;
 
   const bar = fillChar.repeat(filled) + emptyChar.repeat(empty);
 

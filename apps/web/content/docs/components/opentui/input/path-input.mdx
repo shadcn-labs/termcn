@@ -55,6 +55,16 @@ npm install @opentui/react
 />
 
 <ComponentSource
+  src="registry/bases/opentui/lib/input-paste.ts"
+  title="lib/input-paste.ts"
+/>
+
+<ComponentSource
+  src="registry/bases/opentui/lib/input-utils.ts"
+  title="lib/input-utils.ts"
+/>
+
+<ComponentSource
   base="opentui"
   name="path-input"
   title="components/ui/path-input.tsx"
@@ -78,6 +88,7 @@ import { PathInput } from "@/components/ui/path-input";
 <PathInput
   label="Project Directory"
   placeholder="/home/user/projects"
+  autoFocus
   onSubmit={(path) => console.log("Selected:", path)}
 />
 ```
@@ -94,6 +105,8 @@ import { PathInput } from "@/components/ui/path-input";
 | `label`       | `string`                  | -       |
 | `placeholder` | `string`                  | `"/"`   |
 | `autoFocus`   | `boolean`                 | `false` |
+| `focused`     | `boolean`                 | -       |
+| `isDisabled`  | `boolean`                 | `false` |
 | `id`          | `string`                  | -       |
 | `width`       | `number`                  | `40`    |
 | `filter`      | `string`                  | -       |

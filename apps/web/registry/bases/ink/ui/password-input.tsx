@@ -1,9 +1,14 @@
 import { Box, Text } from "ink";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useTheme } from "@/components/ui/ink-theme-provider";
 import { useFocus } from "@/hooks/use-focus";
 import { useInput } from "@/hooks/use-input";
+import {
+  deleteBackwardAt,
+  deleteForwardAt,
+  insertAt,
+} from "@/registry/bases/ink/lib/input-utils";
 import type { BorderStyle } from "@/registry/bases/ink/ui/types";
 
 export interface PasswordInputProps {
@@ -14,6 +19,8 @@ export interface PasswordInputProps {
   mask?: string;
   showToggle?: boolean;
   label?: string;
+  autoFocus?: boolean;
+  isDisabled?: boolean;
   id?: string;
   borderStyle?: BorderStyle;
   paddingX?: number;
@@ -29,6 +36,8 @@ export const PasswordInput = ({
   mask = "●",
   showToggle = false,
   label,
+  autoFocus = false,
+  isDisabled = false,
   id,
   borderStyle = "round",
   paddingX = 1,
@@ -37,50 +46,119 @@ export const PasswordInput = ({
 }: PasswordInputProps) => {
   const [internalValue, setInternalValue] = useState("");
   const [isVisible, setIsVisible] = useState(false);
+  const [cursorOffset, setCursorOffset] = useState(
+    () => controlledValue?.length ?? 0
+  );
   const theme = useTheme();
-  const { isFocused } = useFocus({ id });
+  const { isFocused } = useFocus({
+    autoFocus,
+    id,
+    isActive: !isDisabled,
+  });
 
   const value = controlledValue ?? internalValue;
 
+  useEffect(() => {
+    if (cursorOffset > value.length) {
+      setCursorOffset(value.length);
+    }
+  }, [cursorOffset, value]);
+
   const setValue = (newVal: string) => {
-    if (onChange) {
-      onChange(newVal);
-    } else {
+    if (controlledValue === undefined) {
       setInternalValue(newVal);
     }
+    onChange?.(newVal);
   };
 
-  useInput((input, key) => {
-    if (!isFocused) {
+  const insertText = (input: string) => {
+    if (!input) {
       return;
     }
+    setValue(insertAt(value, cursorOffset, input));
+    setCursorOffset(cursorOffset + input.length);
+  };
 
-    if (showToggle && input === "\u0008") {
-      setIsVisible((v) => !v);
-      return;
-    }
+  useInput(
+    (input, key) => {
+      if (!isFocused) {
+        return;
+      }
 
-    if (key.return) {
-      onSubmit?.(value);
-      return;
-    }
+      if (showToggle && key.ctrl && input.toLowerCase() === "h") {
+        setIsVisible((visible) => !visible);
+        return;
+      }
 
-    if (key.backspace || key.delete) {
-      setValue(value.slice(0, -1));
-      return;
-    }
+      if (key.return) {
+        onSubmit?.(value);
+        return;
+      }
 
-    if (key.escape || key.upArrow || key.downArrow || key.tab) {
-      return;
-    }
+      if (key.leftArrow) {
+        setCursorOffset((offset) => Math.max(0, offset - 1));
+        return;
+      }
 
-    if (input && input.length > 0) {
-      setValue(value + input);
-    }
-  });
+      if (key.rightArrow) {
+        setCursorOffset((offset) => Math.min(value.length, offset + 1));
+        return;
+      }
+
+      if (key.backspace) {
+        const result = deleteBackwardAt(value, cursorOffset);
+        setValue(result.value);
+        setCursorOffset(result.cursorOffset);
+        return;
+      }
+
+      if (key.delete) {
+        setValue(deleteForwardAt(value, cursorOffset));
+        return;
+      }
+
+      if (key.escape || key.upArrow || key.downArrow || key.tab) {
+        return;
+      }
+
+      insertText(input);
+    },
+    { isActive: isFocused && !isDisabled }
+  );
 
   const displayValue = isVisible ? value : mask.repeat(value.length);
   const borderColor = isFocused ? theme.colors.focusRing : theme.colors.border;
+
+  const renderValue = () => {
+    if (!value) {
+      return (
+        <Text color={theme.colors.mutedForeground}>
+          {placeholder}
+          {isFocused && <Text color={theme.colors.focusRing}>{cursor}</Text>}
+        </Text>
+      );
+    }
+
+    if (!isFocused) {
+      return <Text color={theme.colors.foreground}>{displayValue}</Text>;
+    }
+
+    const before = displayValue.slice(0, cursorOffset);
+    const cursorChar = displayValue[cursorOffset] ?? cursor;
+    const after = displayValue.slice(
+      cursorOffset < displayValue.length ? cursorOffset + 1 : cursorOffset
+    );
+
+    return (
+      <Text color={theme.colors.foreground}>
+        {before}
+        <Text inverse color={theme.colors.focusRing}>
+          {cursorChar}
+        </Text>
+        {after}
+      </Text>
+    );
+  };
 
   return (
     <Box flexDirection="column">
@@ -92,14 +170,7 @@ export const PasswordInput = ({
           paddingX={paddingX}
           width={width}
         >
-          <Text
-            color={
-              value ? theme.colors.foreground : theme.colors.mutedForeground
-            }
-          >
-            {displayValue || placeholder}
-          </Text>
-          {isFocused && <Text color={theme.colors.focusRing}>{cursor}</Text>}
+          {renderValue()}
         </Box>
         {showToggle && isFocused && (
           <Text color={theme.colors.mutedForeground}>

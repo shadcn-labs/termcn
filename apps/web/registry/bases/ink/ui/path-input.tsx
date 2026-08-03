@@ -15,6 +15,7 @@ export interface PathInputProps {
   label?: string;
   placeholder?: string;
   autoFocus?: boolean;
+  isDisabled?: boolean;
   id?: string;
   width?: number;
   filter?: string;
@@ -78,6 +79,7 @@ export const PathInput = ({
   label,
   placeholder = "/",
   autoFocus = false,
+  isDisabled = false,
   id,
   width = 40,
   filter,
@@ -86,7 +88,11 @@ export const PathInput = ({
   const [internalValue, setInternalValue] = useState("");
   const [completionIndex, setCompletionIndex] = useState(0);
   const theme = useTheme();
-  const { isFocused } = useFocus({ autoFocus, id });
+  const { isFocused } = useFocus({
+    autoFocus,
+    id,
+    isActive: !isDisabled,
+  });
 
   const value = controlledValue ?? internalValue;
   const completions =
@@ -94,62 +100,69 @@ export const PathInput = ({
       ? getCompletions(value, filter, dirsOnly)
       : [];
 
-  useInput((input, key) => {
-    if (!isFocused) {
+  const setValue = (newValue: string) => {
+    if (controlledValue === undefined) {
+      setInternalValue(newValue);
+    }
+    onChange?.(newValue);
+  };
+
+  const insertText = (input: string) => {
+    if (!input) {
       return;
     }
-
-    if (key.return) {
-      onSubmit?.(value);
-      return;
-    }
-
-    if (key.tab) {
-      if (completions.length > 0) {
-        const selected = completions[completionIndex] ?? completions[0];
-        if (onChange) {
-          onChange(selected);
-        } else {
-          setInternalValue(selected);
-        }
-        setCompletionIndex(0);
-      }
-      return;
-    }
-
-    if (key.upArrow) {
-      setCompletionIndex((c) => Math.max(0, c - 1));
-      return;
-    }
-
-    if (key.downArrow) {
-      setCompletionIndex((c) => Math.min(completions.length - 1, c + 1));
-      return;
-    }
-
-    if (key.backspace || key.delete) {
-      const newVal = value.slice(0, -1);
-      setCompletionIndex(0);
-      if (onChange) {
-        onChange(newVal);
-      } else {
-        setInternalValue(newVal);
-      }
-      return;
-    }
-
-    if (key.escape) {
-      return;
-    }
-
-    const newVal = value + input;
     setCompletionIndex(0);
-    if (onChange) {
-      onChange(newVal);
-    } else {
-      setInternalValue(newVal);
-    }
-  });
+    setValue(value + input);
+  };
+
+  useInput(
+    (input, key) => {
+      if (!isFocused) {
+        return;
+      }
+
+      if (key.return) {
+        onSubmit?.(value);
+        return;
+      }
+
+      if (key.rightArrow) {
+        if (completions.length > 0) {
+          const selected = completions[completionIndex] ?? completions[0];
+          setValue(selected);
+          setCompletionIndex(0);
+        }
+        return;
+      }
+
+      if (key.upArrow) {
+        setCompletionIndex((index) => Math.max(0, index - 1));
+        return;
+      }
+
+      if (key.downArrow) {
+        if (completions.length > 0) {
+          setCompletionIndex((index) =>
+            Math.min(completions.length - 1, index + 1)
+          );
+        }
+        return;
+      }
+
+      if (key.backspace || key.delete) {
+        setCompletionIndex(0);
+        setValue(value.slice(0, -1));
+        return;
+      }
+
+      if (key.escape || key.tab) {
+        return;
+      }
+
+      insertText(input);
+    },
+    { isActive: isFocused && !isDisabled }
+  );
 
   const borderColor = isFocused ? theme.colors.focusRing : theme.colors.border;
 
@@ -196,7 +209,7 @@ export const PathInput = ({
       )}
       {isFocused && completions.length > 0 && (
         <Text color={theme.colors.mutedForeground} dimColor>
-          Tab: accept · ↑↓: navigate
+          {"→: accept · ↑↓: navigate"}
         </Text>
       )}
     </Box>

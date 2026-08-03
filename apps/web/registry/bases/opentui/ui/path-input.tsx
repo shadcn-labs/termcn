@@ -6,6 +6,12 @@ import { useKeyboard } from "@opentui/react";
 import { useState } from "react";
 
 import { useTheme } from "@/components/ui/opentui-theme-provider";
+import { useInputPaste } from "@/registry/bases/opentui/lib/input-paste";
+import {
+  decodePaste,
+  getKeyText,
+  toSingleLine,
+} from "@/registry/bases/opentui/lib/input-utils";
 
 export interface PathInputProps {
   value?: string;
@@ -14,6 +20,8 @@ export interface PathInputProps {
   label?: string;
   placeholder?: string;
   autoFocus?: boolean;
+  focused?: boolean;
+  isDisabled?: boolean;
   id?: string;
   width?: number;
   filter?: string;
@@ -74,8 +82,10 @@ export const PathInput = ({
   onSubmit,
   label,
   placeholder = "/",
-  autoFocus: _autoFocus = false,
-  id: _id,
+  autoFocus = false,
+  focused,
+  isDisabled = false,
+  id,
   width = 40,
   filter,
   dirsOnly = false,
@@ -83,13 +93,28 @@ export const PathInput = ({
   const [internalValue, setInternalValue] = useState("");
   const [completionIndex, setCompletionIndex] = useState(0);
   const theme = useTheme();
-  const [isFocused] = useState(true);
+  const isFocused = !isDisabled && (focused ?? autoFocus);
 
   const value = controlledValue ?? internalValue;
   const completions =
     isFocused && value.length > 0
       ? getCompletions(value, filter, dirsOnly)
       : [];
+
+  const setValue = (newValue: string) => {
+    if (controlledValue === undefined) {
+      setInternalValue(newValue);
+    }
+    onChange?.(newValue);
+  };
+
+  const insertText = (input: string) => {
+    if (!input) {
+      return;
+    }
+    setCompletionIndex(0);
+    setValue(value + input);
+  };
 
   useKeyboard((key) => {
     if (!isFocused) {
@@ -102,11 +127,7 @@ export const PathInput = ({
     if (key.name === "tab") {
       if (completions.length > 0) {
         const selected = completions[completionIndex] ?? completions[0];
-        if (onChange) {
-          onChange(selected);
-        } else {
-          setInternalValue(selected);
-        }
+        setValue(selected);
         setCompletionIndex(0);
       }
       return;
@@ -116,37 +137,39 @@ export const PathInput = ({
       return;
     }
     if (key.name === "down") {
-      setCompletionIndex((c) => Math.min(completions.length - 1, c + 1));
+      if (completions.length > 0) {
+        setCompletionIndex((c) => Math.min(completions.length - 1, c + 1));
+      }
       return;
     }
     if (key.name === "backspace" || key.name === "delete") {
-      const newVal = value.slice(0, -1);
       setCompletionIndex(0);
-      if (onChange) {
-        onChange(newVal);
-      } else {
-        setInternalValue(newVal);
-      }
+      setValue(value.slice(0, -1));
       return;
     }
     if (key.name === "escape") {
       return;
     }
-    if (key.name.length === 1) {
-      const newVal = value + key.name;
-      setCompletionIndex(0);
-      if (onChange) {
-        onChange(newVal);
-      } else {
-        setInternalValue(newVal);
-      }
+    insertText(getKeyText(key));
+  });
+
+  useInputPaste((event) => {
+    if (!isFocused) {
+      return;
     }
+    const input = toSingleLine(decodePaste(event.bytes));
+    if (!input) {
+      return;
+    }
+    event.preventDefault();
+    event.stopPropagation();
+    insertText(input);
   });
 
   const borderColor = isFocused ? theme.colors.focusRing : theme.colors.border;
 
   return (
-    <box flexDirection="column">
+    <box id={id} flexDirection="column">
       {label && (
         <text>
           <b>{label}</b>
@@ -171,6 +194,7 @@ export const PathInput = ({
           flexDirection="column"
           borderStyle="single"
           borderColor={theme.colors.border}
+          width={width}
         >
           {completions.map((c, idx) => (
             <box key={c} paddingLeft={1} paddingRight={1}>
@@ -191,7 +215,9 @@ export const PathInput = ({
         </box>
       )}
       {isFocused && completions.length > 0 && (
-        <text fg="#666">Tab: accept · ↑↓: navigate</text>
+        <text fg={theme.colors.mutedForeground}>
+          Tab: accept · ↑↓: navigate
+        </text>
       )}
     </box>
   );

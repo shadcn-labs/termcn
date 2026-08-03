@@ -60,6 +60,11 @@ npm install ink
 />
 
 <ComponentSource
+  src="registry/bases/ink/lib/input-utils.ts"
+  title="lib/input-utils.ts"
+/>
+
+<ComponentSource
   base="ink"
   name="email-input"
   title="components/ui/email-input.tsx"
@@ -81,6 +86,7 @@ import { EmailInput } from "@/components/ui/email-input";
 
 ```tsx
 <EmailInput
+  autoFocus
   label="Email"
   placeholder="you@example.com"
   onSubmit={(value) => console.log("Submitted:", value)}
@@ -99,6 +105,7 @@ import { EmailInput } from "@/components/ui/email-input";
 | `label`       | `string`                  | -                                                          |
 | `placeholder` | `string`                  | `"you@example.com"`                                        |
 | `autoFocus`   | `boolean`                 | `false`                                                    |
+| `isDisabled`  | `boolean`                 | `false`                                                    |
 | `id`          | `string`                  | -                                                          |
 | `width`       | `number`                  | `40`                                                       |
 | `suggestions` | `string[]`                | `["gmail.com", "yahoo.com", "hotmail.com", "outlook.com"]` |
