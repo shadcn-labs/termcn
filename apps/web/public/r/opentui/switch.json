@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/switch",
+  "title": "Switch",
+  "description": "Checked-state switch with focus-aware keyboard and pointer input.",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/interaction.json",
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/switch.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport { useState } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\nimport { useInteraction } from \"@/hooks/use-interaction\";\nimport type {\n  InteractionProps,\n  PressDetails,\n} from \"@/hooks/use-interaction\";\n\nexport interface SwitchProps extends InteractionProps {\n  checked?: boolean;\n  defaultChecked?: boolean;\n  label: string;\n  onChange?: (checked: boolean) => void;\n  onCheckedChange?: (checked: boolean, details: PressDetails) => void;\n  symbols?: \"round\" | \"ascii\";\n  width?: 3 | 5;\n}\n\nconst symbolSets = {\n  ascii: { thumb: \"*\", track: \"-\" },\n  round: { thumb: \"●\", track: \"─\" },\n} as const;\n\nexport const Switch = ({\n  autoFocus = false,\n  checked: controlledChecked,\n  defaultChecked = false,\n  disabled = false,\n  id,\n  isActive = true,\n  label,\n  onChange,\n  onCheckedChange,\n  symbols = \"round\",\n  width = 3,\n}: SwitchProps) => {\n  const theme = useTheme();\n  const [internalChecked, setInternalChecked] = useState(defaultChecked);\n  const checked = controlledChecked ?? internalChecked;\n  const glyphs = symbolSets[symbols];\n\n  const { interactionProps, isFocused } = useInteraction({\n    autoFocus,\n    disabled,\n    id,\n    isActive,\n    onPress: (details) => {\n      const next = !checked;\n      if (controlledChecked === undefined) {\n        setInternalChecked(next);\n      }\n      if (onCheckedChange) {\n        onCheckedChange(next, details);\n      } else {\n        onChange?.(next);\n      }\n    },\n  });\n\n  const track = checked\n    ? `${glyphs.track.repeat(width - 1)}${glyphs.thumb}`\n    : `${glyphs.thumb}${glyphs.track.repeat(width - 1)}`;\n  const activeColor = checked ? theme.colors.success : theme.colors.border;\n  const trackColor = isFocused ? theme.colors.focusRing : activeColor;\n\n  return (\n    <box {...interactionProps} alignItems=\"center\" gap={1}>\n      <text fg={disabled ? theme.colors.mutedForeground : trackColor}>\n        {isFocused ? <b>{track}</b> : track}\n      </text>\n      <text\n        fg={disabled ? theme.colors.mutedForeground : theme.colors.foreground}\n      >\n        {label}\n      </text>\n    </box>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/switch.tsx"
+    }
+  ],
+  "categories": [
+    "selection"
+  ],
+  "type": "registry:ui"
+}

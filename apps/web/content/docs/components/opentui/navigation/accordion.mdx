@@ -1,0 +1,101 @@
+---
+title: "Accordion"
+description: "Single or multiple disclosure sections with roving trigger focus"
+---
+
+<ComponentPreview base="opentui" name="accordion-demo" hideCode />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+```bash
+npx shadcn@latest add @termcn/opentui/accordion
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install OpenTUI React.</Step>
+
+```bash
+npm install @opentui/react
+```
+
+<Step>Copy the interaction hook, theme dependencies, and component.</Step>
+
+<ComponentSource
+  src="registry/bases/opentui/hooks/use-interaction.tsx"
+  title="hooks/use-interaction.tsx"
+/>
+
+<ComponentSource
+  src="registry/bases/opentui/ui/types.ts"
+  title="components/ui/types.ts"
+/>
+
+<ComponentSource
+  src="registry/bases/opentui/themes/default.ts"
+  title="lib/terminal-themes/default.ts"
+/>
+
+<ComponentSource
+  base="opentui"
+  name="theme-provider"
+  title="components/ui/theme-provider.tsx"
+/>
+
+<ComponentSource
+  base="opentui"
+  name="accordion"
+  title="components/ui/accordion.tsx"
+/>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+```
+
+```tsx
+<Accordion defaultValue={["details"]}>
+  <AccordionItem value="details">
+    <AccordionTrigger autoFocus label="Details" />
+    <AccordionContent>
+      <text>Expanded content.</text>
+    </AccordionContent>
+  </AccordionItem>
+</Accordion>
+```
+
+Triggers support Enter, Space, pointer activation, Up/Down focus movement, and
+Home/End. Add `multiple` to allow more than one item to remain open.
+
+## API Reference
+
+| Part               | Key props                                                        |
+| ------------------ | ---------------------------------------------------------------- |
+| `Accordion`        | `value`, `defaultValue`, `onValueChange`, `multiple`, `disabled` |
+| `AccordionItem`    | `value`, `disabled`, `onOpenChange`                              |
+| `AccordionTrigger` | `label`, `openMark`, `closedMark`, `autoFocus`, `isActive`       |
+| `AccordionContent` | `children`, `keepMounted`, `paddingLeft`                         |

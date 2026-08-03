@@ -3,6 +3,7 @@ import { CheckboxGroup } from "@/registry/bases/opentui/ui/checkbox-group";
 export default function CheckboxGroupDemo() {
   return (
     <CheckboxGroup
+      autoFocus
       label="Select toppings"
       options={[
         { label: "Extra Cheese", value: "cheese" },

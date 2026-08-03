@@ -1,6 +1,6 @@
 ---
 title: "Text Input"
-description: "Single-line text input with placeholder, validation, mask"
+description: "Focus-aware single-line editor with validation, masking, and paste"
 ---
 
 <ComponentPreview base="opentui" name="text-input-demo" hideCode />
@@ -32,6 +32,11 @@ npm install @opentui/react
 ```
 
 <Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource
+  src="registry/bases/opentui/hooks/use-interaction.tsx"
+  title="hooks/use-interaction.tsx"
+/>
 
 <ComponentSource
   src="registry/bases/opentui/ui/types.ts"
@@ -71,6 +76,7 @@ import { TextInput } from "@/components/ui/text-input";
 
 ```tsx
 <TextInput
+  autoFocus
   label="Project Name"
   placeholder="my-project"
   onSubmit={(value) => console.log("Name:", value)}
@@ -93,7 +99,9 @@ Multiple labeled inputs stacked together.
 
 ### Cursor and editing
 
-With `showCursor` (default `true`), use the left and right arrow keys to move the insertion point; type and Backspace apply at the cursor.
+With `showCursor` (default `true`), use Left, Right, Home, and End to move
+the insertion point. Backspace removes before the cursor, Delete removes after
+it, and terminal paste inserts at the current cursor position.
 
 <ComponentPreview base="opentui" name="text-input-cursor" />
 
@@ -101,21 +109,26 @@ With `showCursor` (default `true`), use the left and right arrow keys to move th
 
 ### TextInput
 
-| Prop                  | Type                                                                                         | Default   |
-| --------------------- | -------------------------------------------------------------------------------------------- | --------- |
-| `value`               | `string`                                                                                     | -         |
-| `onChange`            | `(value: string) => void`                                                                    | -         |
-| `onSubmit`            | `(value: string) => void`                                                                    | -         |
-| `placeholder`         | `string`                                                                                     | `""`      |
-| `mask`                | `string`                                                                                     | -         |
-| `showCursor`          | `boolean`                                                                                    | `true`    |
-| `highlightPastedText` | `boolean`                                                                                    | `false`   |
-| `validate`            | `(value: string) => string\|null`                                                            | -         |
-| `width`               | `number`                                                                                     | `40`      |
-| `label`               | `string`                                                                                     | -         |
-| `autoFocus`           | `boolean`                                                                                    | `false`   |
-| `id`                  | `string`                                                                                     | -         |
-| `bordered`            | `boolean`                                                                                    | `true`    |
-| `borderStyle`         | `"single" \| "double" \| "round" \| "bold" \| "singleDouble" \| "doubleSingle" \| "classic"` | `"round"` |
-| `paddingX`            | `number`                                                                                     | `1`       |
-| `cursor`              | `string`                                                                                     | `"█"`     |
+| Prop                  | Type                                            | Default     |
+| --------------------- | ----------------------------------------------- | ----------- |
+| `value`               | `string`                                        | -           |
+| `defaultValue`        | `string`                                        | `""`        |
+| `onValueChange`       | `(value: string) => void`                       | -           |
+| `onChange`            | `(value: string) => void` (compatibility alias) | -           |
+| `onSubmit`            | `(value: string) => void`                       | -           |
+| `placeholder`         | `string`                                        | `""`        |
+| `mask`                | `string`                                        | -           |
+| `showCursor`          | `boolean`                                       | `true`      |
+| `highlightPastedText` | `boolean`                                       | `false`     |
+| `validate`            | `(value: string) => string\|null`               | -           |
+| `width`               | `number`                                        | `40`        |
+| `label`               | `string`                                        | -           |
+| `autoFocus`           | `boolean`                                       | `false`     |
+| `disabled`            | `boolean`                                       | `false`     |
+| `readOnly`            | `boolean`                                       | `false`     |
+| `isActive`            | `boolean`                                       | `true`      |
+| `id`                  | `string`                                        | -           |
+| `bordered`            | `boolean`                                       | `true`      |
+| `borderStyle`         | `"single" \| "double" \| "rounded" \| "heavy"`  | `"rounded"` |
+| `paddingX`            | `number`                                        | `1`         |
+| `cursor`              | `string`                                        | `"█"`       |

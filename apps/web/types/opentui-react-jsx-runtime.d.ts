@@ -2,8 +2,24 @@ import type { ReactNode } from "react";
 
 type OpenTUIStyle = Record<string, unknown>;
 
+interface OpenTUIFocusableRenderable {
+  blur: () => void;
+  focus: () => void;
+  focused?: boolean;
+  isFocused?: () => boolean;
+  on?: (event: string, listener: () => void) => void;
+  off?: (event: string, listener: () => void) => void;
+}
+
+interface OpenTUIPasteEvent {
+  bytes: Uint8Array;
+  defaultPrevented?: boolean;
+  preventDefault?: () => void;
+}
+
 interface OpenTUIBoxProps {
   alignItems?: string;
+  alignSelf?: string;
   backgroundColor?: string;
   border?: boolean;
   borderBottom?: boolean;
@@ -17,21 +33,37 @@ interface OpenTUIBoxProps {
   flexGrow?: number;
   flexShrink?: number;
   flexWrap?: string;
+  focusable?: boolean;
+  focused?: boolean;
   gap?: number;
   height?: number | string;
+  id?: string;
   justifyContent?: string;
   key?: React.Key;
   marginBottom?: number;
   marginLeft?: number;
   marginRight?: number;
   marginTop?: number;
+  maxHeight?: number;
+  maxWidth?: number;
+  minHeight?: number;
   minWidth?: number;
+  onMouseDown?: (event: {
+    button?: number;
+    defaultPrevented?: boolean;
+  }) => void;
+  onMouseOut?: () => void;
+  onMouseUp?: (event: { button?: number; defaultPrevented?: boolean }) => void;
+  onPaste?: (event: OpenTUIPasteEvent) => void;
   overflow?: string;
   padding?: number;
   paddingBottom?: number;
   paddingLeft?: number;
   paddingRight?: number;
   paddingTop?: number;
+  position?: "absolute" | "relative" | string;
+  ref?: React.Ref<OpenTUIFocusableRenderable>;
+  display?: "flex" | "none" | string;
   style?: OpenTUIStyle;
   title?: string;
   width?: number | string;

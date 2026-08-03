@@ -34,6 +34,11 @@ npm install @opentui/react
 <Step>Copy and paste the following code into your project.</Step>
 
 <ComponentSource
+  src="registry/bases/opentui/hooks/use-interaction.tsx"
+  title="hooks/use-interaction.tsx"
+/>
+
+<ComponentSource
   src="registry/bases/opentui/ui/types.ts"
   title="components/ui/types.ts"
 />
@@ -71,7 +76,7 @@ import { Dialog } from "@/components/ui/dialog";
 
 ```tsx
 <Dialog
-  isOpen={true}
+  defaultOpen
   title="Save changes?"
   onConfirm={() => save()}
   onCancel={() => discard()}
@@ -84,13 +89,18 @@ import { Dialog } from "@/components/ui/dialog";
 
 ### Dialog
 
-| Prop           | Type                    | Default     |
-| -------------- | ----------------------- | ----------- |
-| `title`        | `string`                | -           |
-| `children`     | `ReactNode`             | `required`  |
-| `confirmLabel` | `string`                | `"OK"`      |
-| `cancelLabel`  | `string`                | `"Cancel"`  |
-| `onConfirm`    | `() => void`            | -           |
-| `onCancel`     | `() => void`            | -           |
-| `variant`      | `"default" \| "danger"` | `"default"` |
-| `isOpen`       | `boolean`               | `false`     |
+| Prop           | Type                                                        | Default     |
+| -------------- | ----------------------------------------------------------- | ----------- |
+| `title`        | `string`                                                    | -           |
+| `children`     | `ReactNode`                                                 | `required`  |
+| `confirmLabel` | `string`                                                    | `"OK"`      |
+| `cancelLabel`  | `string`                                                    | `"Cancel"`  |
+| `onConfirm`    | `() => void`                                                | -           |
+| `onCancel`     | `() => void`                                                | -           |
+| `variant`      | `"default" \| "danger"`                                     | `"default"` |
+| `open`         | `boolean`                                                   | -           |
+| `defaultOpen`  | `boolean`                                                   | `false`     |
+| `onOpenChange` | `(open: boolean, details: DialogOpenChangeDetails) => void` | -           |
+| `isOpen`       | `boolean`                                                   | -           |
+| `isActive`     | `boolean`                                                   | `true`      |
+| `initialFocus` | `"cancel" \| "confirm"`                                     | `"cancel"`  |

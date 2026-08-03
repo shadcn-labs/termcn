@@ -1,5 +1,6 @@
 {
   "pages": [
+    "button",
     "confirm",
     "date-picker",
     "file-picker",

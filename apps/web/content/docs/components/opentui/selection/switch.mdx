@@ -1,0 +1,98 @@
+---
+title: "Switch"
+description: "Checked-state switch with focus-aware keyboard and pointer input"
+---
+
+<ComponentPreview base="opentui" name="switch-demo" hideCode />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+```bash
+npx shadcn@latest add @termcn/opentui/switch
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install OpenTUI React.</Step>
+
+```bash
+npm install @opentui/react
+```
+
+<Step>Copy the interaction hook, theme dependencies, and component.</Step>
+
+<ComponentSource
+  src="registry/bases/opentui/hooks/use-interaction.tsx"
+  title="hooks/use-interaction.tsx"
+/>
+
+<ComponentSource
+  src="registry/bases/opentui/ui/types.ts"
+  title="components/ui/types.ts"
+/>
+
+<ComponentSource
+  src="registry/bases/opentui/themes/default.ts"
+  title="lib/terminal-themes/default.ts"
+/>
+
+<ComponentSource
+  base="opentui"
+  name="theme-provider"
+  title="components/ui/theme-provider.tsx"
+/>
+
+<ComponentSource
+  base="opentui"
+  name="switch"
+  title="components/ui/switch.tsx"
+/>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import { Switch } from "@/components/ui/switch";
+```
+
+```tsx
+<Switch
+  defaultChecked
+  label="Desktop notifications"
+  onCheckedChange={setEnabled}
+/>
+```
+
+`checked` makes the component controlled; `defaultChecked` initializes
+uncontrolled state. `onChange` remains available as a compatibility alias for
+`onCheckedChange`.
+
+## API Reference
+
+| Prop              | Type                                                | Default   |
+| ----------------- | --------------------------------------------------- | --------- |
+| `label`           | `string`                                            | required  |
+| `checked`         | `boolean`                                           | -         |
+| `defaultChecked`  | `boolean`                                           | `false`   |
+| `onCheckedChange` | `(checked: boolean, details: PressDetails) => void` | -         |
+| `disabled`        | `boolean`                                           | `false`   |
+| `symbols`         | `"round" \| "ascii"`                                | `"round"` |
+| `width`           | `3 \| 5`                                            | `3`       |
+| `autoFocus`       | `boolean`                                           | `false`   |

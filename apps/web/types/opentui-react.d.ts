@@ -8,10 +8,16 @@ declare module "@opentui/react" {
   export function useKeyboard(
     handler: (key: {
       name: string;
+      defaultPrevented?: boolean;
       ctrl?: boolean;
       shift?: boolean;
       meta?: boolean;
       option?: boolean;
+      raw?: string;
+      repeated?: boolean;
+      sequence?: string;
+      super?: boolean;
+      hyper?: boolean;
       eventType?: string;
     }) => void,
     options?: { release?: boolean }

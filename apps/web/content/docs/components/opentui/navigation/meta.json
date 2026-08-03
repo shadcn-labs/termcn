@@ -1,6 +1,8 @@
 {
   "pages": [
+    "accordion",
     "breadcrumb",
+    "collapsible",
     "command-palette",
     "menu",
     "pagination",

@@ -1,143 +1,189 @@
 /* @jsxImportSource @opentui/react */
-import { useKeyboard } from "@opentui/react";
 import { useEffect, useState } from "react";
 
 import { useTheme } from "@/components/ui/opentui-theme-provider";
+import {
+  printableKey,
+  useInteraction,
+} from "@/registry/bases/opentui/hooks/use-interaction";
+import type {
+  InteractionProps,
+  PasteEventLike,
+} from "@/registry/bases/opentui/hooks/use-interaction";
 import type { BorderStyle } from "@/registry/bases/opentui/ui/types";
 
-export interface TextInputProps {
-  value?: string;
-  onChange?: (value: string) => void;
-  onSubmit?: (value: string) => void;
-  placeholder?: string;
-  mask?: string;
-  showCursor?: boolean;
-  highlightPastedText?: boolean;
-  validate?: (value: string) => string | null;
-  width?: number;
-  label?: string;
-  autoFocus?: boolean;
-  id?: string;
+export interface TextInputProps extends InteractionProps {
   bordered?: boolean;
   borderStyle?: BorderStyle;
-  paddingX?: number;
   cursor?: string;
+  defaultValue?: string;
+  highlightPastedText?: boolean;
+  label?: string;
+  mask?: string;
+  onChange?: (value: string) => void;
+  onSubmit?: (value: string) => void;
+  onValueChange?: (value: string) => void;
+  paddingX?: number;
+  placeholder?: string;
+  readOnly?: boolean;
+  showCursor?: boolean;
+  validate?: (value: string) => string | null;
+  value?: string;
+  width?: number;
 }
 
+const decodePaste = (event: PasteEventLike): string =>
+  new TextDecoder().decode(event.bytes).replaceAll(/\r?\n/g, " ");
+
 export const TextInput = ({
-  value: controlledValue,
-  onChange,
-  onSubmit,
-  placeholder = "",
-  mask,
-  showCursor = true,
-  highlightPastedText = false,
-  validate,
-  width = 40,
-  label,
-  autoFocus: _autoFocus = false,
-  id: _id,
+  autoFocus = false,
   bordered = true,
   borderStyle = "rounded",
-  paddingX = 1,
   cursor = "█",
+  defaultValue = "",
+  disabled = false,
+  highlightPastedText = false,
+  id,
+  isActive = true,
+  label,
+  mask,
+  onChange,
+  onSubmit,
+  onValueChange,
+  paddingX = 1,
+  placeholder = "",
+  readOnly = false,
+  showCursor = true,
+  validate,
+  value: controlledValue,
+  width = 40,
 }: TextInputProps) => {
-  const [internalValue, setInternalValue] = useState("");
-  const [cursorOffset, setCursorOffset] = useState(0);
+  const [internalValue, setInternalValue] = useState(defaultValue);
+  const [cursorOffset, setCursorOffset] = useState(defaultValue.length);
   const [cursorWidth, setCursorWidth] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const theme = useTheme();
-  const [isFocused] = useState(true);
-
   const value = controlledValue ?? internalValue;
 
   useEffect(() => {
     if (cursorOffset > value.length) {
       setCursorOffset(value.length);
     }
-  }, [value, cursorOffset]);
+  }, [cursorOffset, value.length]);
 
   const setValue = (next: string) => {
-    if (onChange) {
-      onChange(next);
-    } else {
+    if (controlledValue === undefined) {
       setInternalValue(next);
+    }
+    if (onValueChange) {
+      onValueChange(next);
+    } else {
+      onChange?.(next);
+    }
+    if (error) {
+      setError(null);
     }
   };
 
-  useKeyboard((key) => {
-    if (!isFocused) {
+  const insert = (text: string, pasted = false) => {
+    if (readOnly || !text) {
       return;
     }
-    if (
-      key.name === "up" ||
-      key.name === "down" ||
-      (key.ctrl && key.name === "c") ||
-      key.name === "tab"
-    ) {
-      return;
+    const next =
+      value.slice(0, cursorOffset) + text + value.slice(cursorOffset);
+    setValue(next);
+    setCursorOffset(cursorOffset + text.length);
+    setCursorWidth(pasted && highlightPastedText ? text.length : 0);
+  };
+
+  const submit = () => {
+    const nextError = validate?.(value) ?? null;
+    setError(nextError);
+    if (!nextError) {
+      onSubmit?.(value);
     }
-    if (key.name === "return") {
-      const err = validate ? validate(value) : null;
-      if (err) {
-        setError(err);
+  };
+
+  const { interactionProps, isFocused } = useInteraction({
+    autoFocus,
+    disabled,
+    id,
+    isActive,
+    onInput: (key) => {
+      if (key.name === "return" || key.name === "enter") {
+        submit();
         return;
       }
-      setError(null);
-      onSubmit?.(value);
-      return;
-    }
-    if (key.name === "escape") {
-      return;
-    }
-    let nextOffset = cursorOffset;
-    let nextValue = value;
-    let nextCursorWidth = 0;
-    if (key.name === "left") {
-      if (showCursor) {
-        nextOffset = Math.max(0, nextOffset - 1);
+      if (key.name === "left") {
+        setCursorOffset(Math.max(0, cursorOffset - 1));
+        setCursorWidth(0);
+        return;
       }
-    } else if (key.name === "right") {
-      if (showCursor) {
-        nextOffset = Math.min(value.length, nextOffset + 1);
+      if (key.name === "right") {
+        setCursorOffset(Math.min(value.length, cursorOffset + 1));
+        setCursorWidth(0);
+        return;
       }
-    } else if (key.name === "backspace" || key.name === "delete") {
-      if (cursorOffset > 0) {
-        nextValue =
-          value.slice(0, cursorOffset - 1) + value.slice(cursorOffset);
-        nextOffset = cursorOffset - 1;
+      if (key.name === "home") {
+        setCursorOffset(0);
+        setCursorWidth(0);
+        return;
       }
-    } else if (key.name.length === 1) {
-      nextValue =
-        value.slice(0, cursorOffset) + key.name + value.slice(cursorOffset);
-      nextOffset = cursorOffset + key.name.length;
-      if (key.name.length > 1) {
-        nextCursorWidth = key.name.length;
+      if (key.name === "end") {
+        setCursorOffset(value.length);
+        setCursorWidth(0);
+        return;
       }
-    }
-    setCursorOffset(nextOffset);
-    setCursorWidth(nextCursorWidth);
-    if (nextValue !== value) {
-      setValue(nextValue);
-    }
+      if (readOnly) {
+        return;
+      }
+      if (key.name === "backspace" && cursorOffset > 0) {
+        setValue(value.slice(0, cursorOffset - 1) + value.slice(cursorOffset));
+        setCursorOffset(cursorOffset - 1);
+        setCursorWidth(0);
+        return;
+      }
+      if (key.name === "delete" && cursorOffset < value.length) {
+        setValue(value.slice(0, cursorOffset) + value.slice(cursorOffset + 1));
+        setCursorWidth(0);
+        return;
+      }
+      const text = printableKey(key);
+      if (text) {
+        insert(text);
+      }
+    },
+    onPaste: (event) => {
+      if (readOnly) {
+        return;
+      }
+      const pasted = decodePaste(event);
+      if (pasted) {
+        event.preventDefault?.();
+        insert(pasted, true);
+      }
+    },
   });
 
   const displayValue = mask ? mask.repeat(value.length) : value;
+  const textColor = disabled
+    ? theme.colors.mutedForeground
+    : theme.colors.foreground;
 
-  let borderColor: string;
+  let borderColor = theme.colors.border;
   if (error) {
     borderColor = theme.colors.error;
+  } else if (disabled) {
+    borderColor = theme.colors.muted;
   } else if (isFocused) {
     borderColor = theme.colors.focusRing;
-  } else {
-    borderColor = theme.colors.border;
   }
 
   const pasteWidth = highlightPastedText ? cursorWidth : 0;
 
   const renderValue = () => {
     if (!value && placeholder) {
-      if (showCursor && isFocused) {
+      if (showCursor && isFocused && !disabled) {
         return (
           <>
             <text fg={theme.colors.mutedForeground} reverse={true}>
@@ -152,34 +198,33 @@ export const TextInput = ({
       return <text fg={theme.colors.mutedForeground}>{placeholder}</text>;
     }
 
-    if (!showCursor || !isFocused) {
-      return <text fg={theme.colors.foreground}>{displayValue}</text>;
+    if (!showCursor || !isFocused || disabled) {
+      return <text fg={textColor}>{displayValue}</text>;
     }
 
-    const before = displayValue.slice(0, cursorOffset - pasteWidth);
-    const highlighted = displayValue.slice(
-      cursorOffset - pasteWidth,
-      cursorOffset
-    );
+    const highlightStart = Math.max(0, cursorOffset - pasteWidth);
+    const before = displayValue.slice(0, highlightStart);
+    const highlighted = displayValue.slice(highlightStart, cursorOffset);
     const cursorChar =
       cursorOffset < displayValue.length ? displayValue[cursorOffset] : cursor;
     const after = displayValue.slice(cursorOffset + 1);
 
     return (
       <>
-        {before && <text fg={theme.colors.foreground}>{before}</text>}
+        {before && <text fg={textColor}>{before}</text>}
         {highlighted && (
-          <text fg={theme.colors.foreground} reverse={true}>
+          <text fg={textColor} reverse={true}>
             {highlighted}
           </text>
         )}
         <text reverse={true} fg={theme.colors.focusRing}>
           {cursorChar}
         </text>
-        {after && <text fg={theme.colors.foreground}>{after}</text>}
+        {after && <text fg={textColor}>{after}</text>}
       </>
     );
   };
+
   const boxProps = bordered
     ? {
         borderColor,
@@ -193,11 +238,13 @@ export const TextInput = ({
   return (
     <box flexDirection="column">
       {label && (
-        <text>
+        <text fg={disabled ? theme.colors.mutedForeground : undefined}>
           <b>{label}</b>
         </text>
       )}
-      <box {...boxProps}>{renderValue()}</box>
+      <box {...interactionProps} {...boxProps}>
+        {renderValue()}
+      </box>
       {error && <text fg={theme.colors.error}>{error}</text>}
     </box>
   );

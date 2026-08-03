@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/collapsible",
+  "title": "Collapsible",
+  "description": "Controlled or uncontrolled disclosure with a focus-aware trigger.",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/interaction.json",
+    "https://termcn.dev/r/opentui/theme-provider.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/ui/collapsible.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport * as React from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\nimport { useInteraction } from \"@/hooks/use-interaction\";\nimport type {\n  InteractionProps,\n  PressDetails,\n} from \"@/hooks/use-interaction\";\n\ninterface CollapsibleContextValue {\n  disabled: boolean;\n  open: boolean;\n  setOpen: (open: boolean, details: PressDetails) => void;\n}\n\nconst CollapsibleContext = React.createContext<CollapsibleContextValue | null>(\n  null\n);\n\nconst useCollapsible = () => {\n  const value = React.useContext(CollapsibleContext);\n  if (!value) {\n    throw new Error(\"Collapsible parts must be rendered inside <Collapsible>.\");\n  }\n  return value;\n};\n\nexport interface CollapsibleProps {\n  children: React.ReactNode;\n  defaultOpen?: boolean;\n  disabled?: boolean;\n  onOpenChange?: (open: boolean, details: PressDetails) => void;\n  open?: boolean;\n}\n\nexport const Collapsible = ({\n  children,\n  defaultOpen = false,\n  disabled = false,\n  onOpenChange,\n  open: controlledOpen,\n}: CollapsibleProps) => {\n  const [internalOpen, setInternalOpen] = React.useState(defaultOpen);\n  const open = controlledOpen ?? internalOpen;\n\n  const setOpen = React.useCallback(\n    (nextOpen: boolean, details: PressDetails) => {\n      if (nextOpen === open) {\n        return;\n      }\n      if (controlledOpen === undefined) {\n        setInternalOpen(nextOpen);\n      }\n      onOpenChange?.(nextOpen, details);\n    },\n    [controlledOpen, onOpenChange, open]\n  );\n\n  const contextValue = React.useMemo(\n    () => ({ disabled, open, setOpen }),\n    [disabled, open, setOpen]\n  );\n\n  return (\n    <CollapsibleContext.Provider value={contextValue}>\n      <box flexDirection=\"column\" gap={1}>\n        {children}\n      </box>\n    </CollapsibleContext.Provider>\n  );\n};\n\nexport interface CollapsibleTriggerProps extends InteractionProps {\n  closedMark?: string;\n  label: string;\n  openMark?: string;\n}\n\nexport const CollapsibleTrigger = ({\n  autoFocus = false,\n  closedMark = \"›\",\n  disabled = false,\n  id,\n  isActive = true,\n  label,\n  openMark = \"⌄\",\n}: CollapsibleTriggerProps) => {\n  const theme = useTheme();\n  const collapsible = useCollapsible();\n  const effectivelyDisabled = collapsible.disabled || disabled;\n  const { interactionProps, isFocused } = useInteraction({\n    autoFocus,\n    disabled: effectivelyDisabled,\n    id,\n    isActive,\n    onPress: (details) => collapsible.setOpen(!collapsible.open, details),\n  });\n\n  return (\n    <box {...interactionProps} flexDirection=\"row\" gap={1}>\n      <text fg={isFocused ? theme.colors.focusRing : theme.colors.primary}>\n        {collapsible.open ? openMark : closedMark}\n      </text>\n      <text\n        fg={\n          effectivelyDisabled\n            ? theme.colors.mutedForeground\n            : theme.colors.foreground\n        }\n      >\n        {isFocused ? <b>{label}</b> : label}\n      </text>\n    </box>\n  );\n};\n\nexport interface CollapsibleContentProps {\n  children: React.ReactNode;\n  keepMounted?: boolean;\n  paddingLeft?: number;\n}\n\nexport const CollapsibleContent = ({\n  children,\n  keepMounted = false,\n  paddingLeft = 2,\n}: CollapsibleContentProps) => {\n  const { open } = useCollapsible();\n  if (!(open || keepMounted)) {\n    return null;\n  }\n  return (\n    <box\n      display={open ? \"flex\" : \"none\"}\n      flexDirection=\"column\"\n      paddingLeft={paddingLeft}\n    >\n      {children}\n    </box>\n  );\n};\n\nexport const CollapsiblePanel = CollapsibleContent;\n",
+      "type": "registry:ui",
+      "target": "components/ui/collapsible.tsx"
+    }
+  ],
+  "categories": [
+    "navigation"
+  ],
+  "type": "registry:ui"
+}

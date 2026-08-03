@@ -1343,6 +1343,40 @@
       "type": "registry:file"
     },
     {
+      "categories": ["core"],
+      "dependencies": ["@opentui/react"],
+      "description": "Focus-gated keyboard, pointer, and paste interaction for reusable OpenTUI controls.",
+      "files": [
+        {
+          "path": "registry/opentui/hooks/use-interaction.tsx",
+          "target": "hooks/use-interaction.tsx",
+          "type": "registry:hook"
+        }
+      ],
+      "name": "opentui/interaction",
+      "title": "Use Interaction",
+      "type": "registry:hook"
+    },
+    {
+      "categories": ["navigation"],
+      "dependencies": ["@opentui/react"],
+      "description": "Controlled or uncontrolled disclosure group with focus-aware triggers.",
+      "files": [
+        {
+          "path": "registry/opentui/ui/accordion.tsx",
+          "target": "components/ui/accordion.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui/accordion",
+      "title": "Accordion",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui/interaction.json",
+        "https://termcn.dev/r/opentui/theme-provider.json"
+      ]
+    },
+    {
       "categories": ["feedback"],
       "dependencies": ["@opentui/react"],
       "description": "Alert box with success/error/warning/info variants",
@@ -1502,6 +1536,25 @@
       ]
     },
     {
+      "categories": ["forms"],
+      "dependencies": ["@opentui/react"],
+      "description": "Focus-aware button with keyboard and pointer activation.",
+      "files": [
+        {
+          "path": "registry/opentui/ui/button.tsx",
+          "target": "components/ui/button.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui/button",
+      "title": "Button",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui/interaction.json",
+        "https://termcn.dev/r/opentui/theme-provider.json"
+      ]
+    },
+    {
       "categories": ["templates"],
       "dependencies": ["@opentui/react"],
       "description": "Nested structured content with ●/└/□ bullet prefixes",
@@ -1600,6 +1653,7 @@
       "title": "Checkbox",
       "type": "registry:ui",
       "registryDependencies": [
+        "https://termcn.dev/r/opentui/interaction.json",
         "https://termcn.dev/r/opentui/theme-provider.json"
       ]
     },
@@ -1618,6 +1672,7 @@
       "title": "Checkbox Group",
       "type": "registry:ui",
       "registryDependencies": [
+        "https://termcn.dev/r/opentui/interaction.json",
         "https://termcn.dev/r/opentui/theme-provider.json"
       ]
     },
@@ -1655,6 +1710,25 @@
       "title": "Clock",
       "type": "registry:ui",
       "registryDependencies": [
+        "https://termcn.dev/r/opentui/theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["navigation"],
+      "dependencies": ["@opentui/react"],
+      "description": "Controlled or uncontrolled disclosure with a focus-aware trigger.",
+      "files": [
+        {
+          "path": "registry/opentui/ui/collapsible.tsx",
+          "target": "components/ui/collapsible.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui/collapsible",
+      "title": "Collapsible",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui/interaction.json",
         "https://termcn.dev/r/opentui/theme-provider.json"
       ]
     },
@@ -1814,6 +1888,7 @@
       "title": "Dialog",
       "type": "registry:ui",
       "registryDependencies": [
+        "https://termcn.dev/r/opentui/interaction.json",
         "https://termcn.dev/r/opentui/theme-provider.json"
       ]
     },
@@ -2721,6 +2796,7 @@
       "title": "Number Input",
       "type": "registry:ui",
       "registryDependencies": [
+        "https://termcn.dev/r/opentui/interaction.json",
         "https://termcn.dev/r/opentui/theme-provider.json"
       ]
     },
@@ -2901,6 +2977,7 @@
       "title": "Radio Group",
       "type": "registry:ui",
       "registryDependencies": [
+        "https://termcn.dev/r/opentui/interaction.json",
         "https://termcn.dev/r/opentui/theme-provider.json"
       ]
     },
@@ -3152,6 +3229,25 @@
       ]
     },
     {
+      "categories": ["selection"],
+      "dependencies": ["@opentui/react"],
+      "description": "Checked-state switch with focus-aware keyboard and pointer input.",
+      "files": [
+        {
+          "path": "registry/opentui/ui/switch.tsx",
+          "target": "components/ui/switch.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui/switch",
+      "title": "Switch",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui/interaction.json",
+        "https://termcn.dev/r/opentui/theme-provider.json"
+      ]
+    },
+    {
       "categories": ["navigation"],
       "dependencies": ["@opentui/react"],
       "description": "Tab bar wired to content panels",
@@ -3202,6 +3298,7 @@
       "title": "Tabs",
       "type": "registry:ui",
       "registryDependencies": [
+        "https://termcn.dev/r/opentui/interaction.json",
         "https://termcn.dev/r/opentui/theme-provider.json"
       ]
     },
@@ -3256,6 +3353,7 @@
       "title": "Text Area",
       "type": "registry:ui",
       "registryDependencies": [
+        "https://termcn.dev/r/opentui/interaction.json",
         "https://termcn.dev/r/opentui/theme-provider.json"
       ]
     },
@@ -3274,6 +3372,7 @@
       "title": "Text Input",
       "type": "registry:ui",
       "registryDependencies": [
+        "https://termcn.dev/r/opentui/interaction.json",
         "https://termcn.dev/r/opentui/theme-provider.json"
       ]
     },
@@ -3383,6 +3482,26 @@
       "title": "Toggle",
       "type": "registry:ui",
       "registryDependencies": [
+        "https://termcn.dev/r/opentui/interaction.json",
+        "https://termcn.dev/r/opentui/theme-provider.json"
+      ]
+    },
+    {
+      "categories": ["selection"],
+      "dependencies": ["@opentui/react"],
+      "description": "Single or multiple toggle group with roving keyboard focus.",
+      "files": [
+        {
+          "path": "registry/opentui/ui/toggle-group.tsx",
+          "target": "components/ui/toggle-group.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "opentui/toggle-group",
+      "title": "Toggle Group",
+      "type": "registry:ui",
+      "registryDependencies": [
+        "https://termcn.dev/r/opentui/interaction.json",
         "https://termcn.dev/r/opentui/theme-provider.json"
       ]
     },

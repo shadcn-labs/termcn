@@ -34,6 +34,11 @@ npm install @opentui/react
 <Step>Copy and paste the following code into your project.</Step>
 
 <ComponentSource
+  src="registry/bases/opentui/hooks/use-interaction.tsx"
+  title="hooks/use-interaction.tsx"
+/>
+
+<ComponentSource
   src="registry/bases/opentui/ui/types.ts"
   title="components/ui/types.ts"
 />
@@ -85,11 +90,19 @@ import { CheckboxGroup } from "@/components/ui/checkbox-group";
 
 ### CheckboxGroup
 
-| Prop       | Type                         | Default    |
-| ---------- | ---------------------------- | ---------- |
-| `label`    | `string`                     | -          |
-| `options`  | `CheckboxGroupOption[]`      | `required` |
-| `value`    | `string[]`                   | -          |
-| `onChange` | `(values: string[]) => void` | -          |
-| `min`      | `number`                     | -          |
-| `max`      | `number`                     | -          |
+| Prop            | Type                                                | Default      |
+| --------------- | --------------------------------------------------- | ------------ |
+| `label`         | `string`                                            | -            |
+| `options`       | `CheckboxGroupOption[]`                             | `required`   |
+| `value`         | `string[]`                                          | -            |
+| `defaultValue`  | `string[]`                                          | `[]`         |
+| `onValueChange` | `(values: string[], details: PressDetails) => void` | -            |
+| `onChange`      | `(values: string[]) => void`                        | -            |
+| `min`           | `number`                                            | -            |
+| `max`           | `number`                                            | -            |
+| `disabled`      | `boolean`                                           | `false`      |
+| `autoFocus`     | `boolean`                                           | `false`      |
+| `loopFocus`     | `boolean`                                           | `true`       |
+| `orientation`   | `"horizontal" \| "vertical"`                        | `"vertical"` |
+| `id`            | `string`                                            | -            |
+| `isActive`      | `boolean`                                           | `true`       |

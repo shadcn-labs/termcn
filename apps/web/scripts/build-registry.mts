@@ -30,6 +30,10 @@ const syncTargets = [
     to: path.join("opentui", "lib"),
   },
   {
+    from: path.join(root, "registry", "bases", "opentui", "hooks"),
+    to: path.join("opentui", "hooks"),
+  },
+  {
     from: path.join(root, "registry", "bases", "opentui", "themes"),
     providerImport: "opentui-theme-provider",
     to: path.join("opentui", "themes"),
@@ -48,6 +52,7 @@ const transformPublishedImports = (
   content
     .replaceAll("@/registry/bases/ink/lib/", "@/lib/")
     .replaceAll("@/registry/bases/opentui/lib/", "@/lib/")
+    .replaceAll("@/registry/bases/opentui/hooks/", "@/hooks/")
     .replaceAll("@/registry/bases/ink/ui/types", "@/components/ui/types")
     .replaceAll("@/registry/bases/opentui/ui/types", "@/components/ui/types")
     .replaceAll("@/registry/bases/ink/themes/", "@/lib/terminal-themes/")
