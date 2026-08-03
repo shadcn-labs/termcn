@@ -4,6 +4,7 @@ import Image from "next/image";
 
 import { DirectionalTransition } from "@/components/directional-transition";
 import { ExternalLinkButton } from "@/components/external-link-button";
+import { PageHero } from "@/components/page-hero";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { LINK } from "@/constants/links";
 import { ROUTES } from "@/constants/routes";
@@ -25,14 +26,16 @@ const SponsorPage = async () => {
     <DirectionalTransition>
       <section className="container-wrapper relative">
         <div className="container max-w-2xl flex flex-col items-center gap-4 py-16 text-center md:py-20 lg:py-24">
-          <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl from-foreground via-foreground to-foreground/65 bg-linear-to-b bg-clip-text text-transparent">
-            Support the project
-          </h1>
-          <p className="text-base text-muted-foreground text-balance">
-            termcn is a collection of beautifully designed, accessible, and
-            customizable terminal UI components for React. Every component is
-            free and that&apos;s not changing.
-          </p>
+          <PageHero
+            description={
+              <>
+                termcn is a collection of beautifully designed, accessible, and
+                customizable terminal UI components for React. Every component
+                is free and that&apos;s not changing.
+              </>
+            }
+            title="Support the project"
+          />
           <p className="text-sm text-muted-foreground text-balance">
             I&apos;m not going to paywall features or gate components behind a
             sponsorship tier. But if termcn made your project better, or you

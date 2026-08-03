@@ -2,13 +2,24 @@ import { ArrowRightIcon } from "lucide-react";
 import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
-import { ROUTES } from "@/constants/routes";
+import { getLaunchWeekHref, getLaunchWeeks } from "@/lib/launch-week";
 
-export const Announcement = () => (
-  <Badge asChild variant="secondary" className="bg-transparent">
-    <Link href={ROUTES.DOCS} rel="noreferrer">
-      <span className="flex size-2 rounded-full bg-blue-500" title="New" />
-      termcn — shadcn-compatible registry <ArrowRightIcon />
-    </Link>
-  </Badge>
-);
+export const Announcement = () => {
+  const [latestWeek] = getLaunchWeeks();
+
+  if (!latestWeek) {
+    return null;
+  }
+
+  return (
+    <Badge asChild variant="secondary">
+      <Link
+        href={getLaunchWeekHref(latestWeek)}
+        transitionTypes={["nav-forward"]}
+      >
+        <span aria-hidden="true">🎯</span>
+        Launch week is here <ArrowRightIcon />
+      </Link>
+    </Badge>
+  );
+};
