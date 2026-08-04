@@ -46,26 +46,30 @@ termcn ships bundled terminal themes that integrate with the `ThemeProvider`:
 For Ink:
 
 ```bash
-npx shadcn@latest add @termcn/ink/theme-dracula
+npx shadcn@latest add @termcn/ink/theme-provider
 ```
 
 For OpenTUI:
 
 ```bash
-npx shadcn@latest add @termcn/opentui/theme-dracula
+npx shadcn@latest add @termcn/opentui/theme-provider
 ```
 
-Then wrap your app:
+Providers install into `providers/`. Wrap your app only when you want to override the default theme:
 
 ```tsx
-import { ThemeProvider } from "@/components/ui/theme-provider";
+import { ThemeProvider } from "@/providers/theme-provider";
 import { draculaTheme } from "@/lib/terminal-themes/dracula";
 
 export function App() {
-  return (
-    <ThemeProvider theme={draculaTheme}>
-      {/* your Ink or OpenTUI tree */}
-    </ThemeProvider>
-  );
+  return <ThemeProvider theme={draculaTheme}></ThemeProvider>;
 }
 ```
+
+Motion and Unicode overrides are separate optional items:
+
+```bash
+npx shadcn@latest add @termcn/ink/motion-provider @termcn/ink/unicode-provider
+```
+
+Use the `opentui/` namespace for the equivalent OpenTUI providers.

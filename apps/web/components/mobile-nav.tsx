@@ -21,6 +21,7 @@ import {
   isComponentsFolder,
   isDitherChartUrl,
   isTemplatesFolder,
+  isThemesFolder,
 } from "@/lib/docs";
 import {
   getCategoryFolders,
@@ -166,6 +167,25 @@ const ChartsMobilePanel = ({
   );
 };
 
+const ThemesMobilePanel = ({
+  currentBase,
+  setOpen,
+  tree,
+}: MobilePanelProps) => {
+  const folder = findTopLevelFolder(tree, isThemesFolder);
+  if (!folder) {
+    return null;
+  }
+
+  return (
+    <MobileNavGroup
+      label="Themes"
+      pages={getFolderPages(folder, currentBase)}
+      setOpen={setOpen}
+    />
+  );
+};
+
 export const MobileNav = ({
   items,
   tree,
@@ -194,6 +214,9 @@ export const MobileNav = ({
     }
     if (panel === "charts") {
       return <ChartsMobilePanel {...panelProps} />;
+    }
+    if (panel === "themes") {
+      return <ThemesMobilePanel {...panelProps} />;
     }
     return null;
   };

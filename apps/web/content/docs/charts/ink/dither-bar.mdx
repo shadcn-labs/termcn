@@ -118,5 +118,18 @@ Switch between cumulative stacks and normalized percent stacks with `stackType`.
 | `noColor`          | `boolean`                                           | `false`     |
 | `screenReaderMode` | `boolean`                                           | `false`     |
 
+`width` is the preferred maximum. The chart clamps itself to the current Ink
+stdout width when the terminal is narrower.
+
 Arrow keys or H/J/K/L navigate chart state; Enter selects clickable series and
 Escape clears the active point.
+
+## Notes
+
+### Accessibility
+
+termcn exposes the following behavior through Ink's terminal accessibility APIs. This is not a browser ARIA or general WCAG-conformance claim.
+
+- **Keyboard:** Arrow keys or `h` / `j` / `k` / `l` move through the chart; `Enter` / `Space` select a point; `Escape` clears the active point; `r` restarts enabled animation.
+- **Focus and composition:** Input is active only while the component's focus target is focused, enabled, active, and inside the topmost focus scope.
+- **Screen reader:** Visual output exposes its meaningful value through a textual alternative or bounded accessible summary.

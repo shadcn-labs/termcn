@@ -44,9 +44,8 @@ npm install @opentui/react
 />
 
 <ComponentSource
-  base="opentui"
-  name="theme-provider"
-  title="components/ui/theme-provider.tsx"
+  src="registry/bases/opentui/hooks/use-theme.ts"
+  title="hooks/use-theme.ts"
 />
 
 <ComponentSource
@@ -79,9 +78,7 @@ import { AppShell } from "@/components/ui/app-shell";
     prefix="$"
     onSubmit={(value) => console.log(value)}
   />
-  <AppShell.Content height={16}>
-    {/* scrollable output area */}
-  </AppShell.Content>
+  <AppShell.Content height={16}></AppShell.Content>
   <AppShell.Hints items={["↑↓ scroll", "enter submit", "esc quit"]} />
 </AppShell>
 ```

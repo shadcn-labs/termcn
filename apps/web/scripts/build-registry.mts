@@ -12,8 +12,11 @@ const syncTargets = [
     to: "lib",
   },
   {
+    from: path.join(root, "registry", "bases", "ink", "providers"),
+    to: "providers",
+  },
+  {
     from: path.join(root, "registry", "bases", "ink", "ui"),
-    providerImport: "ink-theme-provider",
     to: "ui",
   },
   {
@@ -22,7 +25,6 @@ const syncTargets = [
   },
   {
     from: path.join(root, "registry", "bases", "ink", "themes"),
-    providerImport: "ink-theme-provider",
     to: "themes",
   },
   {
@@ -30,21 +32,24 @@ const syncTargets = [
     to: path.join("opentui", "lib"),
   },
   {
+    from: path.join(root, "registry", "bases", "opentui", "providers"),
+    to: path.join("opentui", "providers"),
+  },
+  {
+    from: path.join(root, "registry", "bases", "opentui", "hooks"),
+    to: path.join("opentui", "hooks"),
+  },
+  {
     from: path.join(root, "registry", "bases", "opentui", "themes"),
-    providerImport: "opentui-theme-provider",
     to: path.join("opentui", "themes"),
   },
   {
     from: path.join(root, "registry", "bases", "opentui", "ui"),
-    providerImport: "opentui-theme-provider",
     to: path.join("opentui", "ui"),
   },
 ] as const;
 
-const transformPublishedImports = (
-  content: string,
-  providerImport: "ink-theme-provider" | "opentui-theme-provider"
-) =>
+const transformPublishedImports = (content: string) =>
   content
     .replaceAll("@/registry/bases/ink/lib/", "@/lib/")
     .replaceAll("@/registry/bases/opentui/lib/", "@/lib/")
@@ -52,20 +57,16 @@ const transformPublishedImports = (
     .replaceAll("@/registry/bases/opentui/ui/types", "@/components/ui/types")
     .replaceAll("@/registry/bases/ink/themes/", "@/lib/terminal-themes/")
     .replaceAll("@/registry/bases/opentui/themes/", "@/lib/terminal-themes/")
-    .replaceAll(
-      `@/components/ui/${providerImport}`,
-      "@/components/ui/theme-provider"
-    );
+    .replaceAll("@/registry/bases/ink/hooks/", "@/hooks/")
+    .replaceAll("@/registry/bases/opentui/hooks/", "@/hooks/")
+    .replaceAll("@/registry/bases/ink/providers/", "@/providers/")
+    .replaceAll("@/registry/bases/opentui/providers/", "@/providers/");
 
 const ensureDir = async (dir: string) => {
   await fs.mkdir(dir, { recursive: true });
 };
 
-const copyDirContents = async (
-  from: string,
-  to: string,
-  providerImport?: "ink-theme-provider" | "opentui-theme-provider"
-) => {
+const copyDirContents = async (from: string, to: string) => {
   await ensureDir(to);
 
   const entries = await fs.readdir(from, { withFileTypes: true });
@@ -77,16 +78,8 @@ const copyDirContents = async (
         const sourcePath = path.join(from, entry.name);
         const targetPath = path.join(to, entry.name);
 
-        if (!providerImport) {
-          await fs.copyFile(sourcePath, targetPath);
-          return;
-        }
-
         const content = await fs.readFile(sourcePath, "utf-8");
-        await fs.writeFile(
-          targetPath,
-          transformPublishedImports(content, providerImport)
-        );
+        await fs.writeFile(targetPath, transformPublishedImports(content));
       })
   );
 };
@@ -119,6 +112,46 @@ const runShadcnBuild = (cwd: string) => {
   }
 };
 
+interface RegistryFile {
+  path: string;
+  target?: string;
+}
+
+interface RegistryItem {
+  files?: RegistryFile[];
+  name: string;
+}
+
+const restorePublishedTargets = async () => {
+  const sourceRegistry = JSON.parse(
+    await fs.readFile(path.join(root, "registry.json"), "utf-8")
+  ) as { items: RegistryItem[] };
+
+  for (const sourceItem of sourceRegistry.items) {
+    if (!sourceItem.name.startsWith("ink/")) {
+      continue;
+    }
+
+    const targets = new Map(
+      (sourceItem.files ?? [])
+        .filter((file) => file.target)
+        .map((file) => [file.path, file.target as string])
+    );
+    if (targets.size === 0) {
+      continue;
+    }
+
+    const itemPath = path.join(outputDir, `${sourceItem.name}.json`);
+    const publishedItem = JSON.parse(
+      await fs.readFile(itemPath, "utf-8")
+    ) as RegistryItem;
+    for (const file of publishedItem.files ?? []) {
+      file.target = targets.get(file.path);
+    }
+    await fs.writeFile(itemPath, `${JSON.stringify(publishedItem, null, 2)}\n`);
+  }
+};
+
 const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "termcn-registry-"));
 
 try {
@@ -131,11 +164,7 @@ try {
 
   await Promise.all(
     syncTargets.map((target) =>
-      copyDirContents(
-        target.from,
-        path.join(tempRegistryRoot, target.to),
-        "providerImport" in target ? target.providerImport : undefined
-      )
+      copyDirContents(target.from, path.join(tempRegistryRoot, target.to))
     )
   );
 
@@ -145,6 +174,7 @@ try {
     ensureDir(path.join(outputDir, "opentui")),
   ]);
   runShadcnBuild(tempRoot);
+  await restorePublishedTargets();
 } finally {
   await fs.rm(tempRoot, { force: true, recursive: true });
 }

@@ -4,16 +4,18 @@
   "title": "Spinner",
   "description": "Animated spinner with 12+ styles",
   "dependencies": [
+    "cli-spinners",
     "ink"
   ],
   "registryDependencies": [
-    "https://termcn.dev/r/ink/theme-provider.json",
-    "https://termcn.dev/r/ink/use-animation.json"
+    "https://termcn.dev/r/ink/use-animation.json",
+    "https://termcn.dev/r/ink/use-theme.json",
+    "https://termcn.dev/r/ink/use-unicode.json"
   ],
   "files": [
     {
       "path": "registry/ui/spinner.tsx",
-      "content": "import cliSpinners from \"cli-spinners\";\nimport type { SpinnerName } from \"cli-spinners\";\nimport { Text } from \"ink\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\nimport { useAnimation } from \"@/hooks/use-animation\";\n\nexport type SpinnerType = SpinnerName;\n\nexport const spinnerNames = Object.keys(cliSpinners) as SpinnerName[];\n\nexport interface SpinnerProps {\n  type?: SpinnerType;\n  label?: string;\n  color?: string;\n  fps?: number;\n  frames?: string[];\n}\n\nexport const Spinner = ({\n  type: spinnerType = \"dots\",\n  label,\n  color,\n  fps = 12,\n  frames: customFrames,\n}: SpinnerProps) => {\n  const theme = useTheme();\n  const builtin = cliSpinners[spinnerType] ?? cliSpinners.dots;\n  const useCustomFrames = customFrames !== undefined;\n  const frames = useCustomFrames ? customFrames : builtin.frames;\n  const frame = useAnimation(\n    useCustomFrames ? fps : { intervalMs: builtin.interval }\n  );\n  const icon = frames[frame % frames.length];\n  const resolvedColor = color ?? theme.colors.primary;\n\n  return (\n    <Text>\n      <Text color={resolvedColor}>{icon}</Text>\n      {label && <Text> {label}</Text>}\n    </Text>\n  );\n};\n",
+      "content": "import cliSpinners from \"cli-spinners\";\nimport type { SpinnerName } from \"cli-spinners\";\nimport { Box, Text } from \"ink\";\n\nimport { useAnimation } from \"@/hooks/use-animation\";\nimport { useTheme } from \"@/hooks/use-theme\";\nimport { useUnicode } from \"@/hooks/use-unicode\";\n\nexport type SpinnerType = SpinnerName;\n\nexport const spinnerNames = Object.keys(cliSpinners) as SpinnerName[];\n\nexport interface SpinnerProps {\n  type?: SpinnerType;\n  label?: string;\n  color?: string;\n  fps?: number;\n  frames?: string[];\n  isActive?: boolean;\n  \"aria-label\"?: string;\n}\n\nexport const Spinner = ({\n  type: spinnerType = \"dots\",\n  label,\n  color,\n  fps = 12,\n  frames: customFrames,\n  isActive = true,\n  \"aria-label\": ariaLabel,\n}: SpinnerProps) => {\n  const theme = useTheme();\n  const unicode = useUnicode();\n  const builtin = cliSpinners[spinnerType] ?? cliSpinners.dots;\n  const useCustomFrames = customFrames !== undefined;\n  let frames = [\"-\", \"\\\\\", \"|\", \"/\"];\n  if (useCustomFrames) {\n    frames = customFrames;\n  } else if (unicode) {\n    ({ frames } = builtin);\n  }\n  const frame = useAnimation({\n    intervalMs: useCustomFrames ? Math.round(1000 / fps) : builtin.interval,\n    isActive,\n  });\n  const icon = frames[frame % frames.length];\n  const resolvedColor = color ?? theme.colors.primary;\n\n  return (\n    <Box\n      aria-role=\"progressbar\"\n      aria-label={ariaLabel ?? label ?? \"Loading\"}\n      aria-state={{ busy: isActive }}\n    >\n      <Text aria-hidden color={resolvedColor}>\n        {icon}\n      </Text>\n      {label && <Text> {label}</Text>}\n    </Box>\n  );\n};\n",
       "type": "registry:ui"
     }
   ],

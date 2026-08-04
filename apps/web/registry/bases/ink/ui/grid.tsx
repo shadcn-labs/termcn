@@ -1,14 +1,15 @@
 import { Box } from "ink";
+import type { BoxProps } from "ink";
 import React, { Children } from "react";
 import type { ReactNode } from "react";
 
-export interface GridProps {
+export interface GridProps extends Omit<BoxProps, "children"> {
   columns: number;
   gap?: number;
   children: ReactNode;
 }
 
-export const Grid = ({ columns, gap = 0, children }: GridProps) => {
+export const Grid = ({ columns, gap = 0, children, ...props }: GridProps) => {
   const items = Children.toArray(children);
   const rows: ReactNode[][] = [];
 
@@ -17,7 +18,7 @@ export const Grid = ({ columns, gap = 0, children }: GridProps) => {
   }
 
   return (
-    <Box flexDirection="column" gap={gap}>
+    <Box {...props} flexDirection="column" gap={gap}>
       {rows.map((row, rowIdx) => (
         <Box key={rowIdx} flexDirection="row" gap={gap}>
           {row.map((cell, colIdx) => (

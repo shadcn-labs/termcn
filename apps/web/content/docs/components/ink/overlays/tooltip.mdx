@@ -44,9 +44,13 @@ npm install ink
 />
 
 <ComponentSource
-  base="ink"
-  name="theme-provider"
-  title="components/ui/theme-provider.tsx"
+  src="registry/bases/ink/hooks/use-theme.ts"
+  title="hooks/use-theme.ts"
+/>
+
+<ComponentSource
+  src="registry/bases/ink/hooks/use-unicode.ts"
+  title="hooks/use-unicode.ts"
 />
 
 <ComponentSource base="ink" name="tooltip" title="components/ui/tooltip.tsx" />
@@ -88,3 +92,11 @@ import { Tooltip } from "@/components/ui/tooltip";
 | `gap`         | `number`                                                                                     | `1`        |
 | `arrowDown`   | `string`                                                                                     | `"↓"`      |
 | `arrowUp`     | `string`                                                                                     | `"↑"`      |
+
+## Notes
+
+### Accessibility
+
+termcn exposes the following behavior through Ink's terminal accessibility APIs. This is not a browser ARIA or general WCAG-conformance claim.
+
+- **Screen reader:** Screen-reader mode removes decorative output while preserving meaningful labels and state.

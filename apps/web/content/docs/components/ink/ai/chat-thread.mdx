@@ -45,12 +45,6 @@ npm install ink
 
 <ComponentSource
   base="ink"
-  name="theme-provider"
-  title="components/ui/theme-provider.tsx"
-/>
-
-<ComponentSource
-  base="ink"
   name="chat-thread"
   title="components/ui/chat-thread.tsx"
 />
@@ -88,3 +82,11 @@ import { ChatMessage } from "@/components/ui/chat-message";
 | `maxHeight`  | `number`    | -       |
 | `autoScroll` | `boolean`   | `true`  |
 | `children`   | `ReactNode` | -       |
+
+## Notes
+
+### Accessibility
+
+termcn exposes the following behavior through Ink's terminal accessibility APIs. This is not a browser ARIA or general WCAG-conformance claim.
+
+- **Screen reader:** Ink labels and semantic state expose the component without relying on visual styling alone.

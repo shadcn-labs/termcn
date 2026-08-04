@@ -125,6 +125,9 @@ importers:
       sonner:
         specifier: ^2.0.7
         version: 2.0.7(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      string-width:
+        specifier: 8.2.0
+        version: 8.2.0
       strip-ansi:
         specifier: 7.2.0
         version: 7.2.0
@@ -3004,6 +3007,7 @@ packages:
 
   inherits@2.0.4:
     resolution: {integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==}
+
 
   ink-web@0.2.0:
     resolution: {integrity: sha512-WPLK/RuW8LgPcZeBqoNZkKer3K3QPr846wFUOyx7K2WcCb3TT+lqjOhcoDaWioYX6r5OeasPmLJnKDfghtmQ6w==}

@@ -2,7 +2,7 @@
 import { useKeyboard } from "@opentui/react";
 import { useState, useCallback, useEffect } from "react";
 
-import { useTheme } from "@/components/ui/opentui-theme-provider";
+import { useTheme } from "@/registry/bases/opentui/hooks/use-theme";
 
 export interface TimerProps {
   duration: number;

@@ -48,9 +48,8 @@ npm install ink
 />
 
 <ComponentSource
-  base="ink"
-  name="theme-provider"
-  title="components/ui/theme-provider.tsx"
+  src="registry/bases/ink/hooks/use-unicode.ts"
+  title="hooks/use-unicode.ts"
 />
 
 <ComponentSource
@@ -95,3 +94,14 @@ import { EmbeddedTerminal } from "@/components/ui/embedded-terminal";
 | `width`   | `number`                 | `80`       |
 | `height`  | `number`                 | `24`       |
 | `onExit`  | `(code: number) => void` | -          |
+
+`width` is the preferred maximum. The component clamps itself to the current
+Ink stdout width and resizes the PTY without restarting the running process.
+
+## Notes
+
+### Accessibility
+
+termcn exposes the following behavior through Ink's terminal accessibility APIs. This is not a browser ARIA or general WCAG-conformance claim.
+
+- **Screen reader:** Screen-reader mode removes decorative output while preserving meaningful labels and state.

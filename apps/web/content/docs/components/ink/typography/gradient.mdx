@@ -45,12 +45,6 @@ npm install ink
 
 <ComponentSource
   base="ink"
-  name="theme-provider"
-  title="components/ui/theme-provider.tsx"
-/>
-
-<ComponentSource
-  base="ink"
   name="gradient"
   title="components/ui/gradient.tsx"
 />
@@ -139,3 +133,11 @@ Either pass `colors`, or pass `name` (not both required; `name` selects a preset
 | `colors`   | `string[]`                                                                                                                                               | -          |
 | `name`     | `"cristal" \| "teen" \| "mind" \| "morning" \| "vice" \| "passion" \| "fruit" \| "instagram" \| "atlas" \| "retro" \| "summer" \| "pastel" \| "rainbow"` | -          |
 | `bold`     | `boolean`                                                                                                                                                | `false`    |
+
+## Notes
+
+### Accessibility
+
+termcn exposes the following behavior through Ink's terminal accessibility APIs. This is not a browser ARIA or general WCAG-conformance claim.
+
+- **Screen reader:** Ink labels and semantic state expose the component without relying on visual styling alone.

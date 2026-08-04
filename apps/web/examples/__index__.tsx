@@ -1943,18 +1943,18 @@ export const ExamplesIndex: Record<string, Record<string, any>> = {
       filePath: "examples/ink/tag-input-demo.tsx",
       name: "tag-input-demo",
     },
-    "tag-outline": {
+    "tag-outline-demo": {
       component: React.lazy(async () => {
         const mod = await import("./ink/tag-outline-demo");
         const exportName =
           Object.keys(mod).find(
             (key) =>
               typeof mod[key] === "function" || typeof mod[key] === "object"
-          ) || "tag-outline";
+          ) || "tag-outline-demo";
         return { default: mod.default || mod[exportName] };
       }),
       filePath: "examples/ink/tag-outline-demo.tsx",
-      name: "tag-outline",
+      name: "tag-outline-demo",
     },
     "text-area-demo": {
       component: React.lazy(async () => {
@@ -4155,18 +4155,18 @@ export const ExamplesIndex: Record<string, Record<string, any>> = {
       filePath: "examples/opentui/tag-input-demo.tsx",
       name: "tag-input-demo",
     },
-    "tag-outline": {
+    "tag-outline-demo": {
       component: React.lazy(async () => {
         const mod = await import("./opentui/tag-outline-demo");
         const exportName =
           Object.keys(mod).find(
             (key) =>
               typeof mod[key] === "function" || typeof mod[key] === "object"
-          ) || "tag-outline";
+          ) || "tag-outline-demo";
         return { default: mod.default || mod[exportName] };
       }),
       filePath: "examples/opentui/tag-outline-demo.tsx",
-      name: "tag-outline",
+      name: "tag-outline-demo",
     },
     "text-area-demo": {
       component: React.lazy(async () => {

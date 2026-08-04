@@ -1,6 +1,7 @@
 {
   "title": "Ink",
   "pages": [
+    "guides",
     "layout",
     "typography",
     "input",

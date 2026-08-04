@@ -4,9 +4,9 @@ import { TUI } from "@gridland/web";
 import { useEffect, useMemo } from "react";
 import type { CSSProperties, ReactNode } from "react";
 
-import { ThemeProvider } from "@/components/ui/opentui-theme-provider";
 import { useTerminalTheme } from "@/hooks/use-terminal-theme";
 import { opentuiTerminalThemeMap } from "@/lib/terminal-themes";
+import { ThemeProvider } from "@/registry/bases/opentui/providers/theme-provider";
 
 const TERMINAL_LINE_HEIGHT = 18;
 const TERMINAL_PADDING = 20;

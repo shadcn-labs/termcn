@@ -92,3 +92,13 @@ Sparklines support every dither fill. Add `markerIndex` to highlight a specific 
 | `bloom`            | `"off" \| "low" \| "high" \| "aura" \| BloomConfig` | `"off"`      |
 | `noColor`          | `boolean`                                           | `false`      |
 | `screenReaderMode` | `boolean`                                           | `false`      |
+
+## Notes
+
+### Accessibility
+
+termcn exposes the following behavior through Ink's terminal accessibility APIs. This is not a browser ARIA or general WCAG-conformance claim.
+
+- **Keyboard:** Arrow keys or `h` / `j` / `k` / `l` move through the chart; `Enter` / `Space` select a point; `Escape` clears the active point; `r` restarts enabled animation.
+- **Focus and composition:** Input is active only while the component's focus target is focused, enabled, active, and inside the topmost focus scope.
+- **Screen reader:** Visual output exposes its meaningful value through a textual alternative or bounded accessible summary.

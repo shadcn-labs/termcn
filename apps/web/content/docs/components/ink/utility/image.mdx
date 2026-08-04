@@ -49,9 +49,13 @@ npm install ink
 />
 
 <ComponentSource
-  base="ink"
-  name="theme-provider"
-  title="components/ui/theme-provider.tsx"
+  src="registry/bases/ink/hooks/use-theme.ts"
+  title="hooks/use-theme.ts"
+/>
+
+<ComponentSource
+  src="registry/bases/ink/hooks/use-unicode.ts"
+  title="hooks/use-unicode.ts"
 />
 
 <ComponentSource base="ink" name="image" title="components/ui/image.tsx" />
@@ -85,3 +89,11 @@ import { Image } from "@/components/ui/image";
 | `height`   | `number`                                   | -          |
 | `protocol` | `"auto" \| "iterm2" \| "kitty" \| "ascii"` | `"auto"`   |
 | `alt`      | `string`                                   | -          |
+
+## Notes
+
+### Accessibility
+
+termcn exposes the following behavior through Ink's terminal accessibility APIs. This is not a browser ARIA or general WCAG-conformance claim.
+
+- **Screen reader:** Screen-reader mode removes decorative output while preserving meaningful labels and state.

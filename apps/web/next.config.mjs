@@ -1,28 +1,14 @@
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-
 import { createMDX } from "fumadocs-mdx/next";
 import { createJiti } from "jiti";
 
 const jiti = createJiti(import.meta.url);
-const resolvePackage = (specifier) =>
-  fileURLToPath(import.meta.resolve(specifier));
 
 const { LINK } = await jiti.import("./constants/links");
 const { ROUTES } = await jiti.import("./constants/routes");
 
-/** Turbopack requires project-relative alias targets (not absolute paths). */
-const opentuiJsxRuntimeTurbo = "./lib/opentui-bridge/react-jsx-runtime.ts";
-const opentuiJsxDevRuntimeTurbo =
-  "./lib/opentui-bridge/react-jsx-dev-runtime.ts";
-const opentuiJsxRuntimeWebpack = path.resolve(
-  import.meta.dirname,
-  opentuiJsxRuntimeTurbo
-);
-const opentuiJsxDevRuntimeWebpack = path.resolve(
-  import.meta.dirname,
-  opentuiJsxDevRuntimeTurbo
-);
+const opentuiJsxRuntime = "./lib/opentui-bridge/react-jsx-runtime.ts";
+const opentuiJsxDevRuntime = "./lib/opentui-bridge/react-jsx-dev-runtime.ts";
+const inkWebAdapter = "./lib/ink-web-adapter.ts";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -67,6 +53,11 @@ const nextConfig = {
         destination: `${ROUTES.DOCS}/:path*.md`,
         permanent: true,
         source: `${ROUTES.DOCS}/:path*.mdx`,
+      },
+      {
+        destination: `${ROUTES.DOCS_THEMING}/ink`,
+        permanent: true,
+        source: ROUTES.DOCS_THEMING,
       },
       {
         destination: `${ROUTES.DOCS_COMPONENTS}/ink/:category/:component`,
@@ -114,20 +105,10 @@ const nextConfig = {
   turbopack: {
     resolveAlias: {
       "@opentui/react": "@gridland/utils",
-      "@opentui/react/jsx-dev-runtime": opentuiJsxDevRuntimeTurbo,
-      "@opentui/react/jsx-runtime": opentuiJsxRuntimeTurbo,
-      ink: "ink-web",
+      "@opentui/react/jsx-dev-runtime": opentuiJsxDevRuntime,
+      "@opentui/react/jsx-runtime": opentuiJsxRuntime,
+      ink: inkWebAdapter,
     },
-  },
-  webpack(config) {
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      "@opentui/react$": resolvePackage("@gridland/utils"),
-      "@opentui/react/jsx-dev-runtime$": opentuiJsxDevRuntimeWebpack,
-      "@opentui/react/jsx-runtime$": opentuiJsxRuntimeWebpack,
-      ink$: resolvePackage("ink-web"),
-    };
-    return config;
   },
 };
 

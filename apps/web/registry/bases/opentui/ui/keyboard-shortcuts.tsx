@@ -2,7 +2,7 @@
 
 import type { Key } from "react";
 
-import { useTheme } from "@/components/ui/opentui-theme-provider";
+import { useTheme } from "@/registry/bases/opentui/hooks/use-theme";
 
 export interface Shortcut {
   key: string;

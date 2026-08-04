@@ -2,7 +2,7 @@
 import React from "react";
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/components/ui/opentui-theme-provider";
+import { useTheme } from "@/registry/bases/opentui/hooks/use-theme";
 
 import { BigText } from "./big-text";
 import type { BigTextFont } from "./big-text";

@@ -2,12 +2,12 @@
 import { useKeyboard } from "@opentui/react";
 import { createElement, useEffect } from "react";
 
-import { useTheme } from "@/components/ui/opentui-theme-provider";
 import {
   useNotificationsProvider,
   NotificationsContext,
-} from "@/hooks/use-notifications";
-import type { NotificationVariant } from "@/hooks/use-notifications";
+} from "@/registry/bases/ink/hooks/use-notifications";
+import type { NotificationVariant } from "@/registry/bases/ink/hooks/use-notifications";
+import { useTheme } from "@/registry/bases/opentui/hooks/use-theme";
 
 export interface NotificationCenterProps {
   maxVisible?: number;

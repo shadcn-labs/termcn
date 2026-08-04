@@ -1,13 +1,17 @@
 import { Box, Text } from "ink";
-import React, { useState, useEffect } from "react";
+import React from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
+import { useAnimation } from "@/registry/bases/ink/hooks/use-animation";
+import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
+import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
 
 export interface MarkdownProps {
   children: string;
   width?: number;
   streaming?: boolean;
   cursor?: string;
+  isActive?: boolean;
+  "aria-label"?: string;
 }
 
 interface InlineSegment {
@@ -99,18 +103,18 @@ export const Markdown = ({
   children,
   width,
   streaming = false,
-  cursor = "▌",
+  cursor,
+  isActive = true,
+  "aria-label": ariaLabel,
 }: MarkdownProps) => {
   const theme = useTheme();
-  const [cursorVisible, setCursorVisible] = useState(true);
-
-  useEffect(() => {
-    if (!streaming) {
-      return;
-    }
-    const id = setInterval(() => setCursorVisible((v) => !v), 530);
-    return () => clearInterval(id);
-  }, [streaming]);
+  const unicode = useUnicode();
+  const resolvedCursor = cursor ?? (unicode ? "▌" : "|");
+  const cursorFrame = useAnimation({
+    intervalMs: 530,
+    isActive: streaming && isActive,
+  });
+  const cursorVisible = cursorFrame % 2 === 0;
 
   const safeChildren = streaming ? sanitizePartialFences(children) : children;
   const lines = safeChildren.split("\n");
@@ -120,6 +124,35 @@ export const Markdown = ({
 
   while (i < lines.length) {
     const line = lines[i];
+    const fence = line.match(/^```(?:\s*([^\s`]+))?\s*$/);
+
+    if (fence) {
+      const fenceStart = i;
+      const codeLines: string[] = [];
+      i += 1;
+      while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+        codeLines.push(lines[i]);
+        i += 1;
+      }
+      if (i < lines.length) {
+        i += 1;
+      }
+      if (codeLines.length === 0) {
+        elements.push(<Box key={`code-${fenceStart}`} />);
+      } else {
+        for (const [codeIndex, codeLine] of codeLines.entries()) {
+          elements.push(
+            <Text
+              key={`code-${fenceStart}-${codeIndex}`}
+              color={theme.colors.accent}
+            >
+              {codeLine || " "}
+            </Text>
+          );
+        }
+      }
+      continue;
+    }
 
     const h4 = line.match(/^####\s+(.*)/);
     const h3 = line.match(/^###\s+(.*)/);
@@ -153,14 +186,14 @@ export const Markdown = ({
     } else if (/^---+$/.test(line)) {
       elements.push(
         <Text key={i} color={theme.colors.border}>
-          {"─".repeat(width ?? 40)}
+          {(unicode ? "─" : "-").repeat(width ?? 40)}
         </Text>
       );
     } else if (/^>\s/.test(line)) {
       const content = line.replace(/^>\s/, "");
       elements.push(
         <Box key={i} gap={1}>
-          <Text color={theme.colors.primary}>│</Text>
+          <Text color={theme.colors.primary}>{unicode ? "│" : "|"}</Text>
           <InlineLine segments={parseInline(content)} />
         </Box>
       );
@@ -168,7 +201,9 @@ export const Markdown = ({
       const content = line.replace(/^[-*]\s/, "");
       elements.push(
         <Box key={i} gap={1}>
-          <Text color={theme.colors.mutedForeground}>•</Text>
+          <Text color={theme.colors.mutedForeground}>
+            {unicode ? "•" : "*"}
+          </Text>
           <InlineLine segments={parseInline(content)} />
         </Box>
       );
@@ -190,10 +225,20 @@ export const Markdown = ({
     elements[elements.length - 1] = (
       <Box key={`cursor-wrapper-${elements.length - 1}`} flexDirection="row">
         {last}
-        <Text color={theme.colors.primary}>{cursor}</Text>
+        <Text aria-hidden color={theme.colors.primary}>
+          {resolvedCursor}
+        </Text>
       </Box>
     );
   }
 
-  return <Box flexDirection="column">{elements}</Box>;
+  return (
+    <Box
+      flexDirection="column"
+      aria-label={ariaLabel}
+      aria-state={{ busy: streaming }}
+    >
+      {elements}
+    </Box>
+  );
 };

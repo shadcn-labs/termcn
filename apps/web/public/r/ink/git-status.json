@@ -7,12 +7,13 @@
     "ink"
   ],
   "registryDependencies": [
-    "https://termcn.dev/r/ink/theme-provider.json"
+    "https://termcn.dev/r/ink/use-theme.json",
+    "https://termcn.dev/r/ink/use-unicode.json"
   ],
   "files": [
     {
       "path": "registry/ui/git-status.tsx",
-      "content": "import { Box, Text } from \"ink\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface GitStatusProps {\n  branch: string;\n  staged?: number;\n  modified?: number;\n  ahead?: number;\n  behind?: number;\n}\n\nexport const GitStatus = ({\n  branch,\n  staged = 0,\n  modified = 0,\n  ahead = 0,\n  behind = 0,\n}: GitStatusProps) => {\n  const theme = useTheme();\n  return (\n    <Box flexDirection=\"column\" gap={0}>\n      <Text color={theme.colors.primary}>\n        <Text bold>Branch </Text>\n        {branch}\n      </Text>\n      <Text color={theme.colors.mutedForeground}>\n        {ahead}↑ {behind}↓ · staged {staged} · modified {modified}\n      </Text>\n    </Box>\n  );\n};\n",
+      "content": "import { Box, Text } from \"ink\";\n\nimport { useTheme } from \"@/hooks/use-theme\";\nimport { useUnicode } from \"@/hooks/use-unicode\";\n\nexport interface GitStatusProps {\n  branch: string;\n  staged?: number;\n  modified?: number;\n  ahead?: number;\n  behind?: number;\n  \"aria-label\"?: string;\n}\n\nexport const GitStatus = ({\n  branch,\n  staged = 0,\n  modified = 0,\n  ahead = 0,\n  behind = 0,\n  \"aria-label\": ariaLabel,\n}: GitStatusProps) => {\n  const theme = useTheme();\n  const unicode = useUnicode();\n  return (\n    <Box\n      flexDirection=\"column\"\n      gap={0}\n      aria-label={\n        ariaLabel ??\n        `Git branch ${branch}. ${ahead} commits ahead, ${behind} behind, ${staged} staged, ${modified} modified.`\n      }\n    >\n      <Text color={theme.colors.primary}>\n        <Text bold>Branch </Text>\n        {branch}\n      </Text>\n      <Text color={theme.colors.mutedForeground}>\n        {unicode\n          ? `${ahead}↑ ${behind}↓ · staged ${staged} · modified ${modified}`\n          : `${ahead} up ${behind} down - staged ${staged} - modified ${modified}`}\n      </Text>\n    </Box>\n  );\n};\n",
       "type": "registry:ui"
     }
   ],

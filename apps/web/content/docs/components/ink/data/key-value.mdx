@@ -44,9 +44,8 @@ npm install ink
 />
 
 <ComponentSource
-  base="ink"
-  name="theme-provider"
-  title="components/ui/theme-provider.tsx"
+  src="registry/bases/ink/hooks/use-theme.ts"
+  title="hooks/use-theme.ts"
 />
 
 <ComponentSource
@@ -98,3 +97,11 @@ import { KeyValue } from "@/components/ui/key-value";
 | `key`   | `string`    | `required` |
 | `value` | `ReactNode` | `required` |
 | `color` | `string`    | -          |
+
+## Notes
+
+### Accessibility
+
+termcn exposes the following behavior through Ink's terminal accessibility APIs. This is not a browser ARIA or general WCAG-conformance claim.
+
+- **Screen reader:** Ink labels and semantic state expose the component without relying on visual styling alone.

@@ -1,7 +1,12 @@
-import { Box, Text, Transform } from "ink";
+import { Transform, Box, Text } from "ink";
 import type { ReactNode } from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
+import {
+  isActivationKey,
+  useInteraction,
+} from "@/registry/bases/ink/hooks/use-interaction";
+import type { InteractionProps } from "@/registry/bases/ink/hooks/use-interaction";
+import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
 
 const OSC = "\u001B]";
 const SEP = ";";
@@ -26,12 +31,14 @@ const supportsHyperlinks = (): boolean => {
 const wrapWithLink = (text: string, url: string): string =>
   `${OSC}8${SEP}${SEP}${url}${BEL}${text}${OSC}8${SEP}${SEP}${BEL}`;
 
-export interface LinkProps {
+export interface LinkProps extends InteractionProps {
   children: ReactNode;
   href: string;
   color?: string;
   showHref?: boolean;
   fallback?: boolean | ((text: string, url: string) => string);
+  onOpen?: (href: string) => void;
+  "aria-label"?: string;
 }
 
 export const Link = ({
@@ -40,10 +47,26 @@ export const Link = ({
   color,
   showHref = false,
   fallback = true,
+  onOpen,
+  id,
+  autoFocus,
+  isActive,
+  disabled,
+  "aria-label": ariaLabel,
 }: LinkProps) => {
   const theme = useTheme();
   const resolvedColor = color ?? theme.colors.info;
   const hasSupport = supportsHyperlinks();
+  const { isFocused } = useInteraction(
+    (input, key) => {
+      if (isActivationKey(input, key)) {
+        onOpen?.(href);
+      }
+    },
+    { autoFocus, disabled, id, isActive: isActive && Boolean(onOpen) }
+  );
+  const accessibleLabel =
+    ariaLabel ?? `${typeof children === "string" ? children : "Link"}: ${href}`;
 
   const transformOutput = (output: string): string => {
     if (hasSupport) {
@@ -63,10 +86,17 @@ export const Link = ({
 
   if (hasSupport) {
     return (
-      <Box flexDirection="row">
+      <Box
+        flexDirection="row"
+        aria-role={onOpen ? "button" : undefined}
+        aria-label={accessibleLabel}
+        aria-state={{ disabled: disabled || undefined }}
+      >
         <Transform transform={transformOutput}>
           <Text color={resolvedColor} underline>
+            {isFocused && "["}
             {children}
+            {isFocused && "]"}
           </Text>
         </Transform>
       </Box>
@@ -74,7 +104,12 @@ export const Link = ({
   }
 
   return (
-    <Box flexDirection="row">
+    <Box
+      flexDirection="row"
+      aria-role={onOpen ? "button" : undefined}
+      aria-label={accessibleLabel}
+      aria-state={{ disabled: disabled || undefined }}
+    >
       <Text color={resolvedColor} underline>
         {children}
       </Text>

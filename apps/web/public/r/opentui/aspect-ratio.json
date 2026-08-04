@@ -9,7 +9,7 @@
   "files": [
     {
       "path": "registry/opentui/ui/aspect-ratio.tsx",
-      "content": "/* @jsxImportSource @opentui/react */\nimport type { ReactNode } from \"react\";\n\nexport interface AspectRatioProps {\n  children: ReactNode;\n  ratio?: number;\n  width?: number;\n}\n\nexport const AspectRatio = ({\n  children,\n  ratio = 16 / 9,\n  width = 80,\n}: AspectRatioProps) => {\n  const height = Math.round(width / ratio / 2);\n\n  return <box overflow=\"hidden\">{children}</box>;\n};\n",
+      "content": "/* @jsxImportSource @opentui/react */\nimport type { ReactNode } from \"react\";\n\nexport interface AspectRatioProps {\n  children: ReactNode;\n  ratio?: number;\n  width?: number;\n}\n\nexport const AspectRatio = ({\n  children,\n  ratio = 16 / 9,\n  width = 80,\n}: AspectRatioProps) => {\n  const height = Math.round(width / ratio / 2);\n\n  return (\n    <box width={width} height={height} overflow=\"hidden\">\n      {children}\n    </box>\n  );\n};\n",
       "type": "registry:ui",
       "target": "components/ui/aspect-ratio.tsx"
     }

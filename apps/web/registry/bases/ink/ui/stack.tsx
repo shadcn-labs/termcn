@@ -1,19 +1,14 @@
 import { Box } from "ink";
+import type { BoxProps } from "ink";
 import type { ReactNode } from "react";
 
-export interface StackProps {
+export interface StackProps extends Omit<
+  BoxProps,
+  "children" | "flexDirection"
+> {
   direction?: "vertical" | "horizontal";
   gap?: number;
   children: ReactNode;
-  width?: number | string;
-  height?: number | string;
-  alignItems?: "flex-start" | "center" | "flex-end";
-  justifyContent?:
-    | "flex-start"
-    | "center"
-    | "flex-end"
-    | "space-between"
-    | "space-around";
 }
 
 export const Stack = ({
@@ -24,12 +19,14 @@ export const Stack = ({
   height,
   alignItems,
   justifyContent,
+  ...props
 }: StackProps) => (
   <Box
+    {...props}
     flexDirection={direction === "vertical" ? "column" : "row"}
     gap={gap}
-    width={width as number}
-    height={height as number}
+    width={width}
+    height={height}
     alignItems={alignItems}
     justifyContent={justifyContent}
   >

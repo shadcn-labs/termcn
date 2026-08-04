@@ -43,12 +43,6 @@ npm install ink
   title="lib/terminal-themes/default.ts"
 />
 
-<ComponentSource
-  base="ink"
-  name="theme-provider"
-  title="components/ui/theme-provider.tsx"
-/>
-
 <ComponentSource base="ink" name="spacer" title="components/ui/spacer.tsx" />
 
 <Step>Update the import paths to match your project setup.</Step>
@@ -81,3 +75,11 @@ import { Spacer } from "@/components/ui/spacer";
 | ----------- | ---------------------------- | -------------- |
 | `size`      | `number`                     | -              |
 | `direction` | `"horizontal" \| "vertical"` | `"horizontal"` |
+
+## Notes
+
+### Accessibility
+
+termcn exposes the following behavior through Ink's terminal accessibility APIs. This is not a browser ARIA or general WCAG-conformance claim.
+
+- **Screen reader:** Decorative output is hidden from screen readers.

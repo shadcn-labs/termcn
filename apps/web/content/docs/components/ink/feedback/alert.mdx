@@ -44,9 +44,13 @@ npm install ink
 />
 
 <ComponentSource
-  base="ink"
-  name="theme-provider"
-  title="components/ui/theme-provider.tsx"
+  src="registry/bases/ink/hooks/use-theme.ts"
+  title="hooks/use-theme.ts"
+/>
+
+<ComponentSource
+  src="registry/bases/ink/hooks/use-unicode.ts"
+  title="hooks/use-unicode.ts"
 />
 
 <ComponentSource base="ink" name="alert" title="components/ui/alert.tsx" />
@@ -112,3 +116,11 @@ Override the icon and color with `icon` and `color` props.
 | `color`       | `string`                                                                                     | -        |
 | `paddingX`    | `number`                                                                                     | `1`      |
 | `paddingY`    | `number`                                                                                     | `0`      |
+
+## Notes
+
+### Accessibility
+
+termcn exposes the following behavior through Ink's terminal accessibility APIs. This is not a browser ARIA or general WCAG-conformance claim.
+
+- **Screen reader:** Screen-reader mode removes decorative output while preserving meaningful labels and state.

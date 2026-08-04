@@ -55,7 +55,7 @@ export interface RegistryThemeDefinition {
 export const THEMES = [
   {
     bases: BASE_NAMES,
-    description: "The default Termcn dark theme.",
+    description: "The default termcn dark theme.",
     name: "default",
     theme: defaultTheme,
     title: "Default",

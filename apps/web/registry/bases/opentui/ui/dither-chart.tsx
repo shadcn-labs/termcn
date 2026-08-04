@@ -3,11 +3,9 @@
 import { useKeyboard } from "@opentui/react";
 import * as React from "react";
 
-import {
-  useMotion,
-  useTheme,
-  useUnicode,
-} from "@/components/ui/opentui-theme-provider";
+import { useMotion } from "@/registry/bases/opentui/hooks/use-motion";
+import { useTheme } from "@/registry/bases/opentui/hooks/use-theme";
+import { useUnicode } from "@/registry/bases/opentui/hooks/use-unicode";
 import {
   colorFor,
   easeInOutCubic,

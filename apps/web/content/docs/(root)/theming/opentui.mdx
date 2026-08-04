@@ -1,0 +1,104 @@
+---
+title: Theming
+description: Configure terminal themes, motion, and Unicode behavior for terminal apps.
+---
+
+import { ThemePreviewGrid } from "@/components/theme-preview-grid";
+
+<ComponentPreview base="opentui" name="theme-showcase" hideCode />
+
+## ThemeProvider
+
+OpenTUI components use the default theme without a provider. Install `ThemeProvider` when you want to supply another theme or update the active theme at runtime.
+
+```bash
+npx shadcn@latest add @termcn/opentui/theme-provider
+```
+
+### Usage
+
+```tsx
+import { Spinner } from "@/components/ui/spinner";
+import { defaultTheme } from "@/lib/terminal-themes/default";
+import { ThemeProvider } from "@/providers/theme-provider";
+
+export function Example() {
+  return (
+    <ThemeProvider theme={defaultTheme}>
+      <Spinner label="Generating registry items" />
+    </ThemeProvider>
+  );
+}
+```
+
+Theme-aware components receive the provider-optional `use-theme` hook transitively. Application code can import `useTheme` or `useThemeUpdater` from `@/hooks/use-theme` when it needs direct access.
+
+## Available themes
+
+<ThemePreviewGrid base="opentui" />
+
+## Custom themes
+
+Use `createTheme` to extend the default tokens while preserving the complete theme shape.
+
+```tsx
+import { createTheme } from "@/providers/theme-provider";
+
+export const oceanTheme = createTheme({
+  name: "ocean",
+  colors: {
+    primary: "#0ea5e9",
+    accent: "#22d3ee",
+    background: "#0f172a",
+    foreground: "#e2e8f0",
+  },
+});
+```
+
+## MotionProvider
+
+Motion is independent from the active theme. Install `MotionProvider` only when the application needs to override the default reduced-motion detection.
+
+```bash
+npx shadcn@latest add @termcn/opentui/motion-provider
+```
+
+### Usage
+
+```tsx
+import { MotionProvider } from "@/providers/motion-provider";
+
+export function Example() {
+  return (
+    <MotionProvider reducedMotion>
+      <App />
+    </MotionProvider>
+  );
+}
+```
+
+Without the provider, motion follows `NO_MOTION=1` and `CI=true`.
+
+## UnicodeProvider
+
+Unicode support is independent from the active theme. Install `UnicodeProvider` only when the application needs to override terminal detection.
+
+```bash
+npx shadcn@latest add @termcn/opentui/unicode-provider
+```
+
+### Usage
+
+```tsx
+import { UnicodeProvider } from "@/providers/unicode-provider";
+
+export function Example() {
+  return (
+    <UnicodeProvider unicode={false}>
+      <App />
+    </UnicodeProvider>
+  );
+}
+```
+
+Without the provider, Unicode support follows terminal detection and `NO_UNICODE=1`.

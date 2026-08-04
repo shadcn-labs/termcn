@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ink/use-motion",
+  "title": "Use Motion",
+  "description": "Provider-optional reduced-motion context and hook.",
+  "registryDependencies": [
+    "https://termcn.dev/r/ink/types.json"
+  ],
+  "files": [
+    {
+      "path": "registry/hooks/use-motion.ts",
+      "content": "import * as React from \"react\";\n\nimport type { MotionContextValue } from \"@/components/ui/types\";\n\nconst getEnv = (name: string): string | undefined =>\n  typeof process !== \"undefined\" && process.env ? process.env[name] : undefined;\n\nexport const isReducedMotion = (): boolean =>\n  getEnv(\"NO_MOTION\") === \"1\" || getEnv(\"CI\") === \"true\";\n\nexport const MotionContext = React.createContext<MotionContextValue>({\n  reduced: isReducedMotion(),\n});\n\nexport const useMotion = (): MotionContextValue =>\n  React.useContext(MotionContext);\n",
+      "type": "registry:hook"
+    }
+  ],
+  "categories": [
+    "core"
+  ],
+  "type": "registry:hook"
+}

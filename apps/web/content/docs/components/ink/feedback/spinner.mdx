@@ -44,9 +44,18 @@ npm install ink
 />
 
 <ComponentSource
-  base="ink"
-  name="theme-provider"
-  title="components/ui/theme-provider.tsx"
+  src="registry/bases/ink/hooks/use-theme.ts"
+  title="hooks/use-theme.ts"
+/>
+
+<ComponentSource
+  src="registry/bases/ink/hooks/use-unicode.ts"
+  title="hooks/use-unicode.ts"
+/>
+
+<ComponentSource
+  src="registry/bases/ink/hooks/use-motion.ts"
+  title="hooks/use-motion.ts"
 />
 
 <ComponentSource
@@ -93,3 +102,11 @@ Multiple built-in animation styles.
 | `color`  | `string`                                                                          | -        |
 | `fps`    | `number` — used only with custom `frames`                                         | `12`     |
 | `frames` | `string[]`                                                                        | -        |
+
+## Notes
+
+### Accessibility
+
+termcn exposes the following behavior through Ink's terminal accessibility APIs. This is not a browser ARIA or general WCAG-conformance claim.
+
+- **Screen reader:** Ink labels and semantic state expose the component without relying on visual styling alone.
