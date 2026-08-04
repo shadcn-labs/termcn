@@ -7,7 +7,7 @@ description: "Copy-paste terminal UI components for React. Built on Ink and Open
 
 ## Philosophy
 
-termcn follows the shadcn model for terminal UIs: copy-paste components you can own, with zero lock-in and sensible defaults that work immediately. Components install their required hooks transitively and do not require an application-level provider. Optional theme, motion, and Unicode providers install separately into `providers/`.
+termcn follows the shadcn model for terminal UIs: copy-paste components you can own, with zero lock-in and sensible defaults that work immediately.
 
 Terminal apps are often treated as afterthoughts — bolted together with ad-hoc formatting and inconsistent styling. termcn takes a different approach. It stays close to each renderer's primitives, keeps the API familiar, and lets you drop down to raw Ink or OpenTUI components whenever you need more control.
 
@@ -38,7 +38,7 @@ termcn works with any terminal that supports ANSI escape codes and Unicode. This
   <FeatureCard
     icon={ZapIcon}
     title="Zero Config"
-    description="Works with sensible defaults and no required root provider."
+    description="Works out of the box with sensible defaults. No boilerplate needed."
   />
   <FeatureCard
     icon={SunMoonIcon}
@@ -58,7 +58,7 @@ termcn works with any terminal that supports ANSI escape codes and Unicode. This
   <FeatureCard
     icon={ClipboardCopyIcon}
     title="Copy & Paste"
-    description="Own your code and install only each item's declared dependencies."
+    description="Own your code. No runtime dependencies, just install into your project."
   />
   <FeatureCard
     icon={BlocksIcon}

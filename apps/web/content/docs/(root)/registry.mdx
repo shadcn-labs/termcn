@@ -32,46 +32,36 @@ Registry files follow these destinations:
 
 Components declare their hook dependencies, so installing a component does not install or require a provider.
 
-Install an Ink component:
+### Ink
+
+Install a component:
 
 ```bash
 npx shadcn@latest add @termcn/ink/spinner
 ```
 
-Install an OpenTUI component:
-
-```bash
-npx shadcn@latest add @termcn/opentui/spinner
-```
-
-Install a theme for the matching base:
+Install a theme:
 
 ```bash
 npx shadcn@latest add @termcn/ink/theme-dracula
 ```
 
-```bash
-npx shadcn@latest add @termcn/opentui/theme-dracula
-```
-
-Install the theme provider for each base:
+Install the theme provider:
 
 ```bash
 npx shadcn@latest add @termcn/ink/theme-provider
 ```
 
+Install the motion provider:
+
 ```bash
-npx shadcn@latest add @termcn/opentui/theme-provider
+npx shadcn@latest add @termcn/ink/motion-provider
 ```
 
-Motion and Unicode providers are independent items:
+Install the unicode provider:
 
 ```bash
-npx shadcn@latest add @termcn/ink/motion-provider @termcn/ink/unicode-provider
-```
-
-```bash
-npx shadcn@latest add @termcn/opentui/motion-provider @termcn/opentui/unicode-provider
+npx shadcn@latest add @termcn/ink/unicode-provider
 ```
 
 Without a registry alias, use the full URL (as on each docs page):
@@ -79,6 +69,40 @@ Without a registry alias, use the full URL (as on each docs page):
 ```bash
 npx shadcn@latest add https://termcn.dev/r/ink/spinner.json
 ```
+
+### OpenTUI
+
+Install a component:
+
+```bash
+npx shadcn@latest add @termcn/opentui/spinner
+```
+
+Install a theme:
+
+```bash
+npx shadcn@latest add @termcn/opentui/theme-dracula
+```
+
+Install the theme provider:
+
+```bash
+npx shadcn@latest add @termcn/opentui/theme-provider
+```
+
+Install the motion provider:
+
+```bash
+npx shadcn@latest add @termcn/opentui/motion-provider
+```
+
+Install the unicode provider:
+
+```bash
+npx shadcn@latest add @termcn/opentui/unicode-provider
+```
+
+Without a registry alias, use the full URL (as on each docs page):
 
 ```bash
 npx shadcn@latest add https://termcn.dev/r/opentui/spinner.json

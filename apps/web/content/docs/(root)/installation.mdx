@@ -39,8 +39,6 @@ export function App() {
 }
 ```
 
-Components install into `components/ui/`. Required source hooks are installed transitively into `hooks/`, and no provider is required for the default theme, motion, or Unicode behavior.
-
 ## Install a Theme
 
 termcn ships bundled terminal themes that integrate with the `ThemeProvider`:
@@ -48,13 +46,13 @@ termcn ships bundled terminal themes that integrate with the `ThemeProvider`:
 For Ink:
 
 ```bash
-npx shadcn@latest add @termcn/ink/theme-provider @termcn/ink/theme-dracula
+npx shadcn@latest add @termcn/ink/theme-provider
 ```
 
 For OpenTUI:
 
 ```bash
-npx shadcn@latest add @termcn/opentui/theme-provider @termcn/opentui/theme-dracula
+npx shadcn@latest add @termcn/opentui/theme-provider
 ```
 
 Providers install into `providers/`. Wrap your app only when you want to override the default theme:
