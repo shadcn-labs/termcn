@@ -4,7 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { ROUTES } from "@/constants/routes";
 import { createPageMetadata } from "@/seo/metadata";
 
-import { CreateBuilder } from "./create-builder";
+import { CreateBuilder } from "../components/create-builder";
 
 export const metadata = createPageMetadata({
   description:
