@@ -154,9 +154,9 @@ export const Tree = ({
                 isActive ? theme.colors.primary : theme.colors.mutedForeground
               }
             >
-              {isActive && isFocused ? "[" : ""}
+              {isActive ? "[" : ""}
               {indicator}
-              {isActive && isFocused ? "] " : " "}
+              {isActive ? "] " : " "}
             </Text>
             <Text
               bold={isActive}

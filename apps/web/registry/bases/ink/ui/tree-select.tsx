@@ -231,11 +231,9 @@ export const TreeSelect = <T = string,>({
             <Text
               aria-hidden
               color={color}
-              bold={(isFocused && isCursor) || isSelected}
+              bold={isCursor || isSelected}
               dimColor={item.node.disabled}
-              backgroundColor={
-                isFocused && isCursor ? theme.colors.selection : undefined
-              }
+              backgroundColor={isCursor ? theme.colors.selection : undefined}
             >
               {prefix}
               {icon}

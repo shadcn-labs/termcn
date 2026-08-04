@@ -146,7 +146,7 @@ export const ColorPicker = ({
                     aria-hidden
                     backgroundColor={paletteColor}
                     color={isActive ? "#ffffff" : paletteColor}
-                    bold={isFocused && isActive}
+                    bold={isActive}
                   >
                     {isActive ? "[]" : "  "}
                   </Text>

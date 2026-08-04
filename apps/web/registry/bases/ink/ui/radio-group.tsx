@@ -152,7 +152,7 @@ export const RadioGroup = <T = string,>({
               aria-hidden
               color={isActive ? theme.colors.primary : undefined}
             >
-              {isFocused && isActive ? resolvedCursor : " "}
+              {isActive ? resolvedCursor : " "}
             </Text>
             <Text
               aria-hidden
@@ -164,7 +164,7 @@ export const RadioGroup = <T = string,>({
             <Text
               aria-hidden
               color={getOptionColor(opt.disabled, isActive, theme)}
-              bold={(isFocused && isActive) || isSelected}
+              bold={isActive || isSelected}
               dimColor={opt.disabled}
             >
               {opt.label}

@@ -181,7 +181,7 @@ export const ToolApproval = ({
 
       <Box gap={2} marginTop={1}>
         {actions.map((action, index) => {
-          const focused = isFocused && activeAction === index;
+          const focused = activeAction === index;
           const color =
             action.shortcut === "y"
               ? (theme.colors.success ?? "green")

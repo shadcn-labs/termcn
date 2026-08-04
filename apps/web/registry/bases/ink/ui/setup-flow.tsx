@@ -272,11 +272,8 @@ const SetupFlowMultiSelect = ({
             >
               {isChecked ? resolvedCheckedChar : resolvedUncheckedChar}
             </Text>
-            <Text
-              color={isCursor && isFocused ? "white" : undefined}
-              bold={isCursor && isFocused}
-            >
-              {isCursor && isFocused ? `[${opt.label}]` : opt.label}
+            <Text color={isCursor ? "white" : undefined} bold={isCursor}>
+              {isCursor ? `[${opt.label}]` : opt.label}
             </Text>
             {opt.description && <Text dimColor>{`  ${opt.description}`}</Text>}
           </Box>

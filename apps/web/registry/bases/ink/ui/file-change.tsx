@@ -214,7 +214,7 @@ export const FileChange = ({
             </Text>
             <Box gap={1}>
               <Text color={isActive ? theme.colors.primary : undefined}>
-                {isActive && isFocused ? `[${cursor}]` : " "}
+                {isActive ? `[${cursor}]` : " "}
               </Text>
               <Text bold color={typeColor(item.type)}>
                 {TYPE_ICON[item.type]}

@@ -190,10 +190,10 @@ export const DirectoryTree = ({
               bold={entry.isDir}
             >
               {indent}
-              {isCursor && isFocused ? "[" : ""}
+              {isCursor ? "[" : ""}
               {icon}
               {entry.name}
-              {isCursor && isFocused ? "]" : ""}
+              {isCursor ? "]" : ""}
             </Text>
           </Box>
         );

@@ -131,7 +131,7 @@ export const Tabs = ({
                 }
                 bold={isActive}
                 underline={isActive}
-                inverse={isFocused && isActive}
+                inverse={isActive}
               >
                 {tab.label}
               </Text>

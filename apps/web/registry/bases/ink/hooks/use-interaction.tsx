@@ -299,7 +299,7 @@ export function useInteraction(
       }
       onInput?.(input, key);
     },
-    { isActive: enabled && isFocused && Boolean(onInput) }
+    { isActive: enabled && (scope ? isFocused : true) && Boolean(onInput) }
   );
 
   const focus = React.useCallback(() => {

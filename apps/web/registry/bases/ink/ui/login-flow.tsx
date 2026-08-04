@@ -205,7 +205,7 @@ const LoginFlowSelect = ({
             aria-state={{ selected: isActive }}
           >
             <Text color={isActive ? cursorColor : undefined}>
-              {isActive && isFocused ? `[${resolvedCursor}] ` : "  "}
+              {isActive ? `[${resolvedCursor}] ` : "  "}
             </Text>
             <Text color={isActive ? undefined : undefined} dimColor={!isActive}>
               {i + 1}.{"  "}

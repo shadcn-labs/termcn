@@ -163,9 +163,7 @@ export const CheckboxGroup = ({
               aria-hidden
               color={isActive ? theme.colors.primary : undefined}
             >
-              {isFocused && isActive
-                ? resolveTerminalSymbol(unicode, "›", ">")
-                : " "}
+              {isActive ? resolveTerminalSymbol(unicode, "›", ">") : " "}
             </Text>
             <Text aria-hidden color={iconColor} dimColor={opt.disabled}>
               {icon}
@@ -173,7 +171,7 @@ export const CheckboxGroup = ({
             <Text
               aria-hidden
               color={optLabelColor}
-              bold={isFocused && isActive}
+              bold={isActive}
               dimColor={opt.disabled}
             >
               {opt.label}

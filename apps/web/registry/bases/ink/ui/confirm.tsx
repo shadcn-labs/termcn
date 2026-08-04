@@ -78,7 +78,7 @@ export const Confirm = ({
         >
           {selected ? (
             <Text color={yesColor} bold>
-              {isFocused ? `[${cursor}] ` : `${cursor} `}
+              {`[${cursor}] `}
               {confirmLabel}
             </Text>
           ) : (
@@ -101,7 +101,7 @@ export const Confirm = ({
             </Text>
           ) : (
             <Text bold>
-              {isFocused ? `[${cursor}] ` : `${cursor} `}
+              {selected ? `[${cursor}] ` : `${cursor} `}
               {cancelLabel}
             </Text>
           )}

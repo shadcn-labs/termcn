@@ -123,9 +123,9 @@ export const TabbedContent = ({
                 }}
               >
                 <Text color={textColor} bold={isActive} dimColor={tab.disabled}>
-                  {isActive ? (isFocused ? "[>" : "[") : " "}
+                  {isActive ? "[>" : " "}
                   {tab.label}
-                  {isActive ? (isFocused ? "<]" : "]") : " "}
+                  {isActive ? "<]" : " "}
                 </Text>
                 {idx < tabs.length - 1 && (
                   <Text color={theme.colors.border}>
@@ -163,7 +163,7 @@ export const TabbedContent = ({
                 }}
               >
                 <Text color={textColor} bold={isActive} dimColor={tab.disabled}>
-                  {isActive && isFocused ? `[${tab.label}]` : tab.label}
+                  {isActive ? `[${tab.label}]` : tab.label}
                 </Text>
               </Box>
             );
@@ -200,7 +200,7 @@ export const TabbedContent = ({
                 underline={isActive}
                 dimColor={tab.disabled}
               >
-                {isActive && isFocused ? `[${tab.label}]` : tab.label}
+                {isActive ? `[${tab.label}]` : tab.label}
               </Text>
               {idx < tabs.length - 1 && (
                 <Text color={theme.colors.border}>

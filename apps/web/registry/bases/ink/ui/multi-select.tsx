@@ -176,7 +176,7 @@ export const MultiSelect = <T = string,>({
               aria-hidden
               color={isActive ? theme.colors.primary : undefined}
             >
-              {isFocused && isActive ? resolvedCursor : " "}
+              {isActive ? resolvedCursor : " "}
             </Text>
             <Text aria-hidden color={iconColor} dimColor={opt.disabled}>
               {icon}
@@ -184,7 +184,7 @@ export const MultiSelect = <T = string,>({
             <Text
               aria-hidden
               color={labelColor}
-              bold={isFocused && isActive}
+              bold={isActive}
               dimColor={opt.disabled}
             >
               {opt.label}

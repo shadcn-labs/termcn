@@ -69,12 +69,12 @@ const DialogActions = ({
         <Text
           aria-hidden
           color={
-            isFocused && focusedButton === "cancel"
+            focusedButton === "cancel"
               ? theme.colors.foreground
               : theme.colors.mutedForeground
           }
-          bold={isFocused && focusedButton === "cancel"}
-          inverse={isFocused && focusedButton === "cancel"}
+          bold={focusedButton === "cancel"}
+          inverse={focusedButton === "cancel"}
         >
           {` ${cancelLabel} `}
         </Text>
@@ -87,12 +87,12 @@ const DialogActions = ({
         <Text
           aria-hidden
           color={
-            isFocused && focusedButton === "confirm"
+            focusedButton === "confirm"
               ? confirmColor
               : theme.colors.mutedForeground
           }
-          bold={isFocused && focusedButton === "confirm"}
-          inverse={isFocused && focusedButton === "confirm"}
+          bold={focusedButton === "confirm"}
+          inverse={focusedButton === "confirm"}
         >
           {` ${confirmLabel} `}
         </Text>

@@ -103,9 +103,11 @@ export const Select = <T = string,>({
 
   return (
     <Box aria-role="listbox" aria-state={{ disabled }} flexDirection="column">
-      <Text aria-label={ariaLabel ?? label ?? "Select"} bold={Boolean(label)}>
-        {label ?? ""}
-      </Text>
+      {label && (
+        <Text aria-label={ariaLabel ?? label} bold>
+          {label}
+        </Text>
+      )}
       {options.map((opt, idx) => {
         const isActive = idx === activeIndex;
         const isSelected =
@@ -114,7 +116,7 @@ export const Select = <T = string,>({
         let optColor: string;
         if (opt.disabled) {
           optColor = theme.colors.mutedForeground;
-        } else if (isFocused && isActive) {
+        } else if (isActive) {
           optColor = resolvedCursorColor;
         } else {
           optColor = theme.colors.foreground;
@@ -132,18 +134,17 @@ export const Select = <T = string,>({
               aria-hidden
               color={isActive ? resolvedCursorColor : undefined}
             >
-              {isFocused && isActive ? resolvedCursor : " "}
+              {isActive ? resolvedCursor : " "}
             </Text>
-            <Text
-              aria-hidden
-              color={isSelected ? theme.colors.primary : undefined}
-            >
-              {isSelected ? selectedIndicator : " "}
-            </Text>
+            {isSelected && (
+              <Text aria-hidden color={theme.colors.primary}>
+                {selectedIndicator}
+              </Text>
+            )}
             <Text
               aria-hidden
               color={optColor}
-              bold={(isFocused && isActive) || isSelected}
+              bold={isActive || isSelected}
               dimColor={opt.disabled}
             >
               {opt.label}

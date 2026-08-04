@@ -137,7 +137,7 @@ export const List = ({
             }}
           >
             <Text color={isActive ? theme.colors.primary : undefined}>
-              {isActive && isFocused ? `[${resolvedCursor}]` : " "}
+              {isActive ? `[${resolvedCursor}]` : " "}
             </Text>
             <Text
               color={
