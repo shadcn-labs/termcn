@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "pnpm registry:build && next build",
+    "build": "pnpm registry:build && next build --webpack",
     "examples:build": "node ./scripts/build-examples.mts",
     "start": "next start",
     "typecheck": "next typegen && tsc --noEmit",
