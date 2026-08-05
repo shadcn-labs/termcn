@@ -8,9 +8,8 @@
     "build": "pnpm registry:build && next build --webpack",
     "examples:build": "node ./scripts/build-examples.mts",
     "start": "next start",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "next typegen && tsc --noEmit",
     "registry:build": "pnpm examples:build && node ./scripts/build-registry.mts",
-    "test:dither": "node --experimental-strip-types --import ./tests/register-typescript-resolver.mjs --test tests/dither-chart-core.test.mts",
     "postinstall": "fumadocs-mdx"
   },
   "dependencies": {
@@ -46,6 +45,7 @@
     "rehype-pretty-code": "^0.14.3",
     "shiki": "^4.0.2",
     "sonner": "^2.0.7",
+    "string-width": "8.2.0",
     "strip-ansi": "7.2.0",
     "tailwind-merge": "^3.5.0",
     "ts-morph": "^26.0.0",

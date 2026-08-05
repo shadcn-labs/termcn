@@ -15,6 +15,7 @@ const { ROUTES } = await jiti.import("./constants/routes");
 const opentuiJsxRuntimeTurbo = "./lib/opentui-bridge/react-jsx-runtime.ts";
 const opentuiJsxDevRuntimeTurbo =
   "./lib/opentui-bridge/react-jsx-dev-runtime.ts";
+const inkWebAdapterTurbo = "./lib/ink-web-adapter.ts";
 const opentuiJsxRuntimeWebpack = path.resolve(
   import.meta.dirname,
   opentuiJsxRuntimeTurbo
@@ -22,6 +23,10 @@ const opentuiJsxRuntimeWebpack = path.resolve(
 const opentuiJsxDevRuntimeWebpack = path.resolve(
   import.meta.dirname,
   opentuiJsxDevRuntimeTurbo
+);
+const inkWebAdapterWebpack = path.resolve(
+  import.meta.dirname,
+  inkWebAdapterTurbo
 );
 
 /** @type {import('next').NextConfig} */
@@ -67,6 +72,11 @@ const nextConfig = {
         destination: `${ROUTES.DOCS}/:path*.md`,
         permanent: true,
         source: `${ROUTES.DOCS}/:path*.mdx`,
+      },
+      {
+        destination: `${ROUTES.DOCS_THEMING}/ink`,
+        permanent: true,
+        source: ROUTES.DOCS_THEMING,
       },
       {
         destination: `${ROUTES.DOCS_COMPONENTS}/ink/:category/:component`,
@@ -116,7 +126,7 @@ const nextConfig = {
       "@opentui/react": "@gridland/utils",
       "@opentui/react/jsx-dev-runtime": opentuiJsxDevRuntimeTurbo,
       "@opentui/react/jsx-runtime": opentuiJsxRuntimeTurbo,
-      ink: "ink-web",
+      ink: inkWebAdapterTurbo,
     },
   },
   webpack(config) {
@@ -125,7 +135,7 @@ const nextConfig = {
       "@opentui/react$": resolvePackage("@gridland/utils"),
       "@opentui/react/jsx-dev-runtime$": opentuiJsxDevRuntimeWebpack,
       "@opentui/react/jsx-runtime$": opentuiJsxRuntimeWebpack,
-      ink$: resolvePackage("ink-web"),
+      ink$: inkWebAdapterWebpack,
     };
     return config;
   },

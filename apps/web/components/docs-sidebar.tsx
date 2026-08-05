@@ -16,9 +16,7 @@ import {
 import { ROUTES } from "@/constants/routes";
 import { TOP_LEVEL_SECTIONS } from "@/constants/site";
 import {
-  EXCLUDED_SECTIONS,
   getDocsSidebarPanel,
-  isCatalogFolder,
   isChartsFolder,
   isComponentsFolder,
   isDitherChartUrl,
@@ -30,6 +28,7 @@ import {
   getCategoryFolders,
   getCurrentBase,
   getFolderPages,
+  getTreeGroups,
 } from "@/lib/page-tree";
 import type { PageTreeFolder } from "@/lib/page-tree";
 import type { source } from "@/lib/source";
@@ -171,6 +170,25 @@ const ChartsSidebarPanel = ({
   );
 };
 
+const ThemesSidebarPanel = ({
+  currentBase,
+  pathname,
+  tree,
+}: SidebarPanelProps) => {
+  const folder = findTopLevelFolder(tree, isThemesFolder);
+  if (!folder) {
+    return null;
+  }
+
+  return (
+    <SidebarPageGroup
+      label="Themes"
+      pages={getFolderPages(folder, currentBase)}
+      pathname={pathname}
+    />
+  );
+};
+
 export const DocsSidebar = ({
   tree,
   ...props
@@ -180,6 +198,7 @@ export const DocsSidebar = ({
   const pathname = usePathname();
   const currentBase = getCurrentBase(pathname);
   const panel = getDocsSidebarPanel(pathname);
+  const treeGroups = getTreeGroups(tree, currentBase);
 
   const renderCatalogPanel = () => {
     const panelProps = { currentBase, pathname, tree };
@@ -191,6 +210,9 @@ export const DocsSidebar = ({
     }
     if (panel === "charts") {
       return <ChartsSidebarPanel {...panelProps} />;
+    }
+    if (panel === "themes") {
+      return <ThemesSidebarPanel {...panelProps} />;
     }
     return null;
   };
@@ -229,29 +251,14 @@ export const DocsSidebar = ({
         </SidebarGroup>
         {panel
           ? renderCatalogPanel()
-          : tree.children.map((item) => {
-              if (item.type !== "folder") {
-                return null;
-              }
-              if (EXCLUDED_SECTIONS.has(item.$id ?? "")) {
-                return null;
-              }
-              if (isCatalogFolder(item)) {
-                return null;
-              }
-
-              return (
-                <SidebarPageGroup
-                  key={item.$id}
-                  label={item.name}
-                  pages={getFolderPages(
-                    item,
-                    isThemesFolder(item) ? currentBase : undefined
-                  )}
-                  pathname={pathname}
-                />
-              );
-            })}
+          : treeGroups.map((group) => (
+              <SidebarPageGroup
+                key={group.label}
+                label={group.label}
+                pages={group.pages}
+                pathname={pathname}
+              />
+            ))}
         <div className="sticky -bottom-1 z-10 h-16 shrink-0 bg-linear-to-t from-background via-background/80 to-background/50 blur-xs" />
       </SidebarContent>
     </Sidebar>

@@ -1,0 +1,19 @@
+---
+title: 3 August 2026 - Accessibility improvements for Ink
+description: Improved Ink keyboard interaction, focus behavior, readable status output, motion and Unicode fallbacks, and nonvisual output.
+date: 2026-08-03
+---
+
+We completed an accessibility-focused pass across the Ink component collection. The implementation follows Ink's terminal accessibility contract instead of presenting terminal accessibility as browser accessibility or making a general WCAG-conformance claim.
+
+## Ink
+
+Ink components now use the closest supported native role and state, contextual labels, focus-gated input handling, and predictable keyboard traversal. Interactive overlays contain and restore focus, while visual-only output such as charts, QR codes, big text, gradients, cursors, and animation frames exposes concise text alternatives in screen-reader mode.
+
+Text editing and responsive output account for graphemes, wide characters, terminal-cell width, and terminal resizing. Animation work is also suspended for screen-reader, reduced-motion, inactive, and CI states.
+
+## Provider architecture
+
+Theme, motion, and Unicode configuration now use separate provider and hook registry items in both the Ink and OpenTUI collections. Components depend on the provider-optional hooks, so installing a component does not force an application-level provider. This is an architecture consistency change for OpenTUI, not a claim that this release completed the same accessibility pass for OpenTUI.
+
+Ink components continue to ship as source-owned, standalone registry items. Consumers can install only the component and its declared dependencies, inspect the implementation, and adapt labels, keyboard behavior, rendering, and terminal-specific fallbacks to their application.

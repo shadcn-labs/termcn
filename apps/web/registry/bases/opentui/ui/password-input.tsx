@@ -2,7 +2,7 @@
 import { useKeyboard } from "@opentui/react";
 import { useState } from "react";
 
-import { useTheme } from "@/components/ui/opentui-theme-provider";
+import { useTheme } from "@/registry/bases/opentui/hooks/use-theme";
 import type { BorderStyle } from "@/registry/bases/opentui/ui/types";
 
 export interface PasswordInputProps {

@@ -6,13 +6,10 @@
   "dependencies": [
     "ink"
   ],
-  "registryDependencies": [
-    "https://termcn.dev/r/ink/chat-message.json"
-  ],
   "files": [
     {
       "path": "registry/ui/chat-thread.tsx",
-      "content": "import { Box } from \"ink\";\nimport type { ReactNode } from \"react\";\n\nexport interface ChatThreadProps {\n  maxHeight?: number;\n  autoScroll?: boolean;\n  children?: ReactNode;\n}\n\nexport const ChatThread = ({\n  maxHeight,\n  autoScroll = true,\n  children,\n}: ChatThreadProps) => {\n  void autoScroll;\n\n  const containerProps = maxHeight\n    ? { height: maxHeight, overflow: \"hidden\" as const }\n    : {\n        /* noop */\n      };\n\n  return (\n    <Box flexDirection=\"column\" {...containerProps}>\n      {children}\n    </Box>\n  );\n};\n",
+      "content": "import { Static, Box, Text } from \"ink\";\nimport React from \"react\";\nimport type { ReactNode } from \"react\";\n\nexport interface ChatThreadProps {\n  maxHeight?: number;\n  autoScroll?: boolean;\n  children?: ReactNode;\n  staticHistory?: boolean;\n  \"aria-label\"?: string;\n}\n\nexport const ChatThread = ({\n  maxHeight,\n  autoScroll = true,\n  children,\n  staticHistory = false,\n  \"aria-label\": ariaLabel = \"Chat thread\",\n}: ChatThreadProps) => {\n  void autoScroll;\n\n  const containerProps = maxHeight\n    ? { height: maxHeight, overflow: \"hidden\" as const }\n    : {\n        /* noop */\n      };\n\n  return (\n    <Box flexDirection=\"column\" {...containerProps} aria-role=\"list\">\n      <Text aria-label={ariaLabel}>{\"\"}</Text>\n      {staticHistory ? (\n        <Static items={React.Children.toArray(children)}>\n          {(item, index) => <Box key={index}>{item}</Box>}\n        </Static>\n      ) : (\n        children\n      )}\n    </Box>\n  );\n};\n",
       "type": "registry:ui"
     }
   ],

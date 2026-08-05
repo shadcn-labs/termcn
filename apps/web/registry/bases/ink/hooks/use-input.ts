@@ -1,28 +1,12 @@
 import { useInput as inkUseInput } from "ink";
+import type { Key } from "ink";
 
-export interface Key {
-  upArrow: boolean;
-  downArrow: boolean;
-  leftArrow: boolean;
-  rightArrow: boolean;
-  pageDown: boolean;
-  pageUp: boolean;
-  return: boolean;
-  escape: boolean;
-  ctrl: boolean;
-  shift: boolean;
-  tab: boolean;
-  backspace: boolean;
-  delete: boolean;
-  meta: boolean;
-  eventType?: "press" | "repeat" | "release";
-  home?: boolean;
-  end?: boolean;
-  fn?: boolean;
-}
+/** @deprecated Import Key from Ink or use-interaction instead. */
+export type { Key } from "ink";
 
 export type InputHandler = (input: string, key: Key) => void;
 
+/** @deprecated Use useInteraction for focus-scoped component input. */
 export const useInput = (
   handler: InputHandler,
   options?: { isActive?: boolean }

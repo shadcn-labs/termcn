@@ -44,9 +44,13 @@ npm install ink
 />
 
 <ComponentSource
-  base="ink"
-  name="theme-provider"
-  title="components/ui/theme-provider.tsx"
+  src="registry/bases/ink/hooks/use-theme.ts"
+  title="hooks/use-theme.ts"
+/>
+
+<ComponentSource
+  src="registry/bases/ink/hooks/use-unicode.ts"
+  title="hooks/use-unicode.ts"
 />
 
 <ComponentSource
@@ -83,3 +87,11 @@ import { Sparkline } from "@/components/ui/sparkline";
 | `width` | `number`   | `20`       |
 | `color` | `string`   | -          |
 | `label` | `string`   | -          |
+
+## Notes
+
+### Accessibility
+
+termcn exposes the following behavior through Ink's terminal accessibility APIs. This is not a browser ARIA or general WCAG-conformance claim.
+
+- **Screen reader:** Visual output exposes its meaningful value through a textual alternative or bounded accessible summary.

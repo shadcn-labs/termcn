@@ -14,6 +14,7 @@ export const ROUTES = {
   DOCS_THEMES: "/docs/themes",
   DOCS_THEMING: "/docs/theming",
   HOME: "/",
+  LAUNCH_WEEK: "/launch-week",
   LLMS: "/llms.txt",
   LLMS_FULL: "/llms-full.txt",
   LLMS_MD: "/llms.md",

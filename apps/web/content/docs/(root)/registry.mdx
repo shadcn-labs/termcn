@@ -3,7 +3,7 @@ title: Registry
 description: Learn how to use the termcn registry with the shadcn CLI.
 ---
 
-The **termcn** registry ships Ink and OpenTUI terminal UI components and themes in the [shadcn registry format](https://ui.shadcn.com/docs/registry). Register the namespace once in `components.json`, then pull items by name with the CLI.
+The **termcn** registry ships Ink and OpenTUI components, hooks, providers, and themes in the [shadcn registry format](https://ui.shadcn.com/docs/registry). Register the namespace once in `components.json`, then pull items by name with the CLI.
 
 ## Setup
 
@@ -23,36 +23,45 @@ You can replace `@termcn` with another namespace; it only needs to match what yo
 
 Items are namespaced by base: `ink/` for Ink and `opentui/` for OpenTUI.
 
-Install an Ink component:
+Registry files follow these destinations:
+
+- Components install into `components/ui/`.
+- Hooks install into the configured `hooks/` directory.
+- Theme, motion, and Unicode providers install into `providers/`.
+- Themes install into `lib/terminal-themes/`.
+
+Components declare their hook dependencies, so installing a component does not install or require a provider.
+
+### Ink
+
+Install a component:
 
 ```bash
 npx shadcn@latest add @termcn/ink/spinner
 ```
 
-Install an OpenTUI component:
-
-```bash
-npx shadcn@latest add @termcn/opentui/spinner
-```
-
-Install a theme for the matching base:
+Install a theme:
 
 ```bash
 npx shadcn@latest add @termcn/ink/theme-dracula
 ```
 
-```bash
-npx shadcn@latest add @termcn/opentui/theme-dracula
-```
-
-Install the theme provider for each base:
+Install the theme provider:
 
 ```bash
 npx shadcn@latest add @termcn/ink/theme-provider
 ```
 
+Install the motion provider:
+
 ```bash
-npx shadcn@latest add @termcn/opentui/theme-provider
+npx shadcn@latest add @termcn/ink/motion-provider
+```
+
+Install the unicode provider:
+
+```bash
+npx shadcn@latest add @termcn/ink/unicode-provider
 ```
 
 Without a registry alias, use the full URL (as on each docs page):
@@ -60,6 +69,40 @@ Without a registry alias, use the full URL (as on each docs page):
 ```bash
 npx shadcn@latest add https://termcn.dev/r/ink/spinner.json
 ```
+
+### OpenTUI
+
+Install a component:
+
+```bash
+npx shadcn@latest add @termcn/opentui/spinner
+```
+
+Install a theme:
+
+```bash
+npx shadcn@latest add @termcn/opentui/theme-dracula
+```
+
+Install the theme provider:
+
+```bash
+npx shadcn@latest add @termcn/opentui/theme-provider
+```
+
+Install the motion provider:
+
+```bash
+npx shadcn@latest add @termcn/opentui/motion-provider
+```
+
+Install the unicode provider:
+
+```bash
+npx shadcn@latest add @termcn/opentui/unicode-provider
+```
+
+Without a registry alias, use the full URL (as on each docs page):
 
 ```bash
 npx shadcn@latest add https://termcn.dev/r/opentui/spinner.json

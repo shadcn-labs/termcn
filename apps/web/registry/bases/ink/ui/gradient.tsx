@@ -1,5 +1,7 @@
 import { Box, Text } from "ink";
 
+import { splitGraphemes } from "@/registry/bases/ink/lib/terminal-text";
+
 export type GradientName =
   | "cristal"
   | "teen"
@@ -46,6 +48,8 @@ export interface GradientProps {
   name?: GradientName;
   colors?: string[];
   bold?: boolean;
+  "aria-label"?: string;
+  "aria-hidden"?: boolean;
 }
 
 interface RGB {
@@ -90,17 +94,18 @@ export const gradientText = (
   colors: string[]
 ): GradientChar[] => {
   if (colors.length === 0) {
-    return [...text].map((char) => ({ char, color: "" }));
+    return splitGraphemes(text).map((char) => ({ char, color: "" }));
   }
   if (colors.length === 1) {
-    return [...text].map((char) => ({ char, color: colors[0] }));
+    return splitGraphemes(text).map((char) => ({ char, color: colors[0] }));
   }
 
   const parsedColors = colors.map(parseHex);
   const segments = colors.length - 1;
-  const len = text.length;
+  const graphemes = splitGraphemes(text);
+  const len = graphemes.length;
 
-  return [...text].map((char, i) => {
+  return graphemes.map((char, i) => {
     if (len <= 1) {
       return { char, color: colors[0] };
     }
@@ -119,12 +124,18 @@ export const Gradient = ({
   name,
   colors,
   bold = false,
+  "aria-label": ariaLabel,
+  "aria-hidden": ariaHidden,
 }: GradientProps) => {
   const resolvedColors = colors ?? (name ? GRADIENT_PRESETS[name] : []);
   const chars = gradientText(children, resolvedColors);
 
   return (
-    <Box flexDirection="row">
+    <Box
+      flexDirection="row"
+      aria-label={ariaHidden ? undefined : (ariaLabel ?? children)}
+      aria-hidden={ariaHidden}
+    >
       {chars.map((item, idx) => (
         <Text key={idx} color={item.color} bold={bold}>
           {item.char}

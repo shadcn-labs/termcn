@@ -47,12 +47,28 @@ export const formatCode = async (code: string) => {
   let formattedCode = code;
   for (const base of BASES) {
     formattedCode = formattedCode.replaceAll(
-      `@/registry/bases/${base.name}/`,
-      "@/components/"
+      `@/registry/bases/${base.name}/hooks/`,
+      "@/hooks/"
     );
     formattedCode = formattedCode.replaceAll(
-      `@/components/ui/${base.name}-theme-provider`,
-      "@/components/ui/theme-provider"
+      `@/registry/bases/${base.name}/providers/`,
+      "@/providers/"
+    );
+    formattedCode = formattedCode.replaceAll(
+      `@/registry/bases/${base.name}/lib/`,
+      "@/lib/"
+    );
+    formattedCode = formattedCode.replaceAll(
+      `@/registry/bases/${base.name}/themes/`,
+      "@/lib/terminal-themes/"
+    );
+    formattedCode = formattedCode.replaceAll(
+      `@/registry/bases/${base.name}/ui/types`,
+      "@/components/ui/types"
+    );
+    formattedCode = formattedCode.replaceAll(
+      `@/registry/bases/${base.name}/`,
+      "@/components/"
     );
   }
 

@@ -9,7 +9,7 @@
   "files": [
     {
       "path": "registry/ui/stack.tsx",
-      "content": "import { Box } from \"ink\";\nimport type { ReactNode } from \"react\";\n\nexport interface StackProps {\n  direction?: \"vertical\" | \"horizontal\";\n  gap?: number;\n  children: ReactNode;\n  width?: number | string;\n  height?: number | string;\n  alignItems?: \"flex-start\" | \"center\" | \"flex-end\";\n  justifyContent?:\n    | \"flex-start\"\n    | \"center\"\n    | \"flex-end\"\n    | \"space-between\"\n    | \"space-around\";\n}\n\nexport const Stack = ({\n  direction = \"vertical\",\n  gap = 0,\n  children,\n  width,\n  height,\n  alignItems,\n  justifyContent,\n}: StackProps) => (\n  <Box\n    flexDirection={direction === \"vertical\" ? \"column\" : \"row\"}\n    gap={gap}\n    width={width as number}\n    height={height as number}\n    alignItems={alignItems}\n    justifyContent={justifyContent}\n  >\n    {children}\n  </Box>\n);\n",
+      "content": "import { Box } from \"ink\";\nimport type { BoxProps } from \"ink\";\nimport type { ReactNode } from \"react\";\n\nexport interface StackProps extends Omit<\n  BoxProps,\n  \"children\" | \"flexDirection\"\n> {\n  direction?: \"vertical\" | \"horizontal\";\n  gap?: number;\n  children: ReactNode;\n}\n\nexport const Stack = ({\n  direction = \"vertical\",\n  gap = 0,\n  children,\n  width,\n  height,\n  alignItems,\n  justifyContent,\n  ...props\n}: StackProps) => (\n  <Box\n    {...props}\n    flexDirection={direction === \"vertical\" ? \"column\" : \"row\"}\n    gap={gap}\n    width={width}\n    height={height}\n    alignItems={alignItems}\n    justifyContent={justifyContent}\n  >\n    {children}\n  </Box>\n);\n",
       "type": "registry:ui"
     }
   ],

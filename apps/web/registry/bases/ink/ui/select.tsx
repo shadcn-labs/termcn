@@ -1,8 +1,10 @@
 import { Box, Text } from "ink";
 import React, { useState } from "react";
 
-import { useTheme } from "@/components/ui/ink-theme-provider";
-import { useInput } from "@/hooks/use-input";
+import { useInteraction } from "@/registry/bases/ink/hooks/use-interaction";
+import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
+import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
+import { resolveTerminalSymbol } from "@/registry/bases/ink/lib/accessibility";
 
 export interface SelectOption<T = string> {
   value: T;
@@ -14,60 +16,102 @@ export interface SelectOption<T = string> {
 export interface SelectProps<T = string> {
   options: SelectOption<T>[];
   value?: T;
+  defaultValue?: T;
+  onValueChange?: (value: T) => void;
   onChange?: (value: T) => void;
   onSubmit?: (value: T) => void;
   label?: string;
   cursor?: string;
   cursorColor?: string;
+  id?: string;
+  autoFocus?: boolean;
+  isActive?: boolean;
+  disabled?: boolean;
+  "aria-label"?: string;
 }
 
 export const Select = <T = string,>({
   options,
   value: controlledValue,
+  defaultValue,
+  onValueChange,
   onChange,
   onSubmit,
   label,
-  cursor = "›",
+  cursor,
   cursorColor,
+  id,
+  autoFocus = false,
+  isActive = true,
+  disabled = false,
+  "aria-label": ariaLabel,
 }: SelectProps<T>) => {
   const theme = useTheme();
-  const [activeIndex, setActiveIndex] = useState(0);
+  const unicode = useUnicode();
+  const resolvedCursor = cursor ?? resolveTerminalSymbol(unicode, "›", ">");
+  const selectedIndicator = resolveTerminalSymbol(unicode, "✓", "*");
+  const firstEnabledIndex = Math.max(
+    0,
+    options.findIndex((option) => !option.disabled)
+  );
+  const [activeIndex, setActiveIndex] = useState(firstEnabledIndex);
+  const [internalValue, setInternalValue] = useState(defaultValue);
+  const selectedValue = controlledValue ?? internalValue;
 
   const resolvedCursorColor = cursorColor ?? theme.colors.primary;
 
-  useInput((input, key) => {
-    if (key.upArrow) {
-      setActiveIndex((i) => {
-        let next = i - 1;
-        while (next >= 0 && options[next]?.disabled) {
-          next -= 1;
+  const { isFocused } = useInteraction(
+    (input, key) => {
+      if (key.upArrow) {
+        setActiveIndex((i) => {
+          let next = i - 1;
+          while (next >= 0 && options[next]?.disabled) {
+            next -= 1;
+          }
+          return next < 0 ? i : next;
+        });
+      } else if (key.downArrow) {
+        setActiveIndex((i) => {
+          let next = i + 1;
+          while (next < options.length && options[next]?.disabled) {
+            next += 1;
+          }
+          return next >= options.length ? i : next;
+        });
+      } else if (key.home) {
+        setActiveIndex(firstEnabledIndex);
+      } else if (key.end) {
+        const lastEnabledIndex = options.findLastIndex(
+          (option) => !option.disabled
+        );
+        if (lastEnabledIndex !== -1) {
+          setActiveIndex(lastEnabledIndex);
         }
-        return next < 0 ? i : next;
-      });
-    } else if (key.downArrow) {
-      setActiveIndex((i) => {
-        let next = i + 1;
-        while (next < options.length && options[next]?.disabled) {
-          next += 1;
+      } else if (key.return) {
+        const opt = options[activeIndex];
+        if (opt && !opt.disabled) {
+          if (controlledValue === undefined) {
+            setInternalValue(opt.value);
+          }
+          (onValueChange ?? onChange)?.(opt.value);
+          onSubmit?.(opt.value);
         }
-        return next >= options.length ? i : next;
-      });
-    } else if (key.return) {
-      const opt = options[activeIndex];
-      if (opt && !opt.disabled) {
-        onChange?.(opt.value);
-        onSubmit?.(opt.value);
       }
-    }
-  });
+    },
+    { autoFocus, disabled, id, isActive }
+  );
 
   return (
-    <Box flexDirection="column">
-      {label && <Text bold>{label}</Text>}
+    <Box aria-role="listbox" aria-state={{ disabled }} flexDirection="column">
+      {label && (
+        <Text aria-label={ariaLabel ?? label} bold>
+          {label}
+        </Text>
+      )}
       {options.map((opt, idx) => {
         const isActive = idx === activeIndex;
         const isSelected =
-          controlledValue !== undefined && opt.value === controlledValue;
+          selectedValue !== undefined && opt.value === selectedValue;
 
         let optColor: string;
         if (opt.disabled) {
@@ -79,11 +123,26 @@ export const Select = <T = string,>({
         }
 
         return (
-          <Box key={idx} gap={1}>
-            <Text color={isActive ? resolvedCursorColor : undefined}>
-              {isActive ? cursor : " "}
-            </Text>
+          <Box
+            key={idx}
+            aria-label={opt.hint ? `${opt.label}: ${opt.hint}` : opt.label}
+            aria-role="option"
+            aria-state={{ disabled: opt.disabled, selected: isSelected }}
+            gap={1}
+          >
             <Text
+              aria-hidden
+              color={isActive ? resolvedCursorColor : undefined}
+            >
+              {isActive ? resolvedCursor : " "}
+            </Text>
+            {isSelected && (
+              <Text aria-hidden color={theme.colors.primary}>
+                {selectedIndicator}
+              </Text>
+            )}
+            <Text
+              aria-hidden
               color={optColor}
               bold={isActive || isSelected}
               dimColor={opt.disabled}
@@ -91,7 +150,7 @@ export const Select = <T = string,>({
               {opt.label}
             </Text>
             {opt.hint && (
-              <Text color={theme.colors.mutedForeground} dimColor>
+              <Text aria-hidden color={theme.colors.mutedForeground} dimColor>
                 {opt.hint}
               </Text>
             )}

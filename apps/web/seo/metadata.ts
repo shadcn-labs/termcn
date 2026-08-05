@@ -38,9 +38,14 @@ export const createPageMetadata = (
     canonical === ROUTES.DOCS || canonical.startsWith(`${ROUTES.DOCS}/`)
       ? `${canonical}.md`
       : undefined;
-  const resolvedOgImage =
-    ogImage ?? `${ROUTES.OG}${canonical === ROUTES.HOME ? "" : canonical}`;
   const resolvedTitle = ogTitle ?? title;
+  const resolvedDescription = ogDescription ?? description;
+  const ogImageSearchParams = new URLSearchParams({ title: resolvedTitle });
+  if (resolvedDescription) {
+    ogImageSearchParams.set("description", resolvedDescription);
+  }
+  const resolvedOgImage =
+    ogImage ?? `${ROUTES.OG}?${ogImageSearchParams.toString()}`;
 
   return {
     alternates: {
@@ -53,7 +58,7 @@ export const createPageMetadata = (
     },
     description,
     openGraph: {
-      description: ogDescription ?? description,
+      description: resolvedDescription,
       images: [
         {
           alt: ogImageAlt ?? resolvedTitle,
@@ -72,7 +77,7 @@ export const createPageMetadata = (
     twitter: {
       card: "summary_large_image",
       creator: SITE.AUTHOR.TWITTER,
-      description: ogDescription ?? description,
+      description: resolvedDescription,
       images: [resolvedOgImage],
       site: SITE.AUTHOR.TWITTER,
       title: resolvedTitle,

@@ -44,14 +44,18 @@ npm install ink
 />
 
 <ComponentSource
-  base="ink"
-  name="theme-provider"
-  title="components/ui/theme-provider.tsx"
+  src="registry/bases/ink/hooks/use-theme.ts"
+  title="hooks/use-theme.ts"
 />
 
 <ComponentSource
-  src="registry/bases/ink/hooks/use-input.ts"
-  title="hooks/use-input.ts"
+  src="registry/bases/ink/hooks/use-unicode.ts"
+  title="hooks/use-unicode.ts"
+/>
+
+<ComponentSource
+  src="registry/bases/ink/hooks/use-interaction.tsx"
+  title="hooks/use-interaction.tsx"
 />
 
 <ComponentSource base="ink" name="tree" title="components/ui/tree.tsx" />
@@ -108,3 +112,13 @@ import { Tree } from "@/components/ui/tree";
 | `label`    | `string`     | `required` |
 | `children` | `TreeNode[]` | -          |
 | `icon`     | `string`     | -          |
+
+## Notes
+
+### Accessibility
+
+termcn exposes the following behavior through Ink's terminal accessibility APIs. This is not a browser ARIA or general WCAG-conformance claim.
+
+- **Keyboard:** Arrow keys move the current item or viewport; `Home` / `End` move to the boundaries; `PageUp` / `PageDown` move by a page; `Enter` / `Space` select or expand when supported; `Tab` / `Shift+Tab` leave the composite.
+- **Focus and composition:** Input is active only while the component's focus target is focused, enabled, active, and inside the topmost focus scope.
+- **Screen reader:** Ink labels and semantic state expose the component without relying on visual styling alone.

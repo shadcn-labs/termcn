@@ -5,9 +5,9 @@ import "@xterm/xterm/css/xterm.css";
 import { InkTerminalBox } from "ink-web";
 import { useEffect, useMemo } from "react";
 
-import { ThemeProvider } from "@/components/ui/ink-theme-provider";
 import { useTerminalTheme } from "@/hooks/use-terminal-theme";
 import { terminalThemeMap } from "@/lib/terminal-themes";
+import { ThemeProvider } from "@/registry/bases/ink/providers/theme-provider";
 
 export interface InkPreviewProps {
   children: React.ReactElement;

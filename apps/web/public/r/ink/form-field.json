@@ -7,13 +7,14 @@
     "ink"
   ],
   "registryDependencies": [
-    "https://termcn.dev/r/ink/form.json",
-    "https://termcn.dev/r/ink/theme-provider.json"
+    "https://termcn.dev/r/ink/accessibility.json",
+    "https://termcn.dev/r/ink/use-theme.json",
+    "https://termcn.dev/r/ink/use-unicode.json"
   ],
   "files": [
     {
       "path": "registry/ui/form-field.tsx",
-      "content": "import { Box, Text } from \"ink\";\nimport type { ReactNode } from \"react\";\n\nimport { useTheme } from \"@/components/ui/theme-provider\";\n\nexport interface FormFieldProps {\n  label: string;\n  children: ReactNode;\n  error?: string;\n  hint?: string;\n  required?: boolean;\n  gap?: number;\n  errorIcon?: string;\n  labelColor?: string;\n}\n\nexport const FormField = ({\n  label,\n  children,\n  error,\n  hint,\n  required,\n  gap = 0,\n  errorIcon = \"✗\",\n  labelColor,\n}: FormFieldProps) => {\n  const theme = useTheme();\n  const resolvedLabelColor = labelColor ?? theme.colors.foreground;\n\n  return (\n    <Box flexDirection=\"column\" gap={gap}>\n      <Box gap={0}>\n        <Text bold color={resolvedLabelColor}>\n          {label}\n        </Text>\n        {required && <Text color={theme.colors.error}> *</Text>}\n      </Box>\n      <Box>{children}</Box>\n      {hint && !error && (\n        <Text color={theme.colors.mutedForeground} dimColor>\n          {hint}\n        </Text>\n      )}\n      {error && (\n        <Text color={theme.colors.error}>\n          {errorIcon} {error}\n        </Text>\n      )}\n    </Box>\n  );\n};\n",
+      "content": "import { Box, Text } from \"ink\";\nimport type { ReactNode } from \"react\";\n\nimport { useTheme } from \"@/hooks/use-theme\";\nimport { useUnicode } from \"@/hooks/use-unicode\";\nimport { resolveTerminalSymbol } from \"@/lib/accessibility\";\n\nexport interface FormFieldProps {\n  label: string;\n  children: ReactNode;\n  error?: string;\n  hint?: string;\n  required?: boolean;\n  gap?: number;\n  errorIcon?: string;\n  labelColor?: string;\n  \"aria-label\"?: string;\n}\n\nexport const FormField = ({\n  label,\n  children,\n  error,\n  hint,\n  required,\n  gap = 0,\n  errorIcon,\n  labelColor,\n  \"aria-label\": ariaLabel,\n}: FormFieldProps) => {\n  const theme = useTheme();\n  const unicode = useUnicode();\n  const resolvedLabelColor = labelColor ?? theme.colors.foreground;\n  const resolvedErrorIcon =\n    errorIcon ?? resolveTerminalSymbol(unicode, \"✗\", \"x\");\n\n  return (\n    <Box flexDirection=\"column\" gap={gap} aria-role=\"listitem\">\n      <Text\n        aria-label={\n          ariaLabel ??\n          `${label}${required ? \", required\" : \"\"}${error ? `, error: ${error}` : hint ? `, hint: ${hint}` : \"\"}`\n        }\n      >\n        {\"\"}\n      </Text>\n      <Box gap={0}>\n        <Text bold color={resolvedLabelColor}>\n          {label}\n        </Text>\n        {required && (\n          <Text aria-hidden color={theme.colors.error}>\n            {\" \"}\n            *\n          </Text>\n        )}\n      </Box>\n      <Box>{children}</Box>\n      {hint && !error && (\n        <Text color={theme.colors.mutedForeground} dimColor>\n          {hint}\n        </Text>\n      )}\n      {error && (\n        <Text color={theme.colors.error} aria-label={`Error: ${error}`}>\n          <Text aria-hidden>{resolvedErrorIcon} </Text>\n          {error}\n        </Text>\n      )}\n    </Box>\n  );\n};\n",
       "type": "registry:ui"
     }
   ],

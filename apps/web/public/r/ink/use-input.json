@@ -9,7 +9,7 @@
   "files": [
     {
       "path": "registry/hooks/use-input.ts",
-      "content": "import { useInput as inkUseInput } from \"ink\";\n\nexport interface Key {\n  upArrow: boolean;\n  downArrow: boolean;\n  leftArrow: boolean;\n  rightArrow: boolean;\n  pageDown: boolean;\n  pageUp: boolean;\n  return: boolean;\n  escape: boolean;\n  ctrl: boolean;\n  shift: boolean;\n  tab: boolean;\n  backspace: boolean;\n  delete: boolean;\n  meta: boolean;\n  eventType?: \"press\" | \"repeat\" | \"release\";\n  home?: boolean;\n  end?: boolean;\n  fn?: boolean;\n}\n\nexport type InputHandler = (input: string, key: Key) => void;\n\nexport const useInput = (\n  handler: InputHandler,\n  options?: { isActive?: boolean }\n): void => {\n  inkUseInput(handler, options);\n};\n",
+      "content": "import { useInput as inkUseInput } from \"ink\";\nimport type { Key } from \"ink\";\n\n/** @deprecated Import Key from Ink or use-interaction instead. */\nexport type { Key } from \"ink\";\n\nexport type InputHandler = (input: string, key: Key) => void;\n\n/** @deprecated Use useInteraction for focus-scoped component input. */\nexport const useInput = (\n  handler: InputHandler,\n  options?: { isActive?: boolean }\n): void => {\n  inkUseInput(handler, options);\n};\n",
       "type": "registry:hook"
     }
   ],

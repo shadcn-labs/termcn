@@ -23,12 +23,7 @@ export const isTemplatesFolder = (folder: PageTreeFolder) =>
 export const isThemesFolder = (folder: PageTreeFolder) =>
   folder.$id === "themes" || folder.name === "Themes";
 
-export const isCatalogFolder = (folder: PageTreeFolder) =>
-  isComponentsFolder(folder) ||
-  isTemplatesFolder(folder) ||
-  isChartsFolder(folder);
-
-export type DocsSidebarPanel = "components" | "templates" | "charts";
+export type DocsSidebarPanel = "components" | "templates" | "charts" | "themes";
 
 const isPathWithin = (pathname: string, route: string) =>
   pathname === route || pathname.startsWith(`${route}/`);
@@ -44,6 +39,9 @@ export const getDocsSidebarPanel = (
   }
   if (isPathWithin(pathname, ROUTES.DOCS_CHARTS)) {
     return "charts";
+  }
+  if (isPathWithin(pathname, ROUTES.DOCS_THEMES)) {
+    return "themes";
   }
   return null;
 };

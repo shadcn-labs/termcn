@@ -9,7 +9,7 @@
   "files": [
     {
       "path": "registry/ui/spacer.tsx",
-      "content": "import { Box } from \"ink\";\n\nexport interface SpacerProps {\n  size?: number;\n  direction?: \"horizontal\" | \"vertical\";\n}\n\nexport const Spacer = ({ size, direction = \"horizontal\" }: SpacerProps) => {\n  if (size === undefined) {\n    return <Box flexGrow={1} />;\n  }\n\n  if (direction === \"vertical\") {\n    return <Box height={size} />;\n  }\n\n  return <Box width={size} />;\n};\n",
+      "content": "import { Spacer as InkSpacer, Box } from \"ink\";\nimport type { BoxProps } from \"ink\";\n\nexport interface SpacerProps extends Omit<BoxProps, \"height\" | \"width\"> {\n  size?: number;\n  direction?: \"horizontal\" | \"vertical\";\n}\n\nexport const Spacer = ({\n  size,\n  direction = \"horizontal\",\n  ...props\n}: SpacerProps) => {\n  if (size === undefined) {\n    return <InkSpacer />;\n  }\n\n  if (direction === \"vertical\") {\n    return <Box {...props} aria-hidden height={size} />;\n  }\n\n  return <Box {...props} aria-hidden width={size} />;\n};\n",
       "type": "registry:ui"
     }
   ],

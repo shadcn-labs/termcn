@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "opentui/motion-provider",
+  "title": "Motion Provider",
+  "description": "Optional reduced-motion override provider.",
+  "dependencies": [
+    "@opentui/react"
+  ],
+  "registryDependencies": [
+    "https://termcn.dev/r/opentui/types.json",
+    "https://termcn.dev/r/opentui/use-motion.json"
+  ],
+  "files": [
+    {
+      "path": "registry/opentui/providers/motion-provider.tsx",
+      "content": "/* @jsxImportSource @opentui/react */\nimport * as React from \"react\";\n\nimport {\n  isReducedMotion,\n  MotionContext,\n} from \"@/hooks/use-motion\";\nimport type { MotionProviderProps } from \"@/components/ui/types\";\n\nexport type {\n  MotionContextValue,\n  MotionProviderProps,\n} from \"@/components/ui/types\";\n\nexport const MotionProvider = ({\n  children,\n  reducedMotion,\n}: MotionProviderProps) => {\n  const value = React.useMemo(\n    () => ({ reduced: reducedMotion ?? isReducedMotion() }),\n    [reducedMotion]\n  );\n\n  return (\n    <MotionContext.Provider value={value}>{children}</MotionContext.Provider>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "providers/motion-provider.tsx"
+    }
+  ],
+  "categories": [
+    "core"
+  ],
+  "type": "registry:ui"
+}

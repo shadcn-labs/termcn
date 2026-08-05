@@ -44,14 +44,18 @@ npm install ink
 />
 
 <ComponentSource
-  base="ink"
-  name="theme-provider"
-  title="components/ui/theme-provider.tsx"
+  src="registry/bases/ink/hooks/use-theme.ts"
+  title="hooks/use-theme.ts"
 />
 
 <ComponentSource
-  src="registry/bases/ink/hooks/use-input.ts"
-  title="hooks/use-input.ts"
+  src="registry/bases/ink/hooks/use-unicode.ts"
+  title="hooks/use-unicode.ts"
+/>
+
+<ComponentSource
+  src="registry/bases/ink/hooks/use-interaction.tsx"
+  title="hooks/use-interaction.tsx"
 />
 
 <ComponentSource
@@ -77,17 +81,18 @@ import { AppShell } from "@/components/ui/app-shell";
 ```tsx
 <AppShell>
   <AppShell.Header>
-    <AppShell.Tip>Press Tab to autocomplete commands</AppShell.Tip>
+    <AppShell.Tip>
+      Press Tab to move between the command input and output
+    </AppShell.Tip>
   </AppShell.Header>
   <AppShell.Input
+    autoFocus
     placeholder="Enter a command..."
     prefix="$"
     onSubmit={(value) => console.log(value)}
   />
-  <AppShell.Content height={16}>
-    {/* scrollable output area */}
-  </AppShell.Content>
-  <AppShell.Hints items={["↑↓ scroll", "enter submit", "esc quit"]} />
+  <AppShell.Content height={16}></AppShell.Content>
+  <AppShell.Hints items={["tab focus", "enter submit", "↑↓ scroll"]} />
 </AppShell>
 ```
 
@@ -114,15 +119,24 @@ import { AppShell } from "@/components/ui/app-shell";
 
 ### AppShell.Input
 
-| Prop          | Type                                        | Default               |
-| ------------- | ------------------------------------------- | --------------------- |
-| `value`       | `string`                                    | -                     |
-| `onChange`    | `(value: string) => void`                   | -                     |
-| `onSubmit`    | `(value: string) => void`                   | -                     |
-| `placeholder` | `string`                                    | `"Type something..."` |
-| `borderStyle` | `"single" \| "double" \| "round" \| "bold"` | `"single"`            |
-| `borderColor` | `string`                                    | -                     |
-| `prefix`      | `string`                                    | `">"`                 |
+| Prop            | Type                                        | Default               |
+| --------------- | ------------------------------------------- | --------------------- |
+| `value`         | `string`                                    | -                     |
+| `defaultValue`  | `string`                                    | `""`                  |
+| `onValueChange` | `(value: string) => void`                   | -                     |
+| `onChange`      | `(value: string) => void`                   | -                     |
+| `onSubmit`      | `(value: string) => void`                   | -                     |
+| `placeholder`   | `string`                                    | `"Type something..."` |
+| `borderStyle`   | `"single" \| "double" \| "round" \| "bold"` | `"single"`            |
+| `borderColor`   | `string`                                    | -                     |
+| `prefix`        | `string`                                    | `">"`                 |
+| `readOnly`      | `boolean`                                   | `false`               |
+| `required`      | `boolean`                                   | `false`               |
+| `cursorOrigin`  | `{x: number; y: number}`                    | -                     |
+| `id`            | `string`                                    | generated             |
+| `autoFocus`     | `boolean`                                   | `false`               |
+| `isActive`      | `boolean`                                   | `true`                |
+| `disabled`      | `boolean`                                   | `false`               |
 
 ### AppShell.Content
 
@@ -138,3 +152,13 @@ import { AppShell } from "@/components/ui/app-shell";
 | ---------- | ----------- | ------- |
 | `items`    | `string[]`  | -       |
 | `children` | `ReactNode` | -       |
+
+## Notes
+
+### Accessibility
+
+termcn exposes the following behavior through Ink's terminal accessibility APIs. This is not a browser ARIA or general WCAG-conformance claim.
+
+- **Keyboard:** `Left` / `Right` move by grapheme, `Home` / `End` move to the boundaries, and `Backspace` / `Delete` remove one complete grapheme. `Enter` submits or confirms (`Ctrl+Enter` in TextArea); `Tab` / `Shift+Tab` leave through Ink focus traversal.
+- **Focus and composition:** Input is active only while the component's focus target is focused, enabled, active, and inside the topmost focus scope.
+- **Screen reader:** Ink labels and semantic state expose the component without relying on visual styling alone.
