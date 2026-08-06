@@ -33,13 +33,6 @@ function checkNamespaceConfiguration(
 describe("resolveRegistryNamespaces", () => {
   const mockConfig: Config = {
     style: "default",
-    tailwind: {
-      config: "tailwind.config.js",
-      css: "app/globals.css",
-      baseColor: "slate",
-      cssVariables: true,
-    },
-    rsc: true,
     tsx: true,
     aliases: {
       components: "@/components",
@@ -50,8 +43,6 @@ describe("resolveRegistryNamespaces", () => {
     },
     resolvedPaths: {
       cwd: "/test",
-      tailwindConfig: "/test/tailwind.config.js",
-      tailwindCss: "/test/app/globals.css",
       utils: "/test/lib/utils",
       components: "/test/components",
       ui: "/test/components/ui",
@@ -376,13 +367,6 @@ describe("resolveRegistryNamespaces", () => {
 describe("checkNamespaceConfiguration", () => {
   const mockConfig: Config = {
     style: "default",
-    tailwind: {
-      config: "tailwind.config.js",
-      css: "app/globals.css",
-      baseColor: "slate",
-      cssVariables: true,
-    },
-    rsc: true,
     tsx: true,
     aliases: {
       components: "@/components",
@@ -393,8 +377,6 @@ describe("checkNamespaceConfiguration", () => {
     },
     resolvedPaths: {
       cwd: "/test",
-      tailwindConfig: "/test/tailwind.config.js",
-      tailwindCss: "/test/app/globals.css",
       utils: "/test/lib/utils",
       components: "/test/components",
       ui: "/test/components/ui",

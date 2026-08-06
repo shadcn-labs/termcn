@@ -33,14 +33,6 @@ vi.mock("@/src/utils/spinner", () => ({
 
 const mockConfig: Config = {
   style: "default",
-  rsc: false,
-  tailwind: {
-    config: "tailwind.config.js",
-    css: "app/globals.css",
-    baseColor: "slate",
-    prefix: "",
-    cssVariables: false,
-  },
   tsx: true,
   aliases: {
     components: "@/components",
@@ -51,8 +43,6 @@ const mockConfig: Config = {
   },
   resolvedPaths: {
     cwd: "/test/project",
-    tailwindConfig: "/test/project/tailwind.config.js",
-    tailwindCss: "/test/project/app/globals.css",
     components: "/test/project/components",
     ui: "/test/project/components/ui",
     lib: "/test/project/lib",

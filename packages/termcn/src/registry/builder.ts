@@ -46,8 +46,6 @@ export function buildUrlAndHeadersForRegistryItem(
     throw new RegistryNotConfiguredError(registry);
   }
 
-  // TODO: I don't like this here.
-  // But this will do for now.
   validateRegistryConfig(registry, registryConfig);
 
   // Keep the explicit addresses used throughout the docs working before init.
@@ -160,21 +158,13 @@ function shouldIncludeHeader(originalValue: string, expandedValue: string) {
 
 /**
  * Resolves a registry URL from a path or URL string.
- * Handles special cases like v0 registry URLs that need /json suffix.
  *
  * @param pathOrUrl - Either a relative path or a full URL
  * @returns The resolved registry URL
  */
 export function resolveRegistryUrl(pathOrUrl: string) {
   if (isUrl(pathOrUrl)) {
-    // If the url contains /chat/b/, we assume it's the v0 registry.
-    // We need to add the /json suffix if it's missing.
-    const url = new URL(pathOrUrl);
-    if (url.pathname.match(/\/chat\/b\//) && !url.pathname.endsWith("/json")) {
-      url.pathname = `${url.pathname}/json`;
-    }
-
-    return url.toString();
+    return pathOrUrl;
   }
 
   return `${REGISTRY_URL}/${pathOrUrl}`;

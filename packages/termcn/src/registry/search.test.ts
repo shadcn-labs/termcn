@@ -4,12 +4,10 @@ import { getRegistry } from "./api";
 import {
   buildRegistryItemNameFromRegistry,
   findUnknownSearchTypes,
-  formatSearchResultDescription,
   formatSearchResultType,
   printSearchResults,
   resolveSearchRegistries,
   SEARCH_CONCURRENCY,
-  SEARCH_RESULT_DESCRIPTION_MAX_LENGTH,
   SEARCHABLE_TYPES,
   searchRegistries,
 } from "./search";
@@ -848,27 +846,6 @@ describe("formatSearchResultType", () => {
   });
 });
 
-describe("formatSearchResultDescription", () => {
-  it("returns short descriptions unchanged", () => {
-    expect(formatSearchResultDescription("A simple login form.")).toBe(
-      "A simple login form."
-    );
-  });
-
-  it("truncates long descriptions with an ellipsis", () => {
-    const description =
-      "A dashboard with sidebar, charts, data table, filters, and many other widgets for managing your application.";
-
-    const formatted = formatSearchResultDescription(description);
-
-    expect(formatted.length).toBeLessThanOrEqual(
-      SEARCH_RESULT_DESCRIPTION_MAX_LENGTH
-    );
-    expect(formatted.endsWith("...")).toBe(true);
-    expect(formatted).not.toBe(description);
-  });
-});
-
 describe("printSearchResults", () => {
   it("prints type and description inline", async () => {
     const log = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -1071,9 +1048,9 @@ describe("resolveSearchRegistries", () => {
 
 describe("findUnknownSearchTypes", () => {
   it("accepts known types in shorthand and full form", () => {
-    expect(findUnknownSearchTypes(["ui", "registry:block", "HOOK"])).toEqual(
-      []
-    );
+    expect(
+      findUnknownSearchTypes(["ui", "registry:component", "HOOK"])
+    ).toEqual([]);
   });
 
   it("returns the unknown types", () => {

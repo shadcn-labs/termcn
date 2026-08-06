@@ -21,10 +21,6 @@ import { registryItemSchema } from "@/src/schema";
 
 const registryCache = new Map<string, Promise<any>>();
 
-export function clearRegistryCache() {
-  registryCache.clear();
-}
-
 export async function fetchRegistry(
   paths: string[],
   options: { useCache?: boolean } = {}

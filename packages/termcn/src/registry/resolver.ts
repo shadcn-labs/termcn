@@ -8,14 +8,12 @@ import {
   isGitHubItemAddress,
   resolveItemAddress,
 } from "@/src/registry/address";
-import {
-  getRegistryBaseColor,
-  getTermcnRegistryIndex,
-} from "@/src/registry/api";
+import { getTermcnRegistryIndex } from "@/src/registry/api";
 import {
   buildUrlAndHeadersForRegistryItem,
   resolveRegistryUrl,
 } from "@/src/registry/builder";
+import { FALLBACK_STYLE } from "@/src/registry/constants";
 import { setRegistryHeaders } from "@/src/registry/context";
 import {
   RegistryNotConfiguredError,
@@ -31,16 +29,13 @@ import {
   isUrl,
 } from "@/src/registry/utils";
 import {
-  RegistryFontItem,
   registryItemCommonSchema,
   registryItemFontSchema,
   registryItemSchema,
   registryItemTypeSchema,
   registryResolvedItemsTreeSchema,
 } from "@/src/schema";
-import { Config, getTargetStyleFromConfig } from "@/src/utils/get-config";
-import { getProjectTailwindVersionFromConfig } from "@/src/utils/get-project-info";
-import { buildTailwindThemeColorsFromCssVars } from "@/src/utils/updaters/update-tailwind-config";
+import { Config } from "@/src/utils/get-config";
 
 type RegistryFetchOptions = {
   requireUniversal?: boolean;
@@ -127,7 +122,7 @@ export async function fetchRegistryItems(
         }
       }
 
-      const path = `styles/${config?.style ?? "new-york-v4"}/${item}.json`;
+      const path = `${config?.style ?? FALLBACK_STYLE}/${item}.json`;
       const [result] = await fetchRegistry([path], options);
       try {
         return registryItemSchema.parse(result);
@@ -145,9 +140,7 @@ const registryItemWithSourceSchema = registryItemCommonSchema
   .extend({
     type: registryItemTypeSchema,
     _source: z.string().optional(),
-    // Optional fields for specific item types.
     font: registryItemFontSchema.optional(),
-    config: z.any().optional(),
   })
   .passthrough();
 
@@ -303,22 +296,6 @@ export async function resolveRegistryTree(
 
   // No deduplication - we want to support multiple items with the same name from different sources
 
-  // If we're resolving the index, we want to fetch
-  // the theme item if a base color is provided.
-  // We do this for index only.
-  // Other components will ship with their theme tokens.
-  if (
-    uniqueNames.includes("index") ||
-    allDependencyRegistryNames.includes("index")
-  ) {
-    if (config.tailwind.baseColor) {
-      const theme = await registryGetTheme(config.tailwind.baseColor, config);
-      if (theme) {
-        payload.unshift(theme);
-      }
-    }
-  }
-
   // Build source map for topological sort.
   const sourceMap = new Map<
     z.infer<typeof registryItemWithSourceSchema>,
@@ -332,33 +309,6 @@ export async function resolveRegistryTree(
 
   // Apply topological sort to ensure dependencies come before dependents.
   payload = topologicalSortRegistryItems(payload, sourceMap);
-
-  // Sort the payload so that registry:theme items come first,
-  // while maintaining the relative order of all items.
-  payload.sort((a, b) => {
-    if (a.type === "registry:theme" && b.type !== "registry:theme") {
-      return -1;
-    }
-    if (a.type !== "registry:theme" && b.type === "registry:theme") {
-      return 1;
-    }
-    return 0;
-  });
-
-  let tailwind = {};
-  payload.forEach((item) => {
-    tailwind = deepmerge(tailwind, item.tailwind ?? {});
-  });
-
-  let cssVars = {};
-  payload.forEach((item) => {
-    cssVars = deepmerge(cssVars, item.cssVars ?? {});
-  });
-
-  let css = {};
-  payload.forEach((item) => {
-    css = deepmerge(css, item.css ?? {});
-  });
 
   let docs = "";
   payload.forEach((item) => {
@@ -378,26 +328,13 @@ export async function resolveRegistryTree(
     config
   );
 
-  // Collect font items.
-  const fonts: RegistryFontItem[] = payload
-    .filter((item) => item.type === "registry:font" && item.font)
-    .map((item) => ({
-      ...item,
-      type: "registry:font" as const,
-      font: item.font!,
-    }));
-
   const parsed = registryResolvedItemsTreeSchema.parse({
     dependencies: deepmerge.all(payload.map((item) => item.dependencies ?? [])),
     devDependencies: deepmerge.all(
       payload.map((item) => item.devDependencies ?? [])
     ),
     files: deduplicatedFiles,
-    tailwind,
-    cssVars,
-    css,
     docs,
-    fonts: fonts.length > 0 ? fonts : undefined,
   });
 
   if (Object.keys(envVars).length > 0) {
@@ -564,91 +501,11 @@ async function resolveRegistryDependencies(
     new Set()
   );
 
-  const style = config.resolvedPaths?.cwd
-    ? await getTargetStyleFromConfig(config.resolvedPaths.cwd, config.style)
-    : config.style;
-
   const urls = registryNames.map((name) =>
-    resolveRegistryUrl(isUrl(name) ? name : `styles/${style}/${name}.json`)
+    resolveRegistryUrl(isUrl(name) ? name : `${config.style}/${name}.json`)
   );
 
   return Array.from(new Set(urls));
-}
-
-async function registryGetTheme(name: string, config: Config) {
-  const [baseColor, tailwindVersion] = await Promise.all([
-    getRegistryBaseColor(name),
-    getProjectTailwindVersionFromConfig(config),
-  ]);
-  if (!baseColor) {
-    return null;
-  }
-
-  // TODO: Move this to the registry i.e registry:theme.
-  const theme = {
-    name,
-    type: "registry:theme",
-    tailwind: {
-      config: {
-        theme: {
-          extend: {
-            borderRadius: {
-              lg: "var(--radius)",
-              md: "calc(var(--radius) - 2px)",
-              sm: "calc(var(--radius) - 4px)",
-            },
-            colors: {},
-          },
-        },
-      },
-    },
-    cssVars: {
-      theme: {},
-      light: {
-        radius: "0.5rem",
-      },
-      dark: {},
-    },
-  } satisfies z.infer<typeof registryItemSchema>;
-
-  if (config.tailwind.cssVariables) {
-    theme.tailwind.config.theme.extend.colors = {
-      ...theme.tailwind.config.theme.extend.colors,
-      ...buildTailwindThemeColorsFromCssVars(baseColor.cssVars.dark ?? {}),
-    };
-    theme.cssVars = {
-      theme: {
-        ...baseColor.cssVars.theme,
-        ...theme.cssVars.theme,
-      },
-      light: {
-        ...baseColor.cssVars.light,
-        ...theme.cssVars.light,
-      },
-      dark: {
-        ...baseColor.cssVars.dark,
-        ...theme.cssVars.dark,
-      },
-    };
-
-    if (tailwindVersion === "v4" && baseColor.cssVarsV4) {
-      theme.cssVars = {
-        theme: {
-          ...baseColor.cssVarsV4.theme,
-          ...theme.cssVars.theme,
-        },
-        light: {
-          radius: "0.625rem",
-          ...baseColor.cssVarsV4.light,
-        },
-        dark: {
-          ...baseColor.cssVarsV4.dark,
-        },
-      };
-    }
-  }
-
-  return theme;
 }
 
 function computeItemHash(

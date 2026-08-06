@@ -237,16 +237,6 @@ function stripRegistryItemFileContent(item: RegistryItem) {
   };
 }
 
-export function getRegistryItemFileSource(
-  itemName: string,
-  filePath: string,
-  itemSources: Map<string, RegistryItemSource>,
-  fallbackDir: string
-) {
-  const source = itemSources.get(itemName);
-  return path.resolve(source?.registryDir ?? fallbackDir, filePath);
-}
-
 function getRegistryItemFileSourceForItem(
   item: RegistryItem,
   filePath: string,
@@ -255,23 +245,6 @@ function getRegistryItemFileSourceForItem(
 ) {
   const source = itemSourcesByItem.get(item);
   return path.resolve(source?.registryDir ?? fallbackDir, filePath);
-}
-
-export function getRegistryItemFileRootPath(
-  itemName: string,
-  filePath: string,
-  itemSources: Map<string, RegistryItemSource>,
-  rootDir: string,
-  fallbackDir: string
-) {
-  const sourcePath = getRegistryItemFileSource(
-    itemName,
-    filePath,
-    itemSources,
-    fallbackDir
-  );
-
-  return path.relative(rootDir, sourcePath).split(path.sep).join("/");
 }
 
 function getRegistryItemFileRootPathForItem(

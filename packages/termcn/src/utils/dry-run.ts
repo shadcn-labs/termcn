@@ -1,39 +1,13 @@
-import { existsSync, promises as fs } from "fs";
-import path from "path";
+import { existsSync, promises as fs } from "node:fs";
+import path from "node:path";
 
-import { Project } from "ts-morph";
-import { loadConfig } from "tsconfig-paths";
-import type { z } from "zod";
-
-import { getRegistryBaseColor } from "@/src/registry/api";
 import { configWithDefaults } from "@/src/registry/config";
 import { resolveRegistryTree } from "@/src/registry/resolver";
-import { registryResolvedItemsTreeSchema } from "@/src/schema";
 import { isContentSame } from "@/src/utils/compare";
 import { isEnvFile } from "@/src/utils/env-helpers";
-import { getSupportedFontMarkers } from "@/src/utils/font-markers";
 import type { Config } from "@/src/utils/get-config";
-import { getProjectInfo } from "@/src/utils/get-project-info";
 import { transform } from "@/src/utils/transformers";
-import { transformAsChild } from "@/src/utils/transformers/transform-aschild";
-import { transformCleanup } from "@/src/utils/transformers/transform-cleanup";
-import { transformCssVars as transformCssVarsTransformer } from "@/src/utils/transformers/transform-css-vars";
-import { transformFont } from "@/src/utils/transformers/transform-font";
-import { transformIcons } from "@/src/utils/transformers/transform-icons";
-import { transformImport } from "@/src/utils/transformers/transform-import";
-import { transformMenu } from "@/src/utils/transformers/transform-menu";
-import { transformRsc } from "@/src/utils/transformers/transform-rsc";
-import { transformRtl } from "@/src/utils/transformers/transform-rtl";
-import { transformTwPrefixes } from "@/src/utils/transformers/transform-tw-prefix";
-import { transformCss } from "@/src/utils/updaters/update-css";
-import { transformCssVars } from "@/src/utils/updaters/update-css-vars";
-import {
-  findCommonRoot,
-  getPlannedFilePaths,
-  resolveFilePath,
-  rewriteResolvedImportsInContent,
-} from "@/src/utils/updaters/update-files";
-import { massageTreeForFonts } from "@/src/utils/updaters/update-fonts";
+import { resolveFilePath } from "@/src/utils/updaters/update-files";
 
 export type DryRunFile = {
   path: string;
@@ -43,306 +17,96 @@ export type DryRunFile = {
   type: string;
 };
 
-export type DryRunCss = {
-  path: string;
-  content: string;
-  existingContent?: string;
-  action: "create" | "update";
-  cssVarsCount: number;
-};
-
 export type DryRunEnvVars = {
   path: string;
   variables: Record<string, string>;
   action: "create" | "update";
 };
 
-export type DryRunFont = {
-  name: string;
-  provider: string;
-};
-
 export type DryRunResult = {
   files: DryRunFile[];
   dependencies: string[];
   devDependencies: string[];
-  css: DryRunCss | null;
   envVars: DryRunEnvVars | null;
-  fonts: DryRunFont[];
   docs: string | null;
 };
 
 export async function dryRunComponents(
   components: string[],
   config: Config,
-  options: {
-    overwrite?: boolean;
-    overwriteCssVars?: boolean;
-    skipFonts?: boolean;
-  } = {}
+  options: { overwrite?: boolean } = {}
 ) {
   const result: DryRunResult = {
     files: [],
     dependencies: [],
     devDependencies: [],
-    css: null,
     envVars: null,
-    fonts: [],
     docs: null,
   };
+  if (components.length === 0) return result;
 
-  if (!components.length) {
-    return result;
-  }
+  const tree = await resolveRegistryTree(
+    components,
+    configWithDefaults(config)
+  );
+  if (!tree) throw new Error("Failed to fetch components from registry.");
 
-  // Resolve the registry tree (read-only).
-  let tree = await resolveRegistryTree(components, configWithDefaults(config));
-
-  if (!tree) {
-    throw new Error("Failed to fetch components from registry.");
-  }
-
-  // Massage tree for fonts (read-only).
-  if (!options.skipFonts) {
-    tree = await massageTreeForFonts(tree, config);
-  }
-  const supportedFontMarkers = getSupportedFontMarkers([tree]);
-
-  // Dependencies pass through deduplicated.
   result.dependencies = Array.from(new Set(tree.dependencies ?? []));
   result.devDependencies = Array.from(new Set(tree.devDependencies ?? []));
+  result.docs = tree.docs || null;
 
-  // Docs pass through directly.
-  result.docs = tree.docs ?? null;
-
-  // Process files.
-  await processFiles(tree, config, result, options, supportedFontMarkers);
-
-  // Process CSS.
-  await processCss(tree, config, result, options);
-
-  // Process env vars.
-  processEnvVars(tree, config, result);
-
-  // Process fonts.
-  if (!options.skipFonts) {
-    processFonts(tree, result);
-  }
-
-  return result;
-}
-
-async function processFiles(
-  tree: z.infer<typeof registryResolvedItemsTreeSchema>,
-  config: Config,
-  result: DryRunResult,
-  options: { overwrite?: boolean },
-  supportedFontMarkers: string[]
-) {
-  const files = tree.files;
-  if (!files?.length) {
-    return;
-  }
-
-  const [projectInfo, baseColor] = await Promise.all([
-    getProjectInfo(config.resolvedPaths.cwd),
-    config.tailwind.baseColor
-      ? getRegistryBaseColor(config.tailwind.baseColor)
-      : Promise.resolve(undefined),
-  ]);
-  let tsConfig: ReturnType<typeof loadConfig>;
-  try {
-    tsConfig = loadConfig(config.resolvedPaths.cwd);
-  } catch {
-    tsConfig = { resultType: "failed" } as ReturnType<typeof loadConfig>;
-  }
-  const project = new Project({
-    compilerOptions: {},
-  });
-  const plannedFilePaths = getPlannedFilePaths(files, config, {
-    isSrcDir: projectInfo?.isSrcDir,
-    framework: projectInfo?.framework.name,
-  });
-
-  for (let index = 0; index < files.length; index++) {
-    const file = files[index];
-    if (!file.content) {
-      continue;
-    }
-
-    let filePath = resolveFilePath(file, config, {
-      isSrcDir: projectInfo?.isSrcDir,
-      framework: projectInfo?.framework.name,
-      commonRoot: findCommonRoot(
-        files.map((f) => f.path),
-        file.path
-      ),
-      fileIndex: index,
-    });
-
-    if (!filePath) {
-      continue;
-    }
-
+  for (const [index, file] of (tree.files ?? []).entries()) {
+    if (file.content === undefined) continue;
+    let filePath = resolveFilePath(file, config, { fileIndex: index });
+    if (!filePath) continue;
     if (!config.tsx) {
-      filePath = filePath.replace(/\.tsx?$/, (match) =>
-        match === ".tsx" ? ".jsx" : ".js"
+      filePath = filePath.replace(/\.tsx?$/, (extension) =>
+        extension === ".tsx" ? ".jsx" : ".js"
       );
     }
 
-    const existingFile = existsSync(filePath);
-    const relativePath = path.relative(config.resolvedPaths.cwd, filePath);
-
-    // Run transformers (same as update-files.ts).
-    const isUniversalItemFile =
+    const isUniversal =
       file.type === "registry:file" || file.type === "registry:item";
+    const isCode = [".ts", ".tsx", ".js", ".jsx"].includes(
+      path.extname(filePath)
+    );
     const content =
-      isEnvFile(filePath) || isUniversalItemFile
+      isUniversal || isEnvFile(filePath) || !isCode
         ? file.content
-        : await transform(
-            {
-              filename: file.path,
-              raw: file.content,
-              config,
-              baseColor,
-              transformJsx: !config.tsx,
-              isRemote: false,
-              supportedFontMarkers,
-            },
-            [
-              transformImport,
-              transformRsc,
-              transformCssVarsTransformer,
-              transformTwPrefixes,
-              transformIcons,
-              transformMenu,
-              transformAsChild,
-              transformRtl,
-              transformFont,
-              transformCleanup,
-            ]
-          );
-    const finalContent =
-      isEnvFile(filePath) || isUniversalItemFile
-        ? content
-        : await rewriteResolvedImportsInContent({
+        : await transform({
             config,
-            content,
-            filePaths: plannedFilePaths,
-            project,
-            projectInfo,
-            resolvedPath: filePath,
-            tsConfig,
+            filename: file.path,
+            raw: file.content,
+            transformJsx: !config.tsx,
           });
-
-    // Determine action.
-    let action: DryRunFile["action"] = "create";
-    let oldContent: string | undefined;
-    if (existingFile) {
-      oldContent = await fs.readFile(filePath, "utf-8");
-      if (isContentSame(oldContent, finalContent)) {
-        action = "skip";
-      } else {
-        action = "overwrite";
-      }
-    }
+    const relativePath = path.relative(config.resolvedPaths.cwd, filePath);
+    const exists = existsSync(filePath);
+    const existingContent = exists
+      ? await fs.readFile(filePath, "utf8")
+      : undefined;
+    const action = !exists
+      ? "create"
+      : isContentSame(existingContent ?? "", content)
+        ? "skip"
+        : "overwrite";
 
     result.files.push({
-      path: relativePath,
       action,
-      content: finalContent,
-      ...(action === "overwrite" && { existingContent: oldContent }),
+      content,
+      ...(action === "overwrite" ? { existingContent } : {}),
+      path: relativePath,
       type: file.type ?? "registry:ui",
     });
   }
-}
 
-async function processCss(
-  tree: z.infer<typeof registryResolvedItemsTreeSchema>,
-  config: Config,
-  result: DryRunResult,
-  options: { overwriteCssVars?: boolean }
-) {
-  const hasCss = tree.css && Object.keys(tree.css).length > 0;
-  const hasCssVars = Object.keys(tree.cssVars ?? {}).length > 0;
-
-  if (!config.resolvedPaths.tailwindCss || (!hasCss && !hasCssVars)) {
-    return;
+  if (tree.envVars && Object.keys(tree.envVars).length > 0) {
+    const envPath = path.join(config.resolvedPaths.cwd, ".env.local");
+    result.envVars = {
+      action: existsSync(envPath) ? "update" : "create",
+      path: path.relative(config.resolvedPaths.cwd, envPath),
+      variables: tree.envVars,
+    };
   }
 
-  const cssFilepath = config.resolvedPaths.tailwindCss;
-  const existingFile = existsSync(cssFilepath);
-  const relativePath = path.relative(config.resolvedPaths.cwd, cssFilepath);
-
-  const existingContent = existingFile
-    ? await fs.readFile(cssFilepath, "utf8")
-    : "";
-  let output = existingContent;
-
-  // Apply CSS vars transform.
-  if (hasCssVars) {
-    output = await transformCssVars(output, tree.cssVars!, config, {
-      overwriteCssVars: options.overwriteCssVars,
-    });
-  }
-
-  // Apply CSS transform.
-  if (hasCss) {
-    output = await transformCss(output, tree.css!);
-  }
-
-  // Count CSS variables across all modes.
-  let cssVarsCount = 0;
-  if (tree.cssVars) {
-    for (const vars of Object.values(tree.cssVars)) {
-      if (vars) {
-        cssVarsCount += Object.keys(vars).length;
-      }
-    }
-  }
-
-  result.css = {
-    path: relativePath,
-    content: output,
-    ...(existingFile && { existingContent }),
-    action: existingFile ? "update" : "create",
-    cssVarsCount,
-  };
-}
-
-function processEnvVars(
-  tree: z.infer<typeof registryResolvedItemsTreeSchema>,
-  config: Config,
-  result: DryRunResult
-) {
-  if (!tree.envVars || Object.keys(tree.envVars).length === 0) {
-    return;
-  }
-
-  const envFilePath = path.join(config.resolvedPaths.cwd, ".env.local");
-  const existingFile = existsSync(envFilePath);
-  const relativePath = path.relative(config.resolvedPaths.cwd, envFilePath);
-
-  result.envVars = {
-    path: relativePath,
-    variables: tree.envVars,
-    action: existingFile ? "update" : "create",
-  };
-}
-
-function processFonts(
-  tree: z.infer<typeof registryResolvedItemsTreeSchema>,
-  result: DryRunResult
-) {
-  if (!tree.fonts?.length) {
-    return;
-  }
-
-  for (const font of tree.fonts) {
-    result.fonts.push({
-      name: font.font.family,
-      provider:
-        font.font.provider === "google" ? "Google Fonts" : font.font.provider,
-    });
-  }
+  return result;
 }

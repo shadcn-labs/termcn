@@ -6,10 +6,6 @@ import * as recast from "recast";
 
 import { type Transformer } from "@/src/utils/transformers";
 
-// TODO.
-// I'm using recast for the AST here.
-// Figure out if ts-morph AST is compatible with Babel.
-
 // This is a copy of the babel options from recast/parser.
 // The goal here is to tolerate as much syntax as possible.
 // We want to be able to parse any valid tsx code.

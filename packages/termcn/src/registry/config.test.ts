@@ -46,31 +46,9 @@ describe("configWithDefaults", () => {
     expect(result.registries?.["@termcn"]).toBe(BUILTIN_REGISTRIES["@termcn"]);
   });
 
-  it("should use FALLBACK_STYLE when style is new-york and tailwind.config is empty", () => {
+  it("should keep new-york style when provided", () => {
     const config = createConfig({
       style: "new-york",
-      tailwind: {
-        config: "",
-        css: "app/globals.css",
-        baseColor: "slate",
-        cssVariables: true,
-      },
-    });
-
-    const result = configWithDefaults(config);
-
-    expect(result.style).toBe(FALLBACK_STYLE);
-  });
-
-  it("should keep new-york style when tailwind.config is not empty", () => {
-    const config = createConfig({
-      style: "new-york",
-      tailwind: {
-        config: "tailwind.config.js",
-        css: "app/globals.css",
-        baseColor: "slate",
-        cssVariables: true,
-      },
     });
 
     const result = configWithDefaults(config);
@@ -78,15 +56,19 @@ describe("configWithDefaults", () => {
     expect(result.style).toBe("new-york");
   });
 
-  it("should preserve non-new-york styles regardless of tailwind config", () => {
+  it("should keep new-york style when style is set", () => {
+    const config = createConfig({
+      style: "new-york",
+    });
+
+    const result = configWithDefaults(config);
+
+    expect(result.style).toBe("new-york");
+  });
+
+  it("should preserve non-new-york styles regardless of config", () => {
     const config1 = createConfig({
       style: "default",
-      tailwind: {
-        config: "",
-        css: "app/globals.css",
-        baseColor: "slate",
-        cssVariables: true,
-      },
     });
 
     const result1 = configWithDefaults(config1);
@@ -94,12 +76,6 @@ describe("configWithDefaults", () => {
 
     const config2 = createConfig({
       style: "miami",
-      tailwind: {
-        config: "tailwind.config.js",
-        css: "app/globals.css",
-        baseColor: "slate",
-        cssVariables: true,
-      },
     });
 
     const result2 = configWithDefaults(config2);
@@ -118,12 +94,6 @@ describe("configWithDefaults", () => {
 
   it("should deeply merge nested config properties", () => {
     const config = createConfig({
-      tailwind: {
-        css: "custom/path/globals.css",
-        prefix: "tw-",
-        baseColor: "zinc",
-        cssVariables: false,
-      },
       aliases: {
         components: "@/custom-components",
         utils: "@/custom-utils",
@@ -132,10 +102,6 @@ describe("configWithDefaults", () => {
 
     const result = configWithDefaults(config);
 
-    expect(result.tailwind.css).toBe("custom/path/globals.css");
-    expect(result.tailwind.prefix).toBe("tw-");
-    expect(result.tailwind.baseColor).toBe("zinc");
-    expect(result.tailwind.cssVariables).toBe(false);
     expect(result.aliases.components).toBe("@/custom-components");
     expect(result.aliases.utils).toBe("@/custom-utils");
   });
@@ -144,18 +110,8 @@ describe("configWithDefaults", () => {
     const config = createConfig({
       style: "default",
       tsx: false,
-      rsc: false,
-      tailwind: {
-        config: "custom.config.js",
-        css: "styles/main.css",
-        baseColor: "gray",
-        cssVariables: true,
-        prefix: "app-",
-      },
       resolvedPaths: {
         cwd: "/custom/project",
-        tailwindConfig: "/custom/project/tailwind.config.js",
-        tailwindCss: "/custom/project/styles/main.css",
         utils: "/custom/project/lib/utils",
         components: "/custom/project/components",
         ui: "/custom/project/components/ui",
@@ -174,11 +130,6 @@ describe("configWithDefaults", () => {
     const result = configWithDefaults(config);
 
     expect(result.tsx).toBe(false);
-    expect(result.rsc).toBe(false);
-    expect(result.tailwind.config).toBe("custom.config.js");
-    expect(result.tailwind.css).toBe("styles/main.css");
-    expect(result.tailwind.baseColor).toBe("gray");
-    expect(result.tailwind.prefix).toBe("app-");
     expect(result.resolvedPaths.cwd).toBe("/custom/project");
     expect(result.resolvedPaths.components).toBe("/custom/project/components");
   });

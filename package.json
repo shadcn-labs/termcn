@@ -15,12 +15,15 @@
     "registry:build": "turbo run registry:build --filter=web",
     "check": "ultracite check",
     "fix": "ultracite fix",
-    "prepare": "lefthook install"
+    "prepare": "lefthook install",
+    "tegami": "tsx scripts/tegami.mts"
   },
   "devDependencies": {
     "lefthook": "^2.1.4",
     "oxfmt": "^0.45.0",
     "oxlint": "^1.60.0",
+    "tegami": "^0.2.1",
+    "tsx": "^4.19.2",
     "turbo": "^2.10.2",
     "typescript": "^6",
     "ultracite": "7.6.0"

@@ -146,7 +146,7 @@ describe("addRegistryItems", () => {
     });
 
     expect(mockCreateConfig).toHaveBeenCalledWith({
-      style: "new-york",
+      style: "ink",
       resolvedPaths: { cwd: "/project" },
     });
     expect(mockEnsureRegistriesInConfig).toHaveBeenCalledWith(
@@ -164,7 +164,6 @@ describe("addRegistryItems", () => {
       universalConfig,
       expect.objectContaining({
         interactive: false,
-        overwriteCssVars: false,
         resolvedTree,
       })
     );

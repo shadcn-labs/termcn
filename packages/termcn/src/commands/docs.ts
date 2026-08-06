@@ -2,14 +2,10 @@ import path from "path";
 
 import { Command } from "commander";
 
-import {
-  isPresetBase,
-  PRESET_BASES,
-  type PresetBase,
-} from "@/src/preset/preset";
+import { FRAMEWORK_NAMES, type FrameworkName } from "@/src/config";
 import { getTermcnRegistryIndex } from "@/src/registry/api";
 import { TERMCN_URL } from "@/src/registry/constants";
-import { getBase, getConfig } from "@/src/utils/get-config";
+import { getConfig } from "@/src/utils/get-config";
 import { handleError } from "@/src/utils/handle-error";
 import { highlighter } from "@/src/utils/highlighter";
 import { logger } from "@/src/utils/logger";
@@ -26,15 +22,15 @@ export const docs = new Command()
     process.cwd()
   )
   .option(
-    "-b, --base <base>",
-    "the base to use: base, radix, or aria. defaults to project base."
+    "-F, --framework <framework>",
+    "the terminal framework to use: ink or opentui. defaults to the project framework."
   )
   .option("--json", "output as JSON.", false)
   .action(async (components, opts) => {
     try {
       const cwd = path.resolve(opts.cwd);
       const config = await getConfig(cwd);
-      const base = resolveDocsBase(opts.base, config?.style);
+      const framework = resolveDocsFramework(opts.framework, config?.style);
 
       const index = await getTermcnRegistryIndex();
 
@@ -45,7 +41,7 @@ export const docs = new Command()
 
       const results: {
         component: string;
-        base: PresetBase;
+        framework: FrameworkName;
         links: Record<string, string>;
       }[] = [];
 
@@ -63,7 +59,7 @@ export const docs = new Command()
 
         const links = (
           item.meta?.links as Record<string, Record<string, string>>
-        )?.[base];
+        )?.[framework];
 
         if (!links || Object.keys(links).length === 0) {
           logger.warn(
@@ -76,13 +72,13 @@ export const docs = new Command()
 
         results.push({
           component,
-          base,
+          framework,
           links: normalizeLinks(links),
         });
       }
 
       if (opts.json) {
-        console.log(JSON.stringify({ base, results }, null, 2));
+        console.log(JSON.stringify({ framework, results }, null, 2));
         return;
       }
 
@@ -103,18 +99,21 @@ export const docs = new Command()
     }
   });
 
-export function resolveDocsBase(base: unknown, style: string | undefined) {
-  const resolvedBase = base ?? getBase(style);
+export function resolveDocsFramework(
+  framework: unknown,
+  style: string | undefined
+) {
+  const resolvedFramework = framework ?? style ?? "ink";
 
-  if (!isPresetBase(resolvedBase)) {
+  if (!FRAMEWORK_NAMES.includes(resolvedFramework as FrameworkName)) {
     throw new Error(
-      `Invalid base: ${String(resolvedBase)}. Expected one of: ${PRESET_BASES.join(
+      `Invalid framework: ${String(resolvedFramework)}. Expected one of: ${FRAMEWORK_NAMES.join(
         ", "
       )}.`
     );
   }
 
-  return resolvedBase;
+  return resolvedFramework as FrameworkName;
 }
 
 function normalizeLinks(links: Record<string, string>) {

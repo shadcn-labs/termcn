@@ -3,7 +3,6 @@ export {
   getRegistryItems,
   resolveRegistryItems,
   getRegistry,
-  getRegistriesIndex,
 } from "./api";
 
 export { addRegistryItems, type AddRegistryItemsOptions } from "./add";

@@ -6,17 +6,6 @@ import fs from "fs-extra";
 import { highlighter } from "@/src/utils/highlighter";
 import { logger } from "@/src/utils/logger";
 
-const FRAMEWORK_CONFIG_FILES = [
-  "next.config.*",
-  "vite.config.*",
-  "astro.config.*",
-  "remix.config.*",
-  "nuxt.config.*",
-  "svelte.config.*",
-  "gatsby-config.*",
-  "angular.json",
-];
-
 // Checks for workspace signals at the given directory.
 export async function isMonorepoRoot(cwd: string) {
   // pnpm workspaces.
@@ -79,16 +68,7 @@ export async function getMonorepoTargets(cwd: string) {
       path.resolve(fullPath, "components.json")
     );
 
-    // Check for framework config files.
-    const hasFrameworkConfig = FRAMEWORK_CONFIG_FILES.some((pattern) => {
-      const matches = fg.sync(pattern, {
-        cwd: fullPath,
-        dot: true,
-      });
-      return matches.length > 0;
-    });
-
-    if (hasComponentsJson || hasFrameworkConfig) {
+    if (hasComponentsJson) {
       targets.push({
         name: dir,
         hasConfig: hasComponentsJson,

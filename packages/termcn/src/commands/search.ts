@@ -30,9 +30,6 @@ const searchOptionsSchema = z.object({
   offset: z.number().optional(),
 });
 
-// TODO: We're duplicating logic for shadowConfig here.
-// Revisit and properly abstract this.
-
 export const search = new Command()
   .name("search")
   .alias("list")
@@ -91,7 +88,7 @@ export const search = new Command()
       // Start with a shadow config to support partial components.json.
       // Use createConfig to get proper default paths
       const defaultConfig = createConfig({
-        style: "new-york",
+        style: "ink",
         resolvedPaths: {
           cwd: options.cwd,
         },

@@ -1,20 +1,20 @@
 import { describe, expect, it } from "vitest";
 
-import { docs, resolveDocsBase } from "./docs";
+import { docs, resolveDocsFramework } from "./docs";
 
-describe("resolveDocsBase", () => {
-  it("accepts aria explicitly", () => {
-    expect(resolveDocsBase("aria", undefined)).toBe("aria");
-    expect(docs.helpInformation()).toContain("base, radix, or aria");
+describe("resolveDocsFramework", () => {
+  it("accepts OpenTUI explicitly", () => {
+    expect(resolveDocsFramework("opentui", undefined)).toBe("opentui");
+    expect(docs.helpInformation()).toContain("ink or opentui");
   });
 
-  it("infers aria from the project style", () => {
-    expect(resolveDocsBase(undefined, "aria-nova")).toBe("aria");
+  it("uses the project framework", () => {
+    expect(resolveDocsFramework(undefined, "ink")).toBe("ink");
   });
 
-  it("rejects unsupported bases", () => {
-    expect(() => resolveDocsBase("unsupported", undefined)).toThrow(
-      "Expected one of: radix, base, aria"
+  it("rejects unsupported frameworks", () => {
+    expect(() => resolveDocsFramework("unsupported", undefined)).toThrow(
+      "Expected one of: ink, opentui"
     );
   });
 });

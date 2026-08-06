@@ -103,17 +103,14 @@ describe("getMonorepoTargets", () => {
     );
     await fs.writeJson(path.join(tmpDir, "package.json"), { name: "root" });
 
-    // Create an app with a Next.js config.
+    // Create an app with a components.json.
     const webDir = path.join(tmpDir, "apps", "web");
     await fs.ensureDir(webDir);
     await fs.writeJson(path.join(webDir, "package.json"), { name: "web" });
-    await fs.writeFile(
-      path.join(webDir, "next.config.mjs"),
-      "export default {}"
-    );
+    await fs.writeJson(path.join(webDir, "components.json"), {});
 
     const targets = await getMonorepoTargets(tmpDir);
-    expect(targets).toEqual([{ name: "apps/web", hasConfig: false }]);
+    expect(targets).toEqual([{ name: "apps/web", hasConfig: true }]);
   });
 
   it("should find targets from package.json workspaces", async () => {
@@ -125,13 +122,10 @@ describe("getMonorepoTargets", () => {
     const webDir = path.join(tmpDir, "apps", "web");
     await fs.ensureDir(webDir);
     await fs.writeJson(path.join(webDir, "package.json"), { name: "web" });
-    await fs.writeFile(
-      path.join(webDir, "vite.config.ts"),
-      "export default {}"
-    );
+    await fs.writeJson(path.join(webDir, "components.json"), {});
 
     const targets = await getMonorepoTargets(tmpDir);
-    expect(targets).toEqual([{ name: "apps/web", hasConfig: false }]);
+    expect(targets).toEqual([{ name: "apps/web", hasConfig: true }]);
   });
 
   it("should set hasConfig when components.json exists", async () => {
@@ -145,7 +139,7 @@ describe("getMonorepoTargets", () => {
     await fs.ensureDir(webDir);
     await fs.writeJson(path.join(webDir, "package.json"), { name: "web" });
     await fs.writeFile(
-      path.join(webDir, "next.config.mjs"),
+      path.join(webDir, "vite.config.mjs"),
       "export default {}"
     );
     await fs.writeJson(path.join(webDir, "components.json"), {});
@@ -161,23 +155,17 @@ describe("getMonorepoTargets", () => {
     );
     await fs.writeJson(path.join(tmpDir, "package.json"), { name: "root" });
 
-    // apps/web with Next.js.
+    // apps/web with components.json.
     const webDir = path.join(tmpDir, "apps", "web");
     await fs.ensureDir(webDir);
     await fs.writeJson(path.join(webDir, "package.json"), { name: "web" });
-    await fs.writeFile(
-      path.join(webDir, "next.config.mjs"),
-      "export default {}"
-    );
+    await fs.writeJson(path.join(webDir, "components.json"), {});
 
-    // apps/docs with Vite.
+    // apps/docs with components.json.
     const docsDir = path.join(tmpDir, "apps", "docs");
     await fs.ensureDir(docsDir);
     await fs.writeJson(path.join(docsDir, "package.json"), { name: "docs" });
-    await fs.writeFile(
-      path.join(docsDir, "vite.config.ts"),
-      "export default {}"
-    );
+    await fs.writeJson(path.join(docsDir, "components.json"), {});
 
     const targets = await getMonorepoTargets(tmpDir);
     expect(targets).toHaveLength(2);
@@ -197,10 +185,6 @@ describe("getMonorepoTargets", () => {
     // Directory without package.json.
     const libDir = path.join(tmpDir, "apps", "lib");
     await fs.ensureDir(libDir);
-    await fs.writeFile(
-      path.join(libDir, "next.config.mjs"),
-      "export default {}"
-    );
 
     const targets = await getMonorepoTargets(tmpDir);
     expect(targets).toEqual([]);
@@ -228,25 +212,22 @@ describe("getMonorepoTargets", () => {
     expect(targets).toEqual([]);
   });
 
-  it("should detect astro, remix, and svelte configs", async () => {
+  it("should detect vite configs", async () => {
     await fs.writeFile(
       path.join(tmpDir, "pnpm-workspace.yaml"),
       "packages:\n  - apps/*\n"
     );
     await fs.writeJson(path.join(tmpDir, "package.json"), { name: "root" });
 
-    const astroDir = path.join(tmpDir, "apps", "astro-app");
-    await fs.ensureDir(astroDir);
-    await fs.writeJson(path.join(astroDir, "package.json"), {
-      name: "astro-app",
+    const viteDir = path.join(tmpDir, "apps", "vite-app");
+    await fs.ensureDir(viteDir);
+    await fs.writeJson(path.join(viteDir, "package.json"), {
+      name: "vite-app",
     });
-    await fs.writeFile(
-      path.join(astroDir, "astro.config.mjs"),
-      "export default {}"
-    );
+    await fs.writeJson(path.join(viteDir, "components.json"), {});
 
     const targets = await getMonorepoTargets(tmpDir);
-    expect(targets).toEqual([{ name: "apps/astro-app", hasConfig: false }]);
+    expect(targets).toEqual([{ name: "apps/vite-app", hasConfig: true }]);
   });
 
   it("should deduplicate patterns from both pnpm-workspace.yaml and package.json", async () => {
@@ -262,14 +243,11 @@ describe("getMonorepoTargets", () => {
     const webDir = path.join(tmpDir, "apps", "web");
     await fs.ensureDir(webDir);
     await fs.writeJson(path.join(webDir, "package.json"), { name: "web" });
-    await fs.writeFile(
-      path.join(webDir, "next.config.mjs"),
-      "export default {}"
-    );
+    await fs.writeJson(path.join(webDir, "components.json"), {});
 
     const targets = await getMonorepoTargets(tmpDir);
     // Should not duplicate the target.
-    expect(targets).toEqual([{ name: "apps/web", hasConfig: false }]);
+    expect(targets).toEqual([{ name: "apps/web", hasConfig: true }]);
   });
 });
 

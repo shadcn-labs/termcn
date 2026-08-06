@@ -368,20 +368,6 @@ export class RegistryInvalidNamespaceError extends RegistryError {
   }
 }
 
-export class ConfigMissingError extends RegistryError {
-  constructor(public readonly cwd: string) {
-    const message = `No components.json found in ${cwd} or parent directories.`;
-
-    super(message, {
-      code: RegistryErrorCode.NOT_CONFIGURED,
-      context: { cwd },
-      suggestion:
-        "Run 'npx termcn@latest init' to create a components.json file, or check that you're in the correct directory.",
-    });
-    this.name = "ConfigMissingError";
-  }
-}
-
 export class ConfigParseError extends RegistryError {
   constructor(
     public readonly cwd: string,
@@ -441,25 +427,5 @@ export class RegistriesIndexParseError extends RegistryError {
 
     this.parseError = parseError;
     this.name = "RegistriesIndexParseError";
-  }
-}
-
-export class InvalidConfigIconLibraryError extends RegistryError {
-  constructor(
-    public readonly iconLibrary: string,
-    public readonly validOptions: string[]
-  ) {
-    const message = `Invalid icon library "${iconLibrary}". Valid options are: ${validOptions.join(
-      ", "
-    )}`;
-
-    super(message, {
-      code: RegistryErrorCode.INVALID_CONFIG,
-      context: { iconLibrary, validOptions },
-      suggestion: `Update the "iconLibrary" field in your components.json to one of: ${validOptions.join(
-        ", "
-      )}`,
-    });
-    this.name = "InvalidConfigIconLibraryError";
   }
 }

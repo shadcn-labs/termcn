@@ -3,11 +3,7 @@ import { SyntaxKind } from "ts-morph";
 import { Config } from "@/src/utils/get-config";
 import { Transformer } from "@/src/utils/transformers";
 
-export const transformImport: Transformer = async ({
-  sourceFile,
-  config,
-  isRemote,
-}) => {
+export const transformImport: Transformer = async ({ sourceFile, config }) => {
   const utilsAlias = config.aliases?.utils;
   const workspaceAlias =
     typeof utilsAlias === "string"
@@ -22,11 +18,7 @@ export const transformImport: Transformer = async ({
   }
 
   for (const specifier of sourceFile.getImportStringLiterals()) {
-    const updated = updateImportAliases(
-      specifier.getLiteralValue(),
-      config,
-      isRemote
-    );
+    const updated = updateImportAliases(specifier.getLiteralValue(), config);
     specifier.setLiteralValue(updated);
 
     // Replace `import { cn } from "@/lib/utils"`
@@ -53,21 +45,12 @@ export const transformImport: Transformer = async ({
   return sourceFile;
 };
 
-function updateImportAliases(
-  moduleSpecifier: string,
-  config: Config,
-  isRemote: boolean = false
-) {
+function updateImportAliases(moduleSpecifier: string, config: Config) {
   moduleSpecifier = normalizeImportSpecifier(moduleSpecifier, config);
 
   // Not a local import.
-  if (!moduleSpecifier.startsWith("@/") && !isRemote) {
+  if (!moduleSpecifier.startsWith("@/")) {
     return moduleSpecifier;
-  }
-
-  // This treats the remote as coming from a faux registry.
-  if (isRemote && moduleSpecifier.startsWith("@/")) {
-    moduleSpecifier = moduleSpecifier.replace(/^@\//, `@/registry/new-york/`);
   }
 
   if (moduleSpecifier === "@/registry") {

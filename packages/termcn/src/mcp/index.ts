@@ -43,13 +43,13 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       {
         name: "get_project_registries",
         description:
-          "Get configured registry names from components.json - Returns error if no components.json exists (use init_project to create one)",
+          "Get configured registry names from components.json. Returns an error if no components.json exists; run `termcn init` first.",
         inputSchema: zodToJsonSchema(z.object({})),
       },
       {
         name: "list_items_in_registries",
         description:
-          "List items from registries (requires components.json - use init_project if missing)",
+          "List items from registries. Requires a components.json created by `termcn init`.",
         inputSchema: zodToJsonSchema(
           z.object({
             registries: z
@@ -455,8 +455,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
                 text: dedent`No examples found for query "${args.query}".
 
                 Try searching with patterns like:
-                - "accordion-demo" for accordion examples
-                - "button demo" or "button example"
+                 - "app-shell example" for terminal layout examples
+                 - "input demo" or "table example"
                 - Component name followed by "-demo" or "example"
 
                 You can also:
@@ -509,12 +509,12 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
               After adding or generating components, check the following common issues:
 
-              - [ ] Ensure imports are correct i.e named vs default imports
-              - [ ] If using next/image, ensure images.remotePatterns next.config.js is configured correctly.
-              - [ ] Ensure all dependencies are installed.
-              - [ ] Check for linting errors or warnings
-              - [ ] Check for TypeScript errors
-              - [ ] Use the Playwright MCP if available.
+              - [ ] Ensure named and default imports match the installed component exports.
+              - [ ] Ensure all Ink or OpenTUI dependencies are installed.
+              - [ ] Check keyboard input, focus, and Ctrl+C behavior.
+              - [ ] Check narrow and resized terminal layouts.
+              - [ ] Check Unicode and reduced-motion fallbacks where applicable.
+              - [ ] Run the project's lint, typecheck, and terminal interaction tests.
               `,
             },
           ],

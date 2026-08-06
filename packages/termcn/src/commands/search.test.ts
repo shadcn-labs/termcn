@@ -9,16 +9,8 @@ import { search } from "./search";
 
 const baseConfig = {
   $schema: "",
-  style: "new-york",
-  rsc: false,
+  style: "ink",
   tsx: true,
-  tailwind: {
-    config: "",
-    css: "",
-    baseColor: "neutral",
-    cssVariables: true,
-    prefix: "",
-  },
   aliases: {
     components: "@/components",
     ui: "@/components/ui",
@@ -29,8 +21,6 @@ const baseConfig = {
   registries: {},
   resolvedPaths: {
     cwd: "/tmp/test-project",
-    tailwindConfig: "",
-    tailwindCss: "",
     utils: "",
     components: "",
     lib: "",
@@ -211,7 +201,7 @@ describe("search command", () => {
     const exit = mockProcessExit();
 
     vi.mocked(fsExtra.existsSync).mockReturnValueOnce(true as never);
-    vi.mocked(fsExtra.readJson).mockResolvedValueOnce({ style: "new-york" });
+    vi.mocked(fsExtra.readJson).mockResolvedValueOnce({ style: "ink" });
     // components.json present but with no configured registries (only the
     // builtin @termcn, which is excluded from "search all").
     vi.mocked(getConfig).mockReturnValueOnce({ ...baseConfig } as never);
@@ -257,7 +247,7 @@ describe("search command", () => {
 
     vi.mocked(fsExtra.existsSync).mockReturnValueOnce(true as never);
     // readJson returns a raw (unresolved) components.json shape.
-    vi.mocked(fsExtra.readJson).mockResolvedValueOnce({ style: "new-york" });
+    vi.mocked(fsExtra.readJson).mockResolvedValueOnce({ style: "ink" });
     vi.mocked(getConfig).mockReturnValueOnce({
       ...baseConfig,
       registries: {
@@ -295,7 +285,7 @@ describe("search command", () => {
     const exit = mockProcessExit();
 
     vi.mocked(fsExtra.existsSync).mockReturnValueOnce(true as never);
-    vi.mocked(fsExtra.readJson).mockResolvedValueOnce({ style: "new-york" });
+    vi.mocked(fsExtra.readJson).mockResolvedValueOnce({ style: "ink" });
     vi.mocked(getConfig).mockReturnValueOnce({
       ...baseConfig,
       registries: {

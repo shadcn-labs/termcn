@@ -1,5 +1,4 @@
 import { execa } from "execa";
-import prompts from "prompts";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { getFixturesDir } from "@/src/test-helpers";
@@ -11,7 +10,6 @@ import {
 } from "./update-dependencies";
 
 vi.mock("execa");
-vi.mock("prompts");
 
 describe("updateDependencies", () => {
   afterEach(() => {
@@ -34,58 +32,7 @@ describe("updateDependencies", () => {
       expectedArgs: ["install", "--", "first", "second", "third"],
       expectedDevArgs: ["install", "-D", "--", "fourth"],
     },
-    {
-      description:
-        "npm with react-day-picker v8 applies force prompt when silent",
-      options: { silent: true },
-      dependencies: ["first", "second", "third"],
-      devDependencies: ["fourth"],
-      config: {
-        resolvedPaths: {
-          cwd: getFixturesDir("project-npm-react19"),
-        },
-      },
-      expectedPackageManager: "npm",
-      expectedArgs: ["install", "--force", "--", "first", "second", "third"],
-      expectedDevArgs: ["install", "--force", "-D", "--", "fourth"],
-    },
-    {
-      description:
-        "npm with react-day-picker v8 applies force when non-interactive",
-      options: { interactive: false },
-      dependencies: ["first", "second", "third"],
-      devDependencies: ["fourth"],
-      config: {
-        resolvedPaths: {
-          cwd: getFixturesDir("project-npm-react19"),
-        },
-      },
-      expectedPackageManager: "npm",
-      expectedArgs: ["install", "--force", "--", "first", "second", "third"],
-      expectedDevArgs: ["install", "--force", "-D", "--", "fourth"],
-    },
-    {
-      description:
-        "npm with react-day-picker v8 prompts for flag when not silent",
-      flagPrompt: "legacy-peer-deps",
-      dependencies: ["first", "second", "third"],
-      devDependencies: ["fourth"],
-      config: {
-        resolvedPaths: {
-          cwd: getFixturesDir("project-npm-react19"),
-        },
-      },
-      expectedPackageManager: "npm",
-      expectedArgs: [
-        "install",
-        "--legacy-peer-deps",
-        "--",
-        "first",
-        "second",
-        "third",
-      ],
-      expectedDevArgs: ["install", "--legacy-peer-deps", "-D", "--", "fourth"],
-    },
+
     {
       description: "deno uses npm: package prefix",
       dependencies: ["first", "second", "third"],
@@ -143,7 +90,6 @@ describe("updateDependencies", () => {
     "$description",
     async ({
       options,
-      flagPrompt,
       config,
       dependencies,
       devDependencies,
@@ -151,20 +97,12 @@ describe("updateDependencies", () => {
       expectedArgs,
       expectedDevArgs,
     }) => {
-      vi.mocked(prompts).mockResolvedValue({ flag: flagPrompt });
-
       await updateDependencies(
         dependencies,
         devDependencies,
         config as Config,
         options ?? {}
       );
-
-      if (flagPrompt) {
-        expect(prompts).toHaveBeenCalled();
-      } else {
-        expect(prompts).not.toHaveBeenCalled();
-      }
 
       expect(execa).toHaveBeenCalledWith(expectedPackageManager, expectedArgs, {
         cwd: config?.resolvedPaths.cwd,
@@ -225,25 +163,6 @@ describe("updateDependencies", () => {
     expect(execa).toHaveBeenCalledWith(
       "pnpm",
       ["add", "--", "recharts@3.8.0", "@base-ui/react@1.4.1"],
-      { cwd }
-    );
-  });
-
-  it("does not skip already declared deps for expo projects", async () => {
-    const cwd = getFixturesDir("project-expo-existing-deps");
-
-    // recharts is already declared, but `expo install` must still see it so it
-    // can align the version with the installed SDK. Duplicates are still deduped.
-    await updateDependencies(
-      ["recharts", "recharts", "react-is"],
-      [],
-      { resolvedPaths: { cwd } } as any,
-      { silent: true }
-    );
-
-    expect(execa).toHaveBeenCalledWith(
-      "npx",
-      ["expo", "install", "--", "recharts", "react-is"],
       { cwd }
     );
   });

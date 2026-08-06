@@ -1,15 +1,9 @@
-import path from "path";
-
 import { z } from "zod";
 
 import { resolveGitHubRegistrySource } from "@/src/registry/address";
 import { buildUrlAndHeadersForRegistryItem } from "@/src/registry/builder";
 import { configWithDefaults } from "@/src/registry/config";
-import {
-  BASE_COLORS,
-  BUILTIN_REGISTRIES,
-  REGISTRY_URL,
-} from "@/src/registry/constants";
+import { BUILTIN_REGISTRIES, REGISTRY_URL } from "@/src/registry/constants";
 import {
   setRegistryHeaders,
   withRegistryContext,
@@ -30,20 +24,13 @@ import {
 } from "@/src/registry/resolver";
 import { isUrl } from "@/src/registry/utils";
 import {
-  configJsonSchema,
-  iconsSchema,
-  registriesIndexSchema,
   registriesSchema,
-  registryBaseColorSchema,
   registryConfigSchema,
   registryIndexSchema,
   registryItemSchema,
   registrySchema,
-  stylesSchema,
 } from "@/src/schema";
 import { Config, explorer } from "@/src/utils/get-config";
-import { handleError } from "@/src/utils/handle-error";
-import { logger } from "@/src/utils/logger";
 
 type RegistryApiOptions = {
   config?: Partial<Config>;
@@ -200,112 +187,6 @@ export async function getTermcnRegistryIndex() {
   return registryIndexSchema.parse(result);
 }
 
-export async function getRegistryStyles() {
-  try {
-    const [result] = await fetchRegistry(["styles/index.json"]);
-
-    return stylesSchema.parse(result);
-  } catch (error) {
-    logger.error("\n");
-    handleError(error);
-    return [];
-  }
-}
-
-export async function getRegistryIcons() {
-  try {
-    const [result] = await fetchRegistry(["icons/index.json"]);
-    return iconsSchema.parse(result);
-  } catch (error) {
-    handleError(error);
-    return {};
-  }
-}
-
-export async function getRegistryBaseColors() {
-  return BASE_COLORS;
-}
-
-export async function getRegistryBaseColor(baseColor: string) {
-  const [result] = await fetchRegistry([`colors/${baseColor}.json`]);
-
-  return registryBaseColorSchema.parse(result);
-}
-
-/**
- * @deprecated This function is deprecated and will be removed in a future version.
- */
-export async function resolveTree(
-  index: z.infer<typeof registryIndexSchema>,
-  names: string[]
-) {
-  const tree: z.infer<typeof registryIndexSchema> = [];
-
-  for (const name of names) {
-    const entry = index.find((entry) => entry.name === name);
-
-    if (!entry) {
-      continue;
-    }
-
-    tree.push(entry);
-
-    if (entry.registryDependencies) {
-      const dependencies = await resolveTree(index, entry.registryDependencies);
-      tree.push(...dependencies);
-    }
-  }
-
-  return tree.filter(
-    (component, index, self) =>
-      self.findIndex((c) => c.name === component.name) === index
-  );
-}
-
-/**
- * @deprecated This function is deprecated and will be removed in a future version.
- */
-export async function fetchTree(
-  style: string,
-  tree: z.infer<typeof registryIndexSchema>
-) {
-  try {
-    const paths = tree.map((item) => `styles/${style}/${item.name}.json`);
-    const results = await fetchRegistry(paths);
-    return results.map((result) => registryItemSchema.parse(result));
-  } catch (error) {
-    handleError(error);
-    return [];
-  }
-}
-
-/**
- * @deprecated This function is deprecated and will be removed in a future version.
- */
-export async function getItemTargetPath(
-  config: Config,
-  item: Pick<z.infer<typeof registryItemSchema>, "type">,
-  override?: string
-) {
-  if (override) {
-    return override;
-  }
-
-  if (item.type === "registry:ui") {
-    return config.resolvedPaths.ui ?? config.resolvedPaths.components;
-  }
-
-  const [parent, type] = item.type?.split(":") ?? [];
-  if (!(parent in config.resolvedPaths)) {
-    return null;
-  }
-
-  return path.join(
-    config.resolvedPaths[parent as keyof typeof config.resolvedPaths],
-    type
-  );
-}
-
 // Fetch registries with new schema (array of objects with name, homepage, url, featured).
 export async function getRegistries(options?: { useCache?: boolean }) {
   options = {
@@ -327,43 +208,4 @@ export async function getRegistries(options?: { useCache?: boolean }) {
 
     throw error;
   }
-}
-
-/**
- * @deprecated Use getRegistries() instead.
- */
-export async function getRegistriesIndex(options?: { useCache?: boolean }) {
-  // Fetch new format and transform to old Record<string, string> for backward compatibility.
-  const registries = await getRegistries(options);
-  if (!registries) return null;
-  return Object.fromEntries(registries.map((r) => [r.name, r.url])) as z.infer<
-    typeof registriesIndexSchema
-  >;
-}
-
-export async function getPresets(options?: { useCache?: boolean }) {
-  options = {
-    useCache: true,
-    ...options,
-  };
-
-  const url = `${REGISTRY_URL}/config.json`;
-  const [data] = await fetchRegistry([url], {
-    useCache: options.useCache,
-  });
-
-  const result = configJsonSchema.parse(data);
-  return result.presets;
-}
-
-export async function getPreset(
-  name: string,
-  options?: { useCache?: boolean }
-) {
-  const presets = await getPresets(options);
-  return (
-    presets.find(
-      (preset) => preset.name.toLowerCase() === name.toLowerCase()
-    ) ?? null
-  );
 }

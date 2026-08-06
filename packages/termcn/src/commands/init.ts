@@ -29,28 +29,13 @@ import { logger } from "@/src/utils/logger";
 import { spinner } from "@/src/utils/spinner";
 
 export const initOptionsSchema = z.object({
-  base: z.string().optional(),
   components: z.array(z.string()).optional(),
-  cssVariables: z.boolean().default(false),
   cwd: z.string(),
   defaults: z.boolean(),
-  existingConfig: z.record(z.unknown()).optional(),
   force: z.boolean(),
   framework: z.enum(FRAMEWORK_NAMES).optional(),
-  iconLibrary: z.string().optional(),
-  installStyleIndex: z.boolean().default(false),
-  isNewProject: z.boolean().default(false),
-  menuAccent: z.string().optional(),
-  menuColor: z.string().optional(),
-  monorepo: z.boolean().optional(),
   name: z.string().optional(),
-  pointer: z.boolean().optional(),
-  preset: z.union([z.boolean(), z.string()]).optional(),
-  registryBaseConfig: z.record(z.unknown()).optional(),
-  reinstall: z.boolean().optional(),
-  rtl: z.boolean().optional(),
   silent: z.boolean(),
-  skipPreflight: z.boolean().optional(),
   template: z.string().optional(),
   theme: z.string().optional(),
   tsx: z.boolean().default(true),
@@ -66,10 +51,6 @@ export const init = new Command()
   .option(
     "-F, --framework <framework>",
     "the terminal framework to use. (ink, opentui)"
-  )
-  .option(
-    "-b, --base <framework>",
-    "alias for --framework, kept for shadcn-compatible workflows"
   )
   .option(
     "-t, --template <template>",
@@ -98,7 +79,6 @@ export const init = new Command()
         ...opts,
         components,
         cwd: path.resolve(opts.cwd),
-        framework: opts.framework ?? opts.base,
       });
     } catch (error) {
       handleError(error);
@@ -112,7 +92,6 @@ export async function runInit(
     components: [],
     defaults: false,
     force: false,
-    isNewProject: false,
     silent: false,
     tsx: true,
     yes: false,
@@ -163,15 +142,7 @@ export async function runInit(
   await writeJson(componentsJsonPath, {
     $schema: "https://termcn.dev/schema.json",
     style: selection.framework,
-    rsc: false,
     tsx: options.tsx,
-    tailwind: {
-      config: "",
-      css: "",
-      baseColor: "",
-      cssVariables: false,
-      prefix: "",
-    },
     aliases: {
       components: "@/components",
       hooks: "@/hooks",
@@ -203,10 +174,8 @@ export async function runInit(
 
   await addComponents(registryItems, config, {
     interactive: !options.yes && !options.defaults,
-    isNewProject,
     overwrite: options.force,
     silent: options.silent,
-    skipFonts: true,
   });
 
   if (isNewProject) {
@@ -248,7 +217,7 @@ async function resolveSelection(options: InitOptions) {
     return DEFAULT_PROJECT_CONFIG;
   }
 
-  let framework = parseFramework(options.framework ?? options.base);
+  let framework = parseFramework(options.framework);
   let theme = parseTheme(options.theme);
   let template = parseTemplate(options.template);
 
@@ -419,7 +388,7 @@ async function scaffoldProject({
         ...(framework === "opentui"
           ? { jsxImportSource: "@opentui/react" }
           : {}),
-        lib: ["ESNext", "DOM"],
+        lib: ["ESNext"],
         module: "ESNext",
         moduleResolution: "bundler",
         noEmit: true,

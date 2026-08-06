@@ -12,8 +12,6 @@ import {
   RegistryValidationError,
 } from "./errors";
 import {
-  getRegistryItemFileRootPath,
-  getRegistryItemFileSource,
   loadRegistry,
   loadRegistryItem,
   readRegistryWithIncludes,
@@ -80,18 +78,6 @@ describe("readRegistryWithIncludes", () => {
       ],
     });
     expect(result.registry).not.toHaveProperty("include");
-    expect(
-      getRegistryItemFileSource("button", "button.tsx", result.itemSources, cwd)
-    ).toBe(path.join(cwd, "registry/ui/button.tsx"));
-    expect(
-      getRegistryItemFileRootPath(
-        "button",
-        "button.tsx",
-        result.itemSources,
-        cwd,
-        cwd
-      )
-    ).toBe("registry/ui/button.tsx");
   });
 
   it("rejects root registries without name and homepage", async () => {
@@ -272,7 +258,7 @@ describe("readRegistryWithIncludes", () => {
         items: [
           {
             name: "button",
-            type: "registry:block",
+            type: "registry:ui",
           },
         ],
       }),
@@ -401,7 +387,7 @@ describe("readRegistryWithIncludes", () => {
         items: [
           {
             name: "login-form",
-            type: "registry:block",
+            type: "registry:ui",
             registryDependencies: [
               "button",
               "@acme/button",

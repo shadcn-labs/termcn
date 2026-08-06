@@ -5,26 +5,15 @@ import fg from "fast-glob";
 import { loadConfig, type ConfigLoaderSuccessResult } from "tsconfig-paths";
 import { z } from "zod";
 
-import { parsePresetStyle, type PresetBase } from "@/src/preset/preset";
 import { BUILTIN_REGISTRIES } from "@/src/registry/constants";
 import {
   configSchema,
   rawConfigSchema,
   workspaceConfigSchema,
 } from "@/src/schema";
-import { getProjectInfo } from "@/src/utils/get-project-info";
 import { highlighter } from "@/src/utils/highlighter";
 import { resolveImportWithMetadata } from "@/src/utils/resolve-import";
 
-export const DEFAULT_STYLE = "ink";
-export const DEFAULT_COMPONENTS = "@/components";
-export const DEFAULT_UTILS = "@/lib/utils";
-export const DEFAULT_TAILWIND_CSS = "app/globals.css";
-export const DEFAULT_TAILWIND_CONFIG = "tailwind.config.js";
-export const DEFAULT_TAILWIND_BASE_COLOR = "slate";
-
-// TODO: Figure out if we want to support all cosmiconfig formats.
-// A simple components.json file would be nice.
 export const explorer = cosmiconfig("components", {
   searchPlaces: ["components.json"],
 });
@@ -36,11 +25,6 @@ export async function getConfig(cwd: string) {
 
   if (!config) {
     return null;
-  }
-
-  // Set default icon library if not provided.
-  if (!config.iconLibrary) {
-    config.iconLibrary = config.style === "new-york" ? "radix" : "lucide";
   }
 
   return await resolveConfigPaths(cwd, config);
@@ -102,15 +86,9 @@ export async function resolveConfigPaths(
     ...config,
     resolvedPaths: {
       cwd,
-      tailwindConfig: config.tailwind.config
-        ? path.resolve(cwd, config.tailwind.config)
-        : "",
-      tailwindCss: path.resolve(cwd, config.tailwind.css),
       utils: resolvedUtils,
       components: resolvedComponents,
       ui: resolvedUi,
-      // TODO: Make this configurable.
-      // For now, we assume the lib and hooks directories are one level up from the components directory.
       lib: resolvedLib,
       hooks: resolvedHooks,
     },
@@ -317,23 +295,6 @@ export function findCommonRoot(cwd: string, resolvedPath: string) {
   return commonParts.join(path.sep);
 }
 
-// TODO: Cache this call.
-export async function getTargetStyleFromConfig(cwd: string, fallback: string) {
-  const projectInfo = await getProjectInfo(cwd);
-  return projectInfo?.tailwindVersion === "v4" ? "new-york-v4" : fallback;
-}
-
-export function getBase(style: string | undefined): PresetBase {
-  // An undefined style means no existing config, so default to base.
-  // Any defined style, including empty and unprefixed legacy values
-  // (new-york, new-york-v4, default), stays radix.
-  if (style === undefined) {
-    return "base";
-  }
-
-  return parsePresetStyle(style).base ?? "radix";
-}
-
 export type DeepPartial<T> = {
   [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];
 };
@@ -349,8 +310,6 @@ export function createConfig(partial?: DeepPartial<Config>): Config {
   const defaultConfig: Config = {
     resolvedPaths: {
       cwd: process.cwd(),
-      tailwindConfig: "",
-      tailwindCss: "",
       utils: "",
       components: "",
       ui: "",
@@ -358,13 +317,6 @@ export function createConfig(partial?: DeepPartial<Config>): Config {
       hooks: "",
     },
     style: "ink",
-    tailwind: {
-      config: "",
-      css: "",
-      baseColor: "",
-      cssVariables: false,
-    },
-    rsc: false,
     tsx: true,
     aliases: {
       components: "",
@@ -383,10 +335,6 @@ export function createConfig(partial?: DeepPartial<Config>): Config {
       resolvedPaths: {
         ...defaultConfig.resolvedPaths,
         ...(partial.resolvedPaths || {}),
-      },
-      tailwind: {
-        ...defaultConfig.tailwind,
-        ...(partial.tailwind || {}),
       },
       aliases: {
         ...defaultConfig.aliases,

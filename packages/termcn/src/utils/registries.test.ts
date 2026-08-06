@@ -11,9 +11,11 @@ vi.mock("@/src/registry/namespaces", () => ({
 }));
 
 vi.mock("@/src/registry/api", () => ({
-  getRegistriesIndex: vi.fn().mockResolvedValue({
-    "@foo": "https://foo.com/r/{name}.json",
-  }),
+  getRegistries: vi
+    .fn()
+    .mockResolvedValue([
+      { name: "@foo", url: "https://foo.com/r/{name}.json" },
+    ]),
 }));
 
 vi.mock("@/src/utils/spinner", () => ({
@@ -38,15 +40,7 @@ afterEach(() => {
 
 const baseConfig: Config = {
   $schema: "",
-  style: "new-york",
-  tailwind: {
-    config: "",
-    css: "",
-    baseColor: "",
-    cssVariables: true,
-    prefix: "",
-  },
-  rsc: false,
+  style: "ink",
   tsx: true,
   aliases: {
     components: "@/components",
@@ -58,8 +52,6 @@ const baseConfig: Config = {
   registries: {},
   resolvedPaths: {
     cwd: "/tmp/test-project",
-    tailwindConfig: "",
-    tailwindCss: "",
     utils: "",
     components: "",
     lib: "",

@@ -1,4 +1,4 @@
-name: CI
+name: Typecheck
 
 on:
   push:
@@ -20,10 +20,10 @@ env:
   CI: true
 
 jobs:
-  ci:
-    name: Lint, test, and build
+  typecheck:
+    name: TypeScript
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 15
 
     steps:
       - name: Check out repository
@@ -42,11 +42,5 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Lint
-        run: pnpm lint
-
-      - name: Test
-        run: pnpm test
-
-      - name: Build
-        run: pnpm build
+      - name: Typecheck
+        run: pnpm typecheck

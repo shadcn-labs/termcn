@@ -1,12 +1,9 @@
 import { execa } from "execa";
-import prompts from "prompts";
 
-import { TERMCN_URL } from "@/src/registry/constants";
 import { RegistryItem } from "@/src/schema";
 import { Config } from "@/src/utils/get-config";
 import { getPackageInfo } from "@/src/utils/get-package-info";
 import { getPackageManager } from "@/src/utils/get-package-manager";
-import { logger } from "@/src/utils/logger";
 import { spinner } from "@/src/utils/spinner";
 
 export async function updateDependencies(
@@ -19,18 +16,10 @@ export async function updateDependencies(
   }
 ) {
   const packageInfo = getPackageInfo(config.resolvedPaths.cwd, false);
-  const packageManager = await getUpdateDependenciesPackageManager(config);
+  const packageManager = await getPackageManager(config.resolvedPaths.cwd);
 
-  // Expo resolves its own SDK-compatible versions via `expo install`, so for
-  // Expo projects we still dedupe requests but must not skip already declared
-  // dependencies — otherwise we'd block intentional version alignment.
-  const skipInstalled = packageManager !== "expo";
-  dependencies = normalizeDependencyRequests(dependencies, packageInfo, {
-    skipInstalled,
-  });
-  devDependencies = normalizeDependencyRequests(devDependencies, packageInfo, {
-    skipInstalled,
-  });
+  dependencies = normalizeDependencyRequests(dependencies, packageInfo);
+  devDependencies = normalizeDependencyRequests(devDependencies, packageInfo);
 
   if (!dependencies?.length && !devDependencies?.length) {
     return;
@@ -46,42 +35,13 @@ export async function updateDependencies(
     silent: options.silent,
   })?.start();
 
-  // Offer to use --force or --legacy-peer-deps if using React 19 with npm.
-  let flag = "";
-  if (shouldPromptForNpmFlag(config) && packageManager === "npm") {
-    if (options.silent || !options.interactive) {
-      flag = "force";
-    } else {
-      dependenciesSpinner.stopAndPersist();
-      logger.warn(
-        `\nIt looks like you are using React 19. \nSome packages may fail to install due to peer dependency issues in npm (see ${TERMCN_URL}/react-19).\n`
-      );
-      const confirmation = await prompts([
-        {
-          type: "select",
-          name: "flag",
-          message: "How would you like to proceed?",
-          choices: [
-            { title: "Use --force", value: "force" },
-            { title: "Use --legacy-peer-deps", value: "legacy-peer-deps" },
-          ],
-        },
-      ]);
-
-      if (confirmation) {
-        flag = confirmation.flag;
-      }
-    }
-  }
-
   dependenciesSpinner?.start();
 
   await installWithPackageManager(
     packageManager,
     dependencies,
     devDependencies,
-    config.resolvedPaths.cwd,
-    flag
+    config.resolvedPaths.cwd
   );
 
   dependenciesSpinner?.succeed();
@@ -100,8 +60,7 @@ export async function updateDependencies(
  */
 function normalizeDependencyRequests(
   dependencies: RegistryItem["dependencies"] = [],
-  packageInfo: ReturnType<typeof getPackageInfo>,
-  { skipInstalled = true }: { skipInstalled?: boolean } = {}
+  packageInfo: ReturnType<typeof getPackageInfo>
 ) {
   const installedDependencies = new Set([
     ...Object.keys(packageInfo?.dependencies ?? {}),
@@ -128,7 +87,6 @@ function normalizeDependencyRequests(
     // Bare name that is already declared in package.json -> skip so we never
     // rewrite the existing specifier (this is the #10525 fix).
     if (
-      skipInstalled &&
       !packageRequest.hasSpecifier &&
       installedDependencies.has(packageRequest.name)
     ) {
@@ -169,35 +127,6 @@ function parsePackageRequest(dependency: string) {
   };
 }
 
-function shouldPromptForNpmFlag(config: Config) {
-  const packageInfo = getPackageInfo(config.resolvedPaths.cwd, false);
-
-  if (!packageInfo?.dependencies?.react) {
-    return false;
-  }
-
-  const hasReact19 = /^(?:\^|~)?19(?:\.\d+)*(?:-.*)?$/.test(
-    packageInfo.dependencies.react
-  );
-  const hasReactDayPicker8 =
-    packageInfo.dependencies["react-day-picker"]?.startsWith("8");
-
-  return hasReact19 && hasReactDayPicker8;
-}
-
-async function getUpdateDependenciesPackageManager(config: Config) {
-  const expoVersion = getPackageInfo(config.resolvedPaths.cwd, false)
-    ?.dependencies?.expo;
-
-  if (expoVersion) {
-    // Ensures package versions match the React Native version.
-    // https://docs.expo.dev/more/expo-cli/#install
-    return "expo";
-  }
-
-  return getPackageManager(config.resolvedPaths.cwd);
-}
-
 /**
  * Registry-supplied dependency strings are forwarded directly into the package
  * manager's argument list. A specifier beginning with "-" would be interpreted
@@ -217,24 +146,17 @@ export function assertSafeDependencies(deps: string[]) {
 }
 
 async function installWithPackageManager(
-  packageManager: Awaited<
-    ReturnType<typeof getUpdateDependenciesPackageManager>
-  >,
+  packageManager: string,
   dependencies: string[],
   devDependencies: string[],
-  cwd: string,
-  flag?: string
+  cwd: string
 ) {
   if (packageManager === "npm") {
-    return installWithNpm(dependencies, devDependencies, cwd, flag);
+    return installWithNpm(dependencies, devDependencies, cwd);
   }
 
   if (packageManager === "deno") {
     return installWithDeno(dependencies, devDependencies, cwd);
-  }
-
-  if (packageManager === "expo") {
-    return installWithExpo(dependencies, devDependencies, cwd);
   }
 
   assertSafeDependencies(dependencies);
@@ -256,32 +178,17 @@ async function installWithPackageManager(
 async function installWithNpm(
   dependencies: string[],
   devDependencies: string[],
-  cwd: string,
-  flag?: string
+  cwd: string
 ) {
   assertSafeDependencies(dependencies);
   assertSafeDependencies(devDependencies);
 
   if (dependencies.length) {
-    await execa(
-      "npm",
-      ["install", ...(flag ? [`--${flag}`] : []), "--", ...dependencies],
-      { cwd }
-    );
+    await execa("npm", ["install", "--", ...dependencies], { cwd });
   }
 
   if (devDependencies.length) {
-    await execa(
-      "npm",
-      [
-        "install",
-        ...(flag ? [`--${flag}`] : []),
-        "-D",
-        "--",
-        ...devDependencies,
-      ],
-      { cwd }
-    );
+    await execa("npm", ["install", "-D", "--", ...devDependencies], { cwd });
   }
 }
 
@@ -302,24 +209,5 @@ async function installWithDeno(
       ["add", "-D", ...devDependencies.map((dep) => `npm:${dep}`)],
       { cwd }
     );
-  }
-}
-
-async function installWithExpo(
-  dependencies: string[],
-  devDependencies: string[],
-  cwd: string
-) {
-  assertSafeDependencies(dependencies);
-  assertSafeDependencies(devDependencies);
-
-  if (dependencies.length) {
-    await execa("npx", ["expo", "install", "--", ...dependencies], { cwd });
-  }
-
-  if (devDependencies.length) {
-    await execa("npx", ["expo", "install", "-- -D", "--", ...devDependencies], {
-      cwd,
-    });
   }
 }

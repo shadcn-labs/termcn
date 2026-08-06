@@ -16,7 +16,7 @@ import { getTargetAliasKey } from "@/src/utils/target-aliases";
 
 export interface AddRegistryItemsOptions extends Pick<
   AddComponentsOptions,
-  "overwrite" | "overwriteCssVars" | "silent" | "skipFonts" | "path"
+  "overwrite" | "silent" | "path"
 > {
   /** The project directory. Defaults to the current working directory. */
   cwd?: string;
@@ -49,7 +49,7 @@ export async function addRegistryItems(
         let config =
           projectConfig ??
           createConfig({
-            style: "new-york",
+            style: "ink",
             resolvedPaths: { cwd },
           });
         let resolvedTree:
@@ -85,8 +85,6 @@ export async function addRegistryItems(
         await addComponents(items, config, {
           ...options,
           interactive: false,
-          overwriteCssVars:
-            options.overwriteCssVars ?? (projectConfig ? undefined : false),
           resolvedTree,
         });
       } finally {

@@ -2,7 +2,7 @@ import path from "path";
 
 import fs from "fs-extra";
 
-import { getRegistriesIndex } from "@/src/registry/api";
+import { getRegistries } from "@/src/registry/api";
 import { BUILTIN_REGISTRIES } from "@/src/registry/constants";
 import { resolveRegistryNamespaces } from "@/src/registry/namespaces";
 import { rawConfigSchema } from "@/src/registry/schema";
@@ -41,7 +41,7 @@ export async function ensureRegistriesInConfig(
 
   // We'll fail silently if we can't fetch the registry index.
   // The error handling by caller will guide user to add the missing registries.
-  const registryIndex = await getRegistriesIndex({
+  const registryIndex = await getRegistries({
     useCache: process.env.NODE_ENV !== "development",
   });
 
@@ -54,8 +54,9 @@ export async function ensureRegistriesInConfig(
 
   const foundRegistries: Record<string, string> = {};
   for (const registry of missingRegistries) {
-    if (registryIndex[registry]) {
-      foundRegistries[registry] = registryIndex[registry];
+    const match = registryIndex.find((entry) => entry.name === registry);
+    if (match) {
+      foundRegistries[registry] = match.url;
     }
   }
 

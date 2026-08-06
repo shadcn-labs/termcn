@@ -1,6 +1,7 @@
 import fuzzysort from "fuzzysort";
 import { z } from "zod";
 
+import { isUrl } from "@/src/registry/utils";
 import {
   registryItemTypeSchema,
   searchResultErrorSchema,
@@ -232,15 +233,6 @@ function searchItems<
   return z.array(searchableItemSchema).parse(results);
 }
 
-function isUrl(string: string): boolean {
-  try {
-    new URL(string);
-    return true;
-  } catch {
-    return false;
-  }
-}
-
 // Builds the registry item name for the add command.
 // For namespaced registries, returns "registry/item".
 // For URL registries, replaces "registry" with the item name in the URL.
@@ -309,7 +301,7 @@ export function buildRegistryItemNameFromRegistry(
   return hostPart + updatedPath + updatedQuery;
 }
 
-export const SEARCH_RESULT_DESCRIPTION_MAX_LENGTH = 80;
+const SEARCH_RESULT_DESCRIPTION_MAX_LENGTH = 80;
 
 export function formatSearchResultType(type?: string) {
   if (!type) {
@@ -336,7 +328,7 @@ export function findUnknownSearchTypes(types: string[]): string[] {
   );
 }
 
-export function formatSearchResultDescription(
+function formatSearchResultDescription(
   description: string,
   maxLength = SEARCH_RESULT_DESCRIPTION_MAX_LENGTH
 ) {
