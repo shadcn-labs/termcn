@@ -23,13 +23,13 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
 
       # Build publishable packages before publishing.
-      - run: pnpm --filter termcn build
+      - run: pnpm build
 
       # Versions when pending .tegami/*.md entries exist (opens a Version
       # Packages PR); otherwise publishes from .tegami/publish-lock.yaml and
