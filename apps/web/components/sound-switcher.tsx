@@ -1,41 +1,40 @@
 "use client";
 
-import { MonitorIcon, MoonIcon, SunIcon } from "lucide-react";
-import { useTheme } from "next-themes";
+import { Volume2, VolumeX } from "lucide-react";
 
 import { useFeedback } from "@/hooks/use-feedback";
 import { useMounted } from "@/hooks/use-mounted";
+import { useSoundEnabled } from "@/hooks/use-sound-toggle";
 import { cn } from "@/lib/utils";
 
-const THEME_OPTIONS = [
-  { icon: MonitorIcon, value: "system" },
-  { icon: SunIcon, value: "light" },
-  { icon: MoonIcon, value: "dark" },
+const SOUND_OPTIONS = [
+  { icon: Volume2, label: "on", value: true },
+  { icon: VolumeX, label: "off", value: false },
 ] as const;
 
-const ModeSwitcher = () => {
-  const { theme, setTheme } = useTheme();
+const SoundSwitcher = () => {
+  const [value, setValue] = useSoundEnabled();
   const isMounted = useMounted();
   const feedbackOn = useFeedback({ sound: "toggleOn" });
   const feedbackOff = useFeedback({ sound: "toggleOff" });
 
   if (!isMounted) {
-    return <div className="flex h-8 w-24" />;
+    return <div className="flex h-8 w-20" />;
   }
 
   return (
     <div
       className="inline-flex items-center rounded-full bg-background inset-ring-1 inset-ring-border"
       role="radiogroup"
-      aria-label="Theme"
+      aria-label="Sound"
     >
-      {THEME_OPTIONS.map((option) => {
+      {SOUND_OPTIONS.map((option) => {
         const Icon = option.icon;
-        const isActive = theme === option.value;
+        const isActive = value === option.value;
 
         return (
           <button
-            key={option.value}
+            key={option.label}
             type="button"
             data-active={isActive}
             className={cn(
@@ -43,14 +42,17 @@ const ModeSwitcher = () => {
             )}
             role="radio"
             aria-checked={isActive}
-            aria-label={`Switch to ${option.value} theme`}
+            aria-label={`Switch sound ${option.label}`}
             onClick={() => {
-              if (option.value === "dark") {
-                feedbackOff();
-              } else {
-                feedbackOn();
+              if (option.value === value) {
+                return;
               }
-              setTheme(option.value);
+              if (option.value) {
+                feedbackOn();
+              } else {
+                feedbackOff();
+              }
+              setValue(option.value);
             }}
           >
             <Icon />
@@ -61,4 +63,4 @@ const ModeSwitcher = () => {
   );
 };
 
-export { ModeSwitcher };
+export { SoundSwitcher };
