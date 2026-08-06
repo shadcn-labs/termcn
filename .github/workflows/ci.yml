@@ -43,10 +43,10 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Lint
-        run: pnpm lint
+        run: pnpm check
 
       - name: Test
-        run: pnpm test
+        run: pnpm --filter termcn test
 
       - name: Build
-        run: pnpm build
+        run: pnpm --filter termcn build

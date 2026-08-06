@@ -29,7 +29,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       # Build publishable packages before publishing.
-      - run: pnpm build
+      - run: pnpm --filter termcn build
 
       # Versions when pending .tegami/*.md entries exist (opens a Version
       # Packages PR); otherwise publishes from .tegami/publish-lock.yaml and
