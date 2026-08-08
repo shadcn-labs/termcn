@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronDownIcon } from "lucide-react";
-import { useCallback, useRef, useState } from "react";
+import { useState } from "react";
 
 import type { ArrowUpRightIconHandle } from "@/components/animated-icons/arrow-up-right";
 import { ArrowUpRightIcon } from "@/components/animated-icons/arrow-up-right";
@@ -20,17 +20,31 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { LABS_LATEST, LABS_NAV_SECTIONS } from "@/constants/nav";
-import type { LabsNavLink } from "@/constants/nav";
+import type { LabsNavLink as LabsNavLinkItem } from "@/constants/nav";
 import { SITE } from "@/constants/site";
+import { useIconAnimation } from "@/hooks/use-icon-animation";
 import { cn } from "@/lib/utils";
 
-const SECTION_WIDTH: Record<string, string> = {
+type SectionId = (typeof LABS_NAV_SECTIONS)[number]["id"];
+
+const SECTION_WIDTH: Partial<Record<SectionId, string>> = {
   registries: "w-40",
   skills: "w-72",
 };
 
+const latestCardClassName = cn(
+  "flex flex-col gap-4 rounded-lg border border-border bg-background p-4",
+  "text-base font-normal no-underline transition-colors",
+  "hover:border-foreground/25 hover:bg-background focus:bg-background"
+);
+
+interface LinkAnimationProps {
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
+}
+
 const SectionTitle = ({ children }: { children: React.ReactNode }) => (
-  <div className="text-muted-foreground text-sm font-medium">{children}</div>
+  <div className="text-sm font-medium text-muted-foreground">{children}</div>
 );
 
 const ExternalLinkLabel = ({
@@ -54,202 +68,76 @@ const ExternalLinkLabel = ({
   </>
 );
 
-/** Full-width row hit target — matches Chat SDK mega-menu outlines. */
-const desktopLinkClassName =
-  "flex w-full flex-row items-center gap-1 whitespace-nowrap rounded-none bg-transparent p-0 text-base font-normal leading-normal underline-offset-4 decoration-muted-foreground/50 decoration-1 hover:bg-transparent hover:underline focus:bg-transparent focus:underline data-[active=true]:bg-transparent";
-
-const DesktopNavLink = ({ item }: { item: LabsNavLink }) => {
-  const iconRef = useRef<ArrowUpRightIconHandle>(null);
-
-  const handleMouseEnter = useCallback(() => {
-    iconRef.current?.startAnimation();
-  }, []);
-
-  const handleMouseLeave = useCallback(() => {
-    iconRef.current?.stopAnimation();
-  }, []);
-
-  return (
-    <NavigationMenuLink
-      href={item.href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={desktopLinkClassName}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      <ExternalLinkLabel name={item.name} iconRef={iconRef} size={16} />
-    </NavigationMenuLink>
-  );
-};
-
-const MobileNavLink = ({
+const LabsNavLink = ({
   item,
-  onNavigate,
+  iconSize = 16,
+  children,
 }: {
-  item: LabsNavLink;
-  onNavigate: () => void;
+  item: LabsNavLinkItem;
+  iconSize?: number;
+  children: (
+    props: LinkAnimationProps & { label: React.ReactNode }
+  ) => React.ReactNode;
 }) => {
-  const iconRef = useRef<ArrowUpRightIconHandle>(null);
+  const { iconRef, onMouseEnter, onMouseLeave } =
+    useIconAnimation<ArrowUpRightIconHandle>();
 
-  const handleMouseEnter = useCallback(() => {
-    iconRef.current?.startAnimation();
-  }, []);
-
-  const handleMouseLeave = useCallback(() => {
-    iconRef.current?.stopAnimation();
-  }, []);
-
-  return (
-    <a
-      href={item.href}
-      target="_blank"
-      rel="noopener noreferrer"
-      onClick={onNavigate}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      className="inline-flex items-center gap-1 text-2xl font-medium"
-    >
-      <ExternalLinkLabel name={item.name} iconRef={iconRef} size={24} />
-    </a>
-  );
+  return children({
+    label: (
+      <ExternalLinkLabel name={item.name} iconRef={iconRef} size={iconSize} />
+    ),
+    onMouseEnter,
+    onMouseLeave,
+  });
 };
 
-const LatestCardContent = ({
+const LatestCard = ({
   item,
-  iconRef,
-  textClassName,
   nameClassName,
+  textClassName,
+  children,
 }: {
-  item: LabsNavLink;
-  iconRef: React.RefObject<ArrowUpRightIconHandle | null>;
-  textClassName?: string;
+  item: LabsNavLinkItem;
   nameClassName?: string;
-}) => (
-  <>
-    <span
-      className={cn(
-        "flex items-center justify-center rounded-md bg-muted text-xl font-medium",
-        nameClassName ?? "min-h-24 w-full"
-      )}
-    >
-      {item.name}
-    </span>
-    {item.description ? (
+  textClassName?: string;
+  children: (
+    props: LinkAnimationProps & { content: React.ReactNode }
+  ) => React.ReactNode;
+}) => {
+  const { iconRef, onMouseEnter, onMouseLeave } =
+    useIconAnimation<ArrowUpRightIconHandle>();
+
+  const content = (
+    <>
       <span
         className={cn(
-          "inline-flex items-center gap-1 text-sm text-foreground",
-          textClassName
+          "flex items-center justify-center rounded-md bg-muted text-base font-medium",
+          nameClassName ?? "min-h-24 w-full"
         )}
       >
-        {item.description}
-        <ArrowUpRightIcon
-          ref={iconRef}
-          size={16}
-          className="inline-flex shrink-0"
-        />
+        {item.name}
       </span>
-    ) : (
-      <ExternalLinkLabel name={item.name} iconRef={iconRef} size={16} />
-    )}
-  </>
-);
-
-const latestCardLinkClassName =
-  "flex flex-col gap-3 rounded-lg border border-border bg-background p-4 text-base font-normal no-underline transition-colors hover:border-foreground/25 hover:bg-background focus:bg-background";
-
-const MobileLatestCard = ({
-  item,
-  onNavigate,
-}: {
-  item: LabsNavLink;
-  onNavigate: () => void;
-}) => {
-  const iconRef = useRef<ArrowUpRightIconHandle>(null);
-
-  const handleMouseEnter = useCallback(() => {
-    iconRef.current?.startAnimation();
-  }, []);
-
-  const handleMouseLeave = useCallback(() => {
-    iconRef.current?.stopAnimation();
-  }, []);
-
-  return (
-    <a
-      href={item.href}
-      target="_blank"
-      rel="noopener noreferrer"
-      onClick={onNavigate}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      className={cn(latestCardLinkClassName, "w-full")}
-    >
-      <LatestCardContent
-        item={item}
-        iconRef={iconRef}
-        nameClassName="min-h-24 w-full"
-        textClassName="text-base"
-      />
-    </a>
+      {item.description ? (
+        <span
+          className={cn(
+            "inline-flex items-center gap-1 text-sm text-foreground",
+            textClassName
+          )}
+        >
+          {item.description}
+          <ArrowUpRightIcon
+            ref={iconRef}
+            size={16}
+            className="inline-flex shrink-0"
+          />
+        </span>
+      ) : (
+        <ExternalLinkLabel name={item.name} iconRef={iconRef} />
+      )}
+    </>
   );
-};
 
-const LatestCardLink = ({
-  item,
-  className,
-  onNavigate,
-  asNavigationMenuLink = false,
-}: {
-  item: LabsNavLink;
-  className?: string;
-  onNavigate?: () => void;
-  asNavigationMenuLink?: boolean;
-}) => {
-  const iconRef = useRef<ArrowUpRightIconHandle>(null);
-
-  const handleMouseEnter = useCallback(() => {
-    iconRef.current?.startAnimation();
-  }, []);
-
-  const handleMouseLeave = useCallback(() => {
-    iconRef.current?.stopAnimation();
-  }, []);
-
-  const linkClassName = cn(latestCardLinkClassName, "w-[220px]", className);
-
-  if (asNavigationMenuLink) {
-    return (
-      <NavigationMenuLink
-        href={item.href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={linkClassName}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
-        <LatestCardContent item={item} iconRef={iconRef} />
-      </NavigationMenuLink>
-    );
-  }
-
-  return (
-    <a
-      href={item.href}
-      target="_blank"
-      rel="noopener noreferrer"
-      onClick={onNavigate}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      className={linkClassName}
-    >
-      <LatestCardContent
-        item={item}
-        iconRef={iconRef}
-        textClassName="text-2xl font-medium"
-      />
-    </a>
-  );
+  return children({ content, onMouseEnter, onMouseLeave });
 };
 
 const DesktopSection = ({
@@ -258,7 +146,7 @@ const DesktopSection = ({
   className,
 }: {
   title: string;
-  items: readonly LabsNavLink[];
+  items: readonly LabsNavLinkItem[];
   className?: string;
 }) => (
   <div className={cn("flex flex-col gap-3", className)}>
@@ -266,7 +154,26 @@ const DesktopSection = ({
     <ul className="flex flex-col gap-1">
       {items.map((item) => (
         <li key={item.href} className="w-full">
-          <DesktopNavLink item={item} />
+          <LabsNavLink item={item}>
+            {({ label, onMouseEnter, onMouseLeave }) => (
+              <NavigationMenuLink
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(
+                  "flex w-full flex-row items-center gap-1 whitespace-nowrap rounded-none",
+                  "bg-transparent p-0 text-base font-normal leading-normal",
+                  "underline-offset-4 decoration-muted-foreground/50 decoration-1",
+                  "hover:bg-transparent hover:underline focus:bg-transparent focus:underline",
+                  "data-[active=true]:bg-transparent"
+                )}
+                onMouseEnter={onMouseEnter}
+                onMouseLeave={onMouseLeave}
+              >
+                {label}
+              </NavigationMenuLink>
+            )}
+          </LabsNavLink>
         </li>
       ))}
     </ul>
@@ -275,6 +182,7 @@ const DesktopSection = ({
 
 const LabsNavMobile = () => {
   const [open, setOpen] = useState(false);
+  const close = () => setOpen(false);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -304,21 +212,46 @@ const LabsNavMobile = () => {
         <div className="flex flex-col gap-12 overflow-auto px-6 py-6">
           <div className="flex flex-col gap-4">
             <SectionTitle>Latest</SectionTitle>
-            <MobileLatestCard
+            <LatestCard
               item={LABS_LATEST}
-              onNavigate={() => setOpen(false)}
-            />
+              nameClassName="min-h-16 text-2xl"
+              textClassName="text-base"
+            >
+              {({ content, onMouseEnter, onMouseLeave }) => (
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={LABS_LATEST.href}
+                  className={cn(latestCardClassName, "w-full")}
+                  onClick={close}
+                  onMouseEnter={onMouseEnter}
+                  onMouseLeave={onMouseLeave}
+                >
+                  {content}
+                </a>
+              )}
+            </LatestCard>
           </div>
           {LABS_NAV_SECTIONS.map((section) => (
             <div key={section.id} className="flex flex-col gap-4">
               <SectionTitle>{section.title}</SectionTitle>
               <div className="flex flex-col gap-3">
                 {section.items.map((item) => (
-                  <MobileNavLink
-                    key={item.href}
-                    item={item}
-                    onNavigate={() => setOpen(false)}
-                  />
+                  <LabsNavLink key={item.href} item={item} iconSize={24}>
+                    {({ label, onMouseEnter, onMouseLeave }) => (
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={item.href}
+                        className="inline-flex items-center gap-1 text-2xl font-medium"
+                        onClick={close}
+                        onMouseEnter={onMouseEnter}
+                        onMouseLeave={onMouseLeave}
+                      >
+                        {label}
+                      </a>
+                    )}
+                  </LabsNavLink>
                 ))}
               </div>
             </div>
@@ -351,17 +284,43 @@ const LabsNavDesktop = () => {
       >
         <NavigationMenuList className="justify-start">
           <NavigationMenuItem value="labs">
-            <NavigationMenuTrigger className="h-auto gap-1 bg-transparent px-3 py-1.5 text-base font-medium hover:bg-transparent hover:text-foreground focus:bg-transparent focus:text-foreground data-[state=open]:bg-transparent data-[state=open]:text-foreground data-[state=open]:hover:bg-transparent data-[state=open]:focus:bg-transparent">
+            <NavigationMenuTrigger
+              className={cn(
+                "h-auto gap-1 bg-transparent px-3 py-1.5 text-base font-medium",
+                "hover:bg-transparent hover:text-foreground focus:bg-transparent focus:text-foreground",
+                "data-[state=open]:bg-transparent data-[state=open]:text-foreground",
+                "data-[state=open]:hover:bg-transparent data-[state=open]:focus:bg-transparent"
+              )}
+            >
               {SITE.NAME}
             </NavigationMenuTrigger>
-            {/* Chat SDK-style fixed panel: flush under header, hover bridge, no zoom. */}
-            <NavigationMenuContent className="fixed inset-x-0 top-(--header-height) z-30 w-screen bg-background p-0 shadow-[0_1px_0_0_var(--border)] before:absolute before:inset-x-0 before:-top-3 before:h-3 before:content-[''] data-[motion^=from-]:animate-none data-[motion^=to-]:animate-none data-[state=closed]:hidden md:fixed md:w-screen dark:bg-black">
-              {/* Match header shell + brand button sm:px-3 so Registries aligns with Shadcn Labs. */}
-              <div className="container-wrapper 3xl:fixed:px-0 px-6">
-                <div className="3xl:fixed:container flex w-fit gap-8 py-4 pl-3">
+            <NavigationMenuContent
+              className={cn(
+                "fixed inset-x-0 top-(--header-height) z-30 w-screen bg-background p-0",
+                "shadow-[0_1px_0_0_var(--border)]",
+                "before:absolute before:inset-x-0 before:-top-3 before:h-3 before:content-['']",
+                "data-[motion^=from-]:animate-none data-[motion^=to-]:animate-none",
+                "data-[state=closed]:hidden md:fixed md:w-screen dark:bg-black"
+              )}
+            >
+              <div className="container-wrapper px-6">
+                <div className="flex gap-8 py-4 pl-3">
                   <div className="flex w-64 flex-col gap-3">
                     <SectionTitle>Latest</SectionTitle>
-                    <LatestCardLink item={LABS_LATEST} asNavigationMenuLink />
+                    <LatestCard item={LABS_LATEST} nameClassName="min-h-15">
+                      {({ content, onMouseEnter, onMouseLeave }) => (
+                        <NavigationMenuLink
+                          href={LABS_LATEST.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={cn(latestCardClassName, "w-55 gap-2 p-3")}
+                          onMouseEnter={onMouseEnter}
+                          onMouseLeave={onMouseLeave}
+                        >
+                          {content}
+                        </NavigationMenuLink>
+                      )}
+                    </LatestCard>
                   </div>
                   {LABS_NAV_SECTIONS.map((section) => (
                     <DesktopSection

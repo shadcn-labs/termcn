@@ -1,7 +1,7 @@
 "use client";
 
 import { EllipsisIcon, LinkIcon } from "lucide-react";
-import { useCallback, useMemo, useRef } from "react";
+import { useMemo } from "react";
 import { toast } from "sonner";
 
 import type { ShareIconHandle } from "@/components/animated-icons/share";
@@ -15,6 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
+import { useIconAnimation } from "@/hooks/use-icon-animation";
 
 export const DocsShareMenu = ({
   title,
@@ -23,7 +24,8 @@ export const DocsShareMenu = ({
   title: string;
   url: string;
 }) => {
-  const shareIconRef = useRef<ShareIconHandle>(null);
+  const { iconRef, onMouseEnter, onMouseLeave } =
+    useIconAnimation<ShareIconHandle>();
   const { copyToClipboard } = useCopyToClipboard();
 
   const absoluteUrl = useMemo(() => {
@@ -36,14 +38,6 @@ export const DocsShareMenu = ({
     return url;
   }, [url]);
 
-  const handleMouseEnter = useCallback(() => {
-    shareIconRef.current?.startAnimation();
-  }, []);
-
-  const handleMouseLeave = useCallback(() => {
-    shareIconRef.current?.stopAnimation();
-  }, []);
-
   const urlEncoded = encodeURIComponent(absoluteUrl);
 
   return (
@@ -53,10 +47,10 @@ export const DocsShareMenu = ({
           className="hidden sm:flex size-7 border-none active:scale-none"
           variant="secondary"
           size="icon-sm"
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
         >
-          <ShareIcon ref={shareIconRef} />
+          <ShareIcon ref={iconRef} />
         </Button>
       </DropdownMenuTrigger>
 
