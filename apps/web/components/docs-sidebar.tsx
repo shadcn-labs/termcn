@@ -13,8 +13,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { TOP_LEVEL_SECTIONS } from "@/constants/nav";
 import { ROUTES } from "@/constants/routes";
-import { TOP_LEVEL_SECTIONS } from "@/constants/site";
 import {
   getDocsSidebarPanel,
   isChartsFolder,
