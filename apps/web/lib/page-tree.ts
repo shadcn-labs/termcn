@@ -22,6 +22,10 @@ export interface TreeGroup {
   pages: PageTreePage[];
 }
 
+export interface FolderSection extends TreeGroup {
+  id: string;
+}
+
 export const getAllPagesFromFolder = (
   folder: PageTreeFolder
 ): PageTreePage[] => {
@@ -38,19 +42,20 @@ export const getAllPagesFromFolder = (
   return pages;
 };
 
-const matchesBase = (folder: PageTreeFolder, base: string): boolean =>
-  folder.$id === base ||
-  (typeof folder.name === "string" && folder.name.toLowerCase() === base);
-
-const findBaseFolder = (
+export const findChildFolder = (
   folder: PageTreeFolder,
-  base: string
+  name: string
 ): PageTreeFolder | undefined => {
   for (const child of folder.children) {
     if (child.type !== "folder") {
       continue;
     }
-    if (matchesBase(child, base)) {
+    if (
+      child.$id === name ||
+      String(child.$id ?? "").endsWith(`/${name}`) ||
+      (typeof child.name === "string" &&
+        child.name.toLowerCase() === name.toLowerCase())
+    ) {
       return child;
     }
   }
@@ -60,7 +65,7 @@ export const getCategoryFolders = (
   folder: PageTreeFolder,
   base: string
 ): PageTreeFolder[] => {
-  const baseFolder = findBaseFolder(folder, base);
+  const baseFolder = findChildFolder(folder, base);
   if (!baseFolder) {
     return [];
   }
@@ -75,7 +80,7 @@ export const getFolderPages = (
   base?: string
 ): PageTreePage[] => {
   if (base) {
-    const baseFolder = findBaseFolder(folder, base);
+    const baseFolder = findChildFolder(folder, base);
     if (!baseFolder) {
       return [];
     }
@@ -84,6 +89,57 @@ export const getFolderPages = (
   }
 
   return getAllPagesFromFolder(folder);
+};
+
+export const getFolderSections = (
+  folder: PageTreeFolder,
+  base: string
+): FolderSection[] => {
+  if (isComponentsFolder(folder)) {
+    return getCategoryFolders(folder, base).flatMap((category) => {
+      const pages = getFolderPages(category);
+      if (pages.length === 0) {
+        return [];
+      }
+
+      const fallbackId = String(category.name)
+        .trim()
+        .toLowerCase()
+        .replaceAll(" ", "-");
+
+      return [
+        {
+          id:
+            String(category.$id ?? "")
+              .split("/")
+              .at(-1) ?? fallbackId,
+          label: String(category.name),
+          pages,
+        },
+      ];
+    });
+  }
+
+  if (!isChartsFolder(folder)) {
+    return [];
+  }
+
+  const pages = getFolderPages(folder, base).filter(
+    (page) => page.url !== `${ROUTES.DOCS_CHARTS}/${base}`
+  );
+
+  return [
+    {
+      id: "basic",
+      label: "Basic",
+      pages: pages.filter((page) => !isDitherChartUrl(page.url)),
+    },
+    {
+      id: "dither",
+      label: "Dither",
+      pages: pages.filter((page) => isDitherChartUrl(page.url)),
+    },
+  ].filter((section) => section.pages.length > 0);
 };
 
 export const getCurrentBase = (pathname: string): string => {
@@ -119,38 +175,13 @@ export const getTreeGroups = (
       continue;
     }
 
-    if (isComponentsFolder(item)) {
-      for (const category of getCategoryFolders(item, currentBase)) {
-        const pages = getFolderPages(category);
-        if (pages.length > 0) {
-          groups.push({
-            label:
-              typeof category.name === "string"
-                ? category.name
-                : String(category.name),
-            pages,
-          });
-        }
-      }
-    } else if (isChartsFolder(item)) {
-      const chartPages = getFolderPages(item, currentBase).filter(
-        (page) => page.url !== `${ROUTES.DOCS_CHARTS}/${currentBase}`
-      );
-      const pageGroups = [
-        {
-          label: "Basic Charts",
-          pages: chartPages.filter((page) => !isDitherChartUrl(page.url)),
-        },
-        {
-          label: "Dither Charts",
-          pages: chartPages.filter((page) => isDitherChartUrl(page.url)),
-        },
-      ];
-
-      for (const group of pageGroups) {
-        if (group.pages.length > 0) {
-          groups.push({ label: group.label, pages: group.pages });
-        }
+    const isChartSection = isChartsFolder(item);
+    if (isComponentsFolder(item) || isChartSection) {
+      for (const section of getFolderSections(item, currentBase)) {
+        groups.push({
+          label: `${section.label}${isChartSection ? " Charts" : ""}`,
+          pages: section.pages,
+        });
       }
     } else if (isTemplatesFolder(item) || isThemesFolder(item)) {
       const pages = getFolderPages(item, currentBase);
