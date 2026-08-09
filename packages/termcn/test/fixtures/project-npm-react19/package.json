@@ -1,0 +1,11 @@
+{
+  "name": "test-cli-project-npm",
+  "version": "1.0.0",
+  "license": "MIT",
+  "author": "termcn",
+  "main": "index.js",
+  "dependencies": {
+    "react": "19.0.0",
+    "react-day-picker": "8.0.0"
+  }
+}

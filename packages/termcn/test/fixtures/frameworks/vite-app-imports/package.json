@@ -1,0 +1,12 @@
+{
+  "name": "vite-app-imports",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#custom/*": "./src/*"
+  },
+  "dependencies": {
+    "tailwindcss": "^4.1.11"
+  }
+}

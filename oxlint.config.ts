@@ -15,6 +15,7 @@ export default defineConfig({
     "apps/web/.web-kits/**",
     "apps/web/audio/**",
     "apps/web/types/opentui-react.d.ts",
+    "packages/termcn/**",
   ],
   overrides: [
     {
