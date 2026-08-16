@@ -7,9 +7,9 @@ export interface LabsNavLink {
 }
 
 export const LABS_LATEST = {
-  description: "Beautiful emails, made simple",
-  href: "https://emailcn.run",
-  name: "emailcn",
+  description: "Beautiful PDFs, made simple",
+  href: "https://pdfcn.dev",
+  name: "pdfcn",
 } as const satisfies LabsNavLink;
 
 export const LABS_REGISTRIES = [
@@ -17,6 +17,7 @@ export const LABS_REGISTRIES = [
   { href: "https://ogimagecn.com", name: "ogimagecn" },
   { href: "https://agentcn.run", name: "agentcn" },
   { href: "https://mcpcn.dev", name: "mcpcn" },
+  { href: "https://emailcn.run", name: "emailcn" },
 ] as const satisfies readonly LabsNavLink[];
 
 export const LABS_TEMPLATES = [
