@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="apps/web/public/og.png" alt="termcn banner" />
+  <img src="./.github/assets/gh.png" alt="termcn banner" />
 </p>
 
 <h1 align="center">termcn</h1>

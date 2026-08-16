@@ -32,9 +32,6 @@ const inkWebAdapterWebpack = path.resolve(
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   devIndicators: false,
-  experimental: {
-    viewTransition: true,
-  },
   headers() {
     const link = [
       '</.well-known/api-catalog>; rel="api-catalog"',
