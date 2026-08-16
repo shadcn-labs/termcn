@@ -3,10 +3,8 @@ import type { ReactNode } from "react";
 
 import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
 import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
-import {
-  resolveBorderStyle,
-  resolveStatusSymbol,
-} from "@/registry/bases/ink/lib/accessibility";
+import { resolveBorderStyle } from "@/registry/bases/ink/lib/terminal-style";
+import { resolveStatusSymbol } from "@/registry/bases/ink/lib/terminal-symbols";
 import type { BorderStyle } from "@/registry/bases/ink/ui/types";
 
 export type AlertVariant = "success" | "error" | "warning" | "info";

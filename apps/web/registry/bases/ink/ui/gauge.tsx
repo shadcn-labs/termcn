@@ -2,7 +2,7 @@ import { Box, Text } from "ink";
 
 import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
 import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
-import { toAsciiComponentText } from "@/registry/bases/ink/lib/accessibility";
+import { toAsciiComponentText } from "@/registry/bases/ink/lib/terminal-symbols";
 
 export type GaugeSize = "sm" | "md" | "lg";
 

@@ -5,7 +5,6 @@ import { useInteraction } from "@/registry/bases/ink/hooks/use-interaction";
 import { useMotion } from "@/registry/bases/ink/hooks/use-motion";
 import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
 import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
-import { resolveBorderStyle } from "@/registry/bases/ink/lib/accessibility";
 import {
   colorFor,
   easeInOutCubic,
@@ -33,6 +32,7 @@ import type {
   StackType,
   StrokeVariant,
 } from "@/registry/bases/ink/lib/dither-chart-utils";
+import { resolveBorderStyle } from "@/registry/bases/ink/lib/terminal-style";
 
 export type {
   AreaVariant,

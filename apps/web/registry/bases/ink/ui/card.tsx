@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 
 import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
 import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
-import { resolveBorderStyle } from "@/registry/bases/ink/lib/accessibility";
+import { resolveBorderStyle } from "@/registry/bases/ink/lib/terminal-style";
 import type { BorderStyle } from "@/registry/bases/ink/ui/types";
 
 export interface CardProps extends Omit<
