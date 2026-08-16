@@ -40,12 +40,7 @@ export const createPageMetadata = (
       : undefined;
   const resolvedTitle = ogTitle ?? title;
   const resolvedDescription = ogDescription ?? description;
-  const ogImageSearchParams = new URLSearchParams({ title: resolvedTitle });
-  if (resolvedDescription) {
-    ogImageSearchParams.set("description", resolvedDescription);
-  }
-  const resolvedOgImage =
-    ogImage ?? `${ROUTES.OG}?${ogImageSearchParams.toString()}`;
+  const resolvedOgImage = ogImage ?? SITE.OG_IMAGE;
 
   return {
     alternates: {
