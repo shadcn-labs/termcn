@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 
 import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
 import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
-import { resolveStatusSymbol } from "@/registry/bases/ink/lib/accessibility";
+import { resolveStatusSymbol } from "@/registry/bases/ink/lib/terminal-symbols";
 
 import { Spinner } from "./spinner";
 

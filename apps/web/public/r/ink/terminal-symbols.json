@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ink/terminal-symbols",
+  "title": "Terminal Symbols",
+  "description": "Unicode and ASCII symbols for terminal UI output.",
+  "files": [
+    {
+      "path": "registry/lib/terminal-symbols.ts",
+      "content": "export const resolveTerminalSymbol = (\n  unicode: boolean,\n  unicodeSymbol: string,\n  asciiSymbol: string\n): string => (unicode ? unicodeSymbol : asciiSymbol);\n\nexport type TerminalStatus =\n  | \"error\"\n  | \"info\"\n  | \"neutral\"\n  | \"pending\"\n  | \"success\"\n  | \"warning\";\n\nconst unicodeStatusSymbols: Record<TerminalStatus, string> = {\n  error: \"✗\",\n  info: \"ℹ\",\n  neutral: \"·\",\n  pending: \"○\",\n  success: \"✓\",\n  warning: \"⚠\",\n};\n\nconst asciiStatusSymbols: Record<TerminalStatus, string> = {\n  error: \"x\",\n  info: \"i\",\n  neutral: \"-\",\n  pending: \"o\",\n  success: \"v\",\n  warning: \"!\",\n};\n\nexport const resolveStatusSymbol = (\n  unicode: boolean,\n  status: TerminalStatus\n): string =>\n  unicode ? unicodeStatusSymbols[status] : asciiStatusSymbols[status];\n\nconst asciiComponentCharacters: Readonly<Record<string, string>> = {\n  \"·\": \"-\",\n  \"•\": \"*\",\n  \"…\": \"...\",\n  \"←\": \"<-\",\n  \"↑\": \"^\",\n  \"→\": \"->\",\n  \"↓\": \"v\",\n  \"↔\": \"<->\",\n  \"─\": \"-\",\n  \"━\": \"-\",\n  \"│\": \"|\",\n  \"┃\": \"|\",\n  \"┌\": \"+\",\n  \"┐\": \"+\",\n  \"└\": \"+\",\n  \"┘\": \"+\",\n  \"├\": \"+\",\n  \"┤\": \"+\",\n  \"┬\": \"+\",\n  \"┴\": \"+\",\n  \"┼\": \"+\",\n  \"═\": \"=\",\n  \"║\": \"|\",\n  \"╔\": \"+\",\n  \"╗\": \"+\",\n  \"╚\": \"+\",\n  \"╝\": \"+\",\n  \"╠\": \"+\",\n  \"╣\": \"+\",\n  \"╦\": \"+\",\n  \"╩\": \"+\",\n  \"╬\": \"+\",\n  \"╭\": \"+\",\n  \"╮\": \"+\",\n  \"╯\": \"+\",\n  \"╰\": \"+\",\n  \"╱\": \"/\",\n  \"╲\": \"\\\\\",\n  \"▀\": \"#\",\n  \"▄\": \"#\",\n  \"█\": \"#\",\n  \"░\": \".\",\n  \"▒\": \"+\",\n  \"▓\": \"#\",\n  \"■\": \"#\",\n  \"□\": \"[ ]\",\n  \"▪\": \"*\",\n  \"◉\": \"*\",\n  \"○\": \"o\",\n  \"●\": \"o\",\n};\n\nexport const toAsciiComponentText = (value: string): string =>\n  Array.from(\n    value,\n    (character) => asciiComponentCharacters[character] ?? character\n  ).join(\"\");\n",
+      "type": "registry:file",
+      "target": "lib/terminal-symbols.ts"
+    }
+  ],
+  "categories": [
+    "core"
+  ],
+  "type": "registry:file"
+}

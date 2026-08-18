@@ -3,10 +3,8 @@ import React, { Component } from "react";
 import type { ReactNode } from "react";
 
 import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
-import {
-  resolveBorderStyle,
-  resolveTerminalSymbol,
-} from "@/registry/bases/ink/lib/accessibility";
+import { resolveBorderStyle } from "@/registry/bases/ink/lib/terminal-style";
+import { resolveTerminalSymbol } from "@/registry/bases/ink/lib/terminal-symbols";
 
 export interface ErrorBoundaryProps {
   children: ReactNode;

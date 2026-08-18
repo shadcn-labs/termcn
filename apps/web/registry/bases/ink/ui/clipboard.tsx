@@ -9,7 +9,7 @@ import {
 import type { InteractionProps } from "@/registry/bases/ink/hooks/use-interaction";
 import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
 import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
-import { resolveBorderStyle } from "@/registry/bases/ink/lib/accessibility";
+import { resolveBorderStyle } from "@/registry/bases/ink/lib/terminal-style";
 
 export interface ClipboardProps extends InteractionProps {
   value: string;
