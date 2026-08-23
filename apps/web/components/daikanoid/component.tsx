@@ -121,8 +121,7 @@ export const Daikanoid = ({
     };
 
     const draw = () => {
-      context.fillStyle = colors.background;
-      context.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      context.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
       if (state.bricks.length === 0) {
         ui.showCompletion(context, colors, monoFont);

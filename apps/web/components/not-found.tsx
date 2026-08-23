@@ -124,7 +124,7 @@ export const NotFound = () => {
               <motion.div
                 layoutId={GAME_TRANSITION_NAME}
                 transition={gameTransition}
-                className="aspect-4/3 w-full overflow-hidden bg-background ring-1 ring-border"
+                className="aspect-4/3 w-full overflow-hidden bg-muted/35 ring-1 ring-border"
               >
                 <Daikanoid
                   autoFocus

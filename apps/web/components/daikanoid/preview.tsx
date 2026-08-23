@@ -32,12 +32,6 @@ const ARTWORK_CLASS_NAME = cn(
   "relative aspect-2/1 w-full overflow-hidden bg-muted/35 ring-1 ring-border"
 );
 
-const SQUARE_GRID_STYLE = {
-  backgroundImage:
-    'url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%274%27 height=%274%27 viewBox=%270 0 4 4%27%3E%3Crect width=%271%27 height=%271%27 fill=%27%23888888%27 fill-opacity=%27.22%27/%3E%3C/svg%3E")',
-  backgroundSize: "4px 4px",
-} satisfies React.CSSProperties;
-
 const Brick = ({ active }: { active: boolean }) => (
   <span aria-hidden className="relative aspect-square">
     {active && (
@@ -72,7 +66,7 @@ export const DaikanoidArtwork = ({
     role="img"
     aria-label="404"
     className={cn(ARTWORK_CLASS_NAME, className)}
-    style={{ ...SQUARE_GRID_STYLE, ...style }}
+    style={style}
     {...props}
   >
     <ArtworkBricks />
@@ -105,7 +99,7 @@ export const DaikanoidPreview = ({
         "group cursor-pointer outline-none transition-colors duration-150 hover:bg-muted/55 focus-visible:ring-2 focus-visible:ring-ring",
         className
       )}
-      style={{ ...SQUARE_GRID_STYLE, ...style }}
+      style={style}
       {...props}
     >
       <ArtworkBricks />
