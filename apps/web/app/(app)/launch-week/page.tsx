@@ -21,6 +21,7 @@ export const revalidate = false;
 export const metadata = createPageMetadata({
   description:
     "A permanent archive of termcn launch weeks and everything shipped during them.",
+  noIndex: true,
   path: ROUTES.LAUNCH_WEEK,
   title: "Launch Weeks",
 });
