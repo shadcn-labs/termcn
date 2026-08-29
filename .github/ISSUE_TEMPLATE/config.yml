@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Question / discussion
+    url: https://github.com/shadcn-labs/termcn/discussions
+    about: Ask questions and discuss ideas with the community.
+  - name: Discord
+    url: https://discord.gg/N6G36KhYK4
+    about: Chat with the community on Discord.

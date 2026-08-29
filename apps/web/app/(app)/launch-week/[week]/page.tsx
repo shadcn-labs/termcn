@@ -33,6 +33,7 @@ export const generateMetadata = async ({
 
   return createPageMetadata({
     description: week.description,
+    noIndex: true,
     path: getLaunchWeekHref(week),
     title: `${week.title}: ${formatLaunchWeekRange(week)}`,
   });
