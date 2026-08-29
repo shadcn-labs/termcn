@@ -12,8 +12,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { TOP_LEVEL_SECTIONS } from "@/constants/nav";
 import { ROUTES } from "@/constants/routes";
-import { TOP_LEVEL_SECTIONS } from "@/constants/site";
 import { useFeedback } from "@/hooks/use-feedback";
 import {
   getDocsSidebarPanel,
@@ -227,11 +227,11 @@ export const MobileNav = ({
         <Button
           variant="ghost"
           className={cn(
-            "extend-touch-target h-8 touch-manipulation items-center justify-start gap-2.5 !p-0 hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 active:bg-transparent dark:hover:bg-transparent",
+            "extend-touch-target size-8 touch-manipulation !p-0 hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 active:bg-transparent dark:hover:bg-transparent",
             className
           )}
         >
-          <div className="relative flex h-8 w-4 items-center justify-center">
+          <div className="relative flex size-8 items-center justify-center">
             <div className="relative size-4">
               <span
                 className={cn(
@@ -248,9 +248,6 @@ export const MobileNav = ({
             </div>
             <span className="sr-only">Toggle Menu</span>
           </div>
-          <span className="flex h-8 items-center text-lg leading-none font-medium">
-            Menu
-          </span>
         </Button>
       </PopoverTrigger>
       <PopoverContent
@@ -261,24 +258,19 @@ export const MobileNav = ({
         sideOffset={14}
       >
         <div className="flex flex-col gap-12 overflow-auto px-6 py-6">
-          <div className="flex flex-col gap-4">
-            <div className="text-muted-foreground text-sm font-medium">
-              Menu
-            </div>
-            <div className="flex flex-col gap-3">
-              <MobileLink href={ROUTES.HOME} onOpenChange={setOpen}>
-                Home
+          <div className="flex flex-col gap-3">
+            <MobileLink href={ROUTES.HOME} onOpenChange={setOpen}>
+              Home
+            </MobileLink>
+            {items.map((item) => (
+              <MobileLink
+                key={item.href}
+                href={item.href}
+                onOpenChange={setOpen}
+              >
+                {item.label}
               </MobileLink>
-              {items.map((item) => (
-                <MobileLink
-                  key={item.href}
-                  href={item.href}
-                  onOpenChange={setOpen}
-                >
-                  {item.label}
-                </MobileLink>
-              ))}
-            </div>
+            ))}
           </div>
           <div className="flex flex-col gap-4">
             <div className="text-sm font-medium text-muted-foreground">

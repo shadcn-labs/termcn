@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 import { FocusScope } from "@/registry/bases/ink/hooks/use-interaction";
 import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
 import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
-import { resolveBorderStyle } from "@/registry/bases/ink/lib/accessibility";
+import { resolveBorderStyle } from "@/registry/bases/ink/lib/terminal-style";
 
 export type DrawerEdge = "left" | "right" | "top" | "bottom";
 

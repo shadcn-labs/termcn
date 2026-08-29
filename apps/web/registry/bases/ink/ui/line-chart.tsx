@@ -2,10 +2,8 @@ import { Box, Text } from "ink";
 
 import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
 import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
-import {
-  resolveTerminalSymbol,
-  summarizeSeries,
-} from "@/registry/bases/ink/lib/accessibility";
+import { summarizeSeries } from "@/registry/bases/ink/lib/accessibility";
+import { resolveTerminalSymbol } from "@/registry/bases/ink/lib/terminal-symbols";
 
 export type LineChartDataPoint = number | { label?: string; value: number };
 

@@ -4,7 +4,7 @@ import React, { useState, useCallback } from "react";
 import { useInterval } from "@/registry/bases/ink/hooks/use-interval";
 import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
 import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
-import { toAsciiComponentText } from "@/registry/bases/ink/lib/accessibility";
+import { toAsciiComponentText } from "@/registry/bases/ink/lib/terminal-symbols";
 
 export interface ClockProps {
   format?: "12h" | "24h";

@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="apps/web/public/og.png" alt="termcn banner" />
+  <img src="./.github/assets/gh.png" alt="termcn banner" />
 </p>
 
 <h1 align="center">termcn</h1>
@@ -33,26 +33,38 @@
 - 🤖 **AI Components** — Chat messages, tool approvals, streaming text, and thinking blocks
 - 🎮 **Navigation** — Command palettes, tabs, menus, sidebars, and pagination
 
+## Community
+
+The termcn community lives on [GitHub](https://github.com/shadcn-labs/termcn), where you can ask questions, share ideas, and show what you've built.
+
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) to get the repo running locally and land a change, and use [issues](https://github.com/shadcn-labs/termcn/issues) and [discussions](https://github.com/shadcn-labs/termcn/discussions) to collaborate. By participating, you agree to the [Code of Conduct](./CODE_OF_CONDUCT.md).
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+## Security
+
+Please do not open public issues for security vulnerabilities. Follow [SECURITY.md](./SECURITY.md) and report them privately through GitHub Security Advisories.
 
 ## License
 
 [MIT](LICENSE)
 
+## Contributors
+
+[![Contributors](https://contrib.rocks/image?repo=shadcn-labs/termcn)](https://github.com/shadcn-labs/termcn/graphs/contributors)
+
+> Made with [contrib.rocks](https://contrib.rocks)
+
+## Stats
+
+![Stats](https://repobeats.axiom.co/api/embed/4747c91cd456748924a0cf5042248c2e9f3bdf57.svg "Repobeats analytics image")
+
 ## Star History
 
 <a href="https://www.star-history.com/?repos=shadcn-labs%2Ftermcn&type=date&legend=top-left">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=shadcn-labs/termcn&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=shadcn-labs/termcn&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=shadcn-labs/termcn&type=date&legend=top-left" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=shadcn-labs/termcn&type=date&theme=dark&legend=top-left&sealed_token=Y57mSprjn7uT0MjlKlSNyToEuYvZHvGxID6vUI9K_VxHA5vfhAINmbTs6nc_cVFLlt0P6GwGz8OJkwYLgsVqmPh2wBoP7wr2lLtQTaRXwdnm6n5eTclAfnbNtdNBGPmtOM1d0p_Dwp9sLRUxK489V0p-zb3lALJLEqde2MhcXciEPUsY8J-VKi28VfFq" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=shadcn-labs/termcn&type=date&legend=top-left&sealed_token=Y57mSprjn7uT0MjlKlSNyToEuYvZHvGxID6vUI9K_VxHA5vfhAINmbTs6nc_cVFLlt0P6GwGz8OJkwYLgsVqmPh2wBoP7wr2lLtQTaRXwdnm6n5eTclAfnbNtdNBGPmtOM1d0p_Dwp9sLRUxK489V0p-zb3lALJLEqde2MhcXciEPUsY8J-VKi28VfFq" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=shadcn-labs/termcn&type=date&legend=top-left&sealed_token=Y57mSprjn7uT0MjlKlSNyToEuYvZHvGxID6vUI9K_VxHA5vfhAINmbTs6nc_cVFLlt0P6GwGz8OJkwYLgsVqmPh2wBoP7wr2lLtQTaRXwdnm6n5eTclAfnbNtdNBGPmtOM1d0p_Dwp9sLRUxK489V0p-zb3lALJLEqde2MhcXciEPUsY8J-VKi28VfFq" />
  </picture>
 </a>

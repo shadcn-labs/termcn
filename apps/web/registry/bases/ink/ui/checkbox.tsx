@@ -7,7 +7,7 @@ import {
 } from "@/registry/bases/ink/hooks/use-interaction";
 import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
 import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
-import { resolveTerminalSymbol } from "@/registry/bases/ink/lib/accessibility";
+import { resolveTerminalSymbol } from "@/registry/bases/ink/lib/terminal-symbols";
 
 export interface CheckboxProps {
   checked?: boolean;

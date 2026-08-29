@@ -40,12 +40,7 @@ export const createPageMetadata = (
       : undefined;
   const resolvedTitle = ogTitle ?? title;
   const resolvedDescription = ogDescription ?? description;
-  const ogImageSearchParams = new URLSearchParams({ title: resolvedTitle });
-  if (resolvedDescription) {
-    ogImageSearchParams.set("description", resolvedDescription);
-  }
-  const resolvedOgImage =
-    ogImage ?? `${ROUTES.OG}?${ogImageSearchParams.toString()}`;
+  const resolvedOgImage = ogImage ?? SITE.OG_IMAGE;
 
   return {
     alternates: {
@@ -117,16 +112,9 @@ export const baseMetadata: Metadata = {
         url: "/favicon.ico",
       },
       {
-        media: "(prefers-color-scheme: light)",
         sizes: "any",
         type: "image/svg+xml",
         url: "/favicon.svg",
-      },
-      {
-        media: "(prefers-color-scheme: dark)",
-        sizes: "any",
-        type: "image/svg+xml",
-        url: "/favicon-dark.svg",
       },
     ],
     shortcut: "/favicon-16x16.png",

@@ -19,7 +19,6 @@ export const ROUTES = {
   LLMS_FULL: "/llms-full.txt",
   LLMS_MD: "/llms.md",
   LLMS_MDX: "/llms.mdx",
-  OG: "/og",
   OPENAPI: "/openapi.json",
   REGISTRY_INDEX: "/r/registry.json",
   RSS: "/rss.xml",

@@ -3,10 +3,8 @@ import React from "react";
 
 import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
 import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
-import {
-  resolveTerminalSymbol,
-  summarizeSeries,
-} from "@/registry/bases/ink/lib/accessibility";
+import { summarizeSeries } from "@/registry/bases/ink/lib/accessibility";
+import { resolveTerminalSymbol } from "@/registry/bases/ink/lib/terminal-symbols";
 import {
   padToTerminalWidth,
   terminalWidth,

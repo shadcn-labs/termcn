@@ -1,13 +1,12 @@
 import Link from "next/link";
 
-import { ROUTES } from "@/constants/routes";
-import {
-  isChartsFolder,
-  isComponentsFolder,
-  isDitherChartUrl,
-} from "@/lib/docs";
+import { isComponentsFolder } from "@/lib/docs";
 import type { PageTreeFolder, PageTreePage } from "@/lib/page-tree";
-import { getCategoryFolders, getFolderPages } from "@/lib/page-tree";
+import {
+  findChildFolder,
+  getFolderPages,
+  getFolderSections,
+} from "@/lib/page-tree";
 import { source } from "@/lib/source";
 import { cn } from "@/lib/utils";
 import { DEFAULT_BASE_NAME } from "@/registry/bases";
@@ -46,75 +45,6 @@ const ComponentGrid = ({
   </div>
 );
 
-const CategoryGrid = ({
-  className,
-  categories,
-}: {
-  className?: string;
-  categories: PageTreeFolder[];
-}) => (
-  <div className={cn("flex flex-col gap-10", className)}>
-    {categories.map((cat) => {
-      const pages = getFolderPages(cat);
-      if (pages.length === 0) {
-        return null;
-      }
-
-      return (
-        <div key={cat.$id}>
-          <h3 className="font-heading mb-4 text-lg font-medium tracking-tight">
-            {cat.name}
-          </h3>
-          <ComponentGrid pages={pages} />
-        </div>
-      );
-    })}
-  </div>
-);
-
-const ChartsGrid = ({
-  base,
-  className,
-  pages,
-}: {
-  base: string;
-  className?: string;
-  pages: PageTreePage[];
-}) => {
-  const chartPages = pages.filter(
-    (page) => page.url !== `${ROUTES.DOCS_CHARTS}/${base}`
-  );
-  const groups = [
-    {
-      name: "Basic",
-      pages: chartPages.filter((page) => !isDitherChartUrl(page.url)),
-    },
-    {
-      name: "Dither",
-      pages: chartPages.filter((page) => isDitherChartUrl(page.url)),
-    },
-  ];
-
-  return (
-    <div className={cn("flex flex-col gap-10", className)}>
-      {groups.map((group) => {
-        if (group.pages.length === 0) {
-          return null;
-        }
-
-        return (
-          <div key={group.name}>
-            <h2 className="font-heading mb-4 text-xl font-medium tracking-tight">
-              {group.name}
-            </h2>
-            <ComponentGrid pages={group.pages} />
-          </div>
-        );
-      })}
-    </div>
-  );
-};
-
 export const ComponentsList = ({
   folderName = "Components",
   category,
@@ -131,42 +61,34 @@ export const ComponentsList = ({
     return null;
   }
 
-  if (!isComponentsFolder(folder)) {
-    const pages = getFolderPages(folder, base);
-    if (pages.length > 0) {
-      if (isChartsFolder(folder)) {
-        return <ChartsGrid base={base} className={className} pages={pages} />;
-      }
-      return <ComponentGrid className={className} pages={pages} />;
-    }
-    const allPages = getFolderPages(folder);
-    if (allPages.length === 0) {
-      return null;
-    }
-    return <ComponentGrid className={className} pages={allPages} />;
-  }
-
-  const categories = getCategoryFolders(folder, base);
-
   if (category) {
-    const match = categories.find(
-      (cat) =>
-        cat.$id === category ||
-        String(cat.$id ?? "").endsWith(`/${category}`) ||
-        (typeof cat.name === "string" &&
-          cat.name.toLowerCase() === category.toLowerCase())
-    );
-    if (!match) {
-      return null;
+    let pages: PageTreePage[] | undefined;
+
+    if (isComponentsFolder(folder)) {
+      const baseFolder = findChildFolder(folder, base);
+      const categoryFolder = baseFolder
+        ? findChildFolder(baseFolder, category)
+        : undefined;
+      pages = categoryFolder ? getFolderPages(categoryFolder) : undefined;
+    } else {
+      pages = getFolderSections(folder, base).find(
+        (section) => section.id === category
+      )?.pages;
     }
-    return (
-      <ComponentGrid className={className} pages={getFolderPages(match)} />
-    );
+
+    return pages && pages.length > 0 ? (
+      <ComponentGrid className={className} pages={pages} />
+    ) : null;
   }
 
-  if (categories.length === 0) {
+  if (isComponentsFolder(folder)) {
     return null;
   }
 
-  return <CategoryGrid className={className} categories={categories} />;
+  const pages = getFolderPages(folder, base);
+  const fallback = pages.length > 0 ? pages : getFolderPages(folder);
+
+  return fallback.length > 0 ? (
+    <ComponentGrid className={className} pages={fallback} />
+  ) : null;
 };

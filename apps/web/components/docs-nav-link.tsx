@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useRef } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Kbd } from "@/components/ui/kbd";
@@ -10,6 +9,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useIconAnimation } from "@/hooks/use-icon-animation";
 import { cn } from "@/lib/utils";
 
 import type { ArrowLeftIconHandle } from "./animated-icons/arrow-left";
@@ -32,15 +32,9 @@ export const DocsNavLink = ({
   tooltip?: { title: string; icon: React.ReactNode };
   transitionTypes?: string[];
 }) => {
-  const iconRef = useRef<ArrowLeftIconHandle | ArrowRightIconHandle>(null);
-
-  const handleMouseEnter = useCallback(() => {
-    iconRef.current?.startAnimation();
-  }, []);
-
-  const handleMouseLeave = useCallback(() => {
-    iconRef.current?.stopAnimation();
-  }, []);
+  const { iconRef, onMouseEnter, onMouseLeave } = useIconAnimation<
+    ArrowLeftIconHandle | ArrowRightIconHandle
+  >();
 
   const link = (
     <Button
@@ -49,8 +43,8 @@ export const DocsNavLink = ({
       className={cn("shadow-none", className)}
       asChild
       sound="click"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       {...props}
     >
       <Link href={href} transitionTypes={transitionTypes}>

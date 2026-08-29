@@ -1,0 +1,92 @@
+name: Bug report
+description: Report a reproducible bug in termcn.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug report. Before opening a new issue:
+
+        - [Search existing issues](https://github.com/shadcn-labs/termcn/issues) and upvote instead of duplicating — it gets bugs fixed faster.
+        - Verify the bug still reproduces on the **latest** termcn release; it may already be fixed.
+        - For questions or help with your own project, use [Discussions](https://github.com/shadcn-labs/termcn/discussions) instead.
+  - type: input
+    id: reproduction
+    attributes:
+      label: Link to a minimal reproduction
+      description: |
+        A link to a **public** GitHub repository that reproduces the issue. Include **only** the changes that contribute to the bug — no unrelated tools, connections, or app code.
+
+        A minimal reproduction is the single most useful thing you can give us. **Issues without a valid reproduction link may be closed as not actionable.**
+      placeholder: "https://github.com/user/my-termcn-bug-reproduction"
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: A step-by-step description of how to trigger the bug using the linked reproduction.
+      placeholder: |
+        1. Clone the reproduction repo
+        2. Run `pnpm install && pnpm dev`
+        3. Navigate to the affected page
+        4. See error
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Current vs. expected behavior
+      description: What happens today (including exact error output), and what you expected to happen instead.
+      placeholder: "Following the steps above, I expected A, but observed B instead."
+    validations:
+      required: true
+  - type: input
+    id: termcn-version
+    attributes:
+      label: termcn version
+      description: The exact version from your lockfile (`npm ls termcn` or check `package.json`), not a semver range.
+      placeholder: "termcn@0.1.0"
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: |
+        Your OS, Node.js version (`node --version`), and package manager.
+      render: shell
+      placeholder: |
+        OS: macOS 15.5 (arm64)
+        Node: v24.1.0
+        Package manager: pnpm@10.x
+    validations:
+      required: true
+  - type: dropdown
+    id: stage
+    attributes:
+      label: Where does the bug occur?
+      multiple: true
+      options:
+        - Local dev (`pnpm dev`)
+        - Build (`pnpm build`)
+        - Production (`pnpm start` / deployed)
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Build and runtime logs
+      description: |
+        Paste the relevant build output and runtime logs around the failure.
+      render: shell
+    validations:
+      required: false
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Anything else that might help — deployment platform, whether it reproduces locally vs. deployed only, the first version where you noticed the regression, etc.
+    validations:
+      required: false
