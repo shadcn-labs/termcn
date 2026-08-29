@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ink/terminal-style",
+  "title": "Terminal Style",
+  "description": "Terminal-aware Ink styling helpers.",
+  "dependencies": [
+    "ink"
+  ],
+  "files": [
+    {
+      "path": "registry/lib/terminal-style.ts",
+      "content": "import type { BoxProps } from \"ink\";\n\nexport const resolveBorderStyle = (\n  borderStyle: BoxProps[\"borderStyle\"],\n  unicode: boolean\n): BoxProps[\"borderStyle\"] =>\n  unicode || borderStyle === undefined ? borderStyle : \"classic\";\n",
+      "type": "registry:file",
+      "target": "lib/terminal-style.ts"
+    }
+  ],
+  "categories": [
+    "core"
+  ],
+  "type": "registry:file"
+}

@@ -2,7 +2,7 @@ import { Box, Text } from "ink";
 
 import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
 import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
-import { resolveBorderStyle } from "@/registry/bases/ink/lib/accessibility";
+import { resolveBorderStyle } from "@/registry/bases/ink/lib/terminal-style";
 
 export interface Shortcut {
   key: string;

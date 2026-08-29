@@ -18,8 +18,7 @@
     },
     {
       "categories": ["core"],
-      "dependencies": ["ink"],
-      "description": "Pure accessibility contracts, summaries, and terminal fallback helpers for Ink components.",
+      "description": "Accessibility contracts and summaries for Ink components.",
       "files": [
         {
           "path": "registry/lib/accessibility.ts",
@@ -29,6 +28,35 @@
       ],
       "name": "ink/accessibility",
       "title": "Accessibility",
+      "type": "registry:file"
+    },
+    {
+      "categories": ["core"],
+      "dependencies": ["ink"],
+      "description": "Terminal-aware Ink styling helpers.",
+      "files": [
+        {
+          "path": "registry/lib/terminal-style.ts",
+          "target": "lib/terminal-style.ts",
+          "type": "registry:file"
+        }
+      ],
+      "name": "ink/terminal-style",
+      "title": "Terminal Style",
+      "type": "registry:file"
+    },
+    {
+      "categories": ["core"],
+      "description": "Unicode and ASCII symbols for terminal UI output.",
+      "files": [
+        {
+          "path": "registry/lib/terminal-symbols.ts",
+          "target": "lib/terminal-symbols.ts",
+          "type": "registry:file"
+        }
+      ],
+      "name": "ink/terminal-symbols",
+      "title": "Terminal Symbols",
       "type": "registry:file"
     },
     {
@@ -155,7 +183,8 @@
       "title": "Alert",
       "type": "registry:ui",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/types.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
@@ -173,8 +202,8 @@
       ],
       "name": "ink/app-shell",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/terminal-text.json",
         "https://termcn.dev/r/ink/types.json",
         "https://termcn.dev/r/ink/use-theme.json",
@@ -210,7 +239,7 @@
       "title": "Badge",
       "type": "registry:ui",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/types.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
@@ -231,8 +260,8 @@
       "title": "Banner",
       "type": "registry:ui",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ]
@@ -251,6 +280,7 @@
       "type": "registry:ui",
       "registryDependencies": [
         "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/terminal-text.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
@@ -270,7 +300,7 @@
       "title": "Big Text",
       "type": "registry:ui",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -290,7 +320,7 @@
       "title": "Box",
       "type": "registry:ui",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ]
@@ -306,8 +336,8 @@
       ],
       "name": "ink/breadcrumb",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -328,7 +358,7 @@
       "title": "Bullet List",
       "type": "registry:ui",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -348,7 +378,7 @@
       "title": "Card",
       "type": "registry:ui",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/types.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
@@ -413,8 +443,8 @@
       ],
       "name": "ink/checkbox",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -433,8 +463,8 @@
       ],
       "name": "ink/checkbox-group",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -453,8 +483,8 @@
       ],
       "name": "ink/clipboard",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/use-clipboard.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
@@ -474,7 +504,7 @@
       ],
       "name": "ink/clock",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/use-interval.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
@@ -497,7 +527,7 @@
       "title": "Code",
       "type": "registry:ui",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/types.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
@@ -514,8 +544,8 @@
       ],
       "name": "ink/color-picker",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -549,8 +579,8 @@
       ],
       "name": "ink/command-palette",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/terminal-text.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
@@ -569,8 +599,8 @@
       ],
       "name": "ink/confirm",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -608,8 +638,8 @@
       ],
       "name": "ink/data-grid",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/terminal-text.json",
         "https://termcn.dev/r/ink/types.json",
         "https://termcn.dev/r/ink/use-theme.json",
@@ -630,8 +660,8 @@
       ],
       "name": "ink/date-picker",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -665,8 +695,8 @@
       ],
       "name": "ink/dialog",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -705,7 +735,7 @@
       "title": "Digits",
       "type": "registry:ui",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -722,8 +752,8 @@
       ],
       "name": "ink/directory-tree",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -760,8 +790,8 @@
       "title": "Dither Area Chart",
       "type": "registry:ui",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/use-motion.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
@@ -796,8 +826,8 @@
       "title": "Dither Bar Chart",
       "type": "registry:ui",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/use-motion.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
@@ -832,8 +862,8 @@
       "title": "Dither Line Chart",
       "type": "registry:ui",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/use-motion.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
@@ -868,8 +898,8 @@
       "title": "Dither Pie Chart",
       "type": "registry:ui",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/use-motion.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
@@ -904,8 +934,8 @@
       "title": "Dither Radar Chart",
       "type": "registry:ui",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/use-motion.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
@@ -940,8 +970,8 @@
       "title": "Dither Sparkline",
       "type": "registry:ui",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/use-motion.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
@@ -960,7 +990,7 @@
       "title": "Divider",
       "type": "registry:ui",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -977,8 +1007,8 @@
       ],
       "name": "ink/drawer",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -997,8 +1027,9 @@
       ],
       "name": "ink/email-input",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/terminal-text.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
@@ -1021,7 +1052,7 @@
       "title": "Embedded Terminal",
       "type": "registry:ui",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ]
     },
@@ -1038,7 +1069,8 @@
       "title": "Error Boundary",
       "type": "registry:ui",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "dependencies": ["ink"]
@@ -1055,8 +1087,8 @@
       ],
       "name": "ink/error-retry",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -1074,9 +1106,9 @@
       ],
       "name": "ink/file-change",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/diff-view.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -1095,8 +1127,8 @@
       ],
       "name": "ink/file-picker",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -1133,7 +1165,7 @@
       ],
       "name": "ink/form-field",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -1154,7 +1186,7 @@
       "title": "Gauge",
       "type": "registry:ui",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -1220,7 +1252,7 @@
       "title": "Heading",
       "type": "registry:ui",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -1258,7 +1290,7 @@
       "title": "Help",
       "type": "registry:ui",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -1315,7 +1347,7 @@
       "title": "Info Box",
       "type": "registry:ui",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/types.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
@@ -1371,7 +1403,7 @@
       "title": "Keyboard Shortcuts",
       "type": "registry:ui",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -1391,6 +1423,7 @@
       "type": "registry:ui",
       "registryDependencies": [
         "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -1425,8 +1458,9 @@
       ],
       "name": "ink/list",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/terminal-text.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
@@ -1465,9 +1499,9 @@
       ],
       "name": "ink/login-flow",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/big-text.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/types.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
@@ -1506,8 +1540,9 @@
       ],
       "name": "ink/masked-input",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -1526,8 +1561,8 @@
       ],
       "name": "ink/menu",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -1546,8 +1581,8 @@
       ],
       "name": "ink/modal",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/types.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
@@ -1567,8 +1602,8 @@
       ],
       "name": "ink/model-selector",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -1606,8 +1641,8 @@
       ],
       "name": "ink/multi-select",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -1631,8 +1666,8 @@
       ],
       "name": "ink/notification-center",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/use-notifications.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
@@ -1651,8 +1686,9 @@
       ],
       "name": "ink/number-input",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/types.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
@@ -3805,8 +3841,8 @@
       ],
       "name": "ink/pagination",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -3828,7 +3864,7 @@
       "title": "Panel",
       "type": "registry:ui",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/types.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
@@ -3846,8 +3882,9 @@
       ],
       "name": "ink/password-input",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/terminal-text.json",
         "https://termcn.dev/r/ink/types.json",
         "https://termcn.dev/r/ink/use-theme.json",
@@ -3867,8 +3904,9 @@
       ],
       "name": "ink/path-input",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/terminal-text.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
@@ -3906,8 +3944,8 @@
       ],
       "name": "ink/popover",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -3928,7 +3966,7 @@
       "title": "Progress Bar",
       "type": "registry:ui",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -3947,7 +3985,7 @@
       "title": "Progress Circle",
       "type": "registry:ui",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -3983,8 +4021,8 @@
       ],
       "name": "ink/radio-group",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -4022,8 +4060,9 @@
       ],
       "name": "ink/search-input",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/terminal-text.json",
         "https://termcn.dev/r/ink/types.json",
         "https://termcn.dev/r/ink/use-theme.json",
@@ -4044,8 +4083,8 @@
       ],
       "name": "ink/select",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -4086,8 +4125,8 @@
       ],
       "name": "ink/sidebar",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -4211,8 +4250,8 @@
       "title": "Status Message",
       "type": "registry:ui",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/spinner.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -4269,8 +4308,8 @@
       ],
       "name": "ink/tabbed-content",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -4309,8 +4348,8 @@
       ],
       "name": "ink/tabs",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/types.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
@@ -4332,8 +4371,8 @@
       "title": "Tag",
       "type": "registry:ui",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -4350,8 +4389,8 @@
       ],
       "name": "ink/tag-input",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/terminal-text.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
@@ -4372,8 +4411,9 @@
       ],
       "name": "ink/text-area",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/terminal-text.json",
         "https://termcn.dev/r/ink/types.json",
         "https://termcn.dev/r/ink/use-theme.json",
@@ -4394,8 +4434,9 @@
       ],
       "name": "ink/text-input",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/terminal-text.json",
         "https://termcn.dev/r/ink/types.json",
         "https://termcn.dev/r/ink/use-theme.json",
@@ -5020,8 +5061,8 @@
       ],
       "name": "ink/thinking-block",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -5039,8 +5080,8 @@
       ],
       "name": "ink/time-picker",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -5080,7 +5121,8 @@
       ],
       "name": "ink/toast",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/use-interval.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
@@ -5099,8 +5141,9 @@
       ],
       "name": "ink/toggle",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/types.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
@@ -5139,8 +5182,8 @@
       ],
       "name": "ink/tool-approval",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/use-interval.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
@@ -5159,8 +5202,8 @@
       ],
       "name": "ink/tool-call",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/use-animation.json",
         "https://termcn.dev/r/ink/use-interval.json",
         "https://termcn.dev/r/ink/use-theme.json",
@@ -5184,7 +5227,7 @@
       "title": "Tooltip",
       "type": "registry:ui",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/types.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
@@ -5201,8 +5244,8 @@
       ],
       "name": "ink/tree",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -5221,8 +5264,8 @@
       ],
       "name": "ink/tree-select",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
@@ -5365,7 +5408,7 @@
       "title": "Welcome Screen",
       "type": "registry:ui",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
+        "https://termcn.dev/r/ink/terminal-style.json",
         "https://termcn.dev/r/ink/types.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
@@ -5383,8 +5426,8 @@
       ],
       "name": "ink/wizard",
       "registryDependencies": [
-        "https://termcn.dev/r/ink/accessibility.json",
         "https://termcn.dev/r/ink/interaction.json",
+        "https://termcn.dev/r/ink/terminal-symbols.json",
         "https://termcn.dev/r/ink/use-theme.json",
         "https://termcn.dev/r/ink/use-unicode.json"
       ],

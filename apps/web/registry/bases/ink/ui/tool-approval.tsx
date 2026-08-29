@@ -9,7 +9,7 @@ import type { InteractionProps } from "@/registry/bases/ink/hooks/use-interactio
 import { useInterval } from "@/registry/bases/ink/hooks/use-interval";
 import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
 import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
-import { resolveBorderStyle } from "@/registry/bases/ink/lib/accessibility";
+import { resolveBorderStyle } from "@/registry/bases/ink/lib/terminal-style";
 
 export type RiskLevel = "low" | "medium" | "high";
 

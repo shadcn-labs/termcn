@@ -9,7 +9,7 @@ import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
 import {
   resolveStatusSymbol,
   resolveTerminalSymbol,
-} from "@/registry/bases/ink/lib/accessibility";
+} from "@/registry/bases/ink/lib/terminal-symbols";
 
 export type BannerVariant =
   | "info"

@@ -4,11 +4,11 @@ import React, { useState, useEffect } from "react";
 import { useInterval } from "@/registry/bases/ink/hooks/use-interval";
 import { useTheme } from "@/registry/bases/ink/hooks/use-theme";
 import { useUnicode } from "@/registry/bases/ink/hooks/use-unicode";
+import { resolveBorderStyle } from "@/registry/bases/ink/lib/terminal-style";
 import {
-  resolveBorderStyle,
   resolveStatusSymbol,
   resolveTerminalSymbol,
-} from "@/registry/bases/ink/lib/accessibility";
+} from "@/registry/bases/ink/lib/terminal-symbols";
 
 export type ToastVariant = "success" | "error" | "warning" | "info";
 
