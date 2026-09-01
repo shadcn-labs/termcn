@@ -14,6 +14,7 @@ declare global {
 export const CarbonAds = () => {
   const pathname = usePathname();
   const containerRef = useRef<HTMLDivElement>(null);
+  const injectedRef = useRef(false);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -21,15 +22,16 @@ export const CarbonAds = () => {
       return;
     }
 
-    if (window._carbonads) {
-      window._carbonads.refresh();
-    } else {
+    if (!injectedRef.current) {
       const script = document.createElement("script");
       script.src =
         "//cdn.carbonads.com/carbon.js?serve=CWBIT5QM&placement=termcndev&format=responsive";
       script.id = "_carbonads_js";
       script.async = true;
       container.append(script);
+      injectedRef.current = true;
+    } else if (window._carbonads) {
+      window._carbonads.refresh();
     }
   }, [pathname]);
 
