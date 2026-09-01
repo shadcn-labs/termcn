@@ -2,6 +2,7 @@
 
 import { SquarePenIcon } from "lucide-react";
 
+import { CarbonAds } from "@/components/docs-carbon-ads";
 import { DiscordIcon, XIcon } from "@/components/icons";
 import { GITHUB, LINK } from "@/constants/links";
 import { DOCS_DIR } from "@/lib/docs";
@@ -51,5 +52,6 @@ export const DocsTocFooter = ({
       <DiscordIcon />
       Join community
     </a>
+    <CarbonAds />
   </div>
 );
