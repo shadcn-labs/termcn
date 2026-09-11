@@ -9,6 +9,7 @@ import {
   DocsBaseSwitcher,
   getDocsBaseSwitcherProps,
 } from "@/components/docs-base-switcher";
+import { DocsCarbonAds } from "@/components/docs-carbon-ads";
 import { DocsCopyPage } from "@/components/docs-copy-page";
 import { DocsKeyboardShortcuts } from "@/components/docs-keyboard-shortcuts";
 import { DocsNavLink } from "@/components/docs-nav-link";
@@ -179,6 +180,7 @@ const Page = async (props: { params: Promise<{ slug?: string[] }> }) => {
                   </div>
                 ) : null}
               </div>
+              <DocsCarbonAds hideOn="desktop" />
               <div className="w-full flex-1 *:data-[slot=alert]:first:mt-0">
                 {baseSwitcher && (
                   <DocsBaseSwitcher {...baseSwitcher} className="mb-4" />
@@ -216,6 +218,7 @@ const Page = async (props: { params: Promise<{ slug?: string[] }> }) => {
               </div>
             ) : null}
             <DocsTocFooter docId={page.path} className="mx-8" />
+            <DocsCarbonAds hideOn="mobile" className="mx-8 shrink-0" />
           </div>
         </div>
       </DirectionalTransition>

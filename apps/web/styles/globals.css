@@ -533,3 +533,15 @@
     animation-delay: 0s !important;
   }
 }
+
+#carbonads #carbon-responsive {
+  --carbon-padding: calc(var(--spacing) * 3);
+  --carbon-bg-primary: color-mix(in oklab, var(--muted) 50%, var(--background));
+  --carbon-bg-secondary: var(--border);
+  --carbon-text-color: var(--foreground);
+  @apply gap-2 font-sans;
+}
+
+#carbonads #carbon-responsive .carbon-poweredby {
+  @apply text-xs text-muted-foreground/80 opacity-100;
+}

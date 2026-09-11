@@ -1,45 +1,27 @@
 "use client";
 
-import { usePathname } from "next/navigation";
-import { useEffect, useRef } from "react";
+import type { CarbonAdsProps } from "@/components/carbon-ads";
+import { CarbonAds } from "@/components/carbon-ads";
+import { useIsMobile } from "@/hooks/use-mobile";
 
-declare global {
-  interface Window {
-    _carbonads: {
-      refresh: () => void;
-    };
-  }
+const SCRIPT_SERVE = "CWBIT5QM";
+const SCRIPT_PLACEMENT = "termcndev";
+
+interface DocsCarbonAdsProps extends CarbonAdsProps {
+  hideOn?: "mobile" | "desktop";
 }
 
-export const CarbonAds = () => {
-  const pathname = usePathname();
-  const containerRef = useRef<HTMLDivElement>(null);
-  const injectedRef = useRef(false);
+export const DocsCarbonAds = ({ hideOn, ...props }: DocsCarbonAdsProps) => {
+  const isMobile = useIsMobile();
 
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) {
-      return;
-    }
-
-    if (!injectedRef.current) {
-      const script = document.createElement("script");
-      script.src =
-        "//cdn.carbonads.com/carbon.js?serve=CWBIT5QM&placement=termcndev&format=responsive";
-      script.id = "_carbonads_js";
-      script.async = true;
-      container.append(script);
-      injectedRef.current = true;
-    } else if (window._carbonads) {
-      window._carbonads.refresh();
-    }
-  }, [pathname]);
+  if (
+    (hideOn === "mobile" && isMobile) ||
+    (hideOn === "desktop" && !isMobile)
+  ) {
+    return null;
+  }
 
   return (
-    <div
-      className="w-full overflow-hidden min-h-38.75 relative"
-      id="carbon-container"
-      ref={containerRef}
-    />
+    <CarbonAds serve={SCRIPT_SERVE} placement={SCRIPT_PLACEMENT} {...props} />
   );
 };

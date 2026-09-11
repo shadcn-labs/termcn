@@ -1,10 +1,8 @@
-import { clsx } from "clsx";
-import type { ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { cn } from "cn";
 
 import { SITE } from "@/constants/site";
 
-export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
+export { cn };
 
 export const absoluteUrl = (path: string) => `${SITE.URL}${path}`;
 
