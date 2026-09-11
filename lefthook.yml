@@ -1,4 +1,6 @@
 pre-commit:
+  exclude:
+    - "packages/termcn/**"
   jobs:
     - run: pnpm fix {staged_files}
       glob:

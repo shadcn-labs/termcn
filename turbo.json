@@ -7,6 +7,7 @@
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": [".next/**", "!.next/cache/**", "dist/**"]
     },
+    "test": {},
     "typecheck": {
       "dependsOn": ["^typecheck"]
     },
@@ -17,12 +18,6 @@
     "start": {
       "cache": false,
       "persistent": true
-    },
-    "examples:build": {
-      "cache": false
-    },
-    "registry:build": {
-      "cache": false
     }
   }
 }
