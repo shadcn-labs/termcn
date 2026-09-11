@@ -14,9 +14,7 @@ import {
   searchRegistries,
 } from "@/src/registry/search";
 import { validateRegistryConfigForItems } from "@/src/registry/validator";
-import { rawConfigSchema } from "@/src/schema";
-import { loadEnvFiles } from "@/src/utils/env-loader";
-import { createConfig, getConfig } from "@/src/utils/get-config";
+import { CONFIG_FILE, createConfig, getConfig } from "@/src/utils/get-config";
 import { handleError } from "@/src/utils/handle-error";
 import { highlighter } from "@/src/utils/highlighter";
 import { logger } from "@/src/utils/logger";
@@ -36,7 +34,7 @@ export const search = new Command()
   .description("search items from registries")
   .argument(
     "[registries...]",
-    "the registry addresses to search. Supports namespaces, GitHub sources and URLs. When omitted, searches all registries configured in components.json."
+    "registry namespaces or URLs to search. When omitted, searches registries configured in termcn.json."
   )
   .option(
     "-c, --cwd <cwd>",
@@ -83,47 +81,23 @@ export const search = new Command()
         }
       }
 
-      await loadEnvFiles(options.cwd);
+      const defaultConfig = configWithDefaults(
+        createConfig({
+          framework: "ink",
+          resolvedPaths: { cwd: options.cwd },
+        })
+      );
+      const configPath = path.resolve(options.cwd, CONFIG_FILE);
+      const hasConfig = fsExtra.existsSync(configPath);
+      const projectConfig = hasConfig ? await getConfig(options.cwd) : null;
+      const config = projectConfig
+        ? configWithDefaults(projectConfig)
+        : defaultConfig;
 
-      // Start with a shadow config to support partial components.json.
-      // Use createConfig to get proper default paths
-      const defaultConfig = createConfig({
-        style: "ink",
-        resolvedPaths: {
-          cwd: options.cwd,
-        },
-      });
-      let shadowConfig = configWithDefaults(defaultConfig);
-
-      // Check if there's a components.json file (partial or complete).
-      const componentsJsonPath = path.resolve(options.cwd, "components.json");
-      const hasComponentsJson = fsExtra.existsSync(componentsJsonPath);
-      if (hasComponentsJson) {
-        const existingConfig = await fsExtra.readJson(componentsJsonPath);
-        const partialConfig = rawConfigSchema.partial().parse(existingConfig);
-        shadowConfig = configWithDefaults({
-          ...defaultConfig,
-          ...partialConfig,
-        });
-      }
-
-      // Try to get the full config, but fall back to shadow config if it fails.
-      let config = shadowConfig;
-      try {
-        const fullConfig = await getConfig(options.cwd);
-        if (fullConfig) {
-          config = configWithDefaults(fullConfig);
-        }
-      } catch {
-        // Use shadow config if getConfig fails (partial components.json).
-      }
-
-      // When no registry is provided, search across every registry configured
-      // in components.json. This only makes sense when a components.json is
-      // present to enumerate; otherwise there is nothing to search and we ask
-      // for an explicit registry/namespace argument.
+      // Searching every configured registry requires termcn.json; explicit
+      // namespaces and URLs work before init.
       const searchAllConfigured = registries.length === 0;
-      if (searchAllConfigured && !hasComponentsJson) {
+      if (searchAllConfigured && !hasConfig) {
         logger.break();
         logger.error(
           `Provide a registry or namespace to search, e.g. ${highlighter.info(
@@ -132,33 +106,20 @@ export const search = new Command()
         );
         logger.break();
         logger.error(
-          `If you have a ${highlighter.info(
-            "components.json"
-          )} with registries configured, run ${highlighter.info(
+          `With ${highlighter.info(CONFIG_FILE)}, run ${highlighter.info(
             "termcn search"
-          )} with no arguments to search all of them.`
+          )} without arguments to search configured third-party registries.`
         );
         logger.break();
         process.exit(1);
       }
 
-      // Only namespace registries passed explicitly need to be discovered and
-      // added to the config. Registries already configured in components.json
-      // are resolved directly from the config below.
-      const { config: updatedConfig, newRegistries } =
-        await ensureRegistriesInConfig(
-          registries
-            .filter((registry) => registry.startsWith("@"))
-            .map((registry) => `${registry}/registry`),
-          config,
-          {
-            silent: true,
-            writeFile: false,
-          }
-        );
-      if (newRegistries.length > 0) {
-        config.registries = updatedConfig.registries;
-      }
+      await ensureRegistriesInConfig(
+        registries
+          .filter((registry) => registry.startsWith("@"))
+          .map((registry) => `${registry}/registry`),
+        config
+      );
 
       // When no registry is passed, "search all" resolves to every configured
       // registry, excluding builtins (e.g. @termcn).
@@ -167,8 +128,8 @@ export const search = new Command()
       if (searchAllConfigured && registriesToSearch.length === 0) {
         logger.break();
         logger.error(
-          `No registries are configured in ${highlighter.info(
-            "components.json"
+          `No third-party registries are configured in ${highlighter.info(
+            CONFIG_FILE
           )}.`
         );
         logger.error(

@@ -1,6 +1,5 @@
 import { z } from "zod";
 
-import { isGitHubRegistrySource } from "@/src/registry/address";
 import { buildUrlAndHeadersForRegistryItem } from "@/src/registry/builder";
 import { configWithDefaults } from "@/src/registry/config";
 import {
@@ -55,10 +54,6 @@ export function validateRegistryConfigForItems(
   config?: Config
 ): void {
   for (const item of items) {
-    if (isGitHubRegistrySource(item)) {
-      continue;
-    }
-
     buildUrlAndHeadersForRegistryItem(item, configWithDefaults(config));
   }
 

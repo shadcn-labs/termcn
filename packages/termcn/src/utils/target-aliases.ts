@@ -1,9 +1,9 @@
-export const TARGET_ALIAS_KEYS = ["components", "ui", "lib", "hooks"] as const;
+import { ALIAS_KEYS, type AliasKey } from "@/src/schema";
 
-export type TargetAliasKey = (typeof TARGET_ALIAS_KEYS)[number];
+export type TargetAliasKey = AliasKey;
 
 export function isTargetAliasKey(key: string): key is TargetAliasKey {
-  return TARGET_ALIAS_KEYS.includes(key as TargetAliasKey);
+  return (ALIAS_KEYS as readonly string[]).includes(key);
 }
 
 export function getTargetAliasKey(target?: string): TargetAliasKey | null {

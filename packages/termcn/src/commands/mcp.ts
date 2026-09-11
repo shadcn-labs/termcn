@@ -1,5 +1,5 @@
-import { promises as fs } from "fs";
-import path from "path";
+import { promises as fs } from "node:fs";
+import path from "node:path";
 
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { Command } from "commander";
@@ -10,8 +10,7 @@ import prompts from "prompts";
 import z from "zod";
 
 import { server } from "@/src/mcp";
-import { loadEnvFiles } from "@/src/utils/env-loader";
-import { getConfig } from "@/src/utils/get-config";
+import { getConfig, type Config } from "@/src/utils/get-config";
 import { getPackageManager } from "@/src/utils/get-package-manager";
 import { handleError } from "@/src/utils/handle-error";
 import { highlighter } from "@/src/utils/highlighter";
@@ -20,74 +19,40 @@ import { spinner } from "@/src/utils/spinner";
 import { updateDependencies } from "@/src/utils/updaters/update-dependencies";
 
 const TERMCN_MCP_VERSION = "latest";
+const DEPENDENCIES = [`termcn@${TERMCN_MCP_VERSION}`];
 
 const CLIENTS = [
   {
     name: "claude",
     label: "Claude Code",
     configPath: ".mcp.json",
-    config: {
-      mcpServers: {
-        termcn: {
-          command: "npx",
-          args: [`termcn@${TERMCN_MCP_VERSION}`, "mcp"],
-        },
-      },
-    },
+    shape: "mcpServers",
   },
   {
     name: "cursor",
     label: "Cursor",
     configPath: ".cursor/mcp.json",
-    config: {
-      mcpServers: {
-        termcn: {
-          command: "npx",
-          args: [`termcn@${TERMCN_MCP_VERSION}`, "mcp"],
-        },
-      },
-    },
+    shape: "mcpServers",
   },
   {
     name: "vscode",
     label: "VS Code",
     configPath: ".vscode/mcp.json",
-    config: {
-      servers: {
-        termcn: {
-          command: "npx",
-          args: [`termcn@${TERMCN_MCP_VERSION}`, "mcp"],
-        },
-      },
-    },
+    shape: "servers",
   },
   {
     name: "codex",
     label: "Codex",
     configPath: ".codex/config.toml",
-    config: `[mcp_servers.termcn]
-command = "npx"
-args = ["termcn@${TERMCN_MCP_VERSION}", "mcp"]
-`,
+    shape: "toml",
   },
   {
     name: "opencode",
     label: "OpenCode",
     configPath: "opencode.json",
-    config: {
-      $schema: "https://opencode.ai/config.json",
-      mcp: {
-        termcn: {
-          type: "local",
-          command: ["npx", `termcn@${TERMCN_MCP_VERSION}`, "mcp"],
-          enabled: true,
-        },
-      },
-    },
+    shape: "opencode",
   },
 ] as const;
-
-const DEPENDENCIES = [`termcn@${TERMCN_MCP_VERSION}`];
 
 export const mcp = new Command()
   .name("mcp")
@@ -97,9 +62,8 @@ export const mcp = new Command()
     "the working directory. defaults to the current directory.",
     process.cwd()
   )
-  .action(async (options) => {
+  .action(async () => {
     try {
-      await loadEnvFiles(options.cwd);
       const transport = new StdioServerTransport();
       await server.connect(transport);
     } catch (error) {
@@ -115,17 +79,15 @@ const mcpInitOptionsSchema = z.object({
 
 mcp
   .command("init")
-  .description("Initialize MCP configuration for your client")
+  .description("initialize MCP configuration for your client")
   .option(
     "--client <client>",
-    `MCP client (${CLIENTS.map((c) => c.name).join(", ")})`
+    `MCP client (${CLIENTS.map((client) => client.name).join(", ")})`
   )
   .action(async (opts, command) => {
     try {
-      // Get the cwd from parent command.
       const parentOpts = command.parent?.opts() || {};
       const cwd = parentOpts.cwd || process.cwd();
-
       let client = opts.client;
 
       if (!client) {
@@ -133,91 +95,44 @@ mcp
           type: "select",
           name: "client",
           message: "Which MCP client are you using?",
-          choices: CLIENTS.map((c) => ({
-            title: c.label,
-            value: c.name,
+          choices: CLIENTS.map((entry) => ({
+            title: entry.label,
+            value: entry.name,
           })),
         });
 
         if (!response.client) {
           logger.break();
-          process.exit(1);
+          process.exitCode = 1;
+          return;
         }
-
         client = response.client;
       }
 
-      const options = mcpInitOptionsSchema.parse({
-        client,
-        cwd,
-      });
-
+      const options = mcpInitOptionsSchema.parse({ client, cwd });
       const config = await getConfig(options.cwd);
+      await installTermcnDependency(config, options.cwd);
 
       if (options.client === "codex") {
-        if (config) {
-          await updateDependencies([], DEPENDENCIES, config, {
-            silent: false,
-          });
-        } else {
-          const packageManager = await getPackageManager(options.cwd);
-          const installCommand = packageManager === "npm" ? "install" : "add";
-          const devFlag = packageManager === "npm" ? "--save-dev" : "-D";
-
-          const installSpinner = spinner("Installing dependencies...").start();
-          await execa(
-            packageManager,
-            [installCommand, devFlag, ...DEPENDENCIES],
-            {
-              cwd: options.cwd,
-            }
-          );
-          installSpinner.succeed("Installing dependencies.");
-        }
-
         logger.break();
         logger.log("To configure the termcn MCP server in Codex:");
         logger.break();
         logger.log(
-          `1. Open or create the file ${highlighter.info(
-            "~/.codex/config.toml"
-          )}`
+          `1. Open or create ${highlighter.info("~/.codex/config.toml")}`
         );
-        logger.log("2. Add the following configuration:");
-        logger.log();
+        logger.log("2. Add:");
         logger.info(`[mcp_servers.termcn]
 command = "npx"
 args = ["termcn@${TERMCN_MCP_VERSION}", "mcp"]`);
         logger.break();
         logger.info("3. Restart Codex to load the MCP server");
         logger.break();
-        process.exit(0);
+        return;
       }
 
       const configSpinner = spinner("Configuring MCP server...").start();
       const configPath = await runMcpInit(options);
       configSpinner.succeed("Configuring MCP server.");
-
-      if (config) {
-        await updateDependencies([], DEPENDENCIES, config, {
-          silent: false,
-        });
-      } else {
-        const packageManager = await getPackageManager(options.cwd);
-        const installCommand = packageManager === "npm" ? "install" : "add";
-        const devFlag = packageManager === "npm" ? "--save-dev" : "-D";
-
-        const installSpinner = spinner("Installing dependencies...").start();
-        await execa(
-          packageManager,
-          [installCommand, devFlag, ...DEPENDENCIES],
-          {
-            cwd: options.cwd,
-          }
-        );
-        installSpinner.succeed("Installing dependencies.");
-      }
-
       logger.break();
       logger.success(`Configuration saved to ${configPath}.`);
       logger.break();
@@ -226,41 +141,66 @@ args = ["termcn@${TERMCN_MCP_VERSION}", "mcp"]`);
     }
   });
 
-const overwriteMerge = (_: any[], sourceArray: any[]) => sourceArray;
-
-async function runMcpInit(options: z.infer<typeof mcpInitOptionsSchema>) {
-  const { client, cwd } = options;
-
-  const clientInfo = CLIENTS.find((c) => c.name === client);
-  if (!clientInfo) {
-    throw new Error(
-      `Unknown client: ${client}. Available clients: ${CLIENTS.map(
-        (c) => c.name
-      ).join(", ")}`
-    );
+async function installTermcnDependency(config: Config | null, cwd: string) {
+  if (config) {
+    await updateDependencies([], DEPENDENCIES, config, { silent: false });
+    return;
   }
 
-  const configPath = path.join(cwd, clientInfo.configPath);
-  const dir = path.dirname(configPath);
-  await fsExtra.ensureDir(dir);
+  const packageManager = await getPackageManager(cwd);
+  const installCommand = packageManager === "npm" ? "install" : "add";
+  const devFlag = packageManager === "npm" ? "--save-dev" : "-D";
+  const installSpinner = spinner("Installing dependencies...").start();
+  await execa(packageManager, [installCommand, devFlag, ...DEPENDENCIES], {
+    cwd,
+  });
+  installSpinner.succeed("Installing dependencies.");
+}
 
-  // Handle JSON format.
-  let existingConfig = {};
+const overwriteMerge = (_target: unknown[], source: unknown[]) => source;
+
+async function runMcpInit(options: z.infer<typeof mcpInitOptionsSchema>) {
+  const clientInfo = CLIENTS.find((client) => client.name === options.client);
+  if (!clientInfo || clientInfo.shape === "toml") {
+    throw new Error(`Cannot write MCP configuration for ${options.client}.`);
+  }
+
+  const command = {
+    command: "npx",
+    args: [`termcn@${TERMCN_MCP_VERSION}`, "mcp"],
+  };
+  const clientConfig: Record<string, unknown> =
+    clientInfo.shape === "mcpServers"
+      ? { mcpServers: { termcn: command } }
+      : clientInfo.shape === "servers"
+        ? { servers: { termcn: command } }
+        : {
+            $schema: "https://opencode.ai/config.json",
+            mcp: {
+              termcn: {
+                type: "local",
+                command: ["npx", ...command.args],
+                enabled: true,
+              },
+            },
+          };
+  const configPath = path.join(options.cwd, clientInfo.configPath);
+  await fsExtra.ensureDir(path.dirname(configPath));
+
+  let existingConfig: Record<string, unknown> = {};
   try {
-    const content = await fs.readFile(configPath, "utf-8");
-    existingConfig = JSON.parse(content);
-  } catch {}
+    existingConfig = JSON.parse(await fs.readFile(configPath, "utf8"));
+  } catch {
+    // A missing file starts from an empty config.
+  }
 
-  const mergedConfig = deepmerge(
-    existingConfig,
-    clientInfo.config as Record<string, unknown>,
-    { arrayMerge: overwriteMerge }
-  );
-
+  const mergedConfig = deepmerge(existingConfig, clientConfig, {
+    arrayMerge: overwriteMerge,
+  });
   await fs.writeFile(
     configPath,
-    JSON.stringify(mergedConfig, null, 2) + "\n",
-    "utf-8"
+    `${JSON.stringify(mergedConfig, null, 2)}\n`,
+    "utf8"
   );
 
   return clientInfo.configPath;

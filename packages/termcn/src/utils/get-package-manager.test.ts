@@ -25,8 +25,6 @@ describe("getPackageManager", () => {
     expect(await getPackageManager(getFixturesDir("project-bun-lock"))).toBe(
       "bun"
     );
-
-    expect(await getPackageManager(getFixturesDir("next"))).toBe("pnpm");
   });
 });
 

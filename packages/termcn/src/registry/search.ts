@@ -12,7 +12,6 @@ import { Config } from "@/src/utils/get-config";
 import { highlighter } from "@/src/utils/highlighter";
 import { logger } from "@/src/utils/logger";
 
-import { resolveGitHubRegistrySource } from "./address";
 import { getRegistry } from "./api";
 import { BUILTIN_REGISTRIES } from "./constants";
 import { withRegistryContext } from "./context";
@@ -234,68 +233,42 @@ function searchItems<
 }
 
 // Builds the registry item name for the add command.
-// For namespaced registries, returns "registry/item".
-// For URL registries, replaces "registry" with the item name in the URL.
+// For namespaces, returns "registry/item". For URLs, replaces the last
+// "registry" path segment and any registry query placeholders.
 export function buildRegistryItemNameFromRegistry(
   name: string,
   registry: string
 ) {
-  const githubSource = resolveGitHubRegistrySource(registry);
-  if (githubSource) {
-    const itemAddress = `${githubSource.owner}/${githubSource.repo}/${name}`;
-    return githubSource.ref
-      ? `${itemAddress}#${githubSource.ref}`
-      : itemAddress;
-  }
-
-  // If registry is not a URL, return namespace format.
   if (!isUrl(registry)) {
     return `${registry}/${name}`;
   }
 
-  // Find where the host part ends in the original string.
   const protocolEnd = registry.indexOf("://") + 3;
   const hostEnd = registry.indexOf("/", protocolEnd);
-
   if (hostEnd === -1) {
-    // No path, check for query params.
     const queryStart = registry.indexOf("?", protocolEnd);
-    if (queryStart !== -1) {
-      // Has query params but no path.
-      const beforeQuery = registry.substring(0, queryStart);
-      const queryAndAfter = registry.substring(queryStart);
-      // Replace "registry" with itemName in query params only.
-      const updatedQuery = queryAndAfter.replace(/\bregistry\b/g, name);
-      return beforeQuery + updatedQuery;
+    if (queryStart === -1) {
+      return registry;
     }
-    // No path or query, return as is.
-    return registry;
+    return (
+      registry.substring(0, queryStart) +
+      registry.substring(queryStart).replace(/\bregistry\b/g, name)
+    );
   }
 
-  // Split at host boundary.
   const hostPart = registry.substring(0, hostEnd);
   const pathAndQuery = registry.substring(hostEnd);
-
-  // Find all occurrences of "registry" in path and query.
-  // Replace only the last occurrence in the path segment.
-  const pathEnd =
-    pathAndQuery.indexOf("?") !== -1
-      ? pathAndQuery.indexOf("?")
-      : pathAndQuery.length;
+  const queryIndex = pathAndQuery.indexOf("?");
+  const pathEnd = queryIndex === -1 ? pathAndQuery.length : queryIndex;
   const pathOnly = pathAndQuery.substring(0, pathEnd);
   const queryAndAfter = pathAndQuery.substring(pathEnd);
-
-  // Replace the last occurrence of "registry" in the path.
   const lastIndex = pathOnly.lastIndexOf("registry");
-  let updatedPath = pathOnly;
-  if (lastIndex !== -1) {
-    updatedPath =
-      pathOnly.substring(0, lastIndex) +
-      name +
-      pathOnly.substring(lastIndex + "registry".length);
-  }
-
-  // Replace all occurrences of "registry" in query params.
+  const updatedPath =
+    lastIndex === -1
+      ? pathOnly
+      : pathOnly.substring(0, lastIndex) +
+        name +
+        pathOnly.substring(lastIndex + "registry".length);
   const updatedQuery = queryAndAfter.replace(/\bregistry\b/g, name);
 
   return hostPart + updatedPath + updatedQuery;

@@ -23,13 +23,6 @@ export function formatDryRunResult(
   }
   appendList(lines, "Dependencies", result.dependencies);
   appendList(lines, "Dev dependencies", result.devDependencies);
-  if (result.envVars) {
-    appendList(
-      lines,
-      `Environment (${result.envVars.path})`,
-      Object.keys(result.envVars.variables)
-    );
-  }
   if (result.docs) lines.push("", result.docs.trim());
   lines.push("", dim("Run without --dry-run to apply."));
   return lines.join("\n");

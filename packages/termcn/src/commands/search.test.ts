@@ -9,22 +9,23 @@ import { search } from "./search";
 
 const baseConfig = {
   $schema: "",
-  style: "ink",
-  tsx: true,
+  framework: "ink",
   aliases: {
     components: "@/components",
     ui: "@/components/ui",
     hooks: "@/hooks",
     lib: "@/lib",
-    utils: "@/lib/utils",
+    providers: "@/providers",
+    themes: "@/lib/terminal-themes",
   },
   registries: {},
   resolvedPaths: {
     cwd: "/tmp/test-project",
-    utils: "",
     components: "",
     lib: "",
     hooks: "",
+    providers: "",
+    themes: "",
     ui: "",
   },
 };
@@ -60,11 +61,8 @@ vi.mock("fs-extra", () => ({
   },
 }));
 
-vi.mock("@/src/utils/env-loader", () => ({
-  loadEnvFiles: vi.fn(),
-}));
-
 vi.mock("@/src/utils/get-config", () => ({
+  CONFIG_FILE: "termcn.json",
   createConfig: vi.fn(() => baseConfig),
   getConfig: vi.fn(() => null),
 }));

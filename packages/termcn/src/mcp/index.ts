@@ -16,7 +16,6 @@ import {
 
 import {
   findUnknownTypesMessage,
-  formatItemExamples,
   formatRegistryItems,
   formatSearchResultsWithPagination,
   formatSkippedRegistries,
@@ -41,22 +40,16 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
   return {
     tools: [
       {
-        name: "get_project_registries",
-        description:
-          "Get configured registry names from components.json. Returns an error if no components.json exists; run `termcn init` first.",
-        inputSchema: zodToJsonSchema(z.object({})),
-      },
-      {
         name: "list_items_in_registries",
         description:
-          "List items from registries. Requires a components.json created by `termcn init`.",
+          "List items from registries. Omit `registries` to also report which registries the project has configured. Requires a termcn.json created by `termcn init`.",
         inputSchema: zodToJsonSchema(
           z.object({
             registries: z
               .array(z.string())
               .optional()
               .describe(
-                "Array of registry names to list (e.g., ['@termcn', '@acme']). Omit to list from every registry configured in components.json."
+                "Array of registry names to list (e.g., ['@termcn', '@acme']). Omit to list the registries configured in termcn.json and their items."
               ),
             types: z
               .array(z.string())
@@ -80,14 +73,14 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       {
         name: "search_items_in_registries",
         description:
-          "Search for components in registries using fuzzy matching (requires components.json). After finding an item, use get_item_examples_from_registries to see usage examples.",
+          "Search for components in registries using fuzzy matching (requires termcn.json). After finding an item, use view_items_in_registries to read its files.",
         inputSchema: zodToJsonSchema(
           z.object({
             registries: z
               .array(z.string())
               .optional()
               .describe(
-                "Array of registry names to search (e.g., ['@termcn', '@acme']). Omit to search every registry configured in components.json."
+                "Array of registry names to search (e.g., ['@termcn', '@acme']). Omit to search every registry configured in termcn.json."
               ),
             query: z
               .string()
@@ -116,7 +109,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       {
         name: "view_items_in_registries",
         description:
-          "View detailed information about specific registry items including the name, description, type and files content. For usage examples, use get_item_examples_from_registries instead.",
+          "View detailed information about specific registry items including the name, description, type and files content.",
         inputSchema: zodToJsonSchema(
           z.object({
             items: z
@@ -127,99 +120,15 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
           })
         ),
       },
-      {
-        name: "get_item_examples_from_registries",
-        description:
-          "Find usage examples and demos with their complete code. Search for patterns like 'accordion-demo', 'button example', 'card-demo', etc. Returns full implementation code with dependencies.",
-        inputSchema: zodToJsonSchema(
-          z.object({
-            registries: z
-              .array(z.string())
-              .optional()
-              .describe(
-                "Array of registry names to search (e.g., ['@termcn', '@acme']). Omit to search every registry configured in components.json."
-              ),
-            query: z
-              .string()
-              .describe(
-                "Search query for examples (e.g., 'accordion-demo', 'button demo', 'card example', 'tooltip-demo', 'example-booking-form', 'example-hero'). Common patterns: '{item-name}-demo', '{item-name} example', 'example {item-name}'"
-              ),
-          })
-        ),
-      },
-      {
-        name: "get_add_command_for_items",
-        description:
-          "Get the termcn CLI add command for specific items in a registry. This is useful for adding one or more components to your project.",
-        inputSchema: zodToJsonSchema(
-          z.object({
-            items: z
-              .array(z.string())
-              .describe(
-                "Array of items to get the add command for prefixed with the registry name (e.g., ['@termcn/button', '@termcn/card'])"
-              ),
-          })
-        ),
-      },
-      {
-        name: "get_audit_checklist",
-        description:
-          "After creating new components or generating new code files, use this tool for a quick checklist to verify that everything is working as expected. Make sure to run the tool after all required steps have been completed.",
-        inputSchema: zodToJsonSchema(z.object({})),
-      },
     ],
   };
 });
 
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   try {
-    if (!request.params.arguments) {
-      throw new Error("No tool arguments provided.");
-    }
+    const toolArguments = request.params.arguments ?? {};
 
     switch (request.params.name) {
-      case "get_project_registries": {
-        const config = await getMcpConfig(process.cwd());
-
-        if (!config?.registries) {
-          return {
-            content: [
-              {
-                type: "text",
-                text: dedent`No components.json found or no registries configured.
-
-                To fix this:
-                1. Use the \`init\` command to create a components.json file
-                2. Or manually create components.json with a registries section`,
-              },
-            ],
-          };
-        }
-
-        return {
-          content: [
-            {
-              type: "text",
-              text: dedent`The following registries are configured in the current project:
-
-                ${Object.keys(config.registries)
-                  .map((registry) => `- ${registry}`)
-                  .join("\n")}
-
-                You can view the items in a registry by running:
-                \`${await npxTermcn("view @name-of-registry")}\`
-
-                For example: \`${await npxTermcn(
-                  "view @termcn"
-                )}\` or \`${await npxTermcn(
-                  "view @termcn @acme"
-                )}\` to view multiple registries.
-                `,
-            },
-          ],
-        };
-      }
-
       case "search_items_in_registries": {
         const inputSchema = z.object({
           registries: z.array(z.string()).optional(),
@@ -229,7 +138,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           offset: z.number().optional(),
         });
 
-        const args = inputSchema.parse(request.params.arguments);
+        const args = inputSchema.parse(toolArguments);
 
         const unknownTypesMessage = findUnknownTypesMessage(args.types);
         if (unknownTypesMessage) {
@@ -254,7 +163,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             content: [
               {
                 type: "text",
-                text: dedent`No registries are configured. Add registries to components.json (use get_project_registries to inspect) or pass them explicitly.`,
+                text: `No registries are configured. Run \`${await npxTermcn(
+                  "init"
+                )}\` to create a termcn.json, or pass registries explicitly.`,
               },
             ],
           };
@@ -292,10 +203,10 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             {
               type: "text",
               text:
-                formatSearchResultsWithPagination(results, {
+                (await formatSearchResultsWithPagination(results, {
                   query: args.query,
                   registries,
-                }) + skippedNote,
+                })) + skippedNote,
             },
           ],
         };
@@ -307,10 +218,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           types: z.array(z.string()).optional(),
           limit: z.number().optional(),
           offset: z.number().optional(),
-          cwd: z.string().optional(),
         });
 
-        const args = inputSchema.parse(request.params.arguments);
+        const args = inputSchema.parse(toolArguments);
 
         const unknownTypesMessage = findUnknownTypesMessage(args.types);
         if (unknownTypesMessage) {
@@ -333,11 +243,21 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             content: [
               {
                 type: "text",
-                text: dedent`No registries are configured. Add registries to components.json (use get_project_registries to inspect) or pass them explicitly.`,
+                text: `No registries are configured. Run \`${await npxTermcn(
+                  "init"
+                )}\` to create a termcn.json, or pass registries explicitly.`,
               },
             ],
           };
         }
+
+        // Without an explicit selection, report what the project has
+        // configured alongside the items.
+        const configuredNote = listAll
+          ? `Registries configured in this project:\n${registries
+              .map((registry) => `- ${registry}`)
+              .join("\n")}\n\n`
+          : "";
 
         const results = await searchRegistries(registries, {
           types: args.types,
@@ -355,9 +275,11 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             content: [
               {
                 type: "text",
-                text: dedent`No items found in registries ${registries.join(
-                  ", "
-                )}.${skippedNote}`,
+                text:
+                  configuredNote +
+                  `No items found in registries ${registries.join(
+                    ", "
+                  )}.${skippedNote}`,
               },
             ],
           };
@@ -368,9 +290,11 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             {
               type: "text",
               text:
-                formatSearchResultsWithPagination(results, {
+                configuredNote +
+                (await formatSearchResultsWithPagination(results, {
                   registries,
-                }) + skippedNote,
+                })) +
+                skippedNote,
             },
           ],
         };
@@ -381,7 +305,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           items: z.array(z.string()),
         });
 
-        const args = inputSchema.parse(request.params.arguments);
+        const args = inputSchema.parse(toolArguments);
         const registryItems = await getRegistryItems(args.items, {
           config: await getMcpConfig(process.cwd()),
           useCache: false,
@@ -409,113 +333,6 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
               text: dedent`Item Details:
 
               ${formattedItems.join("\n\n---\n\n")}`,
-            },
-          ],
-        };
-      }
-
-      case "get_item_examples_from_registries": {
-        const inputSchema = z.object({
-          query: z.string(),
-          registries: z.array(z.string()).optional(),
-        });
-
-        const args = inputSchema.parse(request.params.arguments);
-        const config = await getMcpConfig();
-
-        const searchAll = !args.registries?.length;
-        const registries = resolveSearchRegistries(
-          args.registries ?? [],
-          config
-        );
-
-        if (registries.length === 0) {
-          return {
-            content: [
-              {
-                type: "text",
-                text: dedent`No registries are configured. Add registries to components.json (use get_project_registries to inspect) or pass them explicitly.`,
-              },
-            ],
-          };
-        }
-
-        const results = await searchRegistries(registries, {
-          query: args.query,
-          config,
-          useCache: false,
-          continueOnError: searchAll,
-        });
-
-        if (results.items.length === 0) {
-          return {
-            content: [
-              {
-                type: "text",
-                text: dedent`No examples found for query "${args.query}".
-
-                Try searching with patterns like:
-                 - "app-shell example" for terminal layout examples
-                 - "input demo" or "table example"
-                - Component name followed by "-demo" or "example"
-
-                You can also:
-                1. Use search_items_in_registries to find all items matching your query
-                2. View the main component with view_items_in_registries for inline usage documentation`,
-              },
-            ],
-          };
-        }
-
-        const itemNames = results.items.map((item) => item.addCommandArgument);
-        const fullItems = await getRegistryItems(itemNames, {
-          config,
-          useCache: false,
-        });
-
-        return {
-          content: [
-            {
-              type: "text",
-              text: formatItemExamples(fullItems, args.query),
-            },
-          ],
-        };
-      }
-
-      case "get_add_command_for_items": {
-        const args = z
-          .object({
-            items: z.array(z.string()),
-          })
-          .parse(request.params.arguments);
-
-        return {
-          content: [
-            {
-              type: "text",
-              text: await npxTermcn(`add ${args.items.join(" ")}`),
-            },
-          ],
-        };
-      }
-
-      case "get_audit_checklist": {
-        return {
-          content: [
-            {
-              type: "text",
-              text: dedent`## Component Audit Checklist
-
-              After adding or generating components, check the following common issues:
-
-              - [ ] Ensure named and default imports match the installed component exports.
-              - [ ] Ensure all Ink or OpenTUI dependencies are installed.
-              - [ ] Check keyboard input, focus, and Ctrl+C behavior.
-              - [ ] Check narrow and resized terminal layouts.
-              - [ ] Check Unicode and reduced-motion fallbacks where applicable.
-              - [ ] Run the project's lint, typecheck, and terminal interaction tests.
-              `,
             },
           ],
         };

@@ -1,113 +1,46 @@
-import fs from "fs-extra";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import type { Config } from "@/src/utils/get-config";
+import { resolveRegistryNamespaces } from "@/src/registry/namespaces";
+import { createConfig } from "@/src/utils/get-config";
 
 import { ensureRegistriesInConfig } from "./registries";
 
-// Mock dependencies.
 vi.mock("@/src/registry/namespaces", () => ({
-  resolveRegistryNamespaces: vi.fn().mockResolvedValue(["@foo"]),
+  resolveRegistryNamespaces: vi.fn(),
 }));
-
-vi.mock("@/src/registry/api", () => ({
-  getRegistries: vi
-    .fn()
-    .mockResolvedValue([
-      { name: "@foo", url: "https://foo.com/r/{name}.json" },
-    ]),
-}));
-
-vi.mock("@/src/utils/spinner", () => ({
-  spinner: vi.fn().mockReturnValue({
-    start: vi.fn().mockReturnValue({
-      succeed: vi.fn(),
-      fail: vi.fn(),
-      stop: vi.fn(),
-    }),
-  }),
-}));
-
-vi.mock("fs-extra", () => ({
-  default: {
-    writeFile: vi.fn().mockResolvedValue(undefined),
-  },
-}));
-
-afterEach(() => {
-  vi.clearAllMocks();
-});
-
-const baseConfig: Config = {
-  $schema: "",
-  style: "ink",
-  tsx: true,
-  aliases: {
-    components: "@/components",
-    utils: "@/lib/utils",
-    ui: "@/components/ui",
-    lib: "@/lib",
-    hooks: "@/hooks",
-  },
-  registries: {},
-  resolvedPaths: {
-    cwd: "/tmp/test-project",
-    utils: "",
-    components: "",
-    lib: "",
-    hooks: "",
-    ui: "",
-  },
-};
 
 describe("ensureRegistriesInConfig", () => {
-  it("does not write to disk when writeFile is false", async () => {
-    const { config, newRegistries } = await ensureRegistriesInConfig(
-      ["@foo/bar"],
-      baseConfig,
-      { writeFile: false }
-    );
-
-    // Should still return the updated config with new registries.
-    expect(newRegistries).toEqual(["@foo"]);
-    expect(config.registries?.["@foo"]).toBe("https://foo.com/r/{name}.json");
-
-    // Should NOT have written to disk.
-    expect(fs.writeFile).not.toHaveBeenCalled();
+  beforeEach(() => {
+    vi.mocked(resolveRegistryNamespaces).mockReset();
   });
 
-  it("writes to disk when writeFile is true", async () => {
-    await ensureRegistriesInConfig(["@foo/bar"], baseConfig, {
-      writeFile: true,
+  it("accepts built-in namespaces", async () => {
+    vi.mocked(resolveRegistryNamespaces).mockResolvedValue(["@termcn"]);
+    const config = createConfig({ framework: "ink" });
+
+    await expect(
+      ensureRegistriesInConfig(["@termcn/button"], config)
+    ).resolves.toEqual({ config, newRegistries: [] });
+  });
+
+  it("accepts namespaces explicitly configured in termcn.json", async () => {
+    vi.mocked(resolveRegistryNamespaces).mockResolvedValue(["@acme"]);
+    const config = createConfig({
+      registries: { "@acme": "https://acme.example/{name}.json" },
     });
 
-    expect(fs.writeFile).toHaveBeenCalledTimes(1);
-    expect(fs.writeFile).toHaveBeenCalledWith(
-      expect.stringContaining("components.json"),
-      expect.any(String),
-      "utf-8"
-    );
+    await expect(
+      ensureRegistriesInConfig(["@acme/button"], config)
+    ).resolves.toEqual({ config, newRegistries: [] });
   });
 
-  it("writes to disk by default (writeFile not specified)", async () => {
-    await ensureRegistriesInConfig(["@foo/bar"], baseConfig);
+  it("rejects unknown namespaces without mutating config", async () => {
+    vi.mocked(resolveRegistryNamespaces).mockResolvedValue(["@missing"]);
+    const config = createConfig({ framework: "opentui" });
 
-    expect(fs.writeFile).toHaveBeenCalledTimes(1);
-  });
-
-  it("does not write when no new registries are found", async () => {
-    const configWithRegistry: Config = {
-      ...baseConfig,
-      registries: {
-        "@foo": "https://foo.com/r/{name}.json",
-      },
-    };
-
-    await ensureRegistriesInConfig(["@foo/bar"], configWithRegistry, {
-      writeFile: true,
-    });
-
-    // No new registries, so no write.
-    expect(fs.writeFile).not.toHaveBeenCalled();
+    await expect(
+      ensureRegistriesInConfig(["@missing/button"], config)
+    ).rejects.toThrow('Unknown registry "@missing"');
+    expect(config.registries?.["@missing"]).toBeUndefined();
   });
 });

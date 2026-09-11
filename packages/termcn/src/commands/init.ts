@@ -1,5 +1,6 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 import { Command } from "commander";
 import { execa } from "execa";
@@ -21,7 +22,7 @@ import {
 } from "@/src/config";
 import { REGISTRY_URL } from "@/src/registry/constants";
 import { addComponents } from "@/src/utils/add-components";
-import { getConfig, type Config } from "@/src/utils/get-config";
+import { CONFIG_FILE, getConfig, type Config } from "@/src/utils/get-config";
 import { getPackageManager } from "@/src/utils/get-package-manager";
 import { handleError } from "@/src/utils/handle-error";
 import { highlighter } from "@/src/utils/highlighter";
@@ -38,7 +39,6 @@ export const initOptionsSchema = z.object({
   silent: z.boolean(),
   template: z.string().optional(),
   theme: z.string().optional(),
-  tsx: z.boolean().default(true),
   yes: z.boolean(),
 });
 
@@ -54,7 +54,7 @@ export const init = new Command()
   )
   .option(
     "-t, --template <template>",
-    `the starter template to install. (${TEMPLATE_NAMES.join(", ")})`
+    `the component preset to install. (${TEMPLATE_NAMES.join(", ")})`
   )
   .option(
     "--theme <theme>",
@@ -68,10 +68,8 @@ export const init = new Command()
   )
   .option("-y, --yes", "skip confirmation prompts.", false)
   .option("-d, --defaults", "use the default Ink configuration.", false)
-  .option("-f, --force", "overwrite an existing components.json.", false)
+  .option("-f, --force", `overwrite an existing ${CONFIG_FILE}.`, false)
   .option("-s, --silent", "mute progress output.", false)
-  .option("--tsx", "write TypeScript and TSX files.", true)
-  .option("--no-tsx", "write JavaScript and JSX files.")
   .argument("[components...]", "additional registry components to install")
   .action(async (components, opts) => {
     try {
@@ -93,12 +91,10 @@ export async function runInit(
     defaults: false,
     force: false,
     silent: false,
-    tsx: true,
     yes: false,
     ...input,
     cwd: path.resolve(input.cwd),
   });
-
   const selection = await resolveSelection(options);
   const target = options.name
     ? path.resolve(options.cwd, options.name)
@@ -106,18 +102,18 @@ export async function runInit(
 
   await fs.mkdir(target, { recursive: true });
 
-  const componentsJsonPath = path.join(target, "components.json");
-  if ((await pathExists(componentsJsonPath)) && !options.force) {
+  const configPath = path.join(target, CONFIG_FILE);
+  if ((await pathExists(configPath)) && !options.force) {
     if (options.yes || options.defaults) {
       throw new Error(
-        `A ${highlighter.info("components.json")} file already exists. Use ${highlighter.info("--force")} to overwrite it.`
+        `A ${highlighter.info(CONFIG_FILE)} file already exists. Use ${highlighter.info("--force")} to overwrite it.`
       );
     }
 
     const { overwrite } = await prompts({
       type: "confirm",
       name: "overwrite",
-      message: "components.json already exists. Overwrite it?",
+      message: `${CONFIG_FILE} already exists. Overwrite it?`,
       initial: false,
     });
 
@@ -133,37 +129,36 @@ export async function runInit(
       name: options.name ?? path.basename(target),
       target,
       theme: selection.theme,
-      tsx: options.tsx,
     });
   } else {
-    await ensureTypeScriptAliases(target);
+    await ensureTypeScriptAliases(target, selection.framework);
   }
 
-  await writeJson(componentsJsonPath, {
+  await writeJson(configPath, {
     $schema: "https://termcn.dev/schema.json",
-    style: selection.framework,
-    tsx: options.tsx,
+    framework: selection.framework,
+    theme: selection.theme,
     aliases: {
       components: "@/components",
-      hooks: "@/hooks",
-      lib: "@/lib",
       ui: "@/components/ui",
-      utils: "@/lib/utils",
+      lib: "@/lib",
+      hooks: "@/hooks",
+      providers: "@/providers",
+      themes: "@/lib/terminal-themes",
     },
     registries: {},
-    theme: selection.theme,
-    template: selection.template,
   });
 
   const config = await getConfig(target);
   if (!config) {
     throw new Error(
-      `Unable to read the generated ${highlighter.info("components.json")}.`
+      `Unable to read the generated ${highlighter.info(CONFIG_FILE)}.`
     );
   }
 
   const registryItems = [
     registryItemUrl(selection.framework, `theme-${selection.theme}`),
+    registryItemUrl(selection.framework, "theme-provider"),
     ...(selection.template === "blank"
       ? []
       : [registryItemUrl(selection.framework, selection.template)]),
@@ -179,9 +174,10 @@ export async function runInit(
   });
 
   if (isNewProject) {
-    const packageManager = await getPackageManager(target, {
-      withFallback: true,
-    });
+    const packageManager =
+      selection.framework === "opentui"
+        ? "bun"
+        : await getPackageManager(target, { withFallback: true });
     const installSpinner = spinner("Installing project dependencies.", {
       silent: options.silent,
     })?.start();
@@ -199,7 +195,7 @@ export async function runInit(
       `${highlighter.success("Success!")} Initialized ${highlighter.info(selection.framework)} with the ${highlighter.info(selection.theme)} theme.`
     );
     logger.log(
-      `Configuration written to ${highlighter.info(path.relative(process.cwd(), componentsJsonPath) || "components.json")}.`
+      `Configuration written to ${highlighter.info(path.relative(process.cwd(), configPath) || CONFIG_FILE)}.`
     );
     if (isNewProject) {
       logger.log(
@@ -247,7 +243,7 @@ async function resolveSelection(options: InitOptions) {
       {
         type: template ? null : "select",
         name: "template",
-        message: "Which starter template would you like to install?",
+        message: "Which component preset would you like to install?",
         choices: TEMPLATES.map((entry) => ({
           title: entry.title,
           description: entry.description,
@@ -320,107 +316,59 @@ async function scaffoldProject({
   name,
   target,
   theme,
-  tsx,
 }: {
   framework: FrameworkName;
   name: string;
   target: string;
   theme: ThemeName;
-  tsx: boolean;
 }) {
-  const extension = tsx ? "tsx" : "jsx";
-  const sourceDir = path.join(target, "src");
-  await fs.mkdir(sourceDir, { recursive: true });
+  const templateDir = fileURLToPath(
+    new URL(`./templates/${framework}/`, import.meta.url)
+  );
+  await fs.cp(templateDir, target, { recursive: true });
 
-  const packageJson =
-    framework === "opentui"
-      ? {
-          name,
-          private: true,
-          type: "module",
-          scripts: {
-            build: `bun build src/index.${extension} --outdir dist --target bun --packages external`,
-            dev: `bun --watch src/index.${extension}`,
-            start: `bun src/index.${extension}`,
-          },
-          dependencies: {
-            "@opentui/core": "latest",
-            "@opentui/react": "latest",
-            react: "^19.2.0",
-          },
-          devDependencies: {
-            "@types/bun": "latest",
-            "@types/react": "^19.2.0",
-            typescript: "^5.9.0",
-          },
-        }
-      : {
-          name,
-          private: true,
-          type: "module",
-          scripts: {
-            build: "tsc --noEmit",
-            dev: `tsx watch src/index.${extension}`,
-            start: `tsx src/index.${extension}`,
-          },
-          dependencies: {
-            ink: "^6.8.0",
-            react: "^19.2.0",
-          },
-          devDependencies: {
-            "@types/node": "^24.0.0",
-            "@types/react": "^19.2.0",
-            tsx: "^4.20.0",
-            typescript: "^5.9.0",
-          },
-          engines: {
-            node: ">=20.18.0",
-          },
-        };
+  const packagePath = path.join(target, "package.json");
+  const packageJson = JSON.parse(await fs.readFile(packagePath, "utf8"));
+  packageJson.name = name
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9._-]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  await writeJson(packagePath, packageJson);
 
-  await Promise.all([
-    writeJson(path.join(target, "package.json"), packageJson),
-    writeJson(path.join(target, "tsconfig.json"), {
-      compilerOptions: {
-        baseUrl: ".",
-        esModuleInterop: true,
-        jsx: "react-jsx",
-        ...(framework === "opentui"
-          ? { jsxImportSource: "@opentui/react" }
-          : {}),
-        lib: ["ESNext"],
-        module: "ESNext",
-        moduleResolution: "bundler",
-        noEmit: true,
-        paths: {
-          "@/*": ["./src/*"],
-        },
-        skipLibCheck: true,
-        strict: true,
-        target: "ESNext",
-      },
-      include: ["src/**/*"],
-    }),
-    fs.writeFile(
-      path.join(sourceDir, `index.${extension}`),
-      getStarterSource(framework, theme),
-      "utf8"
-    ),
-  ]);
+  const entryPath = path.join(
+    target,
+    "src",
+    framework === "opentui" ? "index.tsx" : "cli.tsx"
+  );
+  const source = await fs.readFile(entryPath, "utf8");
+  const replacements: Record<string, string> = {
+    "{{theme}}": theme,
+    "{{themeExport}}": getThemeExportName(theme),
+  };
+  const rendered = Object.entries(replacements).reduce(
+    (contents, [placeholder, value]) => contents.replaceAll(placeholder, value),
+    source
+  );
+  await fs.writeFile(entryPath, rendered, "utf8");
 }
 
-async function ensureTypeScriptAliases(target: string) {
+async function ensureTypeScriptAliases(
+  target: string,
+  framework: FrameworkName
+) {
   const tsconfigPath = path.join(target, "tsconfig.json");
   if (!(await pathExists(tsconfigPath))) {
     await writeJson(tsconfigPath, {
       compilerOptions: {
         baseUrl: ".",
         jsx: "react-jsx",
+        ...(framework === "opentui"
+          ? { jsxImportSource: "@opentui/react" }
+          : {}),
         module: "ESNext",
         moduleResolution: "bundler",
-        paths: {
-          "@/*": ["./src/*"],
-        },
+        paths: { "@/*": ["./src/*"] },
         target: "ESNext",
       },
       include: ["src/**/*"],
@@ -435,78 +383,13 @@ async function ensureTypeScriptAliases(target: string) {
     tsconfig.compilerOptions.baseUrl ??= ".";
     tsconfig.compilerOptions.paths ??= {};
     tsconfig.compilerOptions.paths["@/*"] ??= ["./src/*"];
+    if (framework === "opentui") {
+      tsconfig.compilerOptions.jsxImportSource ??= "@opentui/react";
+    }
     await writeJson(tsconfigPath, tsconfig);
   } catch {
-    // Keep JSONC and extended configurations intact. getConfig will use their
-    // existing aliases and report a focused error if none can be resolved.
+    // Preserve JSONC and inherited configs; getConfig reports unresolved aliases.
   }
-}
-
-function getStarterSource(framework: FrameworkName, theme: ThemeName) {
-  const themeExport = getThemeExportName(theme);
-
-  if (framework === "opentui") {
-    return `/** @jsxImportSource @opentui/react */
-import { createCliRenderer } from "@opentui/core"
-import { createRoot } from "@opentui/react"
-
-import { ThemeProvider } from "@/components/ui/theme-provider"
-import { ${themeExport} } from "@/lib/terminal-themes/${theme}"
-
-function App() {
-  return (
-    <ThemeProvider theme={${themeExport}}>
-      <box
-        alignItems="center"
-        border
-        borderColor={${themeExport}.colors.border}
-        flexDirection="column"
-        height="100%"
-        justifyContent="center"
-        width="100%"
-      >
-        <text fg={${themeExport}.colors.primary}>Welcome to termcn</text>
-        <text fg={${themeExport}.colors.mutedForeground}>
-          Edit src/index.tsx to start building.
-        </text>
-      </box>
-    </ThemeProvider>
-  )
-}
-
-const renderer = await createCliRenderer({ exitOnCtrlC: true })
-createRoot(renderer).render(<App />)
-`;
-  }
-
-  return `import React from "react"
-import { Box, render, Text } from "ink"
-
-import { ThemeProvider } from "@/components/ui/theme-provider"
-import { ${themeExport} } from "@/lib/terminal-themes/${theme}"
-
-function App() {
-  return (
-    <ThemeProvider theme={${themeExport}}>
-      <Box
-        alignItems="center"
-        borderColor={${themeExport}.colors.border}
-        borderStyle="round"
-        flexDirection="column"
-        paddingX={2}
-        paddingY={1}
-      >
-        <Text color={${themeExport}.colors.primary}>Welcome to termcn</Text>
-        <Text color={${themeExport}.colors.mutedForeground}>
-          Edit src/index.tsx to start building.
-        </Text>
-      </Box>
-    </ThemeProvider>
-  )
-}
-
-render(<App />)
-`;
 }
 
 async function writeJson(filePath: string, value: unknown) {

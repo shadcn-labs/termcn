@@ -19,7 +19,11 @@ import {
 import { fetchWithProxy } from "@/src/registry/proxy";
 import { registryItemSchema } from "@/src/schema";
 
-const registryCache = new Map<string, Promise<any>>();
+const registryCache = new Map<string, Promise<unknown>>();
+
+export function clearRegistryCache() {
+  registryCache.clear();
+}
 
 export async function fetchRegistry(
   paths: string[],

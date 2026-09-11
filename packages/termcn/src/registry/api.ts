@@ -1,35 +1,31 @@
 import { z } from "zod";
 
-import { resolveGitHubRegistrySource } from "@/src/registry/address";
 import { buildUrlAndHeadersForRegistryItem } from "@/src/registry/builder";
 import { configWithDefaults } from "@/src/registry/config";
-import { BUILTIN_REGISTRIES, REGISTRY_URL } from "@/src/registry/constants";
+import { BUILTIN_REGISTRIES } from "@/src/registry/constants";
 import {
   setRegistryHeaders,
   withRegistryContext,
 } from "@/src/registry/context";
 import {
   ConfigParseError,
-  RegistriesIndexParseError,
   RegistryInvalidNamespaceError,
   RegistryNotFoundError,
   RegistryParseError,
   RegistryValidationError,
 } from "@/src/registry/errors";
 import { fetchRegistry } from "@/src/registry/fetcher";
-import { fetchGitHubRegistryCatalog } from "@/src/registry/github";
 import {
   fetchRegistryItems,
   resolveRegistryTree,
 } from "@/src/registry/resolver";
 import { isUrl } from "@/src/registry/utils";
 import {
-  registriesSchema,
   registryConfigSchema,
-  registryIndexSchema,
   registryItemSchema,
   registrySchema,
 } from "@/src/schema";
+import type { Framework } from "@/src/schema";
 import { Config, explorer } from "@/src/utils/get-config";
 
 type RegistryApiOptions = {
@@ -50,11 +46,6 @@ async function getRegistryWithContext(
   if (isUrl(name)) {
     const [result] = await fetchRegistry([name], { useCache });
     return parseRegistryCatalog(name, result);
-  }
-
-  const githubSource = resolveGitHubRegistrySource(name);
-  if (githubSource) {
-    return fetchGitHubRegistryCatalog(githubSource, { useCache });
   }
 
   if (!name.startsWith("@")) {
@@ -181,31 +172,15 @@ export async function getRegistriesConfig(
   };
 }
 
-export async function getTermcnRegistryIndex() {
-  const [result] = await fetchRegistry(["index.json"]);
+export async function getTermcnRegistryCatalog(framework: Framework) {
+  const [result] = await fetchRegistry(["registry.json"]);
+  const registry = parseRegistryCatalog("@termcn", result);
+  const prefix = `${framework}/`;
 
-  return registryIndexSchema.parse(result);
-}
-
-// Fetch registries with new schema (array of objects with name, homepage, url, featured).
-export async function getRegistries(options?: { useCache?: boolean }) {
-  options = {
-    useCache: true,
-    ...options,
-  };
-
-  const url = `${REGISTRY_URL}/registries.json`;
-  const [data] = await fetchRegistry([url], {
-    useCache: options.useCache,
-  });
-
-  try {
-    return registriesSchema.parse(data);
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      throw new RegistriesIndexParseError(error);
-    }
-
-    throw error;
-  }
+  return registry.items
+    .filter((item) => item.name.startsWith(prefix))
+    .map((item) => ({
+      ...item,
+      name: item.name.slice(prefix.length),
+    }));
 }

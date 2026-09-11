@@ -163,8 +163,9 @@ describe("validateRegistry", () => {
             ],
           },
           {
-            name: "brand-font",
-            type: "registry:font",
+            name: "brand-theme",
+            type: "registry:theme",
+            files: [{ path: "missing-theme.ts", type: "registry:theme" }],
           },
         ],
       }),
@@ -186,8 +187,9 @@ describe("validateRegistry", () => {
         }),
         expect.objectContaining({
           itemIndex: 1,
-          itemName: "brand-font",
-          message: "font: Required",
+          itemName: "brand-theme",
+          message:
+            'File "missing-theme.ts" was not found or could not be read.',
         }),
       ])
     );

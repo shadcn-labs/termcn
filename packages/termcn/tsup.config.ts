@@ -1,3 +1,5 @@
+import { promises as fs } from "node:fs";
+
 import { defineConfig } from "tsup";
 
 export default defineConfig((options) => ({
@@ -19,4 +21,9 @@ export default defineConfig((options) => ({
   // Bundle @antfu/ni and its dependency tinyexec to avoid
   // module resolution failures with npx temporary installs.
   noExternal: ["@antfu/ni", "tinyexec"],
+  onSuccess: async () => {
+    await fs.cp("src/commands/templates", "dist/templates", {
+      recursive: true,
+    });
+  },
 }));

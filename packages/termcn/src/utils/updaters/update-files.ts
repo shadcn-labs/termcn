@@ -1,26 +1,24 @@
 import { existsSync, promises as fs, statSync } from "node:fs";
 import path from "node:path";
 
+import type { Ora } from "ora";
 import prompts from "prompts";
 import { z } from "zod";
 
 import { type RegistryItem, registryItemFileSchema } from "@/src/schema";
 import { isContentSame } from "@/src/utils/compare";
-import {
-  findExistingEnvFile,
-  getNewEnvKeys,
-  isEnvFile,
-  mergeEnvContent,
-  parseEnvContent,
-} from "@/src/utils/env-helpers";
 import { type Config } from "@/src/utils/get-config";
-import { highlighter } from "@/src/utils/highlighter";
 import { logger } from "@/src/utils/logger";
 import { spinner } from "@/src/utils/spinner";
 import { isTargetAliasKey } from "@/src/utils/target-aliases";
 import { transform } from "@/src/utils/transformers";
 
-const CODE_EXTENSIONS = new Set([".ts", ".tsx", ".js", ".jsx"]);
+const CODE_EXTENSIONS: Record<string, true> = {
+  ".ts": true,
+  ".tsx": true,
+  ".js": true,
+  ".jsx": true,
+};
 
 export async function updateFiles(
   files: RegistryItem["files"],
@@ -51,31 +49,17 @@ export async function updateFiles(
   const progress = spinner("Updating files.", {
     silent: settings.silent,
   })?.start();
-  let envFile: string | null = null;
-  let envVarsAdded: string[] = [];
-
   for (const [index, file] of files.entries()) {
     if (file.content === undefined) {
       continue;
     }
 
-    let filePath = resolveFilePath(file, config, {
+    const filePath = resolveFilePath(file, config, {
       fileIndex: index,
       path: settings.path,
     });
     if (!filePath) {
       continue;
-    }
-
-    if (!config.tsx) {
-      filePath = filePath.replace(/\.tsx?$/, (extension) =>
-        extension === ".tsx" ? ".jsx" : ".js"
-      );
-    }
-
-    const targetDir = path.dirname(filePath);
-    if (isEnvFile(filePath) && !existsSync(filePath)) {
-      filePath = findExistingEnvFile(targetDir) ?? filePath;
     }
 
     const exists = existsSync(filePath);
@@ -86,32 +70,14 @@ export async function updateFiles(
     const isUniversal =
       file.type === "registry:file" || file.type === "registry:item";
     const content =
-      isEnvFile(filePath) || isUniversal || !isCodeFile(filePath)
+      isUniversal || !CODE_EXTENSIONS[path.extname(filePath)]
         ? file.content
         : await transform({
             config,
             filename: file.path,
             raw: file.content,
-            transformJsx: !config.tsx,
           });
     const relativePath = path.relative(config.resolvedPaths.cwd, filePath);
-
-    if (exists && isEnvFile(filePath)) {
-      const existingContent = await fs.readFile(filePath, "utf8");
-      envVarsAdded = getNewEnvKeys(existingContent, content);
-      envFile = relativePath;
-      if (envVarsAdded.length === 0) {
-        result.filesSkipped.push(relativePath);
-        continue;
-      }
-      await fs.writeFile(
-        filePath,
-        mergeEnvContent(existingContent, content),
-        "utf8"
-      );
-      result.filesUpdated.push(relativePath);
-      continue;
-    }
 
     if (exists) {
       const existingContent = await fs.readFile(filePath, "utf8");
@@ -149,10 +115,6 @@ export async function updateFiles(
       result.filesUpdated.push(relativePath);
     } else {
       result.filesCreated.push(relativePath);
-      if (isEnvFile(filePath)) {
-        envVarsAdded = Object.keys(parseEnvContent(content));
-        envFile = relativePath;
-      }
     }
   }
 
@@ -163,11 +125,6 @@ export async function updateFiles(
   result.filesSkipped = unique(result.filesSkipped);
 
   reportFiles(progress, result, settings.silent);
-  if (envFile && envVarsAdded.length > 0) {
-    spinner(`Added variables to ${highlighter.info(envFile)}.`, {
-      silent: settings.silent,
-    })?.info();
-  }
 
   return result;
 }
@@ -191,24 +148,20 @@ export function resolveFilePath(
     }
 
     const aliasMatch = file.target.match(/^@([^/]+)\/(.+)$/);
-    if (aliasMatch && isTargetAliasKey(aliasMatch[1])) {
-      const aliasRoot = path.resolve(config.resolvedPaths[aliasMatch[1]]);
-      const target = path.resolve(aliasRoot, aliasMatch[2]);
-      if (
-        target !== aliasRoot &&
-        !target.startsWith(`${aliasRoot}${path.sep}`)
-      ) {
-        throw new Error(
-          `Invalid target path "${file.target}". Alias targets must stay within @${aliasMatch[1]}.`
-        );
-      }
-      return target;
+    if (!aliasMatch || !isTargetAliasKey(aliasMatch[1])) {
+      throw new Error(
+        `Invalid target "${file.target}". Targets must use a configured alias (for example @ui/button.tsx) or start with ~/.`
+      );
     }
 
-    return path.resolve(
-      config.resolvedPaths.cwd,
-      file.target.replace(/^@/, "")
-    );
+    const aliasRoot = path.resolve(config.resolvedPaths[aliasMatch[1]]);
+    const target = path.resolve(aliasRoot, aliasMatch[2]);
+    if (target !== aliasRoot && !target.startsWith(`${aliasRoot}${path.sep}`)) {
+      throw new Error(
+        `Invalid target path "${file.target}". Alias targets must stay within @${aliasMatch[1]}.`
+      );
+    }
+    return target;
   }
 
   const targetDir = resolveFileTargetDirectory(file, config);
@@ -252,14 +205,13 @@ function resolveFileTargetDirectory(
   file: z.infer<typeof registryItemFileSchema>,
   config: Config
 ) {
-  if (file.type === "registry:ui") return config.resolvedPaths.ui;
+  if (file.type === "registry:ui" || file.type === "registry:block") {
+    return config.resolvedPaths.ui;
+  }
   if (file.type === "registry:lib") return config.resolvedPaths.lib;
   if (file.type === "registry:hook") return config.resolvedPaths.hooks;
+  if (file.type === "registry:theme") return config.resolvedPaths.themes;
   return config.resolvedPaths.components;
-}
-
-function isCodeFile(filePath: string) {
-  return CODE_EXTENSIONS.has(path.extname(filePath));
 }
 
 function unique(values: string[]) {
@@ -267,7 +219,7 @@ function unique(values: string[]) {
 }
 
 function reportFiles(
-  progress: ReturnType<typeof spinner>,
+  progress: Ora | undefined,
   result: {
     filesCreated: string[];
     filesUpdated: string[];

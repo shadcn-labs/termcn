@@ -1,5 +1,6 @@
 {
-  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "$schema": "https://termcn.dev/schema/registry.json",
+  "name": "termcn",
   "homepage": "https://termcn.dev",
   "items": [
     {
@@ -8,7 +9,7 @@
       "files": [
         {
           "path": "registry/ui/types.ts",
-          "target": "components/ui/types.ts",
+          "target": "@ui/types.ts",
           "type": "registry:file"
         }
       ],
@@ -22,7 +23,7 @@
       "files": [
         {
           "path": "registry/lib/accessibility.ts",
-          "target": "lib/accessibility.ts",
+          "target": "@lib/accessibility.ts",
           "type": "registry:file"
         }
       ],
@@ -37,7 +38,7 @@
       "files": [
         {
           "path": "registry/lib/terminal-style.ts",
-          "target": "lib/terminal-style.ts",
+          "target": "@lib/terminal-style.ts",
           "type": "registry:file"
         }
       ],
@@ -51,7 +52,7 @@
       "files": [
         {
           "path": "registry/lib/terminal-symbols.ts",
-          "target": "lib/terminal-symbols.ts",
+          "target": "@lib/terminal-symbols.ts",
           "type": "registry:file"
         }
       ],
@@ -124,7 +125,7 @@
       "files": [
         {
           "path": "registry/providers/motion-provider.tsx",
-          "target": "providers/motion-provider.tsx",
+          "target": "@providers/motion-provider.tsx",
           "type": "registry:ui"
         }
       ],
@@ -142,7 +143,7 @@
       "files": [
         {
           "path": "registry/providers/unicode-provider.tsx",
-          "target": "providers/unicode-provider.tsx",
+          "target": "@providers/unicode-provider.tsx",
           "type": "registry:ui"
         }
       ],
@@ -161,7 +162,7 @@
       "files": [
         {
           "path": "registry/lib/terminal-text.ts",
-          "target": "lib/terminal-text.ts",
+          "target": "@lib/terminal-text.ts",
           "type": "registry:file"
         }
       ],
@@ -768,17 +769,17 @@
       "files": [
         {
           "path": "registry/lib/dither-chart-utils.ts",
-          "target": "lib/dither-chart-utils.ts",
+          "target": "@lib/dither-chart-utils.ts",
           "type": "registry:file"
         },
         {
           "path": "registry/lib/dither-area-chart-utils.ts",
-          "target": "lib/dither-area-chart-utils.ts",
+          "target": "@lib/dither-area-chart-utils.ts",
           "type": "registry:file"
         },
         {
           "path": "registry/ui/dither-chart.tsx",
-          "target": "components/ui/dither-chart.tsx",
+          "target": "@ui/dither-chart.tsx",
           "type": "registry:file"
         },
         {
@@ -804,17 +805,17 @@
       "files": [
         {
           "path": "registry/lib/dither-chart-utils.ts",
-          "target": "lib/dither-chart-utils.ts",
+          "target": "@lib/dither-chart-utils.ts",
           "type": "registry:file"
         },
         {
           "path": "registry/lib/dither-bar-chart-utils.ts",
-          "target": "lib/dither-bar-chart-utils.ts",
+          "target": "@lib/dither-bar-chart-utils.ts",
           "type": "registry:file"
         },
         {
           "path": "registry/ui/dither-chart.tsx",
-          "target": "components/ui/dither-chart.tsx",
+          "target": "@ui/dither-chart.tsx",
           "type": "registry:file"
         },
         {
@@ -840,17 +841,17 @@
       "files": [
         {
           "path": "registry/lib/dither-chart-utils.ts",
-          "target": "lib/dither-chart-utils.ts",
+          "target": "@lib/dither-chart-utils.ts",
           "type": "registry:file"
         },
         {
           "path": "registry/lib/dither-line-chart-utils.ts",
-          "target": "lib/dither-line-chart-utils.ts",
+          "target": "@lib/dither-line-chart-utils.ts",
           "type": "registry:file"
         },
         {
           "path": "registry/ui/dither-chart.tsx",
-          "target": "components/ui/dither-chart.tsx",
+          "target": "@ui/dither-chart.tsx",
           "type": "registry:file"
         },
         {
@@ -876,17 +877,17 @@
       "files": [
         {
           "path": "registry/lib/dither-chart-utils.ts",
-          "target": "lib/dither-chart-utils.ts",
+          "target": "@lib/dither-chart-utils.ts",
           "type": "registry:file"
         },
         {
           "path": "registry/lib/dither-pie-chart-utils.ts",
-          "target": "lib/dither-pie-chart-utils.ts",
+          "target": "@lib/dither-pie-chart-utils.ts",
           "type": "registry:file"
         },
         {
           "path": "registry/ui/dither-chart.tsx",
-          "target": "components/ui/dither-chart.tsx",
+          "target": "@ui/dither-chart.tsx",
           "type": "registry:file"
         },
         {
@@ -912,17 +913,17 @@
       "files": [
         {
           "path": "registry/lib/dither-chart-utils.ts",
-          "target": "lib/dither-chart-utils.ts",
+          "target": "@lib/dither-chart-utils.ts",
           "type": "registry:file"
         },
         {
           "path": "registry/lib/dither-radar-chart-utils.ts",
-          "target": "lib/dither-radar-chart-utils.ts",
+          "target": "@lib/dither-radar-chart-utils.ts",
           "type": "registry:file"
         },
         {
           "path": "registry/ui/dither-chart.tsx",
-          "target": "components/ui/dither-chart.tsx",
+          "target": "@ui/dither-chart.tsx",
           "type": "registry:file"
         },
         {
@@ -948,17 +949,17 @@
       "files": [
         {
           "path": "registry/lib/dither-chart-utils.ts",
-          "target": "lib/dither-chart-utils.ts",
+          "target": "@lib/dither-chart-utils.ts",
           "type": "registry:file"
         },
         {
           "path": "registry/lib/dither-sparkline-utils.ts",
-          "target": "lib/dither-sparkline-utils.ts",
+          "target": "@lib/dither-sparkline-utils.ts",
           "type": "registry:file"
         },
         {
           "path": "registry/ui/dither-chart.tsx",
-          "target": "components/ui/dither-chart.tsx",
+          "target": "@ui/dither-chart.tsx",
           "type": "registry:file"
         },
         {
@@ -1673,7 +1674,7 @@
         "https://termcn.dev/r/ink/use-unicode.json"
       ],
       "title": "Notification Center",
-      "type": "registry:block"
+      "type": "registry:ui"
     },
     {
       "categories": ["input"],
@@ -1703,7 +1704,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/types.ts",
-          "target": "components/ui/types.ts",
+          "target": "@ui/types.ts",
           "type": "registry:file"
         }
       ],
@@ -1763,7 +1764,7 @@
       "files": [
         {
           "path": "registry/opentui/providers/motion-provider.tsx",
-          "target": "providers/motion-provider.tsx",
+          "target": "@providers/motion-provider.tsx",
           "type": "registry:ui"
         }
       ],
@@ -1782,7 +1783,7 @@
       "files": [
         {
           "path": "registry/opentui/providers/unicode-provider.tsx",
-          "target": "providers/unicode-provider.tsx",
+          "target": "@providers/unicode-provider.tsx",
           "type": "registry:ui"
         }
       ],
@@ -1801,7 +1802,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/alert.tsx",
-          "target": "components/ui/alert.tsx",
+          "target": "@ui/alert.tsx",
           "type": "registry:ui"
         }
       ],
@@ -1817,7 +1818,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/app-shell.tsx",
-          "target": "components/ui/app-shell.tsx",
+          "target": "@ui/app-shell.tsx",
           "type": "registry:ui"
         }
       ],
@@ -1833,7 +1834,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/aspect-ratio.tsx",
-          "target": "components/ui/aspect-ratio.tsx",
+          "target": "@ui/aspect-ratio.tsx",
           "type": "registry:ui"
         }
       ],
@@ -1848,7 +1849,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/badge.tsx",
-          "target": "components/ui/badge.tsx",
+          "target": "@ui/badge.tsx",
           "type": "registry:ui"
         }
       ],
@@ -1864,7 +1865,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/banner.tsx",
-          "target": "components/ui/banner.tsx",
+          "target": "@ui/banner.tsx",
           "type": "registry:ui"
         }
       ],
@@ -1880,7 +1881,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/bar-chart.tsx",
-          "target": "components/ui/bar-chart.tsx",
+          "target": "@ui/bar-chart.tsx",
           "type": "registry:ui"
         }
       ],
@@ -1896,7 +1897,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/big-text.tsx",
-          "target": "components/ui/big-text.tsx",
+          "target": "@ui/big-text.tsx",
           "type": "registry:ui"
         }
       ],
@@ -1912,7 +1913,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/box.tsx",
-          "target": "components/ui/box.tsx",
+          "target": "@ui/box.tsx",
           "type": "registry:ui"
         }
       ],
@@ -1928,7 +1929,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/breadcrumb.tsx",
-          "target": "components/ui/breadcrumb.tsx",
+          "target": "@ui/breadcrumb.tsx",
           "type": "registry:ui"
         }
       ],
@@ -1944,7 +1945,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/bullet-list.tsx",
-          "target": "components/ui/bullet-list.tsx",
+          "target": "@ui/bullet-list.tsx",
           "type": "registry:ui"
         }
       ],
@@ -1960,7 +1961,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/card.tsx",
-          "target": "components/ui/card.tsx",
+          "target": "@ui/card.tsx",
           "type": "registry:ui"
         }
       ],
@@ -1976,7 +1977,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/center.tsx",
-          "target": "components/ui/center.tsx",
+          "target": "@ui/center.tsx",
           "type": "registry:ui"
         }
       ],
@@ -1991,7 +1992,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/chat-message.tsx",
-          "target": "components/ui/chat-message.tsx",
+          "target": "@ui/chat-message.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2007,7 +2008,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/chat-thread.tsx",
-          "target": "components/ui/chat-thread.tsx",
+          "target": "@ui/chat-thread.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2022,7 +2023,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/checkbox.tsx",
-          "target": "components/ui/checkbox.tsx",
+          "target": "@ui/checkbox.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2038,7 +2039,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/checkbox-group.tsx",
-          "target": "components/ui/checkbox-group.tsx",
+          "target": "@ui/checkbox-group.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2054,7 +2055,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/clipboard.tsx",
-          "target": "components/ui/clipboard.tsx",
+          "target": "@ui/clipboard.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2073,7 +2074,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/clock.tsx",
-          "target": "components/ui/clock.tsx",
+          "target": "@ui/clock.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2089,7 +2090,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/code.tsx",
-          "target": "components/ui/code.tsx",
+          "target": "@ui/code.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2105,7 +2106,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/color-picker.tsx",
-          "target": "components/ui/color-picker.tsx",
+          "target": "@ui/color-picker.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2121,7 +2122,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/columns.tsx",
-          "target": "components/ui/columns.tsx",
+          "target": "@ui/columns.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2136,7 +2137,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/command-palette.tsx",
-          "target": "components/ui/command-palette.tsx",
+          "target": "@ui/command-palette.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2152,7 +2153,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/confirm.tsx",
-          "target": "components/ui/confirm.tsx",
+          "target": "@ui/confirm.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2168,7 +2169,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/data-grid.tsx",
-          "target": "components/ui/data-grid.tsx",
+          "target": "@ui/data-grid.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2184,7 +2185,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/date-picker.tsx",
-          "target": "components/ui/date-picker.tsx",
+          "target": "@ui/date-picker.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2200,7 +2201,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/definition.tsx",
-          "target": "components/ui/definition.tsx",
+          "target": "@ui/definition.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2216,7 +2217,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/dialog.tsx",
-          "target": "components/ui/dialog.tsx",
+          "target": "@ui/dialog.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2232,7 +2233,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/diff-view.tsx",
-          "target": "components/ui/diff-view.tsx",
+          "target": "@ui/diff-view.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2248,7 +2249,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/digits.tsx",
-          "target": "components/ui/digits.tsx",
+          "target": "@ui/digits.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2264,7 +2265,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/directory-tree.tsx",
-          "target": "components/ui/directory-tree.tsx",
+          "target": "@ui/directory-tree.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2280,22 +2281,22 @@
       "files": [
         {
           "path": "registry/opentui/lib/dither-chart-utils.ts",
-          "target": "lib/dither-chart-utils.ts",
+          "target": "@lib/dither-chart-utils.ts",
           "type": "registry:file"
         },
         {
           "path": "registry/opentui/lib/dither-area-chart-utils.ts",
-          "target": "lib/dither-area-chart-utils.ts",
+          "target": "@lib/dither-area-chart-utils.ts",
           "type": "registry:file"
         },
         {
           "path": "registry/opentui/ui/dither-chart.tsx",
-          "target": "components/ui/dither-chart.tsx",
+          "target": "@ui/dither-chart.tsx",
           "type": "registry:file"
         },
         {
           "path": "registry/opentui/ui/dither-area-chart.tsx",
-          "target": "components/ui/dither-area-chart.tsx",
+          "target": "@ui/dither-area-chart.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2315,22 +2316,22 @@
       "files": [
         {
           "path": "registry/opentui/lib/dither-chart-utils.ts",
-          "target": "lib/dither-chart-utils.ts",
+          "target": "@lib/dither-chart-utils.ts",
           "type": "registry:file"
         },
         {
           "path": "registry/opentui/lib/dither-bar-chart-utils.ts",
-          "target": "lib/dither-bar-chart-utils.ts",
+          "target": "@lib/dither-bar-chart-utils.ts",
           "type": "registry:file"
         },
         {
           "path": "registry/opentui/ui/dither-chart.tsx",
-          "target": "components/ui/dither-chart.tsx",
+          "target": "@ui/dither-chart.tsx",
           "type": "registry:file"
         },
         {
           "path": "registry/opentui/ui/dither-bar-chart.tsx",
-          "target": "components/ui/dither-bar-chart.tsx",
+          "target": "@ui/dither-bar-chart.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2350,22 +2351,22 @@
       "files": [
         {
           "path": "registry/opentui/lib/dither-chart-utils.ts",
-          "target": "lib/dither-chart-utils.ts",
+          "target": "@lib/dither-chart-utils.ts",
           "type": "registry:file"
         },
         {
           "path": "registry/opentui/lib/dither-line-chart-utils.ts",
-          "target": "lib/dither-line-chart-utils.ts",
+          "target": "@lib/dither-line-chart-utils.ts",
           "type": "registry:file"
         },
         {
           "path": "registry/opentui/ui/dither-chart.tsx",
-          "target": "components/ui/dither-chart.tsx",
+          "target": "@ui/dither-chart.tsx",
           "type": "registry:file"
         },
         {
           "path": "registry/opentui/ui/dither-line-chart.tsx",
-          "target": "components/ui/dither-line-chart.tsx",
+          "target": "@ui/dither-line-chart.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2385,22 +2386,22 @@
       "files": [
         {
           "path": "registry/opentui/lib/dither-chart-utils.ts",
-          "target": "lib/dither-chart-utils.ts",
+          "target": "@lib/dither-chart-utils.ts",
           "type": "registry:file"
         },
         {
           "path": "registry/opentui/lib/dither-pie-chart-utils.ts",
-          "target": "lib/dither-pie-chart-utils.ts",
+          "target": "@lib/dither-pie-chart-utils.ts",
           "type": "registry:file"
         },
         {
           "path": "registry/opentui/ui/dither-chart.tsx",
-          "target": "components/ui/dither-chart.tsx",
+          "target": "@ui/dither-chart.tsx",
           "type": "registry:file"
         },
         {
           "path": "registry/opentui/ui/dither-pie-chart.tsx",
-          "target": "components/ui/dither-pie-chart.tsx",
+          "target": "@ui/dither-pie-chart.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2420,22 +2421,22 @@
       "files": [
         {
           "path": "registry/opentui/lib/dither-chart-utils.ts",
-          "target": "lib/dither-chart-utils.ts",
+          "target": "@lib/dither-chart-utils.ts",
           "type": "registry:file"
         },
         {
           "path": "registry/opentui/lib/dither-radar-chart-utils.ts",
-          "target": "lib/dither-radar-chart-utils.ts",
+          "target": "@lib/dither-radar-chart-utils.ts",
           "type": "registry:file"
         },
         {
           "path": "registry/opentui/ui/dither-chart.tsx",
-          "target": "components/ui/dither-chart.tsx",
+          "target": "@ui/dither-chart.tsx",
           "type": "registry:file"
         },
         {
           "path": "registry/opentui/ui/dither-radar-chart.tsx",
-          "target": "components/ui/dither-radar-chart.tsx",
+          "target": "@ui/dither-radar-chart.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2455,22 +2456,22 @@
       "files": [
         {
           "path": "registry/opentui/lib/dither-chart-utils.ts",
-          "target": "lib/dither-chart-utils.ts",
+          "target": "@lib/dither-chart-utils.ts",
           "type": "registry:file"
         },
         {
           "path": "registry/opentui/lib/dither-sparkline-utils.ts",
-          "target": "lib/dither-sparkline-utils.ts",
+          "target": "@lib/dither-sparkline-utils.ts",
           "type": "registry:file"
         },
         {
           "path": "registry/opentui/ui/dither-chart.tsx",
-          "target": "components/ui/dither-chart.tsx",
+          "target": "@ui/dither-chart.tsx",
           "type": "registry:file"
         },
         {
           "path": "registry/opentui/ui/dither-sparkline.tsx",
-          "target": "components/ui/dither-sparkline.tsx",
+          "target": "@ui/dither-sparkline.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2490,7 +2491,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/divider.tsx",
-          "target": "components/ui/divider.tsx",
+          "target": "@ui/divider.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2506,7 +2507,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/drawer.tsx",
-          "target": "components/ui/drawer.tsx",
+          "target": "@ui/drawer.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2522,7 +2523,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/email-input.tsx",
-          "target": "components/ui/email-input.tsx",
+          "target": "@ui/email-input.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2538,7 +2539,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/embedded-terminal.tsx",
-          "target": "components/ui/embedded-terminal.tsx",
+          "target": "@ui/embedded-terminal.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2553,7 +2554,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/error-boundary.tsx",
-          "target": "components/ui/error-boundary.tsx",
+          "target": "@ui/error-boundary.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2568,7 +2569,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/file-change.tsx",
-          "target": "components/ui/file-change.tsx",
+          "target": "@ui/file-change.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2584,7 +2585,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/file-picker.tsx",
-          "target": "components/ui/file-picker.tsx",
+          "target": "@ui/file-picker.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2600,7 +2601,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/form.tsx",
-          "target": "components/ui/form.tsx",
+          "target": "@ui/form.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2616,7 +2617,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/form-field.tsx",
-          "target": "components/ui/form-field.tsx",
+          "target": "@ui/form-field.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2632,7 +2633,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/gauge.tsx",
-          "target": "components/ui/gauge.tsx",
+          "target": "@ui/gauge.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2648,7 +2649,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/git-status.tsx",
-          "target": "components/ui/git-status.tsx",
+          "target": "@ui/git-status.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2664,7 +2665,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/gradient.tsx",
-          "target": "components/ui/gradient.tsx",
+          "target": "@ui/gradient.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2679,7 +2680,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/grid.tsx",
-          "target": "components/ui/grid.tsx",
+          "target": "@ui/grid.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2694,7 +2695,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/heading.tsx",
-          "target": "components/ui/heading.tsx",
+          "target": "@ui/heading.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2710,7 +2711,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/heat-map.tsx",
-          "target": "components/ui/heat-map.tsx",
+          "target": "@ui/heat-map.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2726,7 +2727,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/help.tsx",
-          "target": "components/ui/help.tsx",
+          "target": "@ui/help.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2742,7 +2743,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/help-screen.tsx",
-          "target": "components/ui/help-screen.tsx",
+          "target": "@ui/help-screen.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2758,7 +2759,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/image.tsx",
-          "target": "components/ui/image.tsx",
+          "target": "@ui/image.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2774,7 +2775,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/info-box.tsx",
-          "target": "components/ui/info-box.tsx",
+          "target": "@ui/info-box.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2790,7 +2791,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/json.tsx",
-          "target": "components/ui/json.tsx",
+          "target": "@ui/json.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2806,7 +2807,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/key-value.tsx",
-          "target": "components/ui/key-value.tsx",
+          "target": "@ui/key-value.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2822,7 +2823,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/keyboard-shortcuts.tsx",
-          "target": "components/ui/keyboard-shortcuts.tsx",
+          "target": "@ui/keyboard-shortcuts.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2838,7 +2839,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/line-chart.tsx",
-          "target": "components/ui/line-chart.tsx",
+          "target": "@ui/line-chart.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2854,7 +2855,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/link.tsx",
-          "target": "components/ui/link.tsx",
+          "target": "@ui/link.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2870,7 +2871,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/list.tsx",
-          "target": "components/ui/list.tsx",
+          "target": "@ui/list.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2886,7 +2887,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/log.tsx",
-          "target": "components/ui/log.tsx",
+          "target": "@ui/log.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2902,7 +2903,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/login-flow.tsx",
-          "target": "components/ui/login-flow.tsx",
+          "target": "@ui/login-flow.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2918,7 +2919,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/markdown.tsx",
-          "target": "components/ui/markdown.tsx",
+          "target": "@ui/markdown.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2934,7 +2935,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/masked-input.tsx",
-          "target": "components/ui/masked-input.tsx",
+          "target": "@ui/masked-input.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2950,7 +2951,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/menu.tsx",
-          "target": "components/ui/menu.tsx",
+          "target": "@ui/menu.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2966,7 +2967,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/modal.tsx",
-          "target": "components/ui/modal.tsx",
+          "target": "@ui/modal.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2982,7 +2983,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/model-selector.tsx",
-          "target": "components/ui/model-selector.tsx",
+          "target": "@ui/model-selector.tsx",
           "type": "registry:ui"
         }
       ],
@@ -2998,7 +2999,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/multi-progress.tsx",
-          "target": "components/ui/multi-progress.tsx",
+          "target": "@ui/multi-progress.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3014,7 +3015,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/multi-select.tsx",
-          "target": "components/ui/multi-select.tsx",
+          "target": "@ui/multi-select.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3030,7 +3031,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/notification-badge.tsx",
-          "target": "components/ui/notification-badge.tsx",
+          "target": "@ui/notification-badge.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3046,13 +3047,13 @@
       "files": [
         {
           "path": "registry/opentui/ui/notification-center.tsx",
-          "target": "components/ui/notification-center.tsx",
-          "type": "registry:block"
+          "target": "@ui/notification-center.tsx",
+          "type": "registry:ui"
         }
       ],
       "name": "opentui/notification-center",
       "title": "Notification Center",
-      "type": "registry:block",
+      "type": "registry:ui",
       "registryDependencies": [
         "https://termcn.dev/r/opentui/use-theme.json",
         "https://termcn.dev/r/ink/use-notifications.json"
@@ -3065,7 +3066,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/number-input.tsx",
-          "target": "components/ui/number-input.tsx",
+          "target": "@ui/number-input.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3081,7 +3082,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/pagination.tsx",
-          "target": "components/ui/pagination.tsx",
+          "target": "@ui/pagination.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3097,7 +3098,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/panel.tsx",
-          "target": "components/ui/panel.tsx",
+          "target": "@ui/panel.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3113,7 +3114,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/password-input.tsx",
-          "target": "components/ui/password-input.tsx",
+          "target": "@ui/password-input.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3129,7 +3130,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/path-input.tsx",
-          "target": "components/ui/path-input.tsx",
+          "target": "@ui/path-input.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3145,7 +3146,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/pie-chart.tsx",
-          "target": "components/ui/pie-chart.tsx",
+          "target": "@ui/pie-chart.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3161,7 +3162,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/popover.tsx",
-          "target": "components/ui/popover.tsx",
+          "target": "@ui/popover.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3177,7 +3178,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/progress-bar.tsx",
-          "target": "components/ui/progress-bar.tsx",
+          "target": "@ui/progress-bar.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3193,7 +3194,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/progress-circle.tsx",
-          "target": "components/ui/progress-circle.tsx",
+          "target": "@ui/progress-circle.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3209,7 +3210,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/qr-code.tsx",
-          "target": "components/ui/qr-code.tsx",
+          "target": "@ui/qr-code.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3225,7 +3226,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/radio-group.tsx",
-          "target": "components/ui/radio-group.tsx",
+          "target": "@ui/radio-group.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3241,7 +3242,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/scroll-view.tsx",
-          "target": "components/ui/scroll-view.tsx",
+          "target": "@ui/scroll-view.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3257,7 +3258,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/search-input.tsx",
-          "target": "components/ui/search-input.tsx",
+          "target": "@ui/search-input.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3273,7 +3274,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/select.tsx",
-          "target": "components/ui/select.tsx",
+          "target": "@ui/select.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3289,7 +3290,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/setup-flow.tsx",
-          "target": "components/ui/setup-flow.tsx",
+          "target": "@ui/setup-flow.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3305,7 +3306,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/sidebar.tsx",
-          "target": "components/ui/sidebar.tsx",
+          "target": "@ui/sidebar.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3321,7 +3322,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/skeleton.tsx",
-          "target": "components/ui/skeleton.tsx",
+          "target": "@ui/skeleton.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3337,7 +3338,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/spacer.tsx",
-          "target": "components/ui/spacer.tsx",
+          "target": "@ui/spacer.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3352,7 +3353,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/sparkline.tsx",
-          "target": "components/ui/sparkline.tsx",
+          "target": "@ui/sparkline.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3368,7 +3369,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/spinner.tsx",
-          "target": "components/ui/spinner.tsx",
+          "target": "@ui/spinner.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3387,7 +3388,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/splash-screen.tsx",
-          "target": "components/ui/splash-screen.tsx",
+          "target": "@ui/splash-screen.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3403,7 +3404,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/stack.tsx",
-          "target": "components/ui/stack.tsx",
+          "target": "@ui/stack.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3418,7 +3419,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/status-message.tsx",
-          "target": "components/ui/status-message.tsx",
+          "target": "@ui/status-message.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3434,7 +3435,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/stopwatch.tsx",
-          "target": "components/ui/stopwatch.tsx",
+          "target": "@ui/stopwatch.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3450,7 +3451,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/streaming-text.tsx",
-          "target": "components/ui/streaming-text.tsx",
+          "target": "@ui/streaming-text.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3466,7 +3467,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/tabbed-content.tsx",
-          "target": "components/ui/tabbed-content.tsx",
+          "target": "@ui/tabbed-content.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3482,7 +3483,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/table.tsx",
-          "target": "components/ui/table.tsx",
+          "target": "@ui/table.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3498,7 +3499,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/tabs.tsx",
-          "target": "components/ui/tabs.tsx",
+          "target": "@ui/tabs.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3514,7 +3515,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/tag.tsx",
-          "target": "components/ui/tag.tsx",
+          "target": "@ui/tag.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3530,7 +3531,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/tag-input.tsx",
-          "target": "components/ui/tag-input.tsx",
+          "target": "@ui/tag-input.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3546,7 +3547,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/text-area.tsx",
-          "target": "components/ui/text-area.tsx",
+          "target": "@ui/text-area.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3562,7 +3563,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/text-input.tsx",
-          "target": "components/ui/text-input.tsx",
+          "target": "@ui/text-input.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3578,7 +3579,7 @@
       "files": [
         {
           "path": "registry/opentui/providers/theme-provider.tsx",
-          "target": "providers/theme-provider.tsx",
+          "target": "@providers/theme-provider.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3598,7 +3599,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/thinking-block.tsx",
-          "target": "components/ui/thinking-block.tsx",
+          "target": "@ui/thinking-block.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3614,7 +3615,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/time-picker.tsx",
-          "target": "components/ui/time-picker.tsx",
+          "target": "@ui/time-picker.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3630,7 +3631,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/timer.tsx",
-          "target": "components/ui/timer.tsx",
+          "target": "@ui/timer.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3646,7 +3647,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/toast.tsx",
-          "target": "components/ui/toast.tsx",
+          "target": "@ui/toast.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3662,7 +3663,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/toggle.tsx",
-          "target": "components/ui/toggle.tsx",
+          "target": "@ui/toggle.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3678,7 +3679,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/token-usage.tsx",
-          "target": "components/ui/token-usage.tsx",
+          "target": "@ui/token-usage.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3694,7 +3695,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/tool-approval.tsx",
-          "target": "components/ui/tool-approval.tsx",
+          "target": "@ui/tool-approval.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3710,7 +3711,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/tool-call.tsx",
-          "target": "components/ui/tool-call.tsx",
+          "target": "@ui/tool-call.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3726,7 +3727,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/tooltip.tsx",
-          "target": "components/ui/tooltip.tsx",
+          "target": "@ui/tooltip.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3742,7 +3743,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/tree.tsx",
-          "target": "components/ui/tree.tsx",
+          "target": "@ui/tree.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3758,7 +3759,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/tree-select.tsx",
-          "target": "components/ui/tree-select.tsx",
+          "target": "@ui/tree-select.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3774,7 +3775,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/usage-monitor.tsx",
-          "target": "components/ui/usage-monitor.tsx",
+          "target": "@ui/usage-monitor.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3789,7 +3790,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/virtual-list.tsx",
-          "target": "components/ui/virtual-list.tsx",
+          "target": "@ui/virtual-list.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3805,7 +3806,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/welcome-screen.tsx",
-          "target": "components/ui/welcome-screen.tsx",
+          "target": "@ui/welcome-screen.tsx",
           "type": "registry:ui"
         }
       ],
@@ -3821,7 +3822,7 @@
       "files": [
         {
           "path": "registry/opentui/ui/wizard.tsx",
-          "target": "components/ui/wizard.tsx",
+          "target": "@ui/wizard.tsx",
           "type": "registry:ui"
         }
       ],
@@ -4451,7 +4452,7 @@
       "files": [
         {
           "path": "registry/themes/catppuccin.ts",
-          "target": "lib/terminal-themes/catppuccin.ts",
+          "target": "@themes/catppuccin.ts",
           "type": "registry:file"
         }
       ],
@@ -4466,7 +4467,7 @@
       "files": [
         {
           "path": "registry/themes/default.ts",
-          "target": "lib/terminal-themes/default.ts",
+          "target": "@themes/default.ts",
           "type": "registry:file"
         }
       ],
@@ -4481,7 +4482,7 @@
       "files": [
         {
           "path": "registry/themes/dracula.ts",
-          "target": "lib/terminal-themes/dracula.ts",
+          "target": "@themes/dracula.ts",
           "type": "registry:file"
         }
       ],
@@ -4496,7 +4497,7 @@
       "files": [
         {
           "path": "registry/themes/high-contrast.ts",
-          "target": "lib/terminal-themes/high-contrast.ts",
+          "target": "@themes/high-contrast.ts",
           "type": "registry:file"
         }
       ],
@@ -4511,7 +4512,7 @@
       "files": [
         {
           "path": "registry/themes/monokai.ts",
-          "target": "lib/terminal-themes/monokai.ts",
+          "target": "@themes/monokai.ts",
           "type": "registry:file"
         }
       ],
@@ -4526,7 +4527,7 @@
       "files": [
         {
           "path": "registry/themes/nord.ts",
-          "target": "lib/terminal-themes/nord.ts",
+          "target": "@themes/nord.ts",
           "type": "registry:file"
         }
       ],
@@ -4541,7 +4542,7 @@
       "files": [
         {
           "path": "registry/themes/one-dark.ts",
-          "target": "lib/terminal-themes/one-dark.ts",
+          "target": "@themes/one-dark.ts",
           "type": "registry:file"
         }
       ],
@@ -4556,7 +4557,7 @@
       "files": [
         {
           "path": "registry/providers/theme-provider.tsx",
-          "target": "providers/theme-provider.tsx",
+          "target": "@providers/theme-provider.tsx",
           "type": "registry:ui"
         }
       ],
@@ -4575,7 +4576,7 @@
       "files": [
         {
           "path": "registry/themes/solarized.ts",
-          "target": "lib/terminal-themes/solarized.ts",
+          "target": "@themes/solarized.ts",
           "type": "registry:file"
         }
       ],
@@ -4590,7 +4591,7 @@
       "files": [
         {
           "path": "registry/themes/tokyo-night.ts",
-          "target": "lib/terminal-themes/tokyo-night.ts",
+          "target": "@themes/tokyo-night.ts",
           "type": "registry:file"
         }
       ],
@@ -4605,7 +4606,7 @@
       "files": [
         {
           "path": "registry/themes/amoled.ts",
-          "target": "lib/terminal-themes/amoled.ts",
+          "target": "@themes/amoled.ts",
           "type": "registry:file"
         }
       ],
@@ -4620,7 +4621,7 @@
       "files": [
         {
           "path": "registry/themes/aura.ts",
-          "target": "lib/terminal-themes/aura.ts",
+          "target": "@themes/aura.ts",
           "type": "registry:file"
         }
       ],
@@ -4635,7 +4636,7 @@
       "files": [
         {
           "path": "registry/themes/ayu.ts",
-          "target": "lib/terminal-themes/ayu.ts",
+          "target": "@themes/ayu.ts",
           "type": "registry:file"
         }
       ],
@@ -4650,7 +4651,7 @@
       "files": [
         {
           "path": "registry/themes/carbonfox.ts",
-          "target": "lib/terminal-themes/carbonfox.ts",
+          "target": "@themes/carbonfox.ts",
           "type": "registry:file"
         }
       ],
@@ -4665,7 +4666,7 @@
       "files": [
         {
           "path": "registry/themes/catppuccin-frappe.ts",
-          "target": "lib/terminal-themes/catppuccin-frappe.ts",
+          "target": "@themes/catppuccin-frappe.ts",
           "type": "registry:file"
         }
       ],
@@ -4680,7 +4681,7 @@
       "files": [
         {
           "path": "registry/themes/catppuccin-macchiato.ts",
-          "target": "lib/terminal-themes/catppuccin-macchiato.ts",
+          "target": "@themes/catppuccin-macchiato.ts",
           "type": "registry:file"
         }
       ],
@@ -4695,7 +4696,7 @@
       "files": [
         {
           "path": "registry/themes/cobalt2.ts",
-          "target": "lib/terminal-themes/cobalt2.ts",
+          "target": "@themes/cobalt2.ts",
           "type": "registry:file"
         }
       ],
@@ -4710,7 +4711,7 @@
       "files": [
         {
           "path": "registry/themes/cursor.ts",
-          "target": "lib/terminal-themes/cursor.ts",
+          "target": "@themes/cursor.ts",
           "type": "registry:file"
         }
       ],
@@ -4725,7 +4726,7 @@
       "files": [
         {
           "path": "registry/themes/everforest.ts",
-          "target": "lib/terminal-themes/everforest.ts",
+          "target": "@themes/everforest.ts",
           "type": "registry:file"
         }
       ],
@@ -4740,7 +4741,7 @@
       "files": [
         {
           "path": "registry/themes/flexoki.ts",
-          "target": "lib/terminal-themes/flexoki.ts",
+          "target": "@themes/flexoki.ts",
           "type": "registry:file"
         }
       ],
@@ -4755,7 +4756,7 @@
       "files": [
         {
           "path": "registry/themes/github.ts",
-          "target": "lib/terminal-themes/github.ts",
+          "target": "@themes/github.ts",
           "type": "registry:file"
         }
       ],
@@ -4770,7 +4771,7 @@
       "files": [
         {
           "path": "registry/themes/gruvbox.ts",
-          "target": "lib/terminal-themes/gruvbox.ts",
+          "target": "@themes/gruvbox.ts",
           "type": "registry:file"
         }
       ],
@@ -4785,7 +4786,7 @@
       "files": [
         {
           "path": "registry/themes/kanagawa.ts",
-          "target": "lib/terminal-themes/kanagawa.ts",
+          "target": "@themes/kanagawa.ts",
           "type": "registry:file"
         }
       ],
@@ -4800,7 +4801,7 @@
       "files": [
         {
           "path": "registry/themes/lucent-orng.ts",
-          "target": "lib/terminal-themes/lucent-orng.ts",
+          "target": "@themes/lucent-orng.ts",
           "type": "registry:file"
         }
       ],
@@ -4815,7 +4816,7 @@
       "files": [
         {
           "path": "registry/themes/material.ts",
-          "target": "lib/terminal-themes/material.ts",
+          "target": "@themes/material.ts",
           "type": "registry:file"
         }
       ],
@@ -4830,7 +4831,7 @@
       "files": [
         {
           "path": "registry/themes/matrix.ts",
-          "target": "lib/terminal-themes/matrix.ts",
+          "target": "@themes/matrix.ts",
           "type": "registry:file"
         }
       ],
@@ -4845,7 +4846,7 @@
       "files": [
         {
           "path": "registry/themes/mercury.ts",
-          "target": "lib/terminal-themes/mercury.ts",
+          "target": "@themes/mercury.ts",
           "type": "registry:file"
         }
       ],
@@ -4860,7 +4861,7 @@
       "files": [
         {
           "path": "registry/themes/nightowl.ts",
-          "target": "lib/terminal-themes/nightowl.ts",
+          "target": "@themes/nightowl.ts",
           "type": "registry:file"
         }
       ],
@@ -4875,7 +4876,7 @@
       "files": [
         {
           "path": "registry/themes/oc-2.ts",
-          "target": "lib/terminal-themes/oc-2.ts",
+          "target": "@themes/oc-2.ts",
           "type": "registry:file"
         }
       ],
@@ -4890,7 +4891,7 @@
       "files": [
         {
           "path": "registry/themes/onedarkpro.ts",
-          "target": "lib/terminal-themes/onedarkpro.ts",
+          "target": "@themes/onedarkpro.ts",
           "type": "registry:file"
         }
       ],
@@ -4905,7 +4906,7 @@
       "files": [
         {
           "path": "registry/themes/opencode.ts",
-          "target": "lib/terminal-themes/opencode.ts",
+          "target": "@themes/opencode.ts",
           "type": "registry:file"
         }
       ],
@@ -4920,7 +4921,7 @@
       "files": [
         {
           "path": "registry/themes/orng.ts",
-          "target": "lib/terminal-themes/orng.ts",
+          "target": "@themes/orng.ts",
           "type": "registry:file"
         }
       ],
@@ -4935,7 +4936,7 @@
       "files": [
         {
           "path": "registry/themes/osaka-jade.ts",
-          "target": "lib/terminal-themes/osaka-jade.ts",
+          "target": "@themes/osaka-jade.ts",
           "type": "registry:file"
         }
       ],
@@ -4950,7 +4951,7 @@
       "files": [
         {
           "path": "registry/themes/palenight.ts",
-          "target": "lib/terminal-themes/palenight.ts",
+          "target": "@themes/palenight.ts",
           "type": "registry:file"
         }
       ],
@@ -4965,7 +4966,7 @@
       "files": [
         {
           "path": "registry/themes/rosepine.ts",
-          "target": "lib/terminal-themes/rosepine.ts",
+          "target": "@themes/rosepine.ts",
           "type": "registry:file"
         }
       ],
@@ -4980,7 +4981,7 @@
       "files": [
         {
           "path": "registry/themes/shadesofpurple.ts",
-          "target": "lib/terminal-themes/shadesofpurple.ts",
+          "target": "@themes/shadesofpurple.ts",
           "type": "registry:file"
         }
       ],
@@ -4995,7 +4996,7 @@
       "files": [
         {
           "path": "registry/themes/synthwave84.ts",
-          "target": "lib/terminal-themes/synthwave84.ts",
+          "target": "@themes/synthwave84.ts",
           "type": "registry:file"
         }
       ],
@@ -5010,7 +5011,7 @@
       "files": [
         {
           "path": "registry/themes/vercel.ts",
-          "target": "lib/terminal-themes/vercel.ts",
+          "target": "@themes/vercel.ts",
           "type": "registry:file"
         }
       ],
@@ -5025,7 +5026,7 @@
       "files": [
         {
           "path": "registry/themes/vesper.ts",
-          "target": "lib/terminal-themes/vesper.ts",
+          "target": "@themes/vesper.ts",
           "type": "registry:file"
         }
       ],
@@ -5040,7 +5041,7 @@
       "files": [
         {
           "path": "registry/themes/zenburn.ts",
-          "target": "lib/terminal-themes/zenburn.ts",
+          "target": "@themes/zenburn.ts",
           "type": "registry:file"
         }
       ],
@@ -5441,7 +5442,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/catppuccin.ts",
-          "target": "lib/terminal-themes/catppuccin.ts",
+          "target": "@themes/catppuccin.ts",
           "type": "registry:file"
         }
       ],
@@ -5456,7 +5457,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/default.ts",
-          "target": "lib/terminal-themes/default.ts",
+          "target": "@themes/default.ts",
           "type": "registry:file"
         }
       ],
@@ -5471,7 +5472,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/dracula.ts",
-          "target": "lib/terminal-themes/dracula.ts",
+          "target": "@themes/dracula.ts",
           "type": "registry:file"
         }
       ],
@@ -5486,7 +5487,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/high-contrast.ts",
-          "target": "lib/terminal-themes/high-contrast.ts",
+          "target": "@themes/high-contrast.ts",
           "type": "registry:file"
         }
       ],
@@ -5501,7 +5502,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/monokai.ts",
-          "target": "lib/terminal-themes/monokai.ts",
+          "target": "@themes/monokai.ts",
           "type": "registry:file"
         }
       ],
@@ -5516,7 +5517,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/nord.ts",
-          "target": "lib/terminal-themes/nord.ts",
+          "target": "@themes/nord.ts",
           "type": "registry:file"
         }
       ],
@@ -5531,7 +5532,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/one-dark.ts",
-          "target": "lib/terminal-themes/one-dark.ts",
+          "target": "@themes/one-dark.ts",
           "type": "registry:file"
         }
       ],
@@ -5546,7 +5547,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/solarized.ts",
-          "target": "lib/terminal-themes/solarized.ts",
+          "target": "@themes/solarized.ts",
           "type": "registry:file"
         }
       ],
@@ -5561,7 +5562,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/tokyo-night.ts",
-          "target": "lib/terminal-themes/tokyo-night.ts",
+          "target": "@themes/tokyo-night.ts",
           "type": "registry:file"
         }
       ],
@@ -5576,7 +5577,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/amoled.ts",
-          "target": "lib/terminal-themes/amoled.ts",
+          "target": "@themes/amoled.ts",
           "type": "registry:file"
         }
       ],
@@ -5591,7 +5592,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/aura.ts",
-          "target": "lib/terminal-themes/aura.ts",
+          "target": "@themes/aura.ts",
           "type": "registry:file"
         }
       ],
@@ -5606,7 +5607,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/ayu.ts",
-          "target": "lib/terminal-themes/ayu.ts",
+          "target": "@themes/ayu.ts",
           "type": "registry:file"
         }
       ],
@@ -5621,7 +5622,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/carbonfox.ts",
-          "target": "lib/terminal-themes/carbonfox.ts",
+          "target": "@themes/carbonfox.ts",
           "type": "registry:file"
         }
       ],
@@ -5636,7 +5637,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/catppuccin-frappe.ts",
-          "target": "lib/terminal-themes/catppuccin-frappe.ts",
+          "target": "@themes/catppuccin-frappe.ts",
           "type": "registry:file"
         }
       ],
@@ -5651,7 +5652,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/catppuccin-macchiato.ts",
-          "target": "lib/terminal-themes/catppuccin-macchiato.ts",
+          "target": "@themes/catppuccin-macchiato.ts",
           "type": "registry:file"
         }
       ],
@@ -5666,7 +5667,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/cobalt2.ts",
-          "target": "lib/terminal-themes/cobalt2.ts",
+          "target": "@themes/cobalt2.ts",
           "type": "registry:file"
         }
       ],
@@ -5681,7 +5682,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/cursor.ts",
-          "target": "lib/terminal-themes/cursor.ts",
+          "target": "@themes/cursor.ts",
           "type": "registry:file"
         }
       ],
@@ -5696,7 +5697,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/everforest.ts",
-          "target": "lib/terminal-themes/everforest.ts",
+          "target": "@themes/everforest.ts",
           "type": "registry:file"
         }
       ],
@@ -5711,7 +5712,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/flexoki.ts",
-          "target": "lib/terminal-themes/flexoki.ts",
+          "target": "@themes/flexoki.ts",
           "type": "registry:file"
         }
       ],
@@ -5726,7 +5727,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/github.ts",
-          "target": "lib/terminal-themes/github.ts",
+          "target": "@themes/github.ts",
           "type": "registry:file"
         }
       ],
@@ -5741,7 +5742,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/gruvbox.ts",
-          "target": "lib/terminal-themes/gruvbox.ts",
+          "target": "@themes/gruvbox.ts",
           "type": "registry:file"
         }
       ],
@@ -5756,7 +5757,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/kanagawa.ts",
-          "target": "lib/terminal-themes/kanagawa.ts",
+          "target": "@themes/kanagawa.ts",
           "type": "registry:file"
         }
       ],
@@ -5771,7 +5772,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/lucent-orng.ts",
-          "target": "lib/terminal-themes/lucent-orng.ts",
+          "target": "@themes/lucent-orng.ts",
           "type": "registry:file"
         }
       ],
@@ -5786,7 +5787,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/material.ts",
-          "target": "lib/terminal-themes/material.ts",
+          "target": "@themes/material.ts",
           "type": "registry:file"
         }
       ],
@@ -5801,7 +5802,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/matrix.ts",
-          "target": "lib/terminal-themes/matrix.ts",
+          "target": "@themes/matrix.ts",
           "type": "registry:file"
         }
       ],
@@ -5816,7 +5817,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/mercury.ts",
-          "target": "lib/terminal-themes/mercury.ts",
+          "target": "@themes/mercury.ts",
           "type": "registry:file"
         }
       ],
@@ -5831,7 +5832,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/nightowl.ts",
-          "target": "lib/terminal-themes/nightowl.ts",
+          "target": "@themes/nightowl.ts",
           "type": "registry:file"
         }
       ],
@@ -5846,7 +5847,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/oc-2.ts",
-          "target": "lib/terminal-themes/oc-2.ts",
+          "target": "@themes/oc-2.ts",
           "type": "registry:file"
         }
       ],
@@ -5861,7 +5862,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/onedarkpro.ts",
-          "target": "lib/terminal-themes/onedarkpro.ts",
+          "target": "@themes/onedarkpro.ts",
           "type": "registry:file"
         }
       ],
@@ -5876,7 +5877,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/opencode.ts",
-          "target": "lib/terminal-themes/opencode.ts",
+          "target": "@themes/opencode.ts",
           "type": "registry:file"
         }
       ],
@@ -5891,7 +5892,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/orng.ts",
-          "target": "lib/terminal-themes/orng.ts",
+          "target": "@themes/orng.ts",
           "type": "registry:file"
         }
       ],
@@ -5906,7 +5907,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/osaka-jade.ts",
-          "target": "lib/terminal-themes/osaka-jade.ts",
+          "target": "@themes/osaka-jade.ts",
           "type": "registry:file"
         }
       ],
@@ -5921,7 +5922,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/palenight.ts",
-          "target": "lib/terminal-themes/palenight.ts",
+          "target": "@themes/palenight.ts",
           "type": "registry:file"
         }
       ],
@@ -5936,7 +5937,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/rosepine.ts",
-          "target": "lib/terminal-themes/rosepine.ts",
+          "target": "@themes/rosepine.ts",
           "type": "registry:file"
         }
       ],
@@ -5951,7 +5952,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/shadesofpurple.ts",
-          "target": "lib/terminal-themes/shadesofpurple.ts",
+          "target": "@themes/shadesofpurple.ts",
           "type": "registry:file"
         }
       ],
@@ -5966,7 +5967,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/synthwave84.ts",
-          "target": "lib/terminal-themes/synthwave84.ts",
+          "target": "@themes/synthwave84.ts",
           "type": "registry:file"
         }
       ],
@@ -5981,7 +5982,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/vercel.ts",
-          "target": "lib/terminal-themes/vercel.ts",
+          "target": "@themes/vercel.ts",
           "type": "registry:file"
         }
       ],
@@ -5996,7 +5997,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/vesper.ts",
-          "target": "lib/terminal-themes/vesper.ts",
+          "target": "@themes/vesper.ts",
           "type": "registry:file"
         }
       ],
@@ -6011,7 +6012,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/zenburn.ts",
-          "target": "lib/terminal-themes/zenburn.ts",
+          "target": "@themes/zenburn.ts",
           "type": "registry:file"
         }
       ],
@@ -6026,7 +6027,7 @@
       "files": [
         {
           "path": "registry/themes/high-contrast-light.ts",
-          "target": "lib/terminal-themes/high-contrast-light.ts",
+          "target": "@themes/high-contrast-light.ts",
           "type": "registry:file"
         }
       ],
@@ -6041,7 +6042,7 @@
       "files": [
         {
           "path": "registry/opentui/themes/high-contrast-light.ts",
-          "target": "lib/terminal-themes/high-contrast-light.ts",
+          "target": "@themes/high-contrast-light.ts",
           "type": "registry:file"
         }
       ],

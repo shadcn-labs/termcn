@@ -1,208 +1,94 @@
-import { SyntaxKind } from "ts-morph";
-
 import { Config } from "@/src/utils/get-config";
 import { Transformer } from "@/src/utils/transformers";
 
-export const transformImport: Transformer = async ({ sourceFile, config }) => {
-  const utilsAlias = config.aliases?.utils;
-  const workspaceAlias =
-    typeof utilsAlias === "string"
-      ? getWorkspaceAliasFromUtilsAlias(utilsAlias)
-      : "@";
-  const utilsImport = workspaceAlias
-    ? `${workspaceAlias}/lib/utils`
-    : "@/lib/utils";
+const REGISTRY_KIND_TO_ALIAS = {
+  components: "components",
+  ui: "ui",
+  lib: "lib",
+  hooks: "hooks",
+  providers: "providers",
+  themes: "themes",
+} as const;
 
+type ImportAliasKey =
+  (typeof REGISTRY_KIND_TO_ALIAS)[keyof typeof REGISTRY_KIND_TO_ALIAS];
+
+export const transformImport: Transformer = async ({ sourceFile, config }) => {
   if (![".tsx", ".ts", ".jsx", ".js"].includes(sourceFile.getExtension())) {
     return sourceFile;
   }
 
   for (const specifier of sourceFile.getImportStringLiterals()) {
-    const updated = updateImportAliases(specifier.getLiteralValue(), config);
-    specifier.setLiteralValue(updated);
-
-    // Replace `import { cn } from "@/lib/utils"`
-    if (utilsImport === updated || updated === "@/lib/utils") {
-      const importDeclaration = specifier.getFirstAncestorByKind(
-        SyntaxKind.ImportDeclaration
-      );
-      const isCnImport = importDeclaration
-        ?.getNamedImports()
-        .some((namedImport) => namedImport.getName() === "cn");
-
-      if (!isCnImport || !config.aliases.utils) {
-        continue;
-      }
-
-      specifier.setLiteralValue(
-        utilsImport === updated
-          ? updated.replace(utilsImport, config.aliases.utils)
-          : config.aliases.utils
-      );
-    }
+    specifier.setLiteralValue(
+      updateImportAlias(specifier.getLiteralValue(), config)
+    );
   }
 
   return sourceFile;
 };
 
-function updateImportAliases(moduleSpecifier: string, config: Config) {
-  moduleSpecifier = normalizeImportSpecifier(moduleSpecifier, config);
-
-  // Not a local import.
-  if (!moduleSpecifier.startsWith("@/")) {
-    return moduleSpecifier;
-  }
-
+function updateImportAlias(moduleSpecifier: string, config: Config) {
   if (moduleSpecifier === "@/registry") {
-    return config.aliases.components;
+    return getImportAlias(config, "components");
   }
 
-  // Not a registry import.
-  if (!moduleSpecifier.startsWith("@/registry/")) {
-    if (moduleSpecifier === "@/lib/utils" && config.aliases.utils) {
-      return config.aliases.utils;
+  if (moduleSpecifier.startsWith("@/registry/")) {
+    const segments = moduleSpecifier.slice("@/registry/".length).split("/");
+    const kindIndex = segments.findIndex(
+      (segment) => segment in REGISTRY_KIND_TO_ALIAS
+    );
+
+    if (kindIndex === -1) {
+      return moduleSpecifier;
     }
 
+    const kind = segments[kindIndex] as keyof typeof REGISTRY_KIND_TO_ALIAS;
+    const alias = getImportAlias(config, REGISTRY_KIND_TO_ALIAS[kind]);
+    const rest = segments.slice(kindIndex + 1).join("/");
+
+    return rest ? `${alias}/${rest}` : alias;
+  }
+
+  const consumerAliases: Array<[prefix: string, key: ImportAliasKey]> = [
+    ["@/lib/terminal-themes", "themes"],
+    ["@/components/ui", "ui"],
+    ["@/components", "components"],
+    ["@/providers", "providers"],
+    ["@/hooks", "hooks"],
+    ["@/lib", "lib"],
+  ];
+
+  for (const [prefix, key] of consumerAliases) {
     if (
-      config.aliases.ui &&
-      moduleSpecifier.match(/^@\/components\/ui(?=\/|$)/)
+      moduleSpecifier === prefix ||
+      moduleSpecifier.startsWith(`${prefix}/`)
     ) {
-      return moduleSpecifier.replace(/^@\/components\/ui/, config.aliases.ui);
-    }
-
-    if (
-      config.aliases.components &&
-      moduleSpecifier.match(/^@\/components(?=\/|$)/)
-    ) {
-      return moduleSpecifier.replace(
-        /^@\/components/,
-        config.aliases.components
-      );
-    }
-
-    if (config.aliases.hooks && moduleSpecifier.match(/^@\/hooks(?=\/|$)/)) {
-      return moduleSpecifier.replace(/^@\/hooks/, config.aliases.hooks);
-    }
-
-    if (config.aliases.lib && moduleSpecifier.match(/^@\/lib(?=\/|$)/)) {
-      return moduleSpecifier.replace(/^@\/lib/, config.aliases.lib);
-    }
-
-    const alias = config.aliases.components.split("/")[0];
-    return moduleSpecifier.replace(/^@\//, `${alias}/`);
-  }
-
-  if (moduleSpecifier.match(/^@\/registry\/(.+)\/ui/)) {
-    return moduleSpecifier.replace(
-      /^@\/registry\/(.+)\/ui/,
-      config.aliases.ui ?? `${config.aliases.components}/ui`
-    );
-  }
-
-  if (
-    config.aliases.utils &&
-    moduleSpecifier.match(/^@\/registry\/(.+)\/lib\/utils$/)
-  ) {
-    return config.aliases.utils;
-  }
-
-  if (
-    config.aliases.components &&
-    moduleSpecifier.match(/^@\/registry\/(.+)\/components/)
-  ) {
-    return moduleSpecifier.replace(
-      /^@\/registry\/(.+)\/components/,
-      config.aliases.components
-    );
-  }
-
-  if (config.aliases.lib && moduleSpecifier.match(/^@\/registry\/(.+)\/lib/)) {
-    return moduleSpecifier.replace(
-      /^@\/registry\/(.+)\/lib/,
-      config.aliases.lib
-    );
-  }
-
-  if (
-    config.aliases.hooks &&
-    moduleSpecifier.match(/^@\/registry\/(.+)\/hooks/)
-  ) {
-    return moduleSpecifier.replace(
-      /^@\/registry\/(.+)\/hooks/,
-      config.aliases.hooks
-    );
-  }
-
-  return moduleSpecifier.replace(
-    /^@\/registry\/[^/]+/,
-    config.aliases.components
-  );
-}
-
-function getWorkspaceAliasFromUtilsAlias(utilsAlias: string) {
-  // `#...` utils aliases are handled by package-import normalization and should
-  // not be treated as workspace package roots.
-  if (utilsAlias.startsWith("#")) {
-    return "";
-  }
-
-  if (utilsAlias.endsWith("/lib/utils")) {
-    return utilsAlias.slice(0, -"/lib/utils".length);
-  }
-
-  if (utilsAlias.startsWith("@")) {
-    const [scope, name] = utilsAlias.split("/");
-    return scope && name ? `${scope}/${name}` : utilsAlias;
-  }
-
-  const slashIndex = utilsAlias.indexOf("/");
-  return slashIndex === -1 ? utilsAlias : utilsAlias.slice(0, slashIndex);
-}
-
-function normalizeImportSpecifier(moduleSpecifier: string, config: Config) {
-  if (moduleSpecifier === "#registry") {
-    return "@/registry";
-  }
-
-  if (moduleSpecifier.startsWith("#/")) {
-    return moduleSpecifier.replace(/^#\//, "@/");
-  }
-
-  if (moduleSpecifier.startsWith("#registry/")) {
-    return moduleSpecifier.replace(/^#registry\//, "@/registry/");
-  }
-
-  // We only normalize the standard termcn alias slots here so the rest of the
-  // transformer can keep operating on the canonical `@/...` forms it already
-  // understands.
-  for (const { alias, normalized } of getConfigAliasNormalizations(config)) {
-    if (moduleSpecifier === alias) {
-      return normalized;
-    }
-
-    if (moduleSpecifier.startsWith(`${alias}/`)) {
-      return `${normalized}${moduleSpecifier.slice(alias.length)}`;
+      return moduleSpecifier.replace(prefix, getImportAlias(config, key));
     }
   }
 
   return moduleSpecifier;
 }
 
-function getConfigAliasNormalizations(config: Config) {
-  if (!config.aliases) {
-    return [];
+function getImportAlias(config: Config, key: ImportAliasKey): string {
+  const configured = config.aliases[key];
+
+  if (configured) {
+    return configured;
   }
 
-  return [
-    { alias: config.aliases.ui, normalized: "@/components/ui" },
-    { alias: config.aliases.components, normalized: "@/components" },
-    { alias: config.aliases.hooks, normalized: "@/hooks" },
-    { alias: config.aliases.lib, normalized: "@/lib" },
-    { alias: config.aliases.utils, normalized: "@/lib/utils" },
-  ]
-    .filter(
-      (entry): entry is { alias: string; normalized: string } =>
-        typeof entry.alias === "string" && entry.alias.startsWith("#")
-    )
-    .sort((a, b) => b.alias.length - a.alias.length);
+  const components = config.aliases.components;
+  const root = components.endsWith("/components")
+    ? components.slice(0, -"/components".length)
+    : components.split("/").slice(0, -1).join("/");
+
+  const fallbacks: Record<Exclude<ImportAliasKey, "components">, string> = {
+    ui: `${components}/ui`,
+    lib: `${root}/lib`,
+    hooks: `${root}/hooks`,
+    providers: `${root}/providers`,
+    themes: `${root}/lib/terminal-themes`,
+  };
+
+  return key === "components" ? components : fallbacks[key];
 }

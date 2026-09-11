@@ -10,9 +10,14 @@ import { getPackageRunner } from "@/src/utils/get-package-manager";
 
 const TERMCN_CLI_COMMAND = "termcn@latest";
 
+// Resolves the project's package runner (npx, pnpm dlx, bunx, yarn dlx) and
+// returns the invocation prefix, e.g. "pnpm dlx termcn@latest".
+export async function termcnCommandPrefix(cwd = process.cwd()) {
+  return `${await getPackageRunner(cwd)} ${TERMCN_CLI_COMMAND}`;
+}
+
 export async function npxTermcn(command: string) {
-  const packageRunner = await getPackageRunner(process.cwd());
-  return `${packageRunner} ${TERMCN_CLI_COMMAND} ${command}`;
+  return `${await termcnCommandPrefix()} ${command}`;
 }
 
 export async function getMcpConfig(cwd = process.cwd()) {
@@ -25,7 +30,7 @@ export async function getMcpConfig(cwd = process.cwd()) {
   };
 }
 
-export function formatSearchResultsWithPagination(
+export async function formatSearchResultsWithPagination(
   results: z.infer<typeof searchResultsSchema>,
   options?: {
     query?: string;
@@ -33,6 +38,9 @@ export function formatSearchResultsWithPagination(
   }
 ) {
   const { query, registries } = options || {};
+
+  // Resolved once for the whole page instead of per item.
+  const commandPrefix = await termcnCommandPrefix();
 
   const formattedItems = results.items.map((item) => {
     const parts: string[] = [`- ${item.name}`];
@@ -50,7 +58,7 @@ export function formatSearchResultsWithPagination(
     }
 
     parts.push(
-      `\n  Add command: \`${npxTermcn(`add ${item.addCommandArgument}`)}\``
+      `\n  Add command: \`${commandPrefix} add ${item.addCommandArgument}\``
     );
 
     return parts.join(" ");
@@ -138,35 +146,4 @@ export function formatRegistryItems(
     ];
     return parts.filter(Boolean).join("\n");
   });
-}
-
-export function formatItemExamples(
-  items: z.infer<typeof registryItemSchema>[],
-  query: string
-) {
-  const sections = items.map((item) => {
-    const parts: string[] = [
-      `## Example: ${item.name}`,
-      item.description ? `\n${item.description}\n` : "",
-    ];
-
-    if (item.files?.length) {
-      item.files.forEach((file) => {
-        if (file.content) {
-          parts.push(`### Code (${file.path}):\n`);
-          parts.push("```tsx");
-          parts.push(file.content);
-          parts.push("```");
-        }
-      });
-    }
-
-    return parts.filter(Boolean).join("\n");
-  });
-
-  const header = `# Usage Examples\n\nFound ${items.length} example${
-    items.length > 1 ? "s" : ""
-  } matching "${query}":\n`;
-
-  return header + sections.join("\n\n---\n\n");
 }

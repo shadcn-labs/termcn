@@ -6,12 +6,7 @@ import { z } from "zod";
 import { addOptionsSchema } from "@/src/commands/add";
 import { TERMCN_URL } from "@/src/registry/constants";
 import * as ERRORS from "@/src/utils/errors";
-import { getConfig } from "@/src/utils/get-config";
-import {
-  formatMonorepoMessage,
-  getMonorepoTargets,
-  isMonorepoRoot,
-} from "@/src/utils/get-monorepo-info";
+import { CONFIG_FILE, getConfig } from "@/src/utils/get-config";
 import { highlighter } from "@/src/utils/highlighter";
 import { logger } from "@/src/utils/logger";
 
@@ -31,17 +26,7 @@ export async function preFlightAdd(options: z.infer<typeof addOptionsSchema>) {
     };
   }
 
-  // Check for existing components.json file.
-  if (!fs.existsSync(path.resolve(options.cwd, "components.json"))) {
-    // Check if we're in a monorepo root.
-    if (await isMonorepoRoot(options.cwd)) {
-      const targets = await getMonorepoTargets(options.cwd);
-      if (targets.length > 0) {
-        formatMonorepoMessage("add [component]", targets);
-        process.exit(1);
-      }
-    }
-
+  if (!fs.existsSync(path.resolve(options.cwd, CONFIG_FILE))) {
     errors[ERRORS.MISSING_CONFIG] = true;
     return {
       errors,
@@ -56,19 +41,17 @@ export async function preFlightAdd(options: z.infer<typeof addOptionsSchema>) {
       errors,
       config: config!,
     };
-  } catch (error) {
+  } catch {
     logger.break();
     logger.error(
-      `An invalid ${highlighter.info(
-        "components.json"
-      )} file was found at ${highlighter.info(
+      `An invalid ${highlighter.info(CONFIG_FILE)} file was found at ${highlighter.info(
         options.cwd
-      )}.\nBefore you can add components, you must create a valid ${highlighter.info(
-        "components.json"
-      )} file by running the ${highlighter.info("init")} command.`
+      )}.\nBefore you can add components, create a valid config by running ${highlighter.info(
+        "termcn init"
+      )}.`
     );
     logger.error(
-      `Learn more at ${highlighter.info(`${TERMCN_URL}/docs/components-json`)}.`
+      `Learn more at ${highlighter.info(`${TERMCN_URL}/docs/termcn-json`)}.`
     );
     logger.break();
     process.exit(1);

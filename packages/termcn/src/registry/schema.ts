@@ -22,19 +22,35 @@ export const registryConfigSchema = z.record(
   registryConfigItemSchema
 );
 
+export const FRAMEWORKS = ["ink", "opentui"] as const;
+
+export const frameworkSchema = z.enum(FRAMEWORKS);
+
+export type Framework = z.infer<typeof frameworkSchema>;
+
+export const ALIAS_KEYS = [
+  "components",
+  "ui",
+  "lib",
+  "hooks",
+  "providers",
+  "themes",
+] as const;
+
+export type AliasKey = (typeof ALIAS_KEYS)[number];
+
 export const rawConfigSchema = z
   .object({
     $schema: z.string().optional(),
-    style: z.string(),
-    tsx: z.coerce.boolean().default(true),
+    framework: frameworkSchema,
     theme: z.string().optional(),
-    template: z.string().optional(),
     aliases: z.object({
       components: z.string(),
-      utils: z.string(),
       ui: z.string().optional(),
       lib: z.string().optional(),
       hooks: z.string().optional(),
+      providers: z.string().optional(),
+      themes: z.string().optional(),
     }),
     registries: registryConfigSchema.optional(),
   })
@@ -43,24 +59,24 @@ export const rawConfigSchema = z
 export const configSchema = rawConfigSchema.extend({
   resolvedPaths: z.object({
     cwd: z.string(),
-    utils: z.string(),
     components: z.string(),
+    ui: z.string(),
     lib: z.string(),
     hooks: z.string(),
-    ui: z.string(),
+    providers: z.string(),
+    themes: z.string(),
   }),
 });
-
-export const workspaceConfigSchema = z.record(configSchema);
 
 export const registryItemTypeSchema = z.enum([
   "registry:lib",
   "registry:component",
   "registry:ui",
   "registry:hook",
+  "registry:block",
+  "registry:theme",
   "registry:file",
   "registry:item",
-  "registry:font",
 
   // Internal use only.
   "registry:example",
@@ -82,15 +98,6 @@ export const registryItemFileSchema = z.discriminatedUnion("type", [
   }),
 ]);
 
-export const registryItemEnvVarsSchema = z.record(z.string(), z.string());
-
-// Font metadata schema for registry:font items.
-export const registryItemFontSchema = z.object({
-  family: z.string(),
-  import: z.string().optional(),
-  dependency: z.string().optional(),
-});
-
 // Common fields shared by all registry items.
 export const registryItemCommonSchema = z.object({
   $schema: z.string().optional(),
@@ -103,26 +110,16 @@ export const registryItemCommonSchema = z.object({
   devDependencies: z.array(z.string()).optional(),
   registryDependencies: z.array(z.string()).optional(),
   files: z.array(registryItemFileSchema).optional(),
-  envVars: registryItemEnvVarsSchema.optional(),
   meta: z.record(z.string(), z.any()).optional(),
   docs: z.string().optional(),
   categories: z.array(z.string()).optional(),
 });
 
-export const registryItemSchema = z.discriminatedUnion("type", [
-  registryItemCommonSchema.extend({
-    type: z.literal("registry:font"),
-    font: registryItemFontSchema,
-  }),
-  registryItemCommonSchema.extend({
-    type: registryItemTypeSchema.exclude(["registry:font"]),
-  }),
-]);
+export const registryItemSchema = registryItemCommonSchema.extend({
+  type: registryItemTypeSchema,
+});
 
 export type RegistryItem = z.infer<typeof registryItemSchema>;
-
-// Helper type for registry:font items specifically.
-export type RegistryFontItem = Extract<RegistryItem, { type: "registry:font" }>;
 
 const registryBaseSchema = z
   .object({
@@ -160,24 +157,16 @@ export type Registry = z.infer<typeof registrySchema>;
 
 export const registryIndexSchema = z.array(registryItemSchema);
 
-export const registryResolvedItemsTreeSchema = registryItemCommonSchema
-  .pick({
-    dependencies: true,
-    devDependencies: true,
-    files: true,
-    envVars: true,
-    docs: true,
-  })
-  .extend({
-    fonts: z
-      .array(
-        registryItemCommonSchema.extend({
-          type: z.literal("registry:font"),
-          font: registryItemFontSchema,
-        })
-      )
-      .optional(),
-  });
+export const registryResolvedItemsTreeSchema = registryItemCommonSchema.pick({
+  dependencies: true,
+  devDependencies: true,
+  files: true,
+  docs: true,
+});
+
+export type RegistryResolvedItemsTree = z.infer<
+  typeof registryResolvedItemsTreeSchema
+>;
 
 export const searchResultItemSchema = z.object({
   name: z.string(),

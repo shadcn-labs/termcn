@@ -1,6 +1,5 @@
 import { z } from "zod";
 
-import { isGitHubItemAddress } from "@/src/registry/address";
 import { BUILTIN_REGISTRIES, REGISTRY_URL } from "@/src/registry/constants";
 import { expandEnvVars } from "@/src/registry/env";
 import { RegistryNotConfiguredError } from "@/src/registry/errors";
@@ -11,14 +10,10 @@ import { registryConfigItemSchema } from "@/src/schema";
 import { Config } from "@/src/utils/get-config";
 
 const NAME_PLACEHOLDER = "{name}";
-const STYLE_PLACEHOLDER = "{style}";
+const FRAMEWORK_PLACEHOLDER = "{framework}";
 const ENV_VAR_PATTERN = /\${(\w+)}/g;
 const QUERY_PARAM_SEPARATOR = "?";
 const QUERY_PARAM_DELIMITER = "&";
-
-function isLocalPath(path: string) {
-  return path.startsWith("./") || path.startsWith("/");
-}
 
 export function buildUrlAndHeadersForRegistryItem(
   name: string,
@@ -32,8 +27,8 @@ export function buildUrlAndHeadersForRegistryItem(
     if (
       isUrl(name) ||
       isLocalFile(name) ||
-      isLocalPath(name) ||
-      isGitHubItemAddress(name)
+      name.startsWith("./") ||
+      name.startsWith("/")
     ) {
       return null;
     }
@@ -48,8 +43,8 @@ export function buildUrlAndHeadersForRegistryItem(
 
   validateRegistryConfig(registry, registryConfig);
 
-  // Keep the explicit addresses used throughout the docs working before init.
-  // Once initialized, plain names resolve through the selected framework style.
+  // Explicit framework/item addresses work before init; once initialized,
+  // plain names resolve through the framework selected in termcn.json.
   if (
     registry === "@termcn" &&
     (item.startsWith("ink/") || item.startsWith("opentui/"))
@@ -73,15 +68,15 @@ export function buildUrlFromRegistryConfig(
 ) {
   if (typeof registryConfig === "string") {
     let url = registryConfig.replace(NAME_PLACEHOLDER, item);
-    if (config?.style && url.includes(STYLE_PLACEHOLDER)) {
-      url = url.replace(STYLE_PLACEHOLDER, config.style);
+    if (config?.framework && url.includes(FRAMEWORK_PLACEHOLDER)) {
+      url = url.replace(FRAMEWORK_PLACEHOLDER, config.framework);
     }
     return expandEnvVars(url);
   }
 
   let baseUrl = registryConfig.url.replace(NAME_PLACEHOLDER, item);
-  if (config?.style && baseUrl.includes(STYLE_PLACEHOLDER)) {
-    baseUrl = baseUrl.replace(STYLE_PLACEHOLDER, config.style);
+  if (config?.framework && baseUrl.includes(FRAMEWORK_PLACEHOLDER)) {
+    baseUrl = baseUrl.replace(FRAMEWORK_PLACEHOLDER, config.framework);
   }
   baseUrl = expandEnvVars(baseUrl);
 

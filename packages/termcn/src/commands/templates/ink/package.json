@@ -1,0 +1,30 @@
+{
+  "name": "{{name}}",
+  "version": "0.0.0",
+  "license": "MIT",
+  "bin": "dist/cli.js",
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "scripts": {
+    "build": "tsup src/cli.tsx --format esm --clean",
+    "dev": "tsx watch src/cli.tsx",
+    "start": "node dist/cli.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "ink": "6.8.0",
+    "react": "19.2.4"
+  },
+  "devDependencies": {
+    "@types/node": "24.0.0",
+    "@types/react": "19.2.4",
+    "tsup": "8.5.0",
+    "tsx": "4.20.0",
+    "typescript": "5.9.3"
+  },
+  "engines": {
+    "node": ">=20.18.1"
+  }
+}

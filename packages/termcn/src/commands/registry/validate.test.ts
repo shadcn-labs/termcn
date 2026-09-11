@@ -4,7 +4,6 @@ import * as path from "path";
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { validateGitHubRegistrySource } from "@/src/registry/github";
 import { logger } from "@/src/utils/logger";
 import { spinner } from "@/src/utils/spinner";
 
@@ -37,17 +36,6 @@ vi.mock("@/src/utils/spinner", () => ({
     fail: vi.fn(),
     start: vi.fn().mockReturnThis(),
     succeed: vi.fn(),
-  })),
-}));
-
-vi.mock("@/src/registry/github", () => ({
-  validateGitHubRegistrySource: vi.fn(async () => ({
-    valid: true,
-    cwd: "acme/ui#HEAD",
-    registryFiles: 1,
-    registryFilePaths: ["acme/ui#HEAD/registry.json"],
-    items: 2,
-    diagnostics: [],
   })),
 }));
 
@@ -139,30 +127,7 @@ describe("registry validate command", () => {
     expect(process.exitCode).toBe(1);
   });
 
-  it("validates a GitHub source registry", async () => {
-    await validate.parseAsync(["acme/ui"], {
-      from: "user",
-    });
-
-    expect(validateGitHubRegistrySource).toHaveBeenCalledWith({
-      owner: "acme",
-      repo: "ui",
-      ref: undefined,
-    });
-    const validationSpinner = vi.mocked(spinner).mock.results[0].value;
-    const summarySpinner = vi.mocked(spinner).mock.results[1].value;
-    expect(validationSpinner.succeed).toHaveBeenCalledWith(
-      "Registry is valid."
-    );
-    expect(spinner).toHaveBeenCalledWith(
-      "Checked 1 registry file and 2 items."
-    );
-    expect(summarySpinner.succeed).toHaveBeenCalled();
-    expect(logger.log).toHaveBeenCalledWith("  - registry.json");
-    expect(process.exitCode).toBeUndefined();
-  });
-
-  it("does not treat an existing local path as a GitHub source registry", async () => {
+  it("validates an explicit local registry path", async () => {
     const cwd = await createFixture({
       "acme/ui": JSON.stringify({
         name: "example",
@@ -175,7 +140,6 @@ describe("registry validate command", () => {
       from: "user",
     });
 
-    expect(validateGitHubRegistrySource).not.toHaveBeenCalled();
     const validationSpinner = vi.mocked(spinner).mock.results[0].value;
     expect(validationSpinner.fail).toHaveBeenCalledWith(
       "Registry validation failed."

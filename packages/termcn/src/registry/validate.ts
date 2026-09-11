@@ -695,7 +695,8 @@ function formatZodIssue(
   const path = [...pathPrefix, ...issue.path];
 
   if (
-    issue.code === z.ZodIssueCode.invalid_union_discriminator &&
+    (issue.code === z.ZodIssueCode.invalid_union_discriminator ||
+      issue.code === z.ZodIssueCode.invalid_enum_value) &&
     issue.path.at(-1) === "type"
   ) {
     return `${formatZodPath(path)}: Invalid registry item type. Expected ${PUBLIC_REGISTRY_ITEM_TYPES.map(

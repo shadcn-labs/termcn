@@ -1,24 +1,37 @@
 import path from "path";
 
 import { cosmiconfig } from "cosmiconfig";
-import fg from "fast-glob";
-import { loadConfig, type ConfigLoaderSuccessResult } from "tsconfig-paths";
+import { loadConfig } from "tsconfig-paths";
 import { z } from "zod";
 
-import { BUILTIN_REGISTRIES } from "@/src/registry/constants";
 import {
-  configSchema,
-  rawConfigSchema,
-  workspaceConfigSchema,
-} from "@/src/schema";
+  BUILTIN_REGISTRIES,
+  DEFAULT_FRAMEWORK,
+} from "@/src/registry/constants";
+import { ALIAS_KEYS, configSchema, rawConfigSchema } from "@/src/schema";
+import type { AliasKey } from "@/src/schema";
 import { highlighter } from "@/src/utils/highlighter";
-import { resolveImportWithMetadata } from "@/src/utils/resolve-import";
+import { resolveImport } from "@/src/utils/resolve-import";
 
-export const explorer = cosmiconfig("components", {
-  searchPlaces: ["components.json"],
+export const CONFIG_FILE = "termcn.json";
+
+export const explorer = cosmiconfig("termcn", {
+  searchPlaces: [CONFIG_FILE],
 });
 
 export type Config = z.infer<typeof configSchema>;
+
+/**
+ * Default alias suffixes, relative to the `components` alias, used when an
+ * optional alias is omitted from termcn.json.
+ */
+const ALIAS_FALLBACKS: Record<Exclude<AliasKey, "components">, string[]> = {
+  ui: ["ui"],
+  lib: ["..", "lib"],
+  hooks: ["..", "hooks"],
+  providers: ["..", "providers"],
+  themes: ["..", "lib", "terminal-themes"],
+};
 
 export async function getConfig(cwd: string) {
   const config = await getRawConfig(cwd);
@@ -34,265 +47,92 @@ export async function resolveConfigPaths(
   cwd: string,
   config: z.infer<typeof rawConfigSchema>
 ) {
-  // Merge built-in registries with user registries
+  // Built-in registries always win over user entries.
   config.registries = {
     ...BUILTIN_REGISTRIES,
     ...(config.registries || {}),
   };
 
-  // Read tsconfig.json.
   const tsConfig = await loadConfig(cwd);
 
   if (tsConfig.resultType === "failed") {
     throw new Error(
-      `Failed to load ${config.tsx ? "tsconfig" : "jsconfig"}.json. ${
-        tsConfig.message ?? ""
-      }`.trim()
+      `Failed to load tsconfig.json. ${tsConfig.message ?? ""}`.trim()
     );
   }
 
-  // Resolve the primary aliases first so fallbacks can reuse their results.
-  const resolvedUtils = await resolveAliasPath(
-    "utils",
-    config.aliases["utils"],
-    cwd,
-    tsConfig
-  );
-  const resolvedComponents = await resolveAliasPath(
-    "components",
-    config.aliases["components"],
-    cwd,
-    tsConfig
-  );
-  const resolvedUi = config.aliases["ui"]
-    ? await resolveAliasPath("ui", config.aliases["ui"], cwd, tsConfig)
-    : path.resolve(resolvedComponents ?? cwd, "ui");
-  const resolvedLib = config.aliases["lib"]
-    ? await resolveAliasPath("lib", config.aliases["lib"], cwd, tsConfig)
-    : path.resolve(resolvedUtils ?? cwd, "..");
-  const resolvedHooks = config.aliases["hooks"]
-    ? await resolveAliasPath("hooks", config.aliases["hooks"], cwd, tsConfig)
-    : path.resolve(resolvedComponents ?? cwd, "..", "hooks");
+  const resolverConfig = { ...tsConfig, cwd };
+  const components = resolveImport(config.aliases.components, resolverConfig);
 
-  assertResolvedAliases(cwd, {
-    components: resolvedComponents,
-    utils: resolvedUtils,
-    ui: resolvedUi,
-    lib: resolvedLib,
-    hooks: resolvedHooks,
-  });
+  if (!components) {
+    throw new Error(
+      [
+        `Could not resolve the ${highlighter.info("components")} alias ${highlighter.info(
+          config.aliases.components
+        )} in ${highlighter.info(cwd)}.`,
+        `Configure matching path aliases in ${highlighter.info("tsconfig.json")} and try again.`,
+      ].join("\n")
+    );
+  }
+
+  const resolvedPaths: Record<AliasKey, string> = {
+    components,
+    ui: components,
+    lib: components,
+    hooks: components,
+    providers: components,
+    themes: components,
+  };
+
+  for (const key of ALIAS_KEYS) {
+    if (key === "components") {
+      continue;
+    }
+
+    const alias = config.aliases[key];
+    const resolved = alias ? resolveImport(alias, resolverConfig) : null;
+
+    resolvedPaths[key] =
+      resolved ?? path.resolve(components, ...ALIAS_FALLBACKS[key]);
+  }
 
   return configSchema.parse({
     ...config,
-    resolvedPaths: {
-      cwd,
-      utils: resolvedUtils,
-      components: resolvedComponents,
-      ui: resolvedUi,
-      lib: resolvedLib,
-      hooks: resolvedHooks,
-    },
+    resolvedPaths: { cwd, ...resolvedPaths },
   });
-}
-
-async function resolveAliasPath(
-  aliasKey: "components" | "utils" | "ui" | "lib" | "hooks",
-  alias: string,
-  cwd: string,
-  tsConfig: Pick<ConfigLoaderSuccessResult, "absoluteBaseUrl" | "paths">
-) {
-  const resolved = await resolveImportWithMetadata(alias, {
-    ...tsConfig,
-    cwd,
-  });
-
-  if (!resolved?.path) {
-    return null;
-  }
-
-  if (alias.startsWith("#") && resolved.path === path.resolve(cwd, alias)) {
-    return null;
-  }
-
-  // For non-utils alias keys backed by package imports or workspace exports,
-  // strip directory-level artifacts so the resolved path points at the
-  // directory root rather than a specific file.
-  if (
-    aliasKey !== "utils" &&
-    (resolved.source === "package_imports" ||
-      resolved.source === "workspace_package_exports")
-  ) {
-    // Exact aliases (e.g. `#hooks` → `./src/hooks/index.ts`) should resolve
-    // to the directory root.
-    if (
-      !resolved.matchedAlias.includes("*") &&
-      /\/index\.[^/]+$/.test(resolved.path)
-    ) {
-      return path.dirname(resolved.path);
-    }
-
-    // Wildcard aliases with explicit extensions (e.g. `#components/*` →
-    // `./src/components/*.tsx`) should strip the source extension so `ui`
-    // resolves to `/src/components/ui` instead of `/src/components/ui.tsx`.
-    if (resolved.matchedAlias.includes("*") && /\.[^/]+$/.test(resolved.path)) {
-      return resolved.path.replace(/\.[^/]+$/, "");
-    }
-  }
-
-  return resolved.path;
-}
-
-function assertResolvedAliases(
-  cwd: string,
-  resolvedAliases: Record<
-    "components" | "utils" | "ui" | "lib" | "hooks",
-    string | null
-  >
-) {
-  const missingAliases = ["components", "ui", "lib", "hooks", "utils"].filter(
-    (key) => !resolvedAliases[key as keyof typeof resolvedAliases]
-  );
-
-  if (!missingAliases.length) {
-    return;
-  }
-
-  throw new Error(
-    [
-      `Could not resolve the following aliases in ${highlighter.info(cwd)}: ${highlighter.info(
-        missingAliases.join(", ")
-      )}.`,
-      `Configure path aliases in ${highlighter.info(
-        "tsconfig.json"
-      )} or imports in ${highlighter.info(
-        "package.json"
-      )} for this workspace and try again.`,
-    ].join("\n")
-  );
 }
 
 export async function getRawConfig(
   cwd: string
 ): Promise<z.infer<typeof rawConfigSchema> | null> {
-  try {
-    const configResult = await explorer.search(cwd);
+  const configResult = await explorer.search(cwd);
 
-    if (!configResult) {
-      return null;
-    }
-
-    const config = rawConfigSchema.parse(configResult.config);
-
-    // Check if user is trying to override built-in registries
-    if (config.registries) {
-      for (const registryName of Object.keys(config.registries)) {
-        if (registryName in BUILTIN_REGISTRIES) {
-          throw new Error(
-            `"${registryName}" is a built-in registry and cannot be overridden.`
-          );
-        }
-      }
-    }
-
-    return config;
-  } catch (error) {
-    const componentPath = `${cwd}/components.json`;
-    if (error instanceof Error && error.message.includes("reserved registry")) {
-      throw error;
-    }
-    throw new Error(
-      `Invalid configuration found in ${highlighter.info(componentPath)}.`
-    );
-  }
-}
-
-// Note: we can check for -workspace.yaml or "workspace" in package.json.
-// Since cwd is not necessarily the root of the project.
-// We'll instead check if ui aliases resolve to a different root.
-export async function getWorkspaceConfig(config: Config) {
-  let resolvedAliases: any = {};
-
-  for (const key of Object.keys(config.aliases)) {
-    if (!isAliasKey(key, config)) {
-      continue;
-    }
-
-    const resolvedPath = config.resolvedPaths[key];
-    const packageRoot = await findPackageRoot(
-      config.resolvedPaths.cwd,
-      resolvedPath
-    );
-
-    if (!packageRoot) {
-      resolvedAliases[key] = config;
-      continue;
-    }
-
-    const workspaceConfig = await getConfig(packageRoot);
-
-    if (!workspaceConfig) {
-      throw new Error(
-        [
-          `Could not load the workspace config in ${highlighter.info(packageRoot)}.`,
-          `Add ${highlighter.info(
-            "components.json"
-          )} to this workspace and configure its path aliases or package imports, then try again.`,
-        ].join("\n")
-      );
-    }
-
-    resolvedAliases[key] = workspaceConfig;
-  }
-
-  const result = workspaceConfigSchema.safeParse(resolvedAliases);
-  if (!result.success) {
+  if (!configResult) {
     return null;
   }
 
-  return result.data;
-}
+  const parsed = rawConfigSchema.safeParse(configResult.config);
 
-export async function findPackageRoot(cwd: string, resolvedPath: string) {
-  const commonRoot = findCommonRoot(cwd, resolvedPath);
-  const relativePath = path.relative(commonRoot, resolvedPath);
-
-  const packageRoots = await fg.glob("**/package.json", {
-    cwd: commonRoot,
-    deep: 3,
-    ignore: ["**/node_modules/**", "**/dist/**", "**/build/**", "**/public/**"],
-  });
-
-  const matchingPackageRoot = packageRoots
-    .map((pkgPath) => path.dirname(pkgPath))
-    .find((pkgDir) => relativePath.startsWith(pkgDir));
-
-  return matchingPackageRoot
-    ? path.join(commonRoot, matchingPackageRoot)
-    : null;
-}
-
-function isAliasKey(
-  key: string,
-  config: Config
-): key is keyof Config["aliases"] {
-  return Object.keys(config.resolvedPaths)
-    .filter((key) => key !== "utils")
-    .includes(key);
-}
-
-export function findCommonRoot(cwd: string, resolvedPath: string) {
-  const parts1 = cwd.split(path.sep);
-  const parts2 = resolvedPath.split(path.sep);
-  const commonParts = [];
-
-  for (let i = 0; i < Math.min(parts1.length, parts2.length); i++) {
-    if (parts1[i] !== parts2[i]) {
-      break;
-    }
-    commonParts.push(parts1[i]);
+  if (!parsed.success) {
+    throw new Error(
+      [
+        `Invalid configuration in ${highlighter.info(configResult.filepath)}:`,
+        ...parsed.error.issues.map(
+          (issue) => `  ${issue.path.join(".") || "(root)"}: ${issue.message}`
+        ),
+      ].join("\n")
+    );
   }
 
-  return commonParts.join(path.sep);
+  for (const registryName of Object.keys(parsed.data.registries ?? {})) {
+    if (registryName in BUILTIN_REGISTRIES) {
+      throw new Error(
+        `"${registryName}" is a built-in registry and cannot be overridden.`
+      );
+    }
+  }
+
+  return parsed.data;
 }
 
 export type DeepPartial<T> = {
@@ -300,52 +140,47 @@ export type DeepPartial<T> = {
 };
 
 /**
- * Creates a config object with sensible defaults.
- * Useful for universal registry items that bypass framework detection.
- *
- * @param partial - Partial config values to override defaults
- * @returns A complete Config object
+ * Creates a config object with sensible defaults. Used by commands that can
+ * operate before `termcn init` has written a config file.
  */
 export function createConfig(partial?: DeepPartial<Config>): Config {
   const defaultConfig: Config = {
-    resolvedPaths: {
-      cwd: process.cwd(),
-      utils: "",
-      components: "",
-      ui: "",
-      lib: "",
-      hooks: "",
-    },
-    style: "ink",
-    tsx: true,
+    framework: DEFAULT_FRAMEWORK,
     aliases: {
       components: "",
-      utils: "",
     },
     registries: {
       ...BUILTIN_REGISTRIES,
     },
+    resolvedPaths: {
+      cwd: process.cwd(),
+      components: "",
+      ui: "",
+      lib: "",
+      hooks: "",
+      providers: "",
+      themes: "",
+    },
   };
 
-  // Deep merge the partial config with defaults
-  if (partial) {
-    return {
-      ...defaultConfig,
-      ...partial,
-      resolvedPaths: {
-        ...defaultConfig.resolvedPaths,
-        ...(partial.resolvedPaths || {}),
-      },
-      aliases: {
-        ...defaultConfig.aliases,
-        ...(partial.aliases || {}),
-      },
-      registries: {
-        ...defaultConfig.registries,
-        ...(partial.registries || {}),
-      },
-    };
+  if (!partial) {
+    return defaultConfig;
   }
 
-  return defaultConfig;
+  return {
+    ...defaultConfig,
+    ...partial,
+    aliases: {
+      ...defaultConfig.aliases,
+      ...(partial.aliases || {}),
+    },
+    registries: {
+      ...defaultConfig.registries,
+      ...(partial.registries || {}),
+    },
+    resolvedPaths: {
+      ...defaultConfig.resolvedPaths,
+      ...(partial.resolvedPaths || {}),
+    },
+  };
 }

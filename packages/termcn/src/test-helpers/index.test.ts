@@ -5,7 +5,7 @@ import { getFixturesDir, withTempDir } from "@/src/test-helpers";
 
 describe("getFixturesDir", () => {
   it("resolves an absolute path into test/fixtures", async () => {
-    const dir = getFixturesDir("config-partial");
+    const dir = getFixturesDir("project-pnpm");
     expect(await fs.pathExists(dir)).toBe(true);
   });
 });

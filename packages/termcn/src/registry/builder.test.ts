@@ -3,6 +3,7 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
 import { REGISTRY_URL } from "@/src/registry/constants";
+import { createConfig } from "@/src/utils/get-config";
 
 import {
   buildHeadersFromRegistryConfig,
@@ -32,22 +33,22 @@ describe("buildUrlFromRegistryConfig", () => {
     expect(url).toBe("https://v0.dev/chat/b/chat-component/json");
   });
 
-  it("should replace style placeholder in URL", () => {
+  it("should replace framework placeholder in URL", () => {
     const url = buildUrlFromRegistryConfig(
       "button",
-      "https://termcn.dev/r/styles/{style}/{name}.json",
-      { style: "new-york" } as any
+      "https://termcn.dev/r/{framework}/{name}.json",
+      createConfig({ framework: "ink" })
     );
-    expect(url).toBe("https://termcn.dev/r/styles/new-york/button.json");
+    expect(url).toBe("https://termcn.dev/r/ink/button.json");
   });
 
-  it("should handle both name and style placeholders", () => {
+  it("should handle name and framework placeholders together", () => {
     const url = buildUrlFromRegistryConfig(
       "accordion",
-      "https://example.com/{style}/components/{name}",
-      { style: "default" } as any
+      "https://example.com/{framework}/components/{name}",
+      createConfig({ framework: "opentui" })
     );
-    expect(url).toBe("https://example.com/default/components/accordion");
+    expect(url).toBe("https://example.com/opentui/components/accordion");
   });
 
   it("should build URL with env vars", () => {
@@ -349,16 +350,15 @@ describe("buildHeadersFromRegistryConfig", () => {
 describe("buildUrlAndHeadersForRegistryItem", () => {
   it("should resolve non-registry items through @termcn registry", () => {
     const input = "button";
-    const config = {} as any;
-    // Non-prefixed items are resolved through the built-in @termcn registry
+    const config = createConfig({ framework: "ink" });
     expect(buildUrlAndHeadersForRegistryItem(input, config)).toEqual({
-      url: "https://termcn.dev/r/{style}/button.json",
+      url: "https://termcn.dev/r/ink/button.json",
       headers: {},
     });
   });
 
   it("should resolve plain termcn items through the configured framework", () => {
-    const config = { style: "opentui" } as any;
+    const config = createConfig({ framework: "opentui" });
 
     expect(buildUrlAndHeadersForRegistryItem("button", config)).toEqual({
       url: "https://termcn.dev/r/opentui/button.json",

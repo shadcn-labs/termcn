@@ -1,18 +1,12 @@
-import { promises as fs } from "fs";
-import { tmpdir } from "os";
-import path from "path";
-
 import { Project, ScriptKind, type SourceFile } from "ts-morph";
 
 import { Config } from "@/src/utils/get-config";
 import { transformImport } from "@/src/utils/transformers/transform-import";
-import { transformJsx } from "@/src/utils/transformers/transform-jsx";
 
 export type TransformOpts = {
   filename: string;
   raw: string;
   config: Config;
-  transformJsx?: boolean;
 };
 
 export type Transformer<Output = SourceFile> = (
@@ -23,32 +17,30 @@ export type Transformer<Output = SourceFile> = (
 
 const project = new Project({
   compilerOptions: {},
+  useInMemoryFileSystem: true,
 });
 
-async function createTempSourceFile(filename: string) {
-  const dir = await fs.mkdtemp(path.join(tmpdir(), "termcn-"));
-  return path.join(dir, filename);
-}
+let sourceFileCounter = 0;
 
 export async function transform(
   opts: TransformOpts,
   transformers: Transformer[] = [transformImport]
 ) {
-  const tempFile = await createTempSourceFile(opts.filename);
-  const sourceFile = project.createSourceFile(tempFile, opts.raw, {
-    scriptKind: ScriptKind.TSX,
-  });
+  // ts-morph requires unique paths per source file; the in-memory FS keeps
+  // this off disk, so no temp directory is created (or leaked) per file.
+  const sourceFile = project.createSourceFile(
+    `/${sourceFileCounter++}/${opts.filename}`,
+    opts.raw,
+    { scriptKind: ScriptKind.TSX }
+  );
 
-  for (const transformer of transformers) {
-    await transformer({ sourceFile, ...opts });
+  try {
+    for (const transformer of transformers) {
+      await transformer({ sourceFile, ...opts });
+    }
+
+    return sourceFile.getText();
+  } finally {
+    project.removeSourceFile(sourceFile);
   }
-
-  if (opts.transformJsx) {
-    return await transformJsx({
-      sourceFile,
-      ...opts,
-    });
-  }
-
-  return sourceFile.getText();
 }

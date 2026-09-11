@@ -21,6 +21,7 @@ export default defineConfig({
     ".claude/**",
     "apps/web/.web-kits/**",
     "apps/web/audio/**",
+    "packages/termcn/src/commands/templates/**",
   ],
   jsxSingleQuote: false,
   printWidth: 80,

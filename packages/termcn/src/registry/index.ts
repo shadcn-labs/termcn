@@ -1,8 +1,8 @@
 export {
-  getRegistries,
-  getRegistryItems,
-  resolveRegistryItems,
   getRegistry,
+  getRegistryItems,
+  getTermcnRegistryCatalog,
+  resolveRegistryItems,
 } from "./api";
 
 export { addRegistryItems, type AddRegistryItemsOptions } from "./add";
@@ -27,7 +27,6 @@ export {
   RegistryParseError,
   RegistryValidationError,
   RegistryItemNotFoundError,
-  RegistriesIndexParseError,
   RegistryMissingEnvironmentVariablesError,
   RegistryInvalidNamespaceError,
 } from "./errors";

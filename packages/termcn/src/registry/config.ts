@@ -1,28 +1,33 @@
-import deepmerge from "deepmerge";
-
-import { BUILTIN_REGISTRIES, FALLBACK_STYLE } from "@/src/registry/constants";
+import {
+  BUILTIN_REGISTRIES,
+  DEFAULT_FRAMEWORK,
+} from "@/src/registry/constants";
 import { configSchema } from "@/src/schema";
 import { Config, createConfig, DeepPartial } from "@/src/utils/get-config";
 
-function resolveStyleFromConfig(config: DeepPartial<Config>) {
-  return config.style || FALLBACK_STYLE;
-}
-
 export function configWithDefaults(config?: DeepPartial<Config>) {
-  const baseConfig = createConfig({
-    style: FALLBACK_STYLE,
-    registries: BUILTIN_REGISTRIES,
+  const merged = createConfig({
+    ...config,
+    framework: config?.framework ?? DEFAULT_FRAMEWORK,
+    aliases: {
+      components: "",
+      ...config?.aliases,
+    },
+    registries: {
+      ...BUILTIN_REGISTRIES,
+      ...config?.registries,
+    },
+    resolvedPaths: {
+      cwd: process.cwd(),
+      components: "",
+      ui: "",
+      lib: "",
+      hooks: "",
+      providers: "",
+      themes: "",
+      ...config?.resolvedPaths,
+    },
   });
 
-  if (!config) {
-    return baseConfig;
-  }
-
-  return configSchema.parse(
-    deepmerge(baseConfig, {
-      ...config,
-      style: resolveStyleFromConfig(config),
-      registries: { ...BUILTIN_REGISTRIES, ...config.registries },
-    })
-  );
+  return configSchema.parse(merged);
 }

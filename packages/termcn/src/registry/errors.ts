@@ -194,19 +194,19 @@ export class RegistryFetchError extends RegistryError {
 export class RegistryNotConfiguredError extends RegistryError {
   constructor(public readonly registryName: string | null) {
     const message = registryName
-      ? `Unknown registry "${registryName}". Make sure it is defined in components.json as follows:
+      ? `Unknown registry "${registryName}". Define it in termcn.json:
 {
   "registries": {
     "${registryName}": "[URL_TO_REGISTRY]"
   }
 }`
-      : `Unknown registry. Make sure it is defined in components.json under "registries".`;
+      : `Unknown registry. Define it under "registries" in termcn.json.`;
 
     super(message, {
       code: RegistryErrorCode.NOT_CONFIGURED,
       context: { registryName },
       suggestion:
-        "Add the registry configuration to your components.json file. Consult the registry documentation for the correct format.",
+        "Add the registry URL to termcn.json. Consult the registry documentation for the correct format.",
     });
     this.name = "RegistryNotConfiguredError";
   }
@@ -373,10 +373,10 @@ export class ConfigParseError extends RegistryError {
     public readonly cwd: string,
     parseError: unknown
   ) {
-    let message = `Invalid components.json configuration in ${cwd}.`;
+    let message = `Invalid termcn.json configuration in ${cwd}.`;
 
     if (parseError instanceof z.ZodError) {
-      message = `Invalid components.json configuration in ${cwd}:\n${parseError.errors
+      message = `Invalid termcn.json configuration in ${cwd}:\n${parseError.errors
         .map((e) => `  - ${e.path.join(".")}: ${e.message}`)
         .join("\n")}`;
     }
@@ -386,7 +386,7 @@ export class ConfigParseError extends RegistryError {
       cause: parseError,
       context: { cwd },
       suggestion:
-        "Check your components.json file for syntax errors or invalid configuration. Run 'npx termcn@latest init' to regenerate a valid configuration.",
+        "Check termcn.json for syntax errors or invalid configuration. Run 'npx termcn@latest init' to regenerate it.",
     });
     this.name = "ConfigParseError";
   }

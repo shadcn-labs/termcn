@@ -6,13 +6,12 @@ import { z } from "zod";
 
 import { runInit } from "@/src/commands/init";
 import { preFlightAdd } from "@/src/preflights/preflight-add";
-import { getRegistryItems, getTermcnRegistryIndex } from "@/src/registry/api";
+import { getRegistryItems, getTermcnRegistryCatalog } from "@/src/registry/api";
 import { clearRegistryContext } from "@/src/registry/context";
 import { isUniversalRegistryItem } from "@/src/registry/utils";
 import { addComponents } from "@/src/utils/add-components";
 import { dryRunComponents } from "@/src/utils/dry-run";
 import { formatDryRunResult } from "@/src/utils/dry-run-formatter";
-import { loadEnvFiles } from "@/src/utils/env-loader";
 import * as ERRORS from "@/src/utils/errors";
 import { createConfig, getConfig } from "@/src/utils/get-config";
 import { handleError } from "@/src/utils/handle-error";
@@ -59,29 +58,20 @@ export const add = new Command()
         cwd: path.resolve(opts.cwd),
       });
 
-      await loadEnvFiles(options.cwd);
-
       const isDryRun = options.dryRun || options.diff || options.view;
 
       let initialConfig = await getConfig(options.cwd);
       if (!initialConfig) {
         initialConfig = createConfig({
-          style: "ink",
+          framework: "ink",
           resolvedPaths: {
             cwd: options.cwd,
           },
         });
       }
 
-      let hasNewRegistries = false;
       if (components.length > 0) {
-        const { config: updatedConfig, newRegistries } =
-          await ensureRegistriesInConfig(components, initialConfig, {
-            silent: options.silent,
-            writeFile: false,
-          });
-        initialConfig = updatedConfig;
-        hasNewRegistries = newRegistries.length > 0;
+        await ensureRegistriesInConfig(components, initialConfig);
       }
 
       if (options.components?.length) {
@@ -96,7 +86,10 @@ export const add = new Command()
       }
 
       if (!options.components?.length) {
-        options.components = await promptForRegistryComponents(options);
+        options.components = await promptForRegistryComponents(
+          options,
+          initialConfig.framework
+        );
       }
 
       const { errors, config: existingConfig } = await preFlightAdd(options);
@@ -128,7 +121,7 @@ export const add = new Command()
           cwd: options.cwd,
           yes: options.yes,
           defaults: options.yes,
-          silent: options.silent && !hasNewRegistries,
+          silent: options.silent,
         });
       }
 
@@ -140,11 +133,7 @@ export const add = new Command()
 
       const { config: updatedConfig } = await ensureRegistriesInConfig(
         options.components,
-        config,
-        {
-          silent: options.silent || hasNewRegistries,
-          writeFile: !isDryRun,
-        }
+        config
       );
       config = updatedConfig;
 
@@ -182,9 +171,10 @@ export const add = new Command()
   });
 
 async function promptForRegistryComponents(
-  options: z.infer<typeof addOptionsSchema>
+  options: z.infer<typeof addOptionsSchema>,
+  framework: "ink" | "opentui"
 ) {
-  const registryIndex = await getTermcnRegistryIndex();
+  const registryIndex = await getTermcnRegistryCatalog(framework);
   if (!registryIndex) {
     logger.break();
     handleError(new Error("Failed to fetch registry index."));

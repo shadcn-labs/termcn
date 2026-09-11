@@ -40,6 +40,19 @@ const server = setupServer(
   http.get(`${REGISTRY_URL}/gone.json`, () => {
     return new HttpResponse(null, { status: 410 });
   }),
+  http.get(`${REGISTRY_URL}/ink/button.json`, () => {
+    return HttpResponse.json({
+      name: "button",
+      type: "registry:ui",
+      dependencies: ["react"],
+    });
+  }),
+  http.get(`${REGISTRY_URL}/ink/card.json`, () => {
+    return HttpResponse.json({
+      name: "card",
+      type: "registry:ui",
+    });
+  }),
   http.get("https://external.com/component.json", () => {
     return HttpResponse.json({
       name: "external",
@@ -175,19 +188,19 @@ describe("fetchRegistry", () => {
   });
 
   it("should fetch registry data", async () => {
-    const paths = ["styles/new-york/button.json"];
+    const paths = ["ink/button.json"];
     const result = await fetchRegistry(paths);
 
     expect(result).toHaveLength(1);
     expect(result[0]).toMatchObject({
       name: "button",
       type: "registry:ui",
-      dependencies: ["@radix-ui/react-slot"],
+      dependencies: ["react"],
     });
   });
 
   it("should use cache for subsequent requests", async () => {
-    const paths = ["styles/new-york/button.json"];
+    const paths = ["ink/button.json"];
     let fetchCount = 0;
 
     // Clear any existing cache before test
@@ -195,7 +208,7 @@ describe("fetchRegistry", () => {
 
     // Define the handler with counter before making requests
     server.use(
-      http.get(`${REGISTRY_URL}/styles/new-york/button.json`, async () => {
+      http.get(`${REGISTRY_URL}/ink/button.json`, async () => {
         // Add a small delay to simulate network latency
         await new Promise((resolve) => setTimeout(resolve, 10));
         fetchCount++;
@@ -234,7 +247,7 @@ describe("fetchRegistry", () => {
   });
 
   it("should handle multiple paths", async () => {
-    const paths = ["styles/new-york/button.json", "styles/new-york/card.json"];
+    const paths = ["ink/button.json", "ink/card.json"];
     const result = await fetchRegistry(paths);
 
     expect(result).toHaveLength(2);

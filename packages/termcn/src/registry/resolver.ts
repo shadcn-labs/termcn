@@ -1,26 +1,19 @@
 import { createHash } from "crypto";
 import path from "path";
 
-import deepmerge from "deepmerge";
 import { z } from "zod";
 
-import {
-  isGitHubItemAddress,
-  resolveItemAddress,
-} from "@/src/registry/address";
-import { getTermcnRegistryIndex } from "@/src/registry/api";
 import {
   buildUrlAndHeadersForRegistryItem,
   resolveRegistryUrl,
 } from "@/src/registry/builder";
-import { FALLBACK_STYLE } from "@/src/registry/constants";
+import { DEFAULT_FRAMEWORK } from "@/src/registry/constants";
 import { setRegistryHeaders } from "@/src/registry/context";
 import {
   RegistryNotConfiguredError,
   RegistryParseError,
 } from "@/src/registry/errors";
 import { fetchRegistry, fetchRegistryLocal } from "@/src/registry/fetcher";
-import { fetchGitHubRegistryItem } from "@/src/registry/github";
 import { parseRegistryAndItemFromString } from "@/src/registry/parser";
 import {
   deduplicateFilesByTarget,
@@ -30,7 +23,6 @@ import {
 } from "@/src/registry/utils";
 import {
   registryItemCommonSchema,
-  registryItemFontSchema,
   registryItemSchema,
   registryItemTypeSchema,
   registryResolvedItemsTreeSchema,
@@ -40,7 +32,6 @@ import { Config } from "@/src/utils/get-config";
 type RegistryFetchOptions = {
   requireUniversal?: boolean;
   useCache?: boolean;
-  sourceCache?: Map<string, Promise<string>>;
 };
 
 export function resolveRegistryItemsFromRegistries(
@@ -56,10 +47,6 @@ export function resolveRegistryItemsFromRegistries(
   }
 
   for (let i = 0; i < resolvedItems.length; i++) {
-    if (isGitHubItemAddress(resolvedItems[i])) {
-      continue;
-    }
-
     const resolved = buildUrlAndHeadersForRegistryItem(
       resolvedItems[i],
       config
@@ -86,19 +73,10 @@ export async function fetchRegistryItems(
   config: Config,
   options: RegistryFetchOptions = {}
 ) {
-  options = {
-    ...options,
-    sourceCache: options.sourceCache ?? new Map(),
-  };
+  options = { ...options };
 
   const results = await Promise.all(
     items.map(async (item) => {
-      const resolvedAddress = resolveItemAddress(item);
-
-      if (resolvedAddress.scheme === "github") {
-        return fetchGitHubRegistryItem(resolvedAddress, options);
-      }
-
       if (isLocalFile(item)) {
         return fetchRegistryLocal(item);
       }
@@ -122,8 +100,8 @@ export async function fetchRegistryItems(
         }
       }
 
-      const path = `${config?.style ?? FALLBACK_STYLE}/${item}.json`;
-      const [result] = await fetchRegistry([path], options);
+      const registryPath = `${config?.framework ?? DEFAULT_FRAMEWORK}/${item}.json`;
+      const [result] = await fetchRegistry([registryPath], options);
       try {
         return registryItemSchema.parse(result);
       } catch (error) {
@@ -140,7 +118,6 @@ const registryItemWithSourceSchema = registryItemCommonSchema
   .extend({
     type: registryItemTypeSchema,
     _source: z.string().optional(),
-    font: registryItemFontSchema.optional(),
   })
   .passthrough();
 
@@ -154,7 +131,6 @@ export async function resolveRegistryTree(
   options = {
     useCache: true,
     ...options,
-    sourceCache: options.sourceCache ?? new Map(),
   };
 
   let payload: z.infer<typeof registryItemWithSourceSchema>[] = [];
@@ -247,37 +223,17 @@ export async function resolveRegistryTree(
       }
     }
 
-    // For non-namespaced items, we need the index and style resolution
     if (nonNamespacedItems.length > 0) {
-      const index = await getTermcnRegistryIndex();
-      if (!index && payload.length === 0) {
-        return null;
+      const registryUrls: string[] = [];
+      for (const name of nonNamespacedItems) {
+        registryUrls.push(
+          ...(await resolveRegistryDependencies(name, config, options))
+        );
       }
 
-      if (index) {
-        // If we're resolving the index, we want it to go first
-        if (nonNamespacedItems.includes("index")) {
-          nonNamespacedItems.unshift("index");
-        }
-
-        // Resolve non-namespaced items through the existing flow
-        // Get URLs for all registry items including their dependencies
-        const registryUrls: string[] = [];
-        for (const name of nonNamespacedItems) {
-          const itemDependencies = await resolveRegistryDependencies(
-            name,
-            config,
-            options
-          );
-          registryUrls.push(...itemDependencies);
-        }
-
-        // Deduplicate URLs
-        const uniqueUrls = Array.from(new Set(registryUrls));
-        let result = await fetchRegistry(uniqueUrls, options);
-        const registryPayload = z.array(registryItemSchema).parse(result);
-        payload.push(...registryPayload);
-      }
+      const uniqueUrls = Array.from(new Set(registryUrls));
+      const result = await fetchRegistry(uniqueUrls, options);
+      payload.push(...z.array(registryItemSchema).parse(result));
     }
   }
 
@@ -290,7 +246,7 @@ export async function resolveRegistryTree(
     !payload.every((item) => isUniversalRegistryItem(item))
   ) {
     throw new Error(
-      "A components.json file is required to add non-universal registry items or dependencies."
+      "A termcn.json file is required to add non-universal registry items or dependencies."
     );
   }
 
@@ -317,31 +273,22 @@ export async function resolveRegistryTree(
     }
   });
 
-  let envVars = {};
-  payload.forEach((item) => {
-    envVars = deepmerge(envVars, item.envVars ?? {});
-  });
-
   // Deduplicate files based on resolved target paths.
   const deduplicatedFiles = await deduplicateFilesByTarget(
     payload.map((item) => item.files ?? []),
     config
   );
 
-  const parsed = registryResolvedItemsTreeSchema.parse({
-    dependencies: deepmerge.all(payload.map((item) => item.dependencies ?? [])),
-    devDependencies: deepmerge.all(
-      payload.map((item) => item.devDependencies ?? [])
+  return registryResolvedItemsTreeSchema.parse({
+    dependencies: Array.from(
+      new Set(payload.flatMap((item) => item.dependencies ?? []))
+    ),
+    devDependencies: Array.from(
+      new Set(payload.flatMap((item) => item.devDependencies ?? []))
     ),
     files: deduplicatedFiles,
     docs,
   });
-
-  if (Object.keys(envVars).length > 0) {
-    parsed.envVars = envVars;
-  }
-
-  return parsed;
 }
 
 async function resolveDependenciesRecursively(
@@ -359,127 +306,48 @@ async function resolveDependenciesRecursively(
     }
     visited.add(dep);
 
-    const resolvedAddress = resolveItemAddress(dep);
+    const isDirectItem = isUrl(dep) || isLocalFile(dep) || dep.startsWith("@");
 
-    // Handle URLs and local files directly.
-    if (resolvedAddress.scheme === "github") {
-      const [item] = await fetchRegistryItems([dep], config, options);
-      if (item) {
-        items.push({
-          ...item,
-          _source: dep,
-        });
-        if (item.registryDependencies) {
-          const resolvedDeps = config?.registries
-            ? resolveRegistryItemsFromRegistries(
-                item.registryDependencies,
-                config
-              )
-            : item.registryDependencies;
-
-          const nested = await resolveDependenciesRecursively(
-            resolvedDeps,
-            config,
-            options,
-            visited
-          );
-          items.push(...nested.items);
-          registryNames.push(...nested.registryNames);
-        }
-      }
-    }
-    // Handle URLs and local files directly.
-    else if (isUrl(dep) || isLocalFile(dep)) {
-      const [item] = await fetchRegistryItems([dep], config, options);
-      if (item) {
-        items.push({
-          ...item,
-          _source: dep,
-        });
-        if (item.registryDependencies) {
-          // Resolve namespaced dependencies to set proper headers.
-          const resolvedDeps = config?.registries
-            ? resolveRegistryItemsFromRegistries(
-                item.registryDependencies,
-                config
-              )
-            : item.registryDependencies;
-
-          const nested = await resolveDependenciesRecursively(
-            resolvedDeps,
-            config,
-            options,
-            visited
-          );
-          items.push(...nested.items);
-          registryNames.push(...nested.registryNames);
-        }
-      }
-    }
-    // Handle namespaced items (e.g., @one/foo, @two/bar).
-    else if (dep.startsWith("@") && config?.registries) {
-      // Check if the registry exists.
+    if (dep.startsWith("@")) {
       const { registry } = parseRegistryAndItemFromString(dep);
-      if (registry && !(registry in config.registries)) {
+      if (registry && !(registry in (config.registries ?? {}))) {
         throw new RegistryNotConfiguredError(registry);
       }
-
-      // Let getRegistryItem handle the namespaced item with config
-      // This ensures proper authentication headers are used
-      const [item] = await fetchRegistryItems([dep], config, options);
-      if (item) {
-        items.push(item);
-        if (item.registryDependencies) {
-          // Resolve namespaced dependencies to set proper headers.
-          const resolvedDeps = config?.registries
-            ? resolveRegistryItemsFromRegistries(
-                item.registryDependencies,
-                config
-              )
-            : item.registryDependencies;
-
-          const nested = await resolveDependenciesRecursively(
-            resolvedDeps,
-            config,
-            options,
-            visited
-          );
-          items.push(...nested.items);
-          registryNames.push(...nested.registryNames);
-        }
-      }
     }
-    // Handle regular component names.
-    else {
+
+    let item: z.infer<typeof registryItemSchema>;
+    try {
+      [item] = await fetchRegistryItems([dep], config, options);
+    } catch (error) {
+      if (isDirectItem) {
+        throw error;
+      }
       registryNames.push(dep);
-
-      if (config) {
-        try {
-          const [item] = await fetchRegistryItems([dep], config, options);
-          if (item && item.registryDependencies) {
-            // Resolve namespaced dependencies to set proper headers.
-            const resolvedDeps = config?.registries
-              ? resolveRegistryItemsFromRegistries(
-                  item.registryDependencies,
-                  config
-                )
-              : item.registryDependencies;
-
-            const nested = await resolveDependenciesRecursively(
-              resolvedDeps,
-              config,
-              options,
-              visited
-            );
-            items.push(...nested.items);
-            registryNames.push(...nested.registryNames);
-          }
-        } catch (error) {
-          // If we can't fetch the registry item, that's okay - we'll still
-          // include the name.
-        }
-      }
+      continue;
     }
+
+    if (isDirectItem) {
+      items.push({ ...item, _source: dep });
+    } else {
+      registryNames.push(dep);
+    }
+
+    if (!item.registryDependencies?.length) {
+      continue;
+    }
+
+    const resolvedDependencies = resolveRegistryItemsFromRegistries(
+      item.registryDependencies,
+      config
+    );
+    const nested = await resolveDependenciesRecursively(
+      resolvedDependencies,
+      config,
+      options,
+      visited
+    );
+    items.push(...nested.items);
+    registryNames.push(...nested.registryNames);
   }
 
   return { items, registryNames };
@@ -502,7 +370,7 @@ async function resolveRegistryDependencies(
   );
 
   const urls = registryNames.map((name) =>
-    resolveRegistryUrl(isUrl(name) ? name : `${config.style}/${name}.json`)
+    resolveRegistryUrl(isUrl(name) ? name : `${config.framework}/${name}.json`)
   );
 
   return Array.from(new Set(urls));
@@ -523,15 +391,6 @@ function computeItemHash(
 }
 
 function extractItemIdentifierFromDependency(dependency: string) {
-  const resolvedAddress = resolveItemAddress(dependency);
-
-  if (resolvedAddress.scheme === "github") {
-    return {
-      name: resolvedAddress.item,
-      hash: computeItemHash({ name: resolvedAddress.item }, dependency),
-    };
-  }
-
   if (isUrl(dependency)) {
     const url = new URL(dependency);
     const pathname = url.pathname;

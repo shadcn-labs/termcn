@@ -4,7 +4,6 @@ import path from "node:path";
 import { configWithDefaults } from "@/src/registry/config";
 import { resolveRegistryTree } from "@/src/registry/resolver";
 import { isContentSame } from "@/src/utils/compare";
-import { isEnvFile } from "@/src/utils/env-helpers";
 import type { Config } from "@/src/utils/get-config";
 import { transform } from "@/src/utils/transformers";
 import { resolveFilePath } from "@/src/utils/updaters/update-files";
@@ -17,17 +16,10 @@ export type DryRunFile = {
   type: string;
 };
 
-export type DryRunEnvVars = {
-  path: string;
-  variables: Record<string, string>;
-  action: "create" | "update";
-};
-
 export type DryRunResult = {
   files: DryRunFile[];
   dependencies: string[];
   devDependencies: string[];
-  envVars: DryRunEnvVars | null;
   docs: string | null;
 };
 
@@ -40,7 +32,6 @@ export async function dryRunComponents(
     files: [],
     dependencies: [],
     devDependencies: [],
-    envVars: null,
     docs: null,
   };
   if (components.length === 0) return result;
@@ -57,13 +48,8 @@ export async function dryRunComponents(
 
   for (const [index, file] of (tree.files ?? []).entries()) {
     if (file.content === undefined) continue;
-    let filePath = resolveFilePath(file, config, { fileIndex: index });
+    const filePath = resolveFilePath(file, config, { fileIndex: index });
     if (!filePath) continue;
-    if (!config.tsx) {
-      filePath = filePath.replace(/\.tsx?$/, (extension) =>
-        extension === ".tsx" ? ".jsx" : ".js"
-      );
-    }
 
     const isUniversal =
       file.type === "registry:file" || file.type === "registry:item";
@@ -71,13 +57,12 @@ export async function dryRunComponents(
       path.extname(filePath)
     );
     const content =
-      isUniversal || isEnvFile(filePath) || !isCode
+      isUniversal || !isCode
         ? file.content
         : await transform({
             config,
             filename: file.path,
             raw: file.content,
-            transformJsx: !config.tsx,
           });
     const relativePath = path.relative(config.resolvedPaths.cwd, filePath);
     const exists = existsSync(filePath);
@@ -97,15 +82,6 @@ export async function dryRunComponents(
       path: relativePath,
       type: file.type ?? "registry:ui",
     });
-  }
-
-  if (tree.envVars && Object.keys(tree.envVars).length > 0) {
-    const envPath = path.join(config.resolvedPaths.cwd, ".env.local");
-    result.envVars = {
-      action: existsSync(envPath) ? "update" : "create",
-      path: path.relative(config.resolvedPaths.cwd, envPath),
-      variables: tree.envVars,
-    };
   }
 
   return result;
