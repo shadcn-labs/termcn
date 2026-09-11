@@ -29,8 +29,12 @@ import { cn } from "@/lib/utils";
 type SectionId = (typeof LABS_NAV_SECTIONS)[number]["id"];
 
 const SECTION_WIDTH: Partial<Record<SectionId, string>> = {
-  registries: "w-40",
+  registries: "w-72",
   skills: "w-72",
+};
+
+const SECTION_LIST: Partial<Record<SectionId, string>> = {
+  registries: "columns-2 gap-x-6 space-y-1",
 };
 
 const latestCardClassName = cn(
@@ -145,16 +149,18 @@ const DesktopSection = ({
   title,
   items,
   className,
+  listClassName,
 }: {
   title: string;
   items: readonly LabsNavLinkItem[];
   className?: string;
+  listClassName?: string;
 }) => (
-  <div className={cn("flex flex-col gap-3", className)}>
+  <div className={cn("flex flex-col gap-3 w-44", className)}>
     <SectionTitle>{title}</SectionTitle>
-    <ul className="flex flex-col gap-1">
+    <ul className={cn("columns-1 gap-1", listClassName)}>
       {items.map((item) => (
-        <li key={item.href} className="w-full">
+        <li key={item.href} className="w-full break-inside-avoid">
           <LabsNavLink item={item}>
             {({ label, onMouseEnter, onMouseLeave }) => (
               <NavigationMenuLink
@@ -308,7 +314,7 @@ const LabsNavDesktop = () => {
                 <div className="flex gap-8 py-4 pl-3">
                   <div className="flex w-64 flex-col gap-3">
                     <SectionTitle>Latest</SectionTitle>
-                    <LatestCard item={LABS_LATEST} nameClassName="min-h-20">
+                    <LatestCard item={LABS_LATEST} nameClassName="min-h-8">
                       {({ content, onMouseEnter, onMouseLeave }) => (
                         <NavigationMenuLink
                           href={addQueryParams(LABS_LATEST.href, UTM_PARAMS)}
@@ -328,7 +334,8 @@ const LabsNavDesktop = () => {
                       key={section.id}
                       title={section.title}
                       items={section.items}
-                      className={SECTION_WIDTH[section.id] ?? "w-44"}
+                      className={SECTION_WIDTH[section.id]}
+                      listClassName={SECTION_LIST[section.id]}
                     />
                   ))}
                 </div>

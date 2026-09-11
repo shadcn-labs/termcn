@@ -39,7 +39,7 @@ export const WebMcpTools = () => {
     const { modelContext } = navigator as Navigator & {
       modelContext?: ModelContextApi;
     };
-    const registerTool = modelContext?.registerTool;
+    const registerTool = modelContext?.registerTool?.bind(modelContext);
     if (typeof registerTool !== "function") {
       return;
     }
