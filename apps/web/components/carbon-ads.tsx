@@ -15,15 +15,35 @@ declare global {
 
 const SCRIPT_ID = "_carbonads_js";
 
+let host: HTMLDivElement | null = null;
+let blocked = false;
+let onBlocked: (() => void) | null = null;
+let lastPathname: string | null = null;
+
+const getHost = (src: string) => {
+  if (host) {
+    return host;
+  }
+
+  const script = document.createElement("script");
+  script.id = SCRIPT_ID;
+  script.async = true;
+  script.src = src;
+  script.addEventListener("error", () => {
+    blocked = true;
+    onBlocked?.();
+  });
+
+  host = document.createElement("div");
+  host.dataset.slot = "carbon-ads-host";
+  host.append(script);
+
+  return host;
+};
+
 export interface CarbonAdsProps {
-  /** The `serve` query parameter of your Carbon ad tag. */
   serve?: string;
-  /** The `placement` query parameter of your Carbon ad tag. */
   placement?: string;
-  /**
-   * Ad layout. `responsive` adapts to the container width, `cover` is the
-   * taller unit. Defaults to "responsive".
-   */
   format?: "cover" | "responsive";
   className?: string;
 }
@@ -36,7 +56,7 @@ export const CarbonAds = ({
 }: CarbonAdsProps) => {
   const pathname = usePathname();
   const containerRef = useRef<HTMLDivElement>(null);
-  const [blocked, setBlocked] = useState(false);
+  const [isBlocked, setIsBlocked] = useState(blocked);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -44,29 +64,28 @@ export const CarbonAds = ({
       return;
     }
 
-    // carbon.js inserts the ad after its script tag, so the tag lives here.
-    // A loading script runs its own init, so refresh only after it loaded.
-    const script = document.querySelector<HTMLElement>(`#${SCRIPT_ID}`);
-    if (script) {
-      if (container.contains(script) && script.dataset.loaded) {
-        window._carbonads?.refresh();
-      }
-      return;
+    onBlocked = () => setIsBlocked(true);
+
+    const element = getHost(
+      `//cdn.carbonads.com/carbon.js?serve=${serve}&placement=${placement}&format=${format}`
+    );
+    if (element.parentElement !== container) {
+      container.append(element);
     }
 
-    const el = document.createElement("script");
-    el.id = SCRIPT_ID;
-    el.async = true;
-    el.type = "text/javascript";
-    el.src = `//cdn.carbonads.com/carbon.js?serve=${serve}&placement=${placement}&format=${format}`;
-    el.addEventListener("load", () => {
-      el.dataset.loaded = "true";
-    });
-    el.addEventListener("error", () => setBlocked(true));
-    container.append(el);
-  }, [pathname, serve, placement, format]);
+    return () => {
+      onBlocked = null;
+    };
+  }, [serve, placement, format]);
 
-  if (blocked) {
+  useEffect(() => {
+    if (lastPathname !== null && lastPathname !== pathname) {
+      window._carbonads?.refresh();
+    }
+    lastPathname = pathname;
+  }, [pathname]);
+
+  if (isBlocked) {
     return null;
   }
 
