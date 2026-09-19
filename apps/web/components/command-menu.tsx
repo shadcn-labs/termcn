@@ -9,8 +9,8 @@ import {
   Grid3x3Icon,
   BinaryIcon,
 } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
 import { useIntlayer } from "next-intlayer";
+import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";

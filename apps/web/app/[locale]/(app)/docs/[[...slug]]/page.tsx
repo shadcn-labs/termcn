@@ -107,10 +107,7 @@ const Page = async (props: {
 
   const doc = page.data;
   const MdxContent = doc.body;
-  const neighbours = findNeighbour(
-    source.getPageTree(params.locale),
-    page.url
-  );
+  const neighbours = findNeighbour(source.getPageTree(params.locale), page.url);
   const raw = await page.data.getText("raw");
 
   const { links } = doc as { links?: { doc?: string; api?: string } };
@@ -124,8 +121,7 @@ const Page = async (props: {
   const baseSwitcher = getDocsBaseSwitcherProps(params.slug);
   // `page.path` drops the locale directory; the GitHub edit link needs the
   // real file, which may be the default-locale fallback.
-  const docId =
-    page.absolutePath?.split(`${DOCS_DIR}/`).at(-1) ?? page.path;
+  const docId = page.absolutePath?.split(`${DOCS_DIR}/`).at(-1) ?? page.path;
 
   return (
     <>

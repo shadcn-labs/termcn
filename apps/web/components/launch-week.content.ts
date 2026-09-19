@@ -20,7 +20,8 @@ const launchWeekContent = {
         ja: "次のローンチまで {{days}} 日 {{hours}} 時間 {{minutes}} 分 {{seconds}} 秒",
         ko: "다음 출시까지 {{days}}일 {{hours}}시간 {{minutes}}분 {{seconds}}초",
         pt: "{{days}} dias, {{hours}} horas, {{minutes}} minutos, {{seconds}} segundos até o próximo lançamento",
-        "zh-CN": "距离下次发布还有 {{days}} 天 {{hours}} 小时 {{minutes}} 分 {{seconds}} 秒",
+        "zh-CN":
+          "距离下次发布还有 {{days}} 天 {{hours}} 小时 {{minutes}} 分 {{seconds}} 秒",
       })
     ),
     countdownLoadingAriaLabel: t({

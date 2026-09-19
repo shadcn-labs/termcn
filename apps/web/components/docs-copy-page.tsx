@@ -31,11 +31,11 @@ import { Separator } from "@/components/ui/separator";
 
 import { CopyButton } from "./copy-button";
 
-type MenuItemArgs = {
+interface MenuItemArgs {
   label: React.ReactNode;
   prompt: string;
   url: string;
-};
+}
 
 const getPromptUrl = (baseURL: string, prompt: string, param = "q") =>
   `${baseURL}?${param}=${encodeURIComponent(prompt)}`;

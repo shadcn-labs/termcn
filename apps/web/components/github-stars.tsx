@@ -45,8 +45,7 @@ export const GitHubStars = ({
         </a>
       </TooltipTrigger>
       <TooltipContent>
-        {new Intl.NumberFormat("en-US").format(stargazersCount)}{" "}
-        {content.stars}
+        {new Intl.NumberFormat("en-US").format(stargazersCount)} {content.stars}
       </TooltipContent>
     </Tooltip>
   );

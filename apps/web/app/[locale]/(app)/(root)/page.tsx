@@ -60,8 +60,7 @@ export default async function IndexPage({
             <PageHero
               description={
                 <>
-                  {content.descriptionLine1}{" "}
-                  <br className="hidden sm:block" />
+                  {content.descriptionLine1} <br className="hidden sm:block" />
                   {content.descriptionLine2}
                 </>
               }

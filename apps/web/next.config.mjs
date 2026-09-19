@@ -62,6 +62,16 @@ const nextConfig = {
   redirects() {
     return [
       {
+        destination: ROUTES.SPONSOR,
+        permanent: true,
+        source: "/sponsor",
+      },
+      {
+        destination: `/:locale${ROUTES.SPONSOR}`,
+        permanent: true,
+        source: "/:locale/sponsor",
+      },
+      {
         destination: `${ROUTES.DOCS}.md`,
         permanent: true,
         source: `${ROUTES.DOCS}.mdx`,

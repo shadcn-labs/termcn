@@ -11,7 +11,8 @@ const docsCopyPageContent = {
         ja: "termcn のこのドキュメントを見ています: {{url}}。\n使い方を理解できるように手伝ってください。概念の説明、例の提示、これに基づくデバッグの支援をお願いします。\n",
         ko: "termcn 문서를 보고 있습니다: {{url}}.\n사용 방법을 이해할 수 있도록 도와주세요. 개념 설명, 예제 제공, 이를 바탕으로 한 디버깅을 도와주세요.\n",
         pt: "Estou vendo esta documentação do termcn: {{url}}.\nAjude-me a entender como usá-la. Esteja pronto para explicar conceitos, dar exemplos ou ajudar a depurar com base nela.\n",
-        "zh-CN": "我正在查看这份 termcn 文档：{{url}}。\n请帮我理解如何使用它。请准备好解释概念、提供示例，或基于它帮助调试。\n",
+        "zh-CN":
+          "我正在查看这份 termcn 文档：{{url}}。\n请帮我理解如何使用它。请准备好解释概念、提供示例，或基于它帮助调试。\n",
       })
     ),
     copyPage: t({
