@@ -1,3 +1,5 @@
+import type { Locale } from "intlayer";
+import { getLocalizedUrl } from "intlayer";
 import { useIntlayer } from "next-intlayer/server";
 import Link from "next/link";
 
@@ -10,7 +12,6 @@ import { MainNav } from "@/components/main-nav";
 import { MobileNav } from "@/components/mobile-nav";
 import { NavItemGithub } from "@/components/nav-item-github";
 import { SiteSettings } from "@/components/site-settings";
-import { SponsorLink } from "@/components/sponsor-link";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { ROUTES } from "@/constants/routes";
@@ -24,6 +25,10 @@ export const SiteHeader = ({ locale }: { locale?: string }) => {
     { href: ROUTES.DOCS_COMPONENTS, label: String(content.navComponents) },
     { href: ROUTES.DOCS_CHARTS, label: String(content.navCharts) },
     { href: ROUTES.DOCS_TEMPLATES, label: String(content.navTemplates) },
+    {
+      href: getLocalizedUrl(ROUTES.SPONSOR, locale as Locale),
+      label: String(content.navSponsors),
+    },
   ];
 
   return (
@@ -67,12 +72,20 @@ export const SiteHeader = ({ locale }: { locale?: string }) => {
                 tree={source.getPageTree(locale)}
               />
             </div>
-            <Separator className="hidden h-5! md:block" orientation="vertical" />
+            <Separator
+              className="hidden h-5! md:block"
+              orientation="vertical"
+            />
             <NavItemGithub />
-            <SponsorLink />
-            <Separator className="hidden h-5! md:block" orientation="vertical" />
+            <Separator
+              className="hidden h-5! md:block"
+              orientation="vertical"
+            />
             <LocaleSwitcher className="hidden md:flex" />
-            <Separator className="hidden h-5! md:block" orientation="vertical" />
+            <Separator
+              className="hidden h-5! md:block"
+              orientation="vertical"
+            />
             <SiteSettings />
           </div>
         </div>

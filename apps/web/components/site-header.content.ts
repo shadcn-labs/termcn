@@ -30,6 +30,15 @@ const siteHeaderContent = {
       pt: "Documentação",
       "zh-CN": "文档",
     }),
+    navSponsors: t({
+      en: "Sponsors",
+      es: "Patrocinadores",
+      fr: "Sponsors",
+      ja: "スポンサー",
+      ko: "스폰서",
+      pt: "Patrocinadores",
+      "zh-CN": "赞助者",
+    }),
     navTemplates: t({
       en: "Templates",
       es: "Plantillas",
