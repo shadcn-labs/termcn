@@ -28,6 +28,7 @@
     "glob": "13.0.6",
     "ink": "6.8.0",
     "ink-web": "0.2.0",
+    "intlayer": "9.5.1",
     "jiti": "^2.6.1",
     "jotai": "^2.19.0",
     "lru-cache": "^11.2.7",
@@ -36,6 +37,7 @@
     "mnemonist": "0.40.3",
     "motion": "^12.38.0",
     "next": "16.3.1",
+    "next-intlayer": "9.5.1",
     "next-themes": "0.4.6",
     "postcss": "^8.5.8",
     "radix-ui": "^1.4.3",
@@ -53,6 +55,7 @@
     "zod": "^4.0.0"
   },
   "devDependencies": {
+    "@intlayer/swc": "^9.5.4",
     "@tailwindcss/postcss": "^4.2.2",
     "@types/mdx": "^2.0.13",
     "@types/node": "^25",

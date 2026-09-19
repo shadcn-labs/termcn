@@ -1,7 +1,12 @@
+import { useLocale } from "next-intlayer/server";
 import Link from "next/link";
 
 import { isComponentsFolder } from "@/lib/docs";
-import type { PageTreeFolder, PageTreePage } from "@/lib/page-tree";
+import type {
+  PageTreeFolder,
+  PageTreePage,
+  PageTreeRoot,
+} from "@/lib/page-tree";
 import {
   findChildFolder,
   getFolderPages,
@@ -11,8 +16,11 @@ import { source } from "@/lib/source";
 import { cn } from "@/lib/utils";
 import { DEFAULT_BASE_NAME } from "@/registry/bases";
 
-const getFolder = (name: string): PageTreeFolder | undefined => {
-  for (const node of source.pageTree.children) {
+const getFolder = (
+  tree: PageTreeRoot,
+  name: string
+): PageTreeFolder | undefined => {
+  for (const node of tree.children) {
     if (node.type === "folder" && node.name === name) {
       return node;
     }
@@ -56,7 +64,8 @@ export const ComponentsList = ({
   base?: string;
   className?: string;
 }) => {
-  const folder = getFolder(folderName);
+  const { locale } = useLocale();
+  const folder = getFolder(source.getPageTree(locale), folderName);
   if (!folder) {
     return null;
   }

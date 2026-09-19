@@ -1,5 +1,6 @@
 "use client";
 
+import { useIntlayer } from "next-intlayer";
 import Link from "next/link";
 
 import type { HeartHandshakeIconHandle } from "@/components/animated-icons/heart-handshake";
@@ -9,6 +10,7 @@ import { ROUTES } from "@/constants/routes";
 import { useIconAnimation } from "@/hooks/use-icon-animation";
 
 export const SponsorLink = () => {
+  const content = useIntlayer("sponsor-link");
   const { iconRef, onMouseEnter, onMouseLeave } =
     useIconAnimation<HeartHandshakeIconHandle>();
 
@@ -24,7 +26,7 @@ export const SponsorLink = () => {
     >
       <Link href={ROUTES.SPONSOR}>
         <HeartHandshakeIcon className="text-pink-500" ref={iconRef} />
-        <span className="max-sm:sr-only">Sponsor</span>
+        <span className="max-sm:sr-only">{content.sponsor}</span>
       </Link>
     </Button>
   );

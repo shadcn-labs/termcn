@@ -1,5 +1,6 @@
 "use client";
 
+import { useIntlayer } from "next-intlayer";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -30,8 +31,32 @@ import {
   getFolderPages,
   getTreeGroups,
 } from "@/lib/page-tree";
-import type { PageTreeFolder } from "@/lib/page-tree";
-import type { source } from "@/lib/source";
+import type { PageTreeFolder, PageTreeRoot } from "@/lib/page-tree";
+
+const TOP_LEVEL_SECTION_KEYS: Record<
+  string,
+  | "changelog"
+  | "charts"
+  | "components"
+  | "installation"
+  | "introduction"
+  | "llmsTxt"
+  | "mcp"
+  | "registry"
+  | "templates"
+  | "theming"
+> = {
+  Changelog: "changelog",
+  Charts: "charts",
+  Components: "components",
+  Installation: "installation",
+  Introduction: "introduction",
+  MCP: "mcp",
+  Registry: "registry",
+  Templates: "templates",
+  Theming: "theming",
+  "llms.txt": "llmsTxt",
+};
 
 const SidebarMenuItemLink = ({
   href,
@@ -41,23 +66,30 @@ const SidebarMenuItemLink = ({
   href: string;
   isActive: boolean;
   children: React.ReactNode;
-}) => (
-  <SidebarMenuItem>
-    <SidebarMenuButton
-      asChild
-      className="relative h-[30px] w-fit overflow-visible border border-transparent text-[0.8rem] font-medium after:absolute after:inset-x-0 after:-inset-y-1 after:z-0 after:rounded-md data-[active=true]:border-accent data-[active=true]:bg-accent 3xl:fixed:w-full 3xl:fixed:max-w-48"
-      isActive={isActive}
-    >
-      <Link href={href}>
-        <span className="absolute inset-0 flex w-(--sidebar-menu-width) bg-transparent" />
-        {children}
-        {PAGES_NEW.includes(href) && (
-          <span className="flex size-2 rounded-full bg-blue-500" title="New" />
-        )}
-      </Link>
-    </SidebarMenuButton>
-  </SidebarMenuItem>
-);
+}) => {
+  const content = useIntlayer("docs-sidebar");
+
+  return (
+    <SidebarMenuItem>
+      <SidebarMenuButton
+        asChild
+        className="relative h-[30px] w-fit overflow-visible border border-transparent text-[0.8rem] font-medium after:absolute after:inset-x-0 after:-inset-y-1 after:z-0 after:rounded-md data-[active=true]:border-accent data-[active=true]:bg-accent 3xl:fixed:w-full 3xl:fixed:max-w-48"
+        isActive={isActive}
+      >
+        <Link href={href}>
+          <span className="absolute inset-0 flex w-(--sidebar-menu-width) bg-transparent" />
+          {children}
+          {PAGES_NEW.includes(href) && (
+            <span
+              className="flex size-2 rounded-full bg-blue-500"
+              title={String(content.new)}
+            />
+          )}
+        </Link>
+      </SidebarMenuButton>
+    </SidebarMenuItem>
+  );
+};
 
 const SidebarPageGroup = ({
   label,
@@ -96,11 +128,11 @@ const SidebarPageGroup = ({
 interface SidebarPanelProps {
   currentBase: string;
   pathname: string;
-  tree: typeof source.pageTree;
+  tree: PageTreeRoot;
 }
 
 const findTopLevelFolder = (
-  tree: typeof source.pageTree,
+  tree: PageTreeRoot,
   predicate: (folder: PageTreeFolder) => boolean
 ) =>
   tree.children.find(
@@ -132,6 +164,7 @@ const TemplatesSidebarPanel = ({
   pathname,
   tree,
 }: SidebarPanelProps) => {
+  const content = useIntlayer("docs-sidebar");
   const folder = findTopLevelFolder(tree, isTemplatesFolder);
   if (!folder) {
     return null;
@@ -139,7 +172,7 @@ const TemplatesSidebarPanel = ({
 
   return (
     <SidebarPageGroup
-      label="Templates"
+      label={content.templates}
       pages={getFolderPages(folder, currentBase)}
       pathname={pathname}
     />
@@ -151,6 +184,7 @@ const ChartsSidebarPanel = ({
   pathname,
   tree,
 }: SidebarPanelProps) => {
+  const content = useIntlayer("docs-sidebar");
   const folder = findTopLevelFolder(tree, isChartsFolder);
   if (!folder) {
     return null;
@@ -164,8 +198,16 @@ const ChartsSidebarPanel = ({
 
   return (
     <>
-      <SidebarPageGroup label="Basic" pages={charts} pathname={pathname} />
-      <SidebarPageGroup label="Dither" pages={dither} pathname={pathname} />
+      <SidebarPageGroup
+        label={content.basic}
+        pages={charts}
+        pathname={pathname}
+      />
+      <SidebarPageGroup
+        label={content.dither}
+        pages={dither}
+        pathname={pathname}
+      />
     </>
   );
 };
@@ -175,6 +217,7 @@ const ThemesSidebarPanel = ({
   pathname,
   tree,
 }: SidebarPanelProps) => {
+  const content = useIntlayer("docs-sidebar");
   const folder = findTopLevelFolder(tree, isThemesFolder);
   if (!folder) {
     return null;
@@ -182,7 +225,7 @@ const ThemesSidebarPanel = ({
 
   return (
     <SidebarPageGroup
-      label="Themes"
+      label={content.themes}
       pages={getFolderPages(folder, currentBase)}
       pathname={pathname}
     />
@@ -193,8 +236,9 @@ export const DocsSidebar = ({
   tree,
   ...props
 }: React.ComponentProps<typeof Sidebar> & {
-  tree: typeof source.pageTree;
+  tree: PageTreeRoot;
 }) => {
+  const content = useIntlayer("docs-sidebar");
   const pathname = usePathname();
   const currentBase = getCurrentBase(pathname);
   const panel = getDocsSidebarPanel(pathname);
@@ -229,7 +273,7 @@ export const DocsSidebar = ({
       <SidebarContent className="mx-auto no-scrollbar w-(--sidebar-menu-width) overflow-x-hidden px-2">
         <SidebarGroup className="pt-6">
           <SidebarGroupLabel className="text-muted-foreground font-medium">
-            Sections
+            {content.sections}
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -243,7 +287,9 @@ export const DocsSidebar = ({
                       : pathname.startsWith(href)
                   }
                 >
-                  {name}
+                  {TOP_LEVEL_SECTION_KEYS[name]
+                    ? content[TOP_LEVEL_SECTION_KEYS[name]]
+                    : name}
                 </SidebarMenuItemLink>
               ))}
             </SidebarMenu>

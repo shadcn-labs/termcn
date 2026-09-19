@@ -1,3 +1,4 @@
+import { getMultilingualUrls } from "intlayer";
 import type { Metadata } from "next";
 
 import { LINK } from "@/constants/links";
@@ -41,10 +42,12 @@ export const createPageMetadata = (
   const resolvedTitle = ogTitle ?? title;
   const resolvedDescription = ogDescription ?? description;
   const resolvedOgImage = ogImage ?? SITE.OG_IMAGE;
+  const multilingualUrls = getMultilingualUrls(canonical);
 
   return {
     alternates: {
       canonical,
+      languages: { ...multilingualUrls, "x-default": multilingualUrls.en },
       ...(markdownAlternate && {
         types: {
           "text/markdown": markdownAlternate,
@@ -89,6 +92,10 @@ export const createPageMetadata = (
 export const baseMetadata: Metadata = {
   alternates: {
     canonical: ROUTES.HOME,
+    languages: {
+      ...getMultilingualUrls(ROUTES.HOME),
+      "x-default": ROUTES.HOME,
+    },
   },
   appleWebApp: {
     capable: true,

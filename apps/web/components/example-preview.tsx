@@ -1,6 +1,7 @@
 "use client";
 
 import { Box, Text } from "ink";
+import { useIntlayer } from "next-intlayer";
 import { Component as ReactComponent, Suspense } from "react";
 
 import { ExamplesIndex } from "@/examples/__index__";
@@ -16,6 +17,7 @@ const InkPreviewPlaceholder = ({
   componentName: string;
   description: string;
 }) => {
+  const content = useIntlayer("example-preview");
   const theme = useInkTheme();
 
   return (
@@ -30,7 +32,7 @@ const InkPreviewPlaceholder = ({
       </Text>
       <Text color={theme.colors.foreground}>{description}</Text>
       <Text color={theme.colors.mutedForeground} dimColor>
-        Inspect the usage snippet below for install details and example props.
+        {String(content.inspectUsageSnippet)}
       </Text>
     </Box>
   );
@@ -76,6 +78,30 @@ const PreviewPlaceholder = ({
     />
   );
 
+const PreviewFallback = ({
+  componentName,
+  message,
+  base,
+}: {
+  componentName: string;
+  message?: string;
+  base: BaseName;
+}) => {
+  const content = useIntlayer("example-preview");
+
+  return (
+    <PreviewPlaceholder
+      componentName={componentName}
+      description={
+        message
+          ? String(content.livePreviewFallbackWithMessage({ message }))
+          : String(content.livePreviewFallback)
+      }
+      base={base}
+    />
+  );
+};
+
 class PreviewErrorBoundary extends ReactComponent<
   {
     children: React.ReactNode;
@@ -100,13 +126,9 @@ class PreviewErrorBoundary extends ReactComponent<
   public render() {
     if (this.state.hasError) {
       return (
-        <PreviewPlaceholder
+        <PreviewFallback
           componentName={this.props.componentName}
-          description={
-            this.state.message
-              ? `Live preview fallback: ${this.state.message}`
-              : "Live preview fallback."
-          }
+          message={this.state.message}
           base={this.props.base}
         />
       );
@@ -123,12 +145,13 @@ export const ExamplePreview = ({
   base?: BaseName;
   name: string;
 }) => {
+  const content = useIntlayer("example-preview");
   const example = ExamplesIndex[base]?.[name];
   if (!example) {
     return (
       <PreviewPlaceholder
         componentName={name}
-        description={`No ${base} live preview is registered for this example yet.`}
+        description={String(content.noLivePreviewRegistered({ base }))}
         base={base}
       />
     );
@@ -142,7 +165,7 @@ export const ExamplePreview = ({
         fallback={
           <PreviewPlaceholder
             componentName={name}
-            description="Loading preview..."
+            description={String(content.loadingPreview)}
             base={base}
           />
         }

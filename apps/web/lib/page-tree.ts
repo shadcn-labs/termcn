@@ -14,6 +14,7 @@ import {
 } from "@/lib/docs";
 import { DEFAULT_BASE_NAME } from "@/registry/bases";
 
+export type { PageTreeRoot };
 export type PageTreeFolder = Extract<PageTreeNode, { type: "folder" }>;
 export type PageTreePage = Extract<PageTreeNode, { type: "page" }>;
 

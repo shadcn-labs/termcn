@@ -1,6 +1,7 @@
 "use client";
 
 import type { Root as PageTreeRoot } from "fumadocs-core/page-tree";
+import { useIntlayer } from "next-intlayer";
 import type { LinkProps } from "next/link";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -31,6 +32,31 @@ import {
 } from "@/lib/page-tree";
 import type { PageTreeFolder } from "@/lib/page-tree";
 import { cn } from "@/lib/utils";
+
+const TOP_LEVEL_SECTION_KEYS: Record<
+  string,
+  | "changelog"
+  | "charts"
+  | "components"
+  | "installation"
+  | "introduction"
+  | "llmsTxt"
+  | "mcp"
+  | "registry"
+  | "templates"
+  | "theming"
+> = {
+  Changelog: "changelog",
+  Charts: "charts",
+  Components: "components",
+  Installation: "installation",
+  Introduction: "introduction",
+  MCP: "mcp",
+  Registry: "registry",
+  Templates: "templates",
+  Theming: "theming",
+  "llms.txt": "llmsTxt",
+};
 
 const MobileLink = ({
   href,
@@ -129,6 +155,7 @@ const TemplatesMobilePanel = ({
   setOpen,
   tree,
 }: MobilePanelProps) => {
+  const content = useIntlayer("mobile-nav");
   const folder = findTopLevelFolder(tree, isTemplatesFolder);
   if (!folder) {
     return null;
@@ -136,7 +163,7 @@ const TemplatesMobilePanel = ({
 
   return (
     <MobileNavGroup
-      label="Templates"
+      label={content.templates}
       pages={getFolderPages(folder, currentBase)}
       setOpen={setOpen}
     />
@@ -148,6 +175,7 @@ const ChartsMobilePanel = ({
   setOpen,
   tree,
 }: MobilePanelProps) => {
+  const content = useIntlayer("mobile-nav");
   const folder = findTopLevelFolder(tree, isChartsFolder);
   if (!folder) {
     return null;
@@ -161,8 +189,16 @@ const ChartsMobilePanel = ({
 
   return (
     <>
-      <MobileNavGroup label="Basic Charts" pages={charts} setOpen={setOpen} />
-      <MobileNavGroup label="Dither Charts" pages={dither} setOpen={setOpen} />
+      <MobileNavGroup
+        label={content.basicCharts}
+        pages={charts}
+        setOpen={setOpen}
+      />
+      <MobileNavGroup
+        label={content.ditherCharts}
+        pages={dither}
+        setOpen={setOpen}
+      />
     </>
   );
 };
@@ -172,6 +208,7 @@ const ThemesMobilePanel = ({
   setOpen,
   tree,
 }: MobilePanelProps) => {
+  const content = useIntlayer("mobile-nav");
   const folder = findTopLevelFolder(tree, isThemesFolder);
   if (!folder) {
     return null;
@@ -179,7 +216,7 @@ const ThemesMobilePanel = ({
 
   return (
     <MobileNavGroup
-      label="Themes"
+      label={content.themes}
       pages={getFolderPages(folder, currentBase)}
       setOpen={setOpen}
     />
@@ -197,6 +234,7 @@ export const MobileNav = ({
 }) => {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const content = useIntlayer("mobile-nav");
   const currentBase = getCurrentBase(pathname);
   const panel = getDocsSidebarPanel(pathname);
   const treeGroups = useMemo(
@@ -246,7 +284,7 @@ export const MobileNav = ({
                 )}
               />
             </div>
-            <span className="sr-only">Toggle Menu</span>
+            <span className="sr-only">{content.toggleMenu}</span>
           </div>
         </Button>
       </PopoverTrigger>
@@ -260,11 +298,11 @@ export const MobileNav = ({
         <div className="flex flex-col gap-12 overflow-auto px-6 py-6">
           <div className="flex flex-col gap-4">
             <div className="text-sm font-medium text-muted-foreground">
-              Menu
+              {content.menu}
             </div>
             <div className="flex flex-col gap-3">
               <MobileLink href={ROUTES.HOME} onOpenChange={setOpen}>
-                Home
+                {content.home}
               </MobileLink>
               {items.map((item) => (
                 <MobileLink
@@ -279,12 +317,14 @@ export const MobileNav = ({
           </div>
           <div className="flex flex-col gap-4">
             <div className="text-sm font-medium text-muted-foreground">
-              Sections
+              {content.sections}
             </div>
             <div className="flex flex-col gap-3">
               {TOP_LEVEL_SECTIONS.map(({ name, href }) => (
                 <MobileLink key={name} href={href} onOpenChange={setOpen}>
-                  {name}
+                  {TOP_LEVEL_SECTION_KEYS[name]
+                    ? content[TOP_LEVEL_SECTION_KEYS[name]]
+                    : name}
                 </MobileLink>
               ))}
             </div>

@@ -7,6 +7,7 @@ import {
   LockIcon,
   MinusIcon,
 } from "lucide-react";
+import { useIntlayer, useLocale } from "next-intlayer";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
@@ -23,17 +24,14 @@ import { cn } from "@/lib/utils";
 const DAY_STATUS = {
   pending: {
     icon: CircleDashedIcon,
-    label: "Pending",
     variant: "secondary" as const,
   },
   shipped: {
     icon: CheckIcon,
-    label: "Shipped",
     variant: "default" as const,
   },
   skipped: {
     icon: MinusIcon,
-    label: "No release",
     variant: "outline" as const,
   },
 };
@@ -56,31 +54,39 @@ const getCountdown = (target: Date, now: Date | null) => {
 };
 
 const Countdown = ({ target, now }: { target: Date; now: Date | null }) => {
+  const content = useIntlayer("launch-week");
   const countdown = getCountdown(target, now);
   const units = [
-    ["days", countdown.days],
-    ["hrs", countdown.hours],
-    ["min", countdown.minutes],
-    ["sec", countdown.seconds],
-  ] as const;
+    { id: "days", label: content.unitDays, value: countdown.days },
+    { id: "hrs", label: content.unitHours, value: countdown.hours },
+    { id: "min", label: content.unitMinutes, value: countdown.minutes },
+    { id: "sec", label: content.unitSeconds, value: countdown.seconds },
+  ];
 
   return (
     <div
       aria-label={
         now
-          ? `${countdown.days} days, ${countdown.hours} hours, ${countdown.minutes} minutes, ${countdown.seconds} seconds until the next launch`
-          : "Loading the launch countdown"
+          ? String(
+              content.countdownAriaLabel({
+                days: countdown.days,
+                hours: countdown.hours,
+                minutes: countdown.minutes,
+                seconds: countdown.seconds,
+              })
+            )
+          : String(content.countdownLoadingAriaLabel)
       }
       className="mt-3 flex gap-6 font-mono tabular-nums sm:gap-8"
       role="timer"
     >
-      {units.map(([label, value]) => (
-        <div className="flex flex-col" key={label}>
+      {units.map((unit) => (
+        <div className="flex flex-col" key={unit.id}>
           <span className="text-xl leading-none font-semibold tracking-tight sm:text-2xl">
-            {now ? String(value).padStart(2, "0") : "--"}
+            {now ? String(unit.value).padStart(2, "0") : "--"}
           </span>
           <span className="text-muted-foreground mt-1 text-[10px] uppercase tracking-[0.16em]">
-            {label}
+            {unit.label}
           </span>
         </div>
       ))}
@@ -96,26 +102,34 @@ const EmptyDay = ({
   day: LaunchWeekDay;
   includeYear: boolean;
   isFuture: boolean;
-}) => (
-  <div>
-    {isFuture ? (
-      <p className="text-muted-foreground text-sm">
-        Opens on {formatLaunchWeekDate(day.date, includeYear)}.
-      </p>
-    ) : (
-      <>
-        <p className="text-sm font-medium">
-          {day.status === "skipped" ? "Nothing shipped" : "No release yet"}
+}) => {
+  const content = useIntlayer("launch-week");
+
+  return (
+    <div>
+      {isFuture ? (
+        <p className="text-muted-foreground text-sm">
+          {content.opensOn({
+            date: formatLaunchWeekDate(day.date, includeYear),
+          })}
         </p>
-        <p className="text-muted-foreground mt-0.5 text-sm">
-          {day.status === "skipped"
-            ? "This day was intentionally left empty."
-            : "Updates will appear here when something ships."}
-        </p>
-      </>
-    )}
-  </div>
-);
+      ) : (
+        <>
+          <p className="text-sm font-medium">
+            {day.status === "skipped"
+              ? content.nothingShipped
+              : content.noReleaseYet}
+          </p>
+          <p className="text-muted-foreground mt-0.5 text-sm">
+            {day.status === "skipped"
+              ? content.nothingShippedDescription
+              : content.noReleaseYetDescription}
+          </p>
+        </>
+      )}
+    </div>
+  );
+};
 
 const LaunchDay = ({
   day,
@@ -128,18 +142,23 @@ const LaunchDay = ({
   index: number;
   now: Date | null;
 }) => {
+  const content = useIntlayer("launch-week");
   const date = new Date(day.date);
   const isToday = now ? isSameUtcDay(date, now) : false;
   const isFuture = now ? date > now && !isToday : true;
   const status = DAY_STATUS[day.status];
   let StatusIcon = status.icon;
-  let statusLabel = status.label;
+  let statusLabel: React.ReactNode = {
+    pending: content.statusPending,
+    shipped: content.statusShipped,
+    skipped: content.statusNoRelease,
+  }[day.status];
   if (isToday) {
     StatusIcon = CircleDashedIcon;
-    statusLabel = "Today";
+    statusLabel = content.statusToday;
   } else if (isFuture) {
     StatusIcon = LockIcon;
-    statusLabel = "Locked";
+    statusLabel = content.statusLocked;
   }
 
   return (
@@ -179,7 +198,7 @@ const LaunchDay = ({
                   href={release.changelogHref}
                   transitionTypes={["nav-forward"]}
                 >
-                  Changelog
+                  {content.changelog}
                   <ArrowUpRightIcon className="size-3.5" />
                 </Link>
               </article>
@@ -193,20 +212,28 @@ const LaunchDay = ({
   );
 };
 
-const getDayLabel = (day: LaunchWeekDay, now: Date | null) => {
+const getDayLabelKey = (day: LaunchWeekDay, now: Date | null) => {
   const date = new Date(day.date);
   if (now && isSameUtcDay(date, now)) {
-    return "Today";
+    return "today" as const;
   }
   if (!now || date > now) {
-    return "Locked";
+    return "locked" as const;
   }
-  return day.status === "shipped" ? "Shipped" : "Pending";
+  return day.status === "shipped" ? ("shipped" as const) : ("pending" as const);
 };
 
 export const LaunchWeek = ({ week }: { week: LaunchWeekData }) => {
+  const content = useIntlayer("launch-week");
+  const { locale } = useLocale();
   const [now, setNow] = useState<Date | null>(null);
   const releaseCount = countLaunchWeekReleases(week);
+  const dayLabels = {
+    locked: content.statusLocked,
+    pending: content.statusPending,
+    shipped: content.statusShipped,
+    today: content.statusToday,
+  };
 
   useEffect(() => {
     setNow(new Date());
@@ -223,13 +250,22 @@ export const LaunchWeek = ({ week }: { week: LaunchWeekData }) => {
         : week.days[0],
     [now, week.days]
   );
+  const dayFormatter = useMemo(
+    () =>
+      new Intl.DateTimeFormat(locale, {
+        day: "numeric",
+        month: "short",
+        timeZone: "UTC",
+      }),
+    [locale]
+  );
 
   return (
     <div className="container-wrapper">
       <div className="container max-w-2xl py-16 md:py-20 lg:py-24">
         <article>
           <PageHero
-            description={`${formatLaunchWeekRange(week, week.status === "complete")} · Five days. Five releases.`}
+            description={`${formatLaunchWeekRange(week, week.status === "complete")} · ${String(content.heroTagline)}`}
             title={week.title}
           />
 
@@ -241,8 +277,10 @@ export const LaunchWeek = ({ week }: { week: LaunchWeekData }) => {
               </p>
               <p className="mt-2 text-zinc-400">
                 {releaseCount === 0
-                  ? "Waiting for the first release..."
-                  : `${releaseCount} ${releaseCount === 1 ? "release" : "releases"} shipped`}
+                  ? content.waitingForFirstRelease
+                  : content.releasesShipped(releaseCount)({
+                      count: releaseCount,
+                    })}
               </p>
             </div>
           </MacWindow>
@@ -250,15 +288,15 @@ export const LaunchWeek = ({ week }: { week: LaunchWeekData }) => {
           {nextLaunch ? (
             <section className="mt-6 border-t pt-5">
               <h2 className="text-sm font-semibold">
-                Next launch: {nextLaunch.day}
+                {content.nextLaunch({ day: nextLaunch.day })}
               </h2>
               <p className="text-muted-foreground mt-1 text-xs">
-                Unlocks{" "}
-                {formatLaunchWeekDate(
-                  nextLaunch.date,
-                  week.status === "complete"
-                )}{" "}
-                at 00:00 UTC.
+                {content.unlocksAt({
+                  date: formatLaunchWeekDate(
+                    nextLaunch.date,
+                    week.status === "complete"
+                  ),
+                })}
               </p>
               <Countdown target={new Date(nextLaunch.date)} now={now} />
             </section>
@@ -286,14 +324,10 @@ export const LaunchWeek = ({ week }: { week: LaunchWeekData }) => {
                       isToday ? "text-background/70" : "text-muted-foreground"
                     )}
                   >
-                    {getDayLabel(day, now)}
+                    {dayLabels[getDayLabelKey(day, now)]}
                   </span>
                   <time className="text-xs" dateTime={day.date}>
-                    {new Intl.DateTimeFormat("en-GB", {
-                      day: "numeric",
-                      month: "short",
-                      timeZone: "UTC",
-                    }).format(date)}
+                    {dayFormatter.format(date)}
                   </time>
                 </li>
               );
@@ -305,7 +339,7 @@ export const LaunchWeek = ({ week }: { week: LaunchWeekData }) => {
               className="text-xl font-semibold tracking-tight"
               id="shipping-log-title"
             >
-              Shipping log
+              {content.shippingLog}
             </h2>
 
             <div className="mt-3">

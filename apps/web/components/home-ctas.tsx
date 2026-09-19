@@ -1,5 +1,6 @@
 "use client";
 
+import { useIntlayer } from "next-intlayer";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
@@ -13,6 +14,7 @@ import { ComponentIcon } from "./animated-icons/component";
 import type { ComponentIconHandle } from "./animated-icons/component";
 
 const GetStartedButton = () => {
+  const content = useIntlayer("home-ctas");
   const { iconRef, onMouseEnter, onMouseLeave } =
     useIconAnimation<ArrowRightIconHandle>();
 
@@ -25,7 +27,7 @@ const GetStartedButton = () => {
       onMouseLeave={onMouseLeave}
     >
       <Link href={ROUTES.DOCS_INSTALLATION} transitionTypes={["nav-forward"]}>
-        Get Started
+        {content.getStarted}
         <ArrowRightIcon className="hidden sm:inline" ref={iconRef} />
       </Link>
     </Button>
@@ -33,6 +35,7 @@ const GetStartedButton = () => {
 };
 
 const BrowseComponentsButton = () => {
+  const content = useIntlayer("home-ctas");
   const { iconRef, onMouseEnter, onMouseLeave } =
     useIconAnimation<ComponentIconHandle>();
 
@@ -47,7 +50,7 @@ const BrowseComponentsButton = () => {
     >
       <Link href={ROUTES.DOCS_COMPONENTS} transitionTypes={["nav-forward"]}>
         <ComponentIcon className="hidden sm:inline" ref={iconRef} size={22} />
-        Browse Components
+        {content.browseComponents}
       </Link>
     </Button>
   );
