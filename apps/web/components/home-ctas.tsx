@@ -1,8 +1,8 @@
 "use client";
 
 import { useIntlayer } from "next-intlayer";
-import Link from "next/link";
 
+import { Link } from "@/components/link";
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/constants/routes";
 import { useIconAnimation } from "@/hooks/use-icon-animation";

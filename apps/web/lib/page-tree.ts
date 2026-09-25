@@ -1,3 +1,4 @@
+import { getPathWithoutLocale } from "intlayer";
 import type {
   Node as PageTreeNode,
   Root as PageTreeRoot,
@@ -6,6 +7,7 @@ import type {
 import { ROUTES } from "@/constants/routes";
 import {
   EXCLUDED_SECTIONS,
+  getNodeId,
   isChartsFolder,
   isComponentsFolder,
   isDitherChartUrl,
@@ -52,8 +54,8 @@ export const findChildFolder = (
       continue;
     }
     if (
-      child.$id === name ||
-      String(child.$id ?? "").endsWith(`/${name}`) ||
+      getNodeId(child) === name ||
+      getNodeId(child).endsWith(`/${name}`) ||
       (typeof child.name === "string" &&
         child.name.toLowerCase() === name.toLowerCase())
     ) {
@@ -110,10 +112,7 @@ export const getFolderSections = (
 
       return [
         {
-          id:
-            String(category.$id ?? "")
-              .split("/")
-              .at(-1) ?? fallbackId,
+          id: getNodeId(category).split("/").at(-1) ?? fallbackId,
           label: String(category.name),
           pages,
         },
@@ -126,7 +125,8 @@ export const getFolderSections = (
   }
 
   const pages = getFolderPages(folder, base).filter(
-    (page) => page.url !== `${ROUTES.DOCS_CHARTS}/${base}`
+    (page) =>
+      getPathWithoutLocale(page.url) !== `${ROUTES.DOCS_CHARTS}/${base}`
   );
 
   return [
@@ -172,7 +172,7 @@ export const getTreeGroups = (
     if (item.type !== "folder") {
       continue;
     }
-    if (EXCLUDED_SECTIONS.has(item.$id ?? "")) {
+    if (EXCLUDED_SECTIONS.has(getNodeId(item))) {
       continue;
     }
 

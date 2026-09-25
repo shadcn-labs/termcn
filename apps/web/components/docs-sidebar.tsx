@@ -1,9 +1,9 @@
 "use client";
 
+import { getPathWithoutLocale } from "intlayer";
 import { useIntlayer } from "next-intlayer";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 
+import { Link } from "@/components/link";
 import {
   Sidebar,
   SidebarContent,
@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/sidebar";
 import { TOP_LEVEL_SECTIONS } from "@/constants/nav";
 import { ROUTES } from "@/constants/routes";
+import { usePathnameWithoutLocale } from "@/hooks/use-localized-href";
 import {
   getDocsSidebarPanel,
   isChartsFolder,
@@ -79,7 +80,7 @@ const SidebarMenuItemLink = ({
         <Link href={href}>
           <span className="absolute inset-0 flex w-(--sidebar-menu-width) bg-transparent" />
           {children}
-          {PAGES_NEW.includes(href) && (
+          {PAGES_NEW.includes(getPathWithoutLocale(href)) && (
             <span
               className="flex size-2 rounded-full bg-blue-500"
               title={String(content.new)}
@@ -114,7 +115,7 @@ const SidebarPageGroup = ({
             <SidebarMenuItemLink
               key={page.url}
               href={page.url}
-              isActive={page.url === pathname}
+              isActive={getPathWithoutLocale(page.url) === pathname}
             >
               {page.name}
             </SidebarMenuItemLink>
@@ -239,7 +240,7 @@ export const DocsSidebar = ({
   tree: PageTreeRoot;
 }) => {
   const content = useIntlayer("docs-sidebar");
-  const pathname = usePathname();
+  const pathname = usePathnameWithoutLocale();
   const currentBase = getCurrentBase(pathname);
   const panel = getDocsSidebarPanel(pathname);
   const treeGroups = getTreeGroups(tree, currentBase);

@@ -8,9 +8,9 @@ import {
   MinusIcon,
 } from "lucide-react";
 import { useIntlayer, useLocale } from "next-intlayer";
-import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
+import { Link } from "@/components/link";
 import { MacWindow } from "@/components/mac-window";
 import { PageHero } from "@/components/page-hero";
 import {

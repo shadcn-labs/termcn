@@ -2,10 +2,10 @@ import { getIntlayer } from "intlayer";
 import { ArrowRightIcon, CheckIcon, CircleDashedIcon } from "lucide-react";
 import type { Metadata } from "next";
 import { useIntlayer } from "next-intlayer/server";
-import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { DirectionalTransition } from "@/components/directional-transition";
+import { Link } from "@/components/link";
 import { PageHero } from "@/components/page-hero";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -16,6 +16,7 @@ import {
   getLaunchWeeks,
 } from "@/lib/launch-week";
 import type { LaunchWeekData } from "@/lib/launch-week";
+import { localizeHref } from "@/lib/url";
 import { BreadcrumbJsonLd } from "@/seo/json-ld";
 import { createPageMetadata } from "@/seo/metadata";
 
@@ -104,10 +105,13 @@ export default async function LaunchWeeksPage({
     <>
       <BreadcrumbJsonLd
         items={[
-          { name: content.breadcrumbHome.value, path: ROUTES.HOME },
+          {
+            name: content.breadcrumbHome.value,
+            path: localizeHref(ROUTES.HOME, locale),
+          },
           {
             name: content.breadcrumbLaunchWeeks.value,
-            path: ROUTES.LAUNCH_WEEK,
+            path: localizeHref(ROUTES.LAUNCH_WEEK, locale),
           },
         ]}
       />

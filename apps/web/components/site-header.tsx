@@ -21,10 +21,22 @@ export const SiteHeader = ({ locale }: { locale?: string }) => {
   const content = useIntlayer("site-header", locale);
 
   const navItems = [
-    { href: ROUTES.DOCS, label: String(content.navDocs) },
-    { href: ROUTES.DOCS_COMPONENTS, label: String(content.navComponents) },
-    { href: ROUTES.DOCS_CHARTS, label: String(content.navCharts) },
-    { href: ROUTES.DOCS_TEMPLATES, label: String(content.navTemplates) },
+    {
+      href: getLocalizedUrl(ROUTES.DOCS, locale as Locale),
+      label: String(content.navDocs),
+    },
+    {
+      href: getLocalizedUrl(ROUTES.DOCS_COMPONENTS, locale as Locale),
+      label: String(content.navComponents),
+    },
+    {
+      href: getLocalizedUrl(ROUTES.DOCS_CHARTS, locale as Locale),
+      label: String(content.navCharts),
+    },
+    {
+      href: getLocalizedUrl(ROUTES.DOCS_TEMPLATES, locale as Locale),
+      label: String(content.navTemplates),
+    },
     {
       href: getLocalizedUrl(ROUTES.SPONSOR, locale as Locale),
       label: String(content.navSponsors),

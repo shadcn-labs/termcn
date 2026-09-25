@@ -11,17 +11,25 @@ export const EXCLUDED_SECTIONS = new Set([
   "(root)",
 ]);
 
+/**
+ * With i18n enabled, fumadocs prefixes every page-tree `$id` with its locale
+ * (`en:components`, `fr:components/ink`). Structural checks compare the
+ * locale-free id.
+ */
+export const getNodeId = (node: { $id?: string }) =>
+  (node.$id ?? "").replace(/^[^:/]+:/, "");
+
 export const isComponentsFolder = (folder: PageTreeFolder) =>
-  folder.$id === "components" || folder.name === "Components";
+  getNodeId(folder) === "components" || folder.name === "Components";
 
 export const isChartsFolder = (folder: PageTreeFolder) =>
-  folder.$id === "charts" || folder.name === "Charts";
+  getNodeId(folder) === "charts" || folder.name === "Charts";
 
 export const isTemplatesFolder = (folder: PageTreeFolder) =>
-  folder.$id === "templates" || folder.name === "Templates";
+  getNodeId(folder) === "templates" || folder.name === "Templates";
 
 export const isThemesFolder = (folder: PageTreeFolder) =>
-  folder.$id === "themes" || folder.name === "Themes";
+  getNodeId(folder) === "themes" || folder.name === "Themes";
 
 export type DocsSidebarPanel = "components" | "templates" | "charts" | "themes";
 

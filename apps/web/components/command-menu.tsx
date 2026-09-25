@@ -10,7 +10,7 @@ import {
   BinaryIcon,
 } from "lucide-react";
 import { useIntlayer } from "next-intlayer";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -35,6 +35,10 @@ import { SITE } from "@/constants/site";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { useFeedback } from "@/hooks/use-feedback";
 import { useIsMac } from "@/hooks/use-is-mac";
+import {
+  useLocalizedHref,
+  usePathnameWithoutLocale,
+} from "@/hooks/use-localized-href";
 import { useMutationObserver } from "@/hooks/use-mutation-observer";
 import { usePackageManager } from "@/hooks/use-package-manager";
 import { getChartRegistryItemName, isDitherChartUrl } from "@/lib/docs";
@@ -195,7 +199,8 @@ export const CommandMenu = ({
 }) => {
   const content = useIntlayer("command-menu");
   const router = useRouter();
-  const pathname = usePathname();
+  const localizeHref = useLocalizedHref();
+  const pathname = usePathnameWithoutLocale();
   const isMac = useIsMac();
   const [packageManager] = usePackageManager();
   const [open, setOpen] = useState(false);
@@ -291,7 +296,7 @@ export const CommandMenu = ({
         keywords={buildDocPageKeywords(parsed, url, breadcrumb)}
         value={[...breadcrumb, title].filter(Boolean).join(" ")}
         onHighlight={() => handleDocPageHighlight({ name: title, url })}
-        onSelect={() => runCommand(() => router.push(url))}
+        onSelect={() => runCommand(() => router.push(localizeHref(url)))}
       >
         <DocPageLeadingIcon parsed={parsed} url={url} />
         {title}
@@ -395,7 +400,9 @@ export const CommandMenu = ({
                       setShowGoToPage(true);
                       setCopyPayload("");
                     }}
-                    onSelect={() => runCommand(() => router.push(item.href))}
+                    onSelect={() =>
+                      runCommand(() => router.push(localizeHref(item.href)))
+                    }
                   >
                     <ArrowRightIcon />
                     {item.label}
@@ -439,7 +446,9 @@ export const CommandMenu = ({
                     onSelect={() =>
                       runCommand(() =>
                         router.push(
-                          `/blocks/${block.categories[0]}#${block.name}`
+                          localizeHref(
+                            `/blocks/${block.categories[0]}#${block.name}`
+                          )
                         )
                       )
                     }

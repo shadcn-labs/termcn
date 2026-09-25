@@ -21,6 +21,7 @@ import { Badge } from "@/components/ui/badge";
 import { ROUTES } from "@/constants/routes";
 import { DOCS_DIR, formatTitleFromSlug } from "@/lib/docs";
 import { source } from "@/lib/source";
+import { localizeHref } from "@/lib/url";
 import { absoluteUrl } from "@/lib/utils";
 import { mdxComponents } from "@/mdx-components";
 import { BreadcrumbJsonLd } from "@/seo/json-ld";
@@ -117,7 +118,7 @@ const Page = async (props: {
     page.url,
     content.breadcrumbHome.value,
     content.breadcrumbDocs.value
-  );
+  ).map((item) => ({ ...item, path: localizeHref(item.path, params.locale) }));
   const baseSwitcher = getDocsBaseSwitcherProps(params.slug);
   // `page.path` drops the locale directory; the GitHub edit link needs the
   // real file, which may be the default-locale fallback.

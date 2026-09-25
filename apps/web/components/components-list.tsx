@@ -13,6 +13,7 @@ import {
   getFolderSections,
 } from "@/lib/page-tree";
 import { source } from "@/lib/source";
+import { localizeHref } from "@/lib/url";
 import { cn } from "@/lib/utils";
 import { DEFAULT_BASE_NAME } from "@/registry/bases";
 
@@ -29,9 +30,11 @@ const getFolder = (
 
 const ComponentGrid = ({
   className,
+  locale,
   pages,
 }: {
   className?: string;
+  locale: string;
   pages: PageTreePage[];
 }) => (
   <div
@@ -43,7 +46,7 @@ const ComponentGrid = ({
     {pages.map((component) => (
       <Link
         key={component.$id}
-        href={component.url}
+        href={localizeHref(component.url, locale)}
         className="inline-flex items-center gap-2 text-lg font-medium underline-offset-4 hover:underline md:text-base"
         transitionTypes={["nav-forward"]}
       >
@@ -86,7 +89,7 @@ export const ComponentsList = ({
     }
 
     return pages && pages.length > 0 ? (
-      <ComponentGrid className={className} pages={pages} />
+      <ComponentGrid className={className} locale={locale} pages={pages} />
     ) : null;
   }
 
@@ -98,6 +101,6 @@ export const ComponentsList = ({
   const fallback = pages.length > 0 ? pages : getFolderPages(folder);
 
   return fallback.length > 0 ? (
-    <ComponentGrid className={className} pages={fallback} />
+    <ComponentGrid className={className} locale={locale} pages={fallback} />
   ) : null;
 };

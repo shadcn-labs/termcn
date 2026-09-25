@@ -6,6 +6,7 @@ import { DirectionalTransition } from "@/components/directional-transition";
 import { HomeCtas } from "@/components/home-ctas";
 import { PageHero } from "@/components/page-hero";
 import { ROUTES } from "@/constants/routes";
+import { localizeHref } from "@/lib/url";
 import { cn } from "@/lib/utils";
 import { BreadcrumbJsonLd } from "@/seo/json-ld";
 
@@ -52,7 +53,12 @@ export default async function IndexPage({
   return (
     <>
       <BreadcrumbJsonLd
-        items={[{ name: content.breadcrumbHome.value, path: ROUTES.HOME }]}
+        items={[
+          {
+            name: content.breadcrumbHome.value,
+            path: localizeHref(ROUTES.HOME, locale),
+          },
+        ]}
       />
       <DirectionalTransition>
         <section className="container-wrapper relative">

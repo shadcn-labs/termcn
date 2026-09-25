@@ -10,6 +10,7 @@ import {
   getLaunchWeekHref,
   getLaunchWeeks,
 } from "@/lib/launch-week";
+import { localizeHref } from "@/lib/url";
 import { BreadcrumbJsonLd } from "@/seo/json-ld";
 import { createPageMetadata } from "@/seo/metadata";
 
@@ -58,12 +59,18 @@ export default async function LaunchWeekPage({
     <>
       <BreadcrumbJsonLd
         items={[
-          { name: content.breadcrumbHome.value, path: ROUTES.HOME },
+          {
+            name: content.breadcrumbHome.value,
+            path: localizeHref(ROUTES.HOME, locale),
+          },
           {
             name: content.breadcrumbLaunchWeeks.value,
-            path: ROUTES.LAUNCH_WEEK,
+            path: localizeHref(ROUTES.LAUNCH_WEEK, locale),
           },
-          { name: week.title, path: getLaunchWeekHref(week) },
+          {
+            name: week.title,
+            path: localizeHref(getLaunchWeekHref(week), locale),
+          },
         ]}
       />
       <DirectionalTransition>

@@ -3,10 +3,10 @@
 import type { Root as PageTreeRoot } from "fumadocs-core/page-tree";
 import { useIntlayer } from "next-intlayer";
 import type { LinkProps } from "next/link";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useCallback, useMemo, useState } from "react";
 
+import { Link } from "@/components/link";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -16,6 +16,10 @@ import {
 import { TOP_LEVEL_SECTIONS } from "@/constants/nav";
 import { ROUTES } from "@/constants/routes";
 import { useFeedback } from "@/hooks/use-feedback";
+import {
+  useLocalizedHref,
+  usePathnameWithoutLocale,
+} from "@/hooks/use-localized-href";
 import {
   getDocsSidebarPanel,
   isChartsFolder,
@@ -70,13 +74,14 @@ const MobileLink = ({
   className?: string;
 }) => {
   const router = useRouter();
+  const localizeHref = useLocalizedHref();
   const playClick = useFeedback({ sound: "click" });
 
   const handleClick = useCallback(() => {
     playClick();
-    router.push(href.toString());
+    router.push(localizeHref(href.toString()));
     onOpenChange?.(false);
-  }, [router, href, onOpenChange, playClick]);
+  }, [router, localizeHref, href, onOpenChange, playClick]);
 
   return (
     <Link
@@ -233,7 +238,7 @@ export const MobileNav = ({
   className?: string;
 }) => {
   const [open, setOpen] = useState(false);
-  const pathname = usePathname();
+  const pathname = usePathnameWithoutLocale();
   const content = useIntlayer("mobile-nav");
   const currentBase = getCurrentBase(pathname);
   const panel = getDocsSidebarPanel(pathname);
