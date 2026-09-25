@@ -1,18 +1,27 @@
+import { useLocale } from "next-intlayer/server";
 import Link from "next/link";
 
 import { isComponentsFolder } from "@/lib/docs";
-import type { PageTreeFolder, PageTreePage } from "@/lib/page-tree";
+import type {
+  PageTreeFolder,
+  PageTreePage,
+  PageTreeRoot,
+} from "@/lib/page-tree";
 import {
   findChildFolder,
   getFolderPages,
   getFolderSections,
 } from "@/lib/page-tree";
 import { source } from "@/lib/source";
+import { localizeHref } from "@/lib/url";
 import { cn } from "@/lib/utils";
 import { DEFAULT_BASE_NAME } from "@/registry/bases";
 
-const getFolder = (name: string): PageTreeFolder | undefined => {
-  for (const node of source.pageTree.children) {
+const getFolder = (
+  tree: PageTreeRoot,
+  name: string
+): PageTreeFolder | undefined => {
+  for (const node of tree.children) {
     if (node.type === "folder" && node.name === name) {
       return node;
     }
@@ -21,9 +30,11 @@ const getFolder = (name: string): PageTreeFolder | undefined => {
 
 const ComponentGrid = ({
   className,
+  locale,
   pages,
 }: {
   className?: string;
+  locale: string;
   pages: PageTreePage[];
 }) => (
   <div
@@ -35,7 +46,7 @@ const ComponentGrid = ({
     {pages.map((component) => (
       <Link
         key={component.$id}
-        href={component.url}
+        href={localizeHref(component.url, locale)}
         className="inline-flex items-center gap-2 text-lg font-medium underline-offset-4 hover:underline md:text-base"
         transitionTypes={["nav-forward"]}
       >
@@ -56,7 +67,8 @@ export const ComponentsList = ({
   base?: string;
   className?: string;
 }) => {
-  const folder = getFolder(folderName);
+  const { locale } = useLocale();
+  const folder = getFolder(source.getPageTree(locale), folderName);
   if (!folder) {
     return null;
   }
@@ -77,7 +89,7 @@ export const ComponentsList = ({
     }
 
     return pages && pages.length > 0 ? (
-      <ComponentGrid className={className} pages={pages} />
+      <ComponentGrid className={className} locale={locale} pages={pages} />
     ) : null;
   }
 
@@ -89,6 +101,6 @@ export const ComponentsList = ({
   const fallback = pages.length > 0 ? pages : getFolderPages(folder);
 
   return fallback.length > 0 ? (
-    <ComponentGrid className={className} pages={fallback} />
+    <ComponentGrid className={className} locale={locale} pages={fallback} />
   ) : null;
 };

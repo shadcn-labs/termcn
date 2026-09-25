@@ -39,7 +39,8 @@
     ".next/types/**/*.ts",
     "scripts/build-registry.mts",
     "next.config.mjs",
-    ".next/dev/types/**/*.ts"
+    ".next/dev/types/**/*.ts",
+    "./.intlayer/**/*.ts"
   ],
   "exclude": ["node_modules", "examples/opentui"]
 }

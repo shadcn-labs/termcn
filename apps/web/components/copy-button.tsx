@@ -3,6 +3,7 @@
 import { CheckIcon, CopyIcon } from "lucide-react";
 import type { HTMLMotionProps, Variants } from "motion/react";
 import { AnimatePresence, motion } from "motion/react";
+import { useIntlayer } from "next-intlayer";
 import { useCallback } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -49,6 +50,7 @@ export const CopyButton = ({
   showTooltip = true,
   ...props
 }: CopyButtonProps) => {
+  const content = useIntlayer("copy-button");
   const getValue = useCallback(
     () => (typeof value === "function" ? value() : value),
     [value]
@@ -87,7 +89,7 @@ export const CopyButton = ({
       onClick={handleCopy}
       {...props}
     >
-      <span className="sr-only">Copy</span>
+      <span className="sr-only">{content.copy}</span>
       <AnimatePresence mode="popLayout" initial={false}>
         {isCopied ? (
           <motion.span key="done" {...motionIconProps}>
@@ -111,7 +113,7 @@ export const CopyButton = ({
     <Tooltip>
       <TooltipTrigger asChild>{copyButton}</TooltipTrigger>
       <TooltipContent>
-        {isCopied ? "Copied" : "Copy to Clipboard"}
+        {isCopied ? content.copied : content.copyToClipboard}
       </TooltipContent>
     </Tooltip>
   );

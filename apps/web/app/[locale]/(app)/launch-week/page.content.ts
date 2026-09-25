@@ -1,0 +1,91 @@
+import { t } from "intlayer";
+import type { Dictionary } from "intlayer";
+
+const launchWeeksPageContent = {
+  content: {
+    breadcrumbHome: t({
+      en: "Home",
+      es: "Inicio",
+      fr: "Accueil",
+      ja: "ホーム",
+      ko: "홈",
+      pt: "Início",
+      "zh-CN": "首页",
+    }),
+    breadcrumbLaunchWeeks: t({
+      en: "Launch Weeks",
+      es: "Semanas de lanzamiento",
+      fr: "Semaines de lancement",
+      ja: "ローンチウィーク",
+      ko: "런치 위크",
+      pt: "Semanas de lançamento",
+      "zh-CN": "发布周",
+    }),
+    heroDescription: t({
+      en: "Every launch week and everything that shipped, kept in one place.",
+      es: "Todas las semanas de lanzamiento y todo lo publicado, reunido en un solo lugar.",
+      fr: "Toutes les semaines de lancement et tout ce qui a été livré, réunis au même endroit.",
+      ja: "これまでのローンチウィークと、そこで公開したすべてを一か所にまとめています。",
+      ko: "모든 런치 위크와 그동안 출시한 모든 것을 한곳에 모았습니다.",
+      pt: "Todas as semanas de lançamento e tudo o que foi publicado, reunidos em um só lugar.",
+      "zh-CN": "所有发布周及其发布的内容，统一汇集于此。",
+    }),
+    heroTitle: t({
+      en: "Launch weeks",
+      es: "Semanas de lanzamiento",
+      fr: "Semaines de lancement",
+      ja: "ローンチウィーク",
+      ko: "런치 위크",
+      pt: "Semanas de lançamento",
+      "zh-CN": "发布周",
+    }),
+    latestLabel: t({
+      en: "Latest",
+      es: "Más reciente",
+      fr: "Dernière",
+      ja: "最新",
+      ko: "최신",
+      pt: "Mais recente",
+      "zh-CN": "最新",
+    }),
+    metadataDescription: t({
+      en: "A permanent archive of termcn launch weeks and everything shipped during them.",
+      es: "Un archivo permanente de las semanas de lanzamiento de termcn y de todo lo publicado durante ellas.",
+      fr: "Une archive permanente des semaines de lancement de termcn et de tout ce qui y a été livré.",
+      ja: "termcn のローンチウィークと、その期間に公開されたすべてを記録した永久アーカイブ。",
+      ko: "termcn 런치 위크와 그 기간에 출시된 모든 것을 담은 영구 아카이브입니다.",
+      pt: "Um arquivo permanente das semanas de lançamento do termcn e de tudo o que foi publicado nelas.",
+      "zh-CN": "termcn 发布周及其间所有发布内容的永久归档。",
+    }),
+    metadataTitle: t({
+      en: "Launch Weeks",
+      es: "Semanas de lanzamiento",
+      fr: "Semaines de lancement",
+      ja: "ローンチウィーク",
+      ko: "런치 위크",
+      pt: "Semanas de lançamento",
+      "zh-CN": "发布周",
+    }),
+    statusActive: t({
+      en: "In progress",
+      es: "En curso",
+      fr: "En cours",
+      ja: "進行中",
+      ko: "진행 중",
+      pt: "Em andamento",
+      "zh-CN": "进行中",
+    }),
+    statusComplete: t({
+      en: "Complete",
+      es: "Completada",
+      fr: "Terminée",
+      ja: "完了",
+      ko: "완료",
+      pt: "Concluída",
+      "zh-CN": "已完成",
+    }),
+  },
+  key: "launch-weeks-page",
+} satisfies Dictionary;
+
+export default launchWeeksPageContent;

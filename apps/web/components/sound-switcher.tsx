@@ -1,6 +1,7 @@
 "use client";
 
 import { Volume2, VolumeX } from "lucide-react";
+import { useIntlayer } from "next-intlayer";
 
 import { useFeedback } from "@/hooks/use-feedback";
 import { useMounted } from "@/hooks/use-mounted";
@@ -13,10 +14,16 @@ const SOUND_OPTIONS = [
 ] as const;
 
 const SoundSwitcher = () => {
+  const content = useIntlayer("sound-switcher");
   const [value, setValue] = useSoundEnabled();
   const isMounted = useMounted();
   const feedbackOn = useFeedback({ sound: "toggleOn" });
   const feedbackOff = useFeedback({ sound: "toggleOff" });
+
+  const optionLabels = {
+    off: content.off,
+    on: content.on,
+  };
 
   if (!isMounted) {
     return <div className="flex h-8 w-20" />;
@@ -26,7 +33,7 @@ const SoundSwitcher = () => {
     <div
       className="inline-flex items-center rounded-full bg-background inset-ring-1 inset-ring-border"
       role="radiogroup"
-      aria-label="Sound"
+      aria-label={String(content.sound)}
     >
       {SOUND_OPTIONS.map((option) => {
         const Icon = option.icon;
@@ -42,7 +49,11 @@ const SoundSwitcher = () => {
             )}
             role="radio"
             aria-checked={isActive}
-            aria-label={`Switch sound ${option.label}`}
+            aria-label={String(
+              content.switchSound({
+                label: String(optionLabels[option.label]),
+              })
+            )}
             onClick={() => {
               if (option.value === value) {
                 return;

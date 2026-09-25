@@ -1,6 +1,7 @@
 "use client";
 
 import { PlusIcon } from "lucide-react";
+import { useIntlayer } from "next-intlayer";
 import { useMemo, useState } from "react";
 
 import { CodeBlockCommand } from "@/components/code-block-command";
@@ -31,25 +32,27 @@ import { trackEvent } from "@/lib/events";
 import { addQueryParams } from "@/lib/url";
 import { cn } from "@/lib/utils";
 
-const title = "Add Registry";
+const Description = ({ registryName }: { registryName: string }) => {
+  const content = useIntlayer("registry-add-button");
 
-const Description = ({ registryName }: { registryName: string }) => (
-  <>
-    Run this command to add{" "}
-    <a
-      className="text-foreground underline underline-offset-4"
-      href={addQueryParams("https://ui.shadcn.com/docs/directory", {
-        q: registryName,
-        ...UTM_PARAMS,
-      })}
-      target="_blank"
-      rel="noopener"
-    >
-      {registryName}
-    </a>{" "}
-    to your project.
-  </>
-);
+  return (
+    <>
+      {content.runCommandDescription}{" "}
+      <a
+        className="text-foreground underline underline-offset-4"
+        href={addQueryParams("https://ui.shadcn.com/docs/directory", {
+          q: registryName,
+          ...UTM_PARAMS,
+        })}
+        target="_blank"
+        rel="noopener"
+      >
+        {registryName}
+      </a>{" "}
+      {content.addToProject}
+    </>
+  );
+};
 
 export const RegistryAddButton = ({
   children,
@@ -64,6 +67,7 @@ export const RegistryAddButton = ({
 } & Omit<React.ComponentProps<typeof Button>, "children"> & {
     children?: React.ReactNode;
   }) => {
+  const content = useIntlayer("registry-add-button");
   const [isOpen, setIsOpen] = useState(false);
   const isMobile = useIsMobile();
 
@@ -100,7 +104,7 @@ export const RegistryAddButton = ({
       {children ?? (
         <>
           <PlusIcon />
-          <span className="hidden sm:inline">Add</span>
+          <span className="hidden sm:inline">{content.add}</span>
         </>
       )}
     </Button>
@@ -113,7 +117,7 @@ export const RegistryAddButton = ({
           <DrawerTrigger asChild>{trigger}</DrawerTrigger>
           <DrawerContent>
             <DrawerHeader>
-              <DrawerTitle>{title}</DrawerTitle>
+              <DrawerTitle>{content.addRegistry}</DrawerTitle>
               <DrawerDescription>
                 <Description registryName={registryName} />
               </DrawerDescription>
@@ -129,7 +133,7 @@ export const RegistryAddButton = ({
             </div>
             <DrawerFooter>
               <DrawerClose asChild>
-                <Button size="sm">Done</Button>
+                <Button size="sm">{content.done}</Button>
               </DrawerClose>
             </DrawerFooter>
           </DrawerContent>
@@ -139,7 +143,7 @@ export const RegistryAddButton = ({
           <DialogTrigger asChild>{trigger}</DialogTrigger>
           <DialogContent className="sm:max-w-lg">
             <DialogHeader>
-              <DialogTitle>{title}</DialogTitle>
+              <DialogTitle>{content.addRegistry}</DialogTitle>
               <DialogDescription className="text-balance">
                 <Description registryName={registryName} />
               </DialogDescription>
@@ -153,7 +157,7 @@ export const RegistryAddButton = ({
             />
             <DialogFooter>
               <DialogClose asChild>
-                <Button size="sm">Done</Button>
+                <Button size="sm">{content.done}</Button>
               </DialogClose>
             </DialogFooter>
           </DialogContent>
