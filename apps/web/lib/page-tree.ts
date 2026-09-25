@@ -1,8 +1,8 @@
-import { getPathWithoutLocale } from "intlayer";
 import type {
   Node as PageTreeNode,
   Root as PageTreeRoot,
 } from "fumadocs-core/page-tree";
+import { getPathWithoutLocale } from "intlayer";
 
 import { ROUTES } from "@/constants/routes";
 import {
@@ -125,8 +125,7 @@ export const getFolderSections = (
   }
 
   const pages = getFolderPages(folder, base).filter(
-    (page) =>
-      getPathWithoutLocale(page.url) !== `${ROUTES.DOCS_CHARTS}/${base}`
+    (page) => getPathWithoutLocale(page.url) !== `${ROUTES.DOCS_CHARTS}/${base}`
   );
 
   return [

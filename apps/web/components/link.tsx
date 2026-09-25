@@ -12,7 +12,10 @@ import { localizeHref } from "@/lib/url";
  * locale; external URLs, `UrlObject` hrefs and locale-free routes
  * (`/llms.txt`, `/r/...`) pass through unchanged.
  */
-export const Link = ({ href, ...props }: React.ComponentProps<typeof NextLink>) => {
+export const Link = ({
+  href,
+  ...props
+}: React.ComponentProps<typeof NextLink>) => {
   const { locale } = useLocale();
 
   return (
