@@ -5,6 +5,7 @@ import { startTransition, addTransitionType } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 
 import { useFeedback } from "@/hooks/use-feedback";
+import { useLocalizedHref } from "@/hooks/use-localized-href";
 import { trackEvent } from "@/lib/events";
 
 export const DocsKeyboardShortcuts = ({
@@ -15,6 +16,7 @@ export const DocsKeyboardShortcuts = ({
   next: string | null;
 }) => {
   const router = useRouter();
+  const localizeHref = useLocalizedHref();
   const playClick = useFeedback({ sound: "click" });
 
   const navigate = (
@@ -30,7 +32,7 @@ export const DocsKeyboardShortcuts = ({
       });
       startTransition(() => {
         addTransitionType(direction === "next" ? "nav-forward" : "nav-back");
-        router.push(href);
+        router.push(localizeHref(href));
       });
     }
   };

@@ -1,6 +1,7 @@
 "use client";
 
 import { ChevronDownIcon } from "lucide-react";
+import { useIntlayer } from "next-intlayer";
 import { useState } from "react";
 
 import type { ArrowUpRightIconHandle } from "@/components/animated-icons/arrow-up-right";
@@ -109,6 +110,7 @@ const LatestCard = ({
     props: LinkAnimationProps & { content: React.ReactNode }
   ) => React.ReactNode;
 }) => {
+  const text = useIntlayer("labs-nav");
   const { iconRef, onMouseEnter, onMouseLeave } =
     useIconAnimation<ArrowUpRightIconHandle>();
 
@@ -129,7 +131,7 @@ const LatestCard = ({
             textClassName
           )}
         >
-          {item.description}
+          {text.latestDescription}
           <ArrowUpRightIcon
             ref={iconRef}
             size={16}
@@ -151,7 +153,7 @@ const DesktopSection = ({
   className,
   listClassName,
 }: {
-  title: string;
+  title: React.ReactNode;
   items: readonly LabsNavLinkItem[];
   className?: string;
   listClassName?: string;
@@ -188,6 +190,7 @@ const DesktopSection = ({
 );
 
 const LabsNavMobile = () => {
+  const text = useIntlayer("labs-nav");
   const [open, setOpen] = useState(false);
   const close = () => setOpen(false);
 
@@ -218,7 +221,7 @@ const LabsNavMobile = () => {
       >
         <div className="flex flex-col gap-12 overflow-auto px-6 py-6">
           <div className="flex flex-col gap-4">
-            <SectionTitle>Latest</SectionTitle>
+            <SectionTitle>{text.latest}</SectionTitle>
             <LatestCard
               item={LABS_LATEST}
               nameClassName="min-h-16 text-2xl"
@@ -241,7 +244,7 @@ const LabsNavMobile = () => {
           </div>
           {LABS_NAV_SECTIONS.map((section) => (
             <div key={section.id} className="flex flex-col gap-4">
-              <SectionTitle>{section.title}</SectionTitle>
+              <SectionTitle>{text[section.id]}</SectionTitle>
               <div className="flex flex-col gap-3">
                 {section.items.map((item) => (
                   <LabsNavLink key={item.href} item={item} iconSize={24}>
@@ -270,6 +273,7 @@ const LabsNavMobile = () => {
 };
 
 const LabsNavDesktop = () => {
+  const text = useIntlayer("labs-nav");
   const [value, setValue] = useState("");
 
   return (
@@ -277,7 +281,7 @@ const LabsNavDesktop = () => {
       {value ? (
         <button
           type="button"
-          aria-label="Close menu"
+          aria-label={String(text.closeMenu)}
           className="fixed inset-x-0 top-(--header-height) bottom-0 z-20 cursor-default bg-background/60"
           onClick={() => setValue("")}
         />
@@ -313,7 +317,7 @@ const LabsNavDesktop = () => {
               <div className="container-wrapper px-6">
                 <div className="flex gap-8 py-4 pl-3">
                   <div className="flex w-64 flex-col gap-3">
-                    <SectionTitle>Latest</SectionTitle>
+                    <SectionTitle>{text.latest}</SectionTitle>
                     <LatestCard item={LABS_LATEST} nameClassName="min-h-8">
                       {({ content, onMouseEnter, onMouseLeave }) => (
                         <NavigationMenuLink
@@ -332,7 +336,7 @@ const LabsNavDesktop = () => {
                   {LABS_NAV_SECTIONS.map((section) => (
                     <DesktopSection
                       key={section.id}
-                      title={section.title}
+                      title={text[section.id]}
                       items={section.items}
                       className={SECTION_WIDTH[section.id]}
                       listClassName={SECTION_LIST[section.id]}

@@ -9,7 +9,8 @@ import {
   Grid3x3Icon,
   BinaryIcon,
 } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
+import { useIntlayer } from "next-intlayer";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -34,6 +35,10 @@ import { SITE } from "@/constants/site";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { useFeedback } from "@/hooks/use-feedback";
 import { useIsMac } from "@/hooks/use-is-mac";
+import {
+  useLocalizedHref,
+  usePathnameWithoutLocale,
+} from "@/hooks/use-localized-href";
 import { useMutationObserver } from "@/hooks/use-mutation-observer";
 import { usePackageManager } from "@/hooks/use-package-manager";
 import { getChartRegistryItemName, isDitherChartUrl } from "@/lib/docs";
@@ -192,8 +197,10 @@ export const CommandMenu = ({
   navItems: { href: string; label: string }[];
   tree: PageTreeRoot;
 }) => {
+  const content = useIntlayer("command-menu");
   const router = useRouter();
-  const pathname = usePathname();
+  const localizeHref = useLocalizedHref();
+  const pathname = usePathnameWithoutLocale();
   const isMac = useIsMac();
   const [packageManager] = usePackageManager();
   const [open, setOpen] = useState(false);
@@ -289,7 +296,7 @@ export const CommandMenu = ({
         keywords={buildDocPageKeywords(parsed, url, breadcrumb)}
         value={[...breadcrumb, title].filter(Boolean).join(" ")}
         onHighlight={() => handleDocPageHighlight({ name: title, url })}
-        onSelect={() => runCommand(() => router.push(url))}
+        onSelect={() => runCommand(() => router.push(localizeHref(url)))}
       >
         <DocPageLeadingIcon parsed={parsed} url={url} />
         {title}
@@ -352,8 +359,10 @@ export const CommandMenu = ({
           onClick={handleOpenClick}
           {...props}
         >
-          <span className="hidden lg:inline-flex">Search documentation...</span>
-          <span className="inline-flex lg:hidden">Search...</span>
+          <span className="hidden lg:inline-flex">
+            {content.searchDocumentation}
+          </span>
+          <span className="inline-flex lg:hidden">{content.search}</span>
           <div className="absolute top-1.5 right-1.5 hidden gap-1 sm:flex">
             <Kbd>{isMac ? "⌘" : "Ctrl"}</Kbd>
             <Kbd className="aspect-square">K</Kbd>
@@ -365,20 +374,23 @@ export const CommandMenu = ({
         className="rounded-xl border-none bg-clip-padding p-2 pb-11 shadow-2xl ring-4 ring-neutral-200/80 dark:bg-neutral-900 dark:ring-neutral-800"
       >
         <DialogHeader className="sr-only">
-          <DialogTitle>Search documentation...</DialogTitle>
-          <DialogDescription>Search for a command to run...</DialogDescription>
+          <DialogTitle>{content.searchDocumentation}</DialogTitle>
+          <DialogDescription>{content.searchForCommand}</DialogDescription>
         </DialogHeader>
         <Command
           className="**:data-[slot=command-input-wrapper]:bg-input/50 **:data-[slot=command-input-wrapper]:border-input rounded-none bg-transparent **:data-[slot=command-input]:h-9! **:data-[slot=command-input]:py-0 **:data-[slot=command-input-wrapper]:mb-0 **:data-[slot=command-input-wrapper]:h-9! **:data-[slot=command-input-wrapper]:rounded-md **:data-[slot=command-input-wrapper]:border"
           filter={handleFilter}
         >
-          <CommandInput placeholder="Search documentation..." />
+          <CommandInput placeholder={String(content.searchDocumentation)} />
           <CommandList className="no-scrollbar min-h-80 scroll-pt-2 scroll-pb-1.5">
             <CommandEmpty className="text-muted-foreground py-12 text-center text-sm">
-              No results found.
+              {content.noResultsFound}
             </CommandEmpty>
             {navItems && navItems.length > 0 && (
-              <CommandGroup heading="Pages" className={GROUP_HEADING_CLS}>
+              <CommandGroup
+                heading={String(content.pages)}
+                className={GROUP_HEADING_CLS}
+              >
                 {navItems.map((item) => (
                   <CommandMenuItem
                     key={item.href}
@@ -388,7 +400,9 @@ export const CommandMenu = ({
                       setShowGoToPage(true);
                       setCopyPayload("");
                     }}
-                    onSelect={() => runCommand(() => router.push(item.href))}
+                    onSelect={() =>
+                      runCommand(() => router.push(localizeHref(item.href)))
+                    }
                   >
                     <ArrowRightIcon />
                     {item.label}
@@ -415,7 +429,7 @@ export const CommandMenu = ({
             ))}
             {blocks?.length ? (
               <CommandGroup
-                heading="Blocks"
+                heading={String(content.blocks)}
                 className="p-0! **:[[cmdk-group-heading]]:p-3!"
               >
                 {blocks.map((block) => (
@@ -432,7 +446,9 @@ export const CommandMenu = ({
                     onSelect={() =>
                       runCommand(() =>
                         router.push(
-                          `/blocks/${block.categories[0]}#${block.name}`
+                          localizeHref(
+                            `/blocks/${block.categories[0]}#${block.name}`
+                          )
                         )
                       )
                     }
@@ -454,7 +470,7 @@ export const CommandMenu = ({
               <CornerDownLeftIcon />
             </Kbd>{" "}
             {showGoToPage ? (
-              <span className="min-w-0 truncate">Go to Page</span>
+              <span className="min-w-0 truncate">{content.goToPage}</span>
             ) : null}
           </div>
           {copyPayload && (

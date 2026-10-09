@@ -1,6 +1,7 @@
 "use client";
 
 import { DownloadIcon, SquareDashedIcon, TypeIcon } from "lucide-react";
+import { useIntlayer } from "next-intlayer";
 import { useTheme } from "next-themes";
 import { useCallback } from "react";
 import { toast } from "sonner";
@@ -20,6 +21,7 @@ export const BrandContextMenu = ({
 }: {
   children: React.ReactNode;
 }) => {
+  const content = useIntlayer("brand-context-menu");
   const { resolvedTheme } = useTheme();
   const { copyToClipboard } = useCopyToClipboard();
 
@@ -29,13 +31,13 @@ export const BrandContextMenu = ({
 
   const handleCopyLogomark = useCallback(() => {
     copyToClipboard(logoMarkSvgString);
-    toast.success("Logomark as SVG copied");
-  }, [logoMarkSvgString, copyToClipboard]);
+    toast.success(String(content.logomarkCopiedToast));
+  }, [logoMarkSvgString, copyToClipboard, content.logomarkCopiedToast]);
 
   const handleCopyLogotype = useCallback(() => {
     copyToClipboard(logoTypeSvgString);
-    toast.success("Logotype as SVG copied");
-  }, [logoTypeSvgString, copyToClipboard]);
+    toast.success(String(content.logotypeCopiedToast));
+  }, [logoTypeSvgString, copyToClipboard, content.logotypeCopiedToast]);
 
   return (
     <ContextMenu>
@@ -44,12 +46,12 @@ export const BrandContextMenu = ({
       <ContextMenuContent>
         <ContextMenuItem onClick={handleCopyLogomark}>
           <LogoMark />
-          Copy Logomark as SVG
+          {content.copyLogomarkAsSvg}
         </ContextMenuItem>
 
         <ContextMenuItem onClick={handleCopyLogotype}>
           <TypeIcon />
-          Copy Logotype as SVG
+          {content.copyLogotypeAsSvg}
         </ContextMenuItem>
 
         <ContextMenuSeparator />
@@ -61,7 +63,7 @@ export const BrandContextMenu = ({
             rel="noopener noreferrer"
           >
             <SquareDashedIcon />
-            Brand Guidelines
+            {content.brandGuidelines}
           </a>
         </ContextMenuItem>
 
@@ -72,7 +74,7 @@ export const BrandContextMenu = ({
             rel="noopener noreferrer"
           >
             <DownloadIcon />
-            Download Brand Assets
+            {content.downloadBrandAssets}
           </a>
         </ContextMenuItem>
       </ContextMenuContent>

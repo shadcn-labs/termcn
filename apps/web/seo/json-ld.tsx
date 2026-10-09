@@ -1,3 +1,5 @@
+import { getIntlayer } from "intlayer";
+
 import { LINK } from "@/constants/links";
 import { ROUTES } from "@/constants/routes";
 import { SITE } from "@/constants/site";
@@ -10,12 +12,13 @@ const JsonLdScript = ({ data }: { data: Record<string, unknown> }) => (
   />
 );
 
-export const WebsiteJsonLd = () => {
+export const WebsiteJsonLd = ({ locale }: { locale?: string }) => {
+  const content = getIntlayer("json-ld", locale);
   const data = {
     "@context": "https://schema.org",
     "@type": "WebSite",
     description: SITE.DESCRIPTION.LONG,
-    inLanguage: "en-US",
+    inLanguage: content.inLanguage,
     name: SITE.NAME,
     url: SITE.URL,
   };
@@ -74,21 +77,20 @@ export const OrganizationJsonLd = () => {
   return <JsonLdScript data={data} />;
 };
 
-export const FAQJsonLd = () => {
+export const FAQJsonLd = ({ locale }: { locale?: string }) => {
+  const content = getIntlayer("json-ld", locale);
   const faqs = [
     {
-      answer: SITE.DESCRIPTION.LONG,
-      question: `What is ${SITE.NAME}?`,
+      answer: content.faqWhatIsAnswer,
+      question: content.faqWhatIsQuestion,
     },
     {
-      answer:
-        "Add or edit components under registry/bases/ink/ or registry/bases/opentui/, register them in registry.json, run pnpm registry:build (which refreshes public/r/), then deploy. Consumers install with npx shadcn@latest add against your published registry URL.",
-      question: `How do I publish components with ${SITE.NAME}?`,
+      answer: content.faqPublishAnswer,
+      question: content.faqPublishQuestion,
     },
     {
-      answer:
-        "Yes. The source is on GitHub and released under the MIT License.",
-      question: `Is ${SITE.NAME} open source?`,
+      answer: content.faqOpenSourceAnswer,
+      question: content.faqOpenSourceQuestion,
     },
   ];
 
@@ -130,11 +132,11 @@ export const BreadcrumbJsonLd = ({
   return <JsonLdScript data={data} />;
 };
 
-export const JsonLdScripts = () => (
+export const JsonLdScripts = ({ locale }: { locale?: string }) => (
   <>
-    <WebsiteJsonLd />
+    <WebsiteJsonLd locale={locale} />
     <SoftwareSourceCodeJsonLd />
     <OrganizationJsonLd />
-    <FAQJsonLd />
+    <FAQJsonLd locale={locale} />
   </>
 );

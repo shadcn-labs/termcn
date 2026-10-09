@@ -1,6 +1,7 @@
 "use client";
 
 import { ChevronDownIcon } from "lucide-react";
+import { useIntlayer } from "next-intlayer";
 
 import {
   ChatGptIcon,
@@ -30,131 +31,147 @@ import { Separator } from "@/components/ui/separator";
 
 import { CopyButton } from "./copy-button";
 
-const getPromptUrl = (baseURL: string, url: string, param = "q") =>
-  `${baseURL}?${param}=${encodeURIComponent(
-    `I'm looking at this termcn documentation: ${url}.
-Help me understand how to use it. Be ready to explain concepts, give examples, or help debug based on it.
-`
-  )}`;
+interface MenuItemArgs {
+  label: React.ReactNode;
+  prompt: string;
+  url: string;
+}
 
-const MENU_ITEMS: [string, (url: string) => React.ReactNode][] = [
+const getPromptUrl = (baseURL: string, prompt: string, param = "q") =>
+  `${baseURL}?${param}=${encodeURIComponent(prompt)}`;
+
+const MENU_ITEMS: [string, (args: MenuItemArgs) => React.ReactNode][] = [
   [
     "markdown",
-    (url) => (
+    ({ label, url }) => (
       <a href={`${url}.mdx`} rel="noopener noreferrer" target="_blank">
         <MarkdownDocIcon />
-        View as Markdown
+        {label}
       </a>
     ),
   ],
   [
     "v0",
-    (url) => (
+    ({ label, prompt }) => (
       <a
-        href={getPromptUrl("https://v0.dev", url)}
+        href={getPromptUrl("https://v0.dev", prompt)}
         rel="noopener noreferrer"
         target="_blank"
       >
         <V0Icon />
-        <span className="-translate-x-[2px]">Open in v0</span>
+        <span className="-translate-x-[2px]">{label}</span>
       </a>
     ),
   ],
   [
     "cursor",
-    (url) => (
+    ({ label, prompt }) => (
       <a
-        href={getPromptUrl("https://cursor.com/link/prompt", url, "text")}
+        href={getPromptUrl("https://cursor.com/link/prompt", prompt, "text")}
         rel="noopener noreferrer"
         target="_blank"
       >
         <CursorIcon />
-        Open in Cursor
+        {label}
       </a>
     ),
   ],
   [
     "chatgpt",
-    (url) => (
+    ({ label, prompt }) => (
       <a
-        href={getPromptUrl("https://chatgpt.com", url)}
+        href={getPromptUrl("https://chatgpt.com", prompt)}
         rel="noopener noreferrer"
         target="_blank"
       >
         <ChatGptIcon />
-        Open in ChatGPT
+        {label}
       </a>
     ),
   ],
   [
     "claude",
-    (url) => (
+    ({ label, prompt }) => (
       <a
-        href={getPromptUrl("https://claude.ai/new", url)}
+        href={getPromptUrl("https://claude.ai/new", prompt)}
         rel="noopener noreferrer"
         target="_blank"
       >
         <ClaudeIcon />
-        Open in Claude
+        {label}
       </a>
     ),
   ],
   [
     "perplexity",
-    (url) => (
+    ({ label, prompt }) => (
       <a
-        href={getPromptUrl("https://perplexity.ai", url)}
+        href={getPromptUrl("https://perplexity.ai", prompt)}
         rel="noopener noreferrer"
         target="_blank"
       >
         <PerplexityIcon />
-        Open in Perplexity
+        {label}
       </a>
     ),
   ],
   [
     "gemini",
-    (url) => (
+    ({ label, prompt }) => (
       <a
-        href={getPromptUrl("https://gemini.google.com/app", url)}
+        href={getPromptUrl("https://gemini.google.com/app", prompt)}
         rel="noopener noreferrer"
         target="_blank"
       >
         <GeminiIcon />
-        Open in Gemini
+        {label}
       </a>
     ),
   ],
   [
     "grok",
-    (url) => (
+    ({ label, prompt }) => (
       <a
-        href={getPromptUrl("https://grok.com", url)}
+        href={getPromptUrl("https://grok.com", prompt)}
         rel="noopener noreferrer"
         target="_blank"
       >
         <GrokIcon />
-        Open in Grok
+        {label}
       </a>
     ),
   ],
   [
     "scira",
-    (url) => (
+    ({ label, prompt }) => (
       <a
         className="m-0 p-0"
-        href={getPromptUrl("https://scira.ai/", url)}
+        href={getPromptUrl("https://scira.ai/", prompt)}
         rel="noopener noreferrer"
         target="_blank"
       >
         <SciraIcon />
-        Open in Scira AI
+        {label}
       </a>
     ),
   ],
 ];
 
 export const DocsCopyPage = ({ page, url }: { page: string; url: string }) => {
+  const content = useIntlayer("docs-copy-page");
+  const prompt = String(content.aiPrompt({ url }));
+  const menuLabels: Record<string, React.ReactNode> = {
+    chatgpt: content.openInChatGpt,
+    claude: content.openInClaude,
+    cursor: content.openInCursor,
+    gemini: content.openInGemini,
+    grok: content.openInGrok,
+    markdown: content.viewAsMarkdown,
+    perplexity: content.openInPerplexity,
+    scira: content.openInScira,
+    v0: content.openInV0,
+  };
+
   const trigger = (
     <Button
       variant="secondary"
@@ -176,7 +193,7 @@ export const DocsCopyPage = ({ page, url }: { page: string; url: string }) => {
           variant="secondary"
           className="md:h-7 md:text-[0.8rem]"
         >
-          Copy Page
+          {content.copyPage}
         </CopyButton>
         <DropdownMenu sounds>
           <DropdownMenuTrigger asChild className="hidden sm:flex">
@@ -188,7 +205,7 @@ export const DocsCopyPage = ({ page, url }: { page: string; url: string }) => {
           >
             {MENU_ITEMS.map(([key, render]) => (
               <DropdownMenuItem key={key} asChild sound="click">
-                {render(url)}
+                {render({ label: menuLabels[key], prompt, url })}
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>
@@ -213,7 +230,7 @@ export const DocsCopyPage = ({ page, url }: { page: string; url: string }) => {
               sound="click"
               className="w-full justify-start text-base font-normal *:[svg]:text-muted-foreground"
             >
-              {render(url)}
+              {render({ label: menuLabels[key], prompt, url })}
             </Button>
           ))}
         </PopoverContent>

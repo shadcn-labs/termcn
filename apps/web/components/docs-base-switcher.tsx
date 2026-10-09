@@ -1,5 +1,4 @@
-import Link from "next/link";
-
+import { Link } from "@/components/link";
 import { cn } from "@/lib/utils";
 import { BASE_NAMES, BASES, getBase } from "@/registry/bases";
 import type { BaseName } from "@/registry/bases";

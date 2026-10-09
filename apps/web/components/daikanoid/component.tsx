@@ -1,6 +1,7 @@
 "use client";
 
 import { useReducedMotion } from "motion/react";
+import { useIntlayer } from "next-intlayer";
 import { useTheme } from "next-themes";
 import { useEffect, useRef } from "react";
 
@@ -33,6 +34,7 @@ export const Daikanoid = ({
   React.ComponentPropsWithRef<"canvas">,
   "children" | "height" | "width"
 >) => {
+  const content = useIntlayer("daikanoid-component");
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const shouldReduceMotion = useReducedMotion();
   const { resolvedTheme } = useTheme();
@@ -178,7 +180,7 @@ export const Daikanoid = ({
       width={CANVAS_WIDTH}
       height={CANVAS_HEIGHT}
       tabIndex={0}
-      aria-label="Page not found. Interactive Breakout game built from the Shadcn Labs logo. Click or press Space to launch, then use the pointer or arrow keys to move."
+      aria-label={String(content.gameAriaLabel)}
       className={cn(
         "aspect-4/3 h-auto w-full max-w-200 touch-none cursor-none ring-1 ring-border outline-none focus-visible:ring-2 focus-visible:ring-ring",
         className

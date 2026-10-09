@@ -1,5 +1,4 @@
-import Link from "next/link";
-
+import { Link } from "@/components/link";
 import type { BaseName } from "@/registry/bases";
 import { THEMES as INK_THEMES } from "@/registry/bases/ink/themes";
 import type { RegistryThemeName as InkThemeName } from "@/registry/bases/ink/themes";

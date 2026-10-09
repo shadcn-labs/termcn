@@ -22,5 +22,5 @@ export const ROUTES = {
   OPENAPI: "/openapi.json",
   REGISTRY_INDEX: "/r/registry.json",
   RSS: "/rss.xml",
-  SPONSOR: "/sponsor",
+  SPONSOR: "/sponsors",
 } as const;
