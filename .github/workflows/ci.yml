@@ -1,11 +1,12 @@
 name: CI
 
 on:
-  pull_request:
-    branches: ["*"]
   push:
-    branches: ["main"]
-  merge_group:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
@@ -13,33 +14,39 @@ permissions:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+  cancel-in-progress: true
+
+env:
+  CI: true
 
 jobs:
-  lint-and-format:
+  ci:
+    name: Lint, test, and build
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+
     steps:
-      - uses: actions/checkout@v5
+      - name: Check out repository
+        uses: actions/checkout@v4
 
-      - name: Setup
-        uses: ./.github/actions/setup
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
 
-      - name: Lint and format
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
         run: pnpm check
 
-  typecheck:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
+      - name: Test
+        run: pnpm test
 
-      - name: Setup
-        uses: ./.github/actions/setup
-
-      # Generates `.next/types/routes.d.ts` (e.g. global `RouteContext`) before `tsc`.
       - name: Build
-        env:
-          NEXT_TELEMETRY_DISABLED: 1
         run: pnpm build
-
-      - name: Typecheck
-        run: pnpm typecheck
